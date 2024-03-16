@@ -1,0 +1,20 @@
+{
+  "name": "arthurydalgo/laravext",
+  "description": "A demo package",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Arthur Ydalgo",
+      "email": "arthur.ydalgo.dev@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "ArthurYdalgo\\Laravext\\": "src"
+    }
+  },
+  "require": {},
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
