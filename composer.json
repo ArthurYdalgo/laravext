@@ -1,6 +1,7 @@
 {
   "name": "arthurydalgo/laravext",
   "description": "",
+  "version": "dev-master",
   "keywords": [
     "arthurydalgo",
     "laravext"
@@ -16,8 +17,8 @@
     }
   ],
   "require": {
-    "php": "^7.4|^8.0",
-    "illuminate/support": "^8.0"
+    "php": "^8.2",
+    "illuminate/support": "^11"
   },
   "require-dev": {
     "orchestra/testbench": "^6.0",
