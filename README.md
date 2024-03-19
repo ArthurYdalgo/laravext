@@ -4,7 +4,18 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/arthurydalgo/laravext.svg?style=flat-square)](https://packagist.org/packages/arthurydalgo/laravext)
 ![GitHub Actions](https://github.com/arthurydalgo/laravext/actions/workflows/main.yml/badge.svg)
 
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what PSRs you support to avoid any confusion with users and contributors.
+This project was supposed to be just an attempt of using what I (personally) considered to be the best parts of Inertia and NextJs together in a project in a simpler way. Then I relized I could actually try to make a composer package out it to use it in other projects.
+
+I don't claim that this is supposed to replace or be better then NextJS/Inertia, because I don't think I even have that kind of expertise, but this might be a good way for me to
+
+1. Learn about how to build a composer package
+2. Maybe provide a good tool for whoever think this might be usefull for them
+
+I might stop supporting this at any given time, so please be aware of that before using it for anything that might be too important to you.
+
+PRs are welcome, but I may ignore them at my disclosure. 
+
+But hey, this is open-source, so fork it and to whatever the hell you want with it.
 
 ## Installation
 
