@@ -30,6 +30,8 @@ class Directive
 
     public static function strand($expression = '')
     {
+        $strand_id_length = config('laravext.strand_id_length', 128);
+
         $component = '';
         $props = [];
 
@@ -45,7 +47,7 @@ class Directive
             eval('$props = ' . $args[1] . ';');
         }
         
-        $id = str()->random(128);
+        $id = str()->random($strand_id_length);
         $data = json_encode(compact('props'));
 
         $template = "<section id='{$id}' section-type='laravel-strand-section' strand-component='{$component}' strand-data='{$data}'></section>";
