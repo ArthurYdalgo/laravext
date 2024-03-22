@@ -59,22 +59,16 @@ class LaravextServiceProvider extends ServiceProvider
     {
         Router::macro('nexus', function ($uri, $component, $props = [], $root_view = null) {
             return $this->match(['GET', 'HEAD'], $uri, function() use ($component, $props, $root_view){
-                $params = request()->route()->parameters();
-
-                $props = array_merge($props, $params);
-
                 $root_view ??= config('laravext.root_view');
 
                 return laravext($component, $props)->rootView($root_view)->render();
             });
         });
 
-        Router::macro('laravext', function ($uri = null, $root_view = null) {
+        Router::macro('laravext', function ($props = [], $root_view = null) {
             
-            return $this->match(['GET', 'HEAD'], 'welcome', function() use ($root_view){
+            return $this->match(['GET', 'HEAD'], 'welcome', function() use ($props, $root_view){
                 $root_view ??= config('laravext.root_view');
-
-                $props = request()->route()->parameters();
 
                 return laravext('Welcome', $props)->rootView($root_view)->render();
             });
