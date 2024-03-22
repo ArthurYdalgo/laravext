@@ -31,4 +31,6 @@ But hey, this is open-source, so fork it and to whatever the hell you want with 
 
 ## Disclaimer
 
+![image](https://github.com/ArthurYdalgo/laravext/blob/main/docs/images/rick-morty-blade-jquery-meme.png?raw=true)
+
 This is my first composer package. This repo is my side project. This repo may contain flaws/bad choices (but who doesn't). Use it if you like, ignore it if you hate it.
