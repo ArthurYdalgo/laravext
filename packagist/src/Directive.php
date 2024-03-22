@@ -23,7 +23,7 @@ class Directive
      */
     public static function nexus($expression = '')
     {
-        $template = '<section section-type="laravel-nexus-section" nexus-data="{{ json_encode($laravext) }}"></section>';
+        $template = '<section section-type="laravext-nexus-section" nexus-data="{{ json_encode($laravext) }}"></section>';
 
         return $template;
     }
@@ -50,7 +50,7 @@ class Directive
         $id = str()->random($strand_id_length);
         $data = json_encode(compact('props'));
 
-        $template = "<section id='{$id}' section-type='laravel-strand-section' strand-component='{$component}' strand-data='{$data}'></section>";
+        $template = "<section id='{$id}' section-type='laravext-strand-section' strand-component='{$component}' strand-data='{$data}'></section>";
 
         return $template    ;
     }
