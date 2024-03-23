@@ -12,12 +12,11 @@ class ResponseFactory
     public $props;
     public $query_params;
     public $route_params;
-
+    
     public function __construct()
     {
         $this->props = [];
-        $this->query_params = request()?->query() ?? [];
-        $this->route_params = request()?->route()?->parameters() ?? [];
+        $this->query_params = [];
     }
 
     public function nexus($component = null, $props = [])
@@ -82,12 +81,9 @@ class ResponseFactory
             'nexus' => [
                 'component' => $this->component,
                 'props' => $this->props,
-                'query_params' => $this->query_params,
-                'route_params' => $this->route_params,
             ],
-            'config' => [
-                'version' => $this->version()
-            ]
+            'route_params' => request()?->route()?->parameters(),
+            'query_params' => array_merge($this->query_params, request()?->query()),
         ];
     }
 
