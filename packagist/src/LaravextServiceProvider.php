@@ -33,9 +33,7 @@ class LaravextServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'laravext');
 
         // Register the main class to use with the facade
-        $this->app->singleton('laravext', function () {
-            return new Laravext;
-        });
+        $this->app->singleton(ResponseFactory::class);
 
         $this->registerBladeDirectives();
         $this->registerRequestMacro();

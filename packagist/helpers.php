@@ -2,6 +2,7 @@
 
 use ArthurYdalgo\Laravext\Laravext;
 use ArthurYdalgo\Laravext\LaravextFacade;
+use ArthurYdalgo\Laravext\ResponseFactory;
 
 if (! function_exists('laravext_location')) {
     /**
@@ -12,7 +13,7 @@ if (! function_exists('laravext_location')) {
      */
     function laravext_location($url)
     {
-        $instance = LaravextFacade::getFacadeRoot();
+        $instance = Laravext::getFacadeRoot();
 
         return $instance->location($url);
     }
@@ -20,7 +21,7 @@ if (! function_exists('laravext_location')) {
 
 if (! function_exists('laravext')){
     function laravext($component = null, $props = []){
-        return (new Laravext)->nexus($component, $props);
+        return Laravext::nexus($component, $props);
     }
 }
 
