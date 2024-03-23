@@ -3,6 +3,7 @@
 namespace ArthurYdalgo\Laravext;
 
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Facades\View;
 
 class ResponseFactory
 {
@@ -24,6 +25,23 @@ class ResponseFactory
         $this->component = $component;
 
         return $this->withProps($props);
+    }
+
+    public function version()
+    {
+        if (config('app.asset_url')) {
+            return md5(config('app.asset_url'));
+        }
+
+        if (file_exists($manifest = public_path('mix-manifest.json'))) {
+            return md5_file($manifest);
+        }
+
+        if (file_exists($manifest = public_path('build/manifest.json'))) {
+            return md5_file($manifest);
+        }
+
+        return null;
     }
 
     public function share($key, $value = null): void
@@ -58,17 +76,29 @@ class ResponseFactory
         return $this;
     }
 
-    public function render()
+    public function pageData()
     {
-        $this->root_view ??= config('laravext.root_view');
-
-        return view($this->root_view, [
-            'laravext' => [
+        return [
+            'nexus' => [
                 'component' => $this->component,
                 'props' => $this->props,
                 'query_params' => $this->query_params,
                 'route_params' => $this->route_params,
+            ],
+            'config' => [
+                'version' => $this->version()
             ]
-        ]);
+        ];
+    }
+
+    public function render()
+    {
+        $this->root_view ??= config('laravext.root_view');
+
+        $laravext = $this->pageData();
+
+        View::share('laravext', $laravext);
+
+        return view($this->root_view);
     }
 }

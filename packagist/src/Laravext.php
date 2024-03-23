@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static void share(string|array|\Illuminate\Contracts\Support\Arrayable $key, mixed $value = null)
+ * @method static array pageData()
  *
  * @see \Inertia\ResponseFactory
  */

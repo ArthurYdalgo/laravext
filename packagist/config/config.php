@@ -11,13 +11,15 @@ return [
 
     'case_sensitive_component_matcher' => env('VEXT_CASE_SENSITIVE_COMPONENT_MATCHER', false),
 
-    'page_components_root' => env("VEXT_PAGE_COMPONENTS_ROOT", resource_path('js/pages')),
+    'pages_root' => env("VEXT_NEXUS_ROOT", resource_path('js/pages')),
+
+    'strands_root' => env('VEXT_COMPONENTS_ROOT', resource_path('js/strands')),
 
     'router_cache_driver' => env('VEXT_ROUTER_CACHE_DRIVER', env('CACHE_DRIVER', 'file')),
 
     'router_cacher_is_enabled' => env('VEXT_ROUTER_CACHER_IS_ENABLED', !app()->environment(['local', 'testing'])),
 
-    'router_cacher_key' => env('VEXT_ROUTER_CACHER_KEY'),
+    'router_cacher_key_prefix' => env('VEXT_ROUTER_CACHER_KEY_PREFIX'),
 
     'strand_id_length' => 64,
 ];

@@ -13,7 +13,9 @@ class Directive
      */
     public static function laravextScripts($expression = ''): string
     {
-        return '';
+        return '<script id="laravext-scripts">
+            window.__laravext = {!! json_encode($laravext) !!}
+        </script>';
     }
 
     /**
@@ -23,7 +25,7 @@ class Directive
      */
     public static function nexus($expression = '')
     {
-        $template = '<section section-type="laravext-nexus-section" nexus-data="{{ json_encode($laravext) }}"></section>';
+        $template = '<section section-type="laravext-nexus-section"></section>';
 
         return $template;
     }

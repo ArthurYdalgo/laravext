@@ -65,29 +65,34 @@ class LaravextServiceProvider extends ServiceProvider
         });
 
         Router::macro('laravext', function ($uri = '{laravextSlug?}', $props = [], $root_view = null) {
-            $page_components_root = config('laravext.page_components_root');
+            $pages_root = config('laravext.pages_root');
             $case_sensitive_component_matcher = config('laravext.case_sensitive_component_matcher', false);
             $router_cache_driver = config('laravext.router_cache_driver', 'file');
             $router_cacher_is_enabled = config('laravext.router_cacher_is_enabled', true);
-            $router_cache_key = config('laravext.router_cacher_key', 'laravext-route-cache');
+            $router_cacher_key_prefix = config('laravext.router_cacher_key_prefix', 'laravext-route-cache');
+            $version = Laravext::version();
+
+            $router_cacher_key = str("router_cacher_key_prefix")->when($version, function($str) use($version) {
+                return $str->append(":$version");
+            });
 
             if(!$router_cacher_is_enabled){
                 
-                Cache::store($router_cache_driver)->forget($router_cache_key);
+                Cache::store($router_cache_driver)->forget($router_cacher_key);
             }
             
-            $files = Cache::store($router_cache_driver)->rememberForever($router_cache_key, function() use ($page_components_root){
-                $files = File::allFiles($page_components_root);
+            $files = Cache::store($router_cache_driver)->rememberForever($router_cacher_key, function() use ($pages_root){
+                $files = File::allFiles($pages_root);
 
-                return collect($files)->map(function(SplFileInfo $file) use ($page_components_root) {
+                return collect($files)->map(function(SplFileInfo $file) use ($pages_root) {
                     $extension = $file->getExtension();
 
                     $path = $file->getPath();
                     $filename = $file->getFilename();
                     $pathname = $file->getPathname();
 
-                    $relative_path_name = str($pathname)->replaceFirst($page_components_root, '');
-                    $relative_path = str($path)->replaceFirst($page_components_root, '');
+                    $relative_path_name = str($pathname)->replaceFirst($pages_root, '');
+                    $relative_path = str($path)->replaceFirst($pages_root, '');
 
                     if($relative_path_name->startsWith(['/', '\\'])){
                         $relative_path_name = $relative_path_name->substr(1);
