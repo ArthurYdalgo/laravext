@@ -10,23 +10,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class Middleware
 {
-    public function version(Request $request)
-    {
-        if (config('app.asset_url')) {
-            return md5(config('app.asset_url'));
-        }
-
-        if (file_exists($manifest = public_path('mix-manifest.json'))) {
-            return md5_file($manifest);
-        }
-
-        if (file_exists($manifest = public_path('build/manifest.json'))) {
-            return md5_file($manifest);
-        }
-
-        return null;
-    }
-
     /**
      * Defines the props that are shared by default.
      *
@@ -50,24 +33,8 @@ class Middleware
     public function handle(Request $request, Closure $next)
     {
         Laravext::share($this->share($request));
-        // Inertia::setRootView($this->rootView($request));
 
-        $response = $next($request);
-        // $response->headers->set('Vary', 'X-Inertia');
-
-        // if (! $request->header('X-Inertia')) {
-        //     return $response;
-        // }
-
-        // if ($response->isOk() && empty($response->getContent())) {
-        //     $response = $this->onEmptyResponse($request, $response);
-        // }
-
-        // if ($response->getStatusCode() === 302 && in_array($request->method(), ['PUT', 'PATCH', 'DELETE'])) {
-        //     $response->setStatusCode(303);
-        // }
-
-        return $response;
+        return $next($request);
     }
 
     /**
