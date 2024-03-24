@@ -1,14 +1,12 @@
 <?php
 
-namespace ArthurYdalgo\Laravext;
+namespace Laravext;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Routing\Router;
-use Illuminate\View\FileViewFinder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Route;
 use SplFileInfo;
 
 class LaravextServiceProvider extends ServiceProvider

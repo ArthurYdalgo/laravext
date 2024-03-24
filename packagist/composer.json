@@ -25,7 +25,7 @@
   },
   "autoload": {
     "psr-4": {
-      "ArthurYdalgo\\Laravext\\": "src"
+      "Laravext\\": "src"
     },
     "files": [
       "./helpers.php"
@@ -33,7 +33,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "ArthurYdalgo\\Laravext\\Tests\\": "tests"
+      "Laravext\\Tests\\": "tests"
     }
   },
   "scripts": {
@@ -46,10 +46,10 @@
   "extra": {
     "laravel": {
       "providers": [
-        "ArthurYdalgo\\Laravext\\LaravextServiceProvider"
+        "Laravext\\LaravextServiceProvider"
       ],
       "aliases": {
-        "Laravext": "ArthurYdalgo\\Laravext\\LaravextFacade"
+        "Laravext": "Laravext\\LaravextFacade"
       }
     }
   }

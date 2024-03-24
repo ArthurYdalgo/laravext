@@ -1,6 +1,6 @@
 <?php
 
-namespace ArthurYdalgo\Laravext;
+namespace Laravext;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Facades\View;

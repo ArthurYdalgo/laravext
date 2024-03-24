@@ -1,8 +1,6 @@
 <?php
 
-namespace ArthurYdalgo\Laravext;
-
-use Illuminate\Support\Facades\View;
+namespace Laravext;
 
 class Directive
 {

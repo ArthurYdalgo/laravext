@@ -1,5 +1,4 @@
 import { createRoot } from 'react-dom/client';
-import React from "react";
 
 export async function resolvePageComponent(path, pages) {
     const page = pages[path];
