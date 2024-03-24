@@ -10,11 +10,15 @@ Laravext is a set of tools aimed to assist the development of [Laravel](https://
 
 You may think of it as a (way more) simplified version of [Inertia.js](https://inertiajs.com/), with Next.js's file based router, and something similar to [Blade Components](https://laravel.com/docs/11.x/blade#components) that is actually a [React](https://react.dev/)/[Vue](https://vuejs.org/) component
 
+### What is it not?
+
+It's not an SPA, as for every new page you want to load, a new visit will be made. Also, there's no server-side rending of any React/Vue component, as it'd require some kind of node engine for it, and I want simplicity.
+
 ## Why does it exist?
 
-I wanted to get what I (personally) considered the best parts of Inertia.js and Next.js, and put them together. I was going to make this inside a project of mine, but then I relized I could actually try to make a package for other people to use.
+I wanted to get what I (personally) considered the best parts of Inertia.js and Next.js, and put them together. I was going to make this inside a project of mine, but then I realized I could actually try to make a package for other people to use.
 
-I don't claim that this is supposed to replace or be better then Next.js/Inertia, because I don't think I even have that kind of expertise, but this might be a good way for me to:
+I don't claim that this is supposed to replace or be better then Next.js/Inertia.js, because I don't think I even have that kind of expertise, but this might be a good way for me to:
 
 1. Learn about how to build a composer/npm package
 2. Maybe provide a good tool for whoever think this might be usefull for them
