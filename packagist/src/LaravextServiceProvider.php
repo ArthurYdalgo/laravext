@@ -62,7 +62,8 @@ class LaravextServiceProvider extends ServiceProvider
             });
         });
 
-        Router::macro('laravext', function ($uri = '{laravextSlug?}', $props = [], $root_view = null) {
+        Router::macro('laravext', function ($uri = null, $props = [], $root_view = null) {
+            
             $pages_root = config('laravext.pages_root');
             $case_sensitive_component_matcher = config('laravext.case_sensitive_component_matcher', false);
             $router_cache_driver = config('laravext.router_cache_driver', 'file');
@@ -70,7 +71,7 @@ class LaravextServiceProvider extends ServiceProvider
             $router_cacher_key_prefix = config('laravext.router_cacher_key_prefix', 'laravext-route-cache');
             $version = Laravext::version();
 
-            $router_cacher_key = str("router_cacher_key_prefix")->when($version, function($str) use($version) {
+            $router_cacher_key = str($router_cacher_key_prefix)->when($version, function($str) use($version) {
                 return $str->append(":$version");
             });
 
@@ -117,7 +118,33 @@ class LaravextServiceProvider extends ServiceProvider
             foreach($files as $file){
                 $extension = $file['extension'];
 
-                $route_uri = str($file['relative_path_name'])->replace('\\', '/')->when($extension, function($string) use ($extension){
+                $relative_path_name = str($file['relative_path_name']);
+
+                if($relative_path_name->startsWith(['/'])){
+                    $relative_path_name = $relative_path_name->replaceFirst('/', '');
+                }
+
+                $route_uri = str($file['relative_path_name'])->replace('\\', '/')->when(str($relative_path_name)->startsWith('/'), function($str){
+                    return $str->replaceFirst('/', '');
+                })->when($uri, function($str) use ($uri){
+                    $uri = str($uri);
+
+                    if($uri->endsWith('/')){
+                        $uri = $uri->replaceLast('/', '');
+                    }
+
+                    if($uri->startsWith('/')){
+                        $uri = $uri->replaceFirst('/', '');
+                    }
+
+                    $uri = $uri->append('/');
+
+                    if (!$str->startsWith($uri)){
+                        return $str;
+                    }
+
+                    return $str->replaceFirst($uri, '');
+                })->when($extension, function($string) use ($extension){
                     return $string->replaceLast(".$extension", '');
                 });
 
