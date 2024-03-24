@@ -46,7 +46,7 @@ and inserting the following inside the `routes/web.php`:
 Route::laravext();
 ```
 
-Automaically registers the following (GET|HEAD) routes:
+Automagically registers the following (GET|HEAD) routes:
 - /dashboard
 - /login
 - /users
