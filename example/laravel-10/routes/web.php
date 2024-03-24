@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::laravext();
+
+Route::laravext('dashboard', route_group_attributes: [
+    // 'middleware' => 'auth',
+]);
