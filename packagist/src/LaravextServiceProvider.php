@@ -150,13 +150,11 @@ class LaravextServiceProvider extends ServiceProvider
 
                 $route_uri = $case_sensitive_component_matcher ? $route_uri : $route_uri->lower();
 
-                $this->nexus($route_uri, $route_uri, $props, $root_view);
-            }
+                // $this->nexus($route_uri, $route_uri, $props, $root_view);
 
-            $default_nexus_component = config('laravext.default_nexus_component');
-            
-            if($default_nexus_component){
-                $this->nexus(component: $default_nexus_component);
+                $this->match(['GET', 'HEAD'], $route_uri, function() use ($route_uri, $props, $root_view){
+                    return laravext($route_uri, $props)->rootView($root_view)->render();
+                });
             }
 
             return $this;
