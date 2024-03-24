@@ -6,7 +6,7 @@ In case you want to help me...
 
 ## What is it Laravext?
 
-Laravext is a set of tools aimed to assist the development of [Laravel](https://laravel.com/) applications. It's name is (just in case you didn't get it) a mix of Laravel and [Next.js](https://nextjs.org/), although not affiliated or endorsed by any of them.
+Laravext is a set of tools aimed to assist the development of [Laravel](https://laravel.com/) applications. It's name is (just in case you didn't get it) a mix of Laravel and [Next.js](https://nextjs.org/), although not affiliated or endorsed by any of them. I tried to fit in something that also sounded like "Vue" or "Inertia" in the name, but "Laravext" sounded the better, of all the options I thought of.
 
 You may think of it as a (way more) simplified version of [Inertia.js](https://inertiajs.com/), with Next.js's file based router, and something similar to [Blade Components](https://laravel.com/docs/11.x/blade#components) that is actually a [React](https://react.dev/)/[Vue](https://vuejs.org/) component
 
