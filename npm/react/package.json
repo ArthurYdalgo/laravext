@@ -1,5 +1,5 @@
 {
-  "name": "laravext-react",
+  "name": "@laravext/react",
   "version": "1.0.0",
   "description": "Laravext for React",
   "main": "index.jsx",
