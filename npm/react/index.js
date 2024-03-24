@@ -20,12 +20,34 @@ export function findStrands(){
     return strands;
 }
 
-export function createLaravextApp({ title , pages = {} }) {
-    return {
-        resolvePageComponent: async (path) => resolvePageComponent(path, pages),
-        title,
-        path,
-        pages,
-    };
+export function createLaravextApp({ nexusDir = './pages', strandsDir = './strands' }) {
+    const laravext = window.__laravext;
+
+    const nexusComponentPath = laravext?.nexus?.component.replaceAll('\\', '/');
+
+    const nexus = findNexus();
     
+    const strands = findStrands();
+
+    // for each nexus section, create a laravext app
+    
+    nexus.forEach((nexusElement) => {
+        import(`${nexusDir}/${nexusComponentPath}`).then((NexusModule) => {
+            createRoot(nexusElement).render(<NexusModule.default />);  
+        })
+        .catch((error) => {
+            console.error(`Error loading component at ${nexusComponentPath}:`, error);
+        });
+    });
+
+    strands.forEach((strandElement) => {
+        const strandComponentPath = strandElement.getAttribute('strand-component');
+
+        import(`${strandsDir}/${strandComponentPath}`).then((StrandModule) => {
+            createRoot(strandElement).render(<StrandModule.default />);  
+        })
+        .catch((error) => {
+            console.error(`Error loading component at ${nexusComponentPath}:`, error);
+        });
+    });
 }
