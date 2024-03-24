@@ -12,11 +12,13 @@ class ResponseFactory
     public $props;
     public $query_params;
     public $route_params;
+    public $shared_props;
     
     public function __construct()
     {
         $this->props = [];
         $this->query_params = [];
+        $this->shared_props = [];
     }
 
     public function nexus($component = null, $props = [])
@@ -46,17 +48,24 @@ class ResponseFactory
     public function share($key, $value = null): void
     {
         if (is_array($key)) {
-            $this->withProps($key);
+            $this->withSharedProps($key);
         } elseif ($key instanceof Arrayable) {
-            $this->withProps($key->toArray());
+            $this->withSharedProps($key->toArray());
         } else {
-            $this->props[$key] = $value;
+            $this->shared_props[$key] = $value;
         }
     }
 
     public function withProps($props = [])
     {
         $this->props = array_merge($this->props, $props);
+
+        return $this;
+    }
+
+    public function withSharedProps($props = [])
+    {
+        $this->shared_props = array_merge($this->shared_props, $props);
 
         return $this;
     }
@@ -82,6 +91,7 @@ class ResponseFactory
                 'component' => $this->component,
                 'props' => $this->props,
             ],
+            'shared_props' => $this->shared_props,
             'route_params' => request()?->route()?->parameters(),
             'query_params' => array_merge($this->query_params, request()?->query()),
         ];

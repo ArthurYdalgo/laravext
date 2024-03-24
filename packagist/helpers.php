@@ -1,8 +1,8 @@
 <?php
 
-use ArthurYdalgo\Laravext\Laravext;
-use ArthurYdalgo\Laravext\LaravextFacade;
-use ArthurYdalgo\Laravext\ResponseFactory;
+use Laravext\Laravext;
+use Laravext\LaravextFacade;
+use Laravext\ResponseFactory;
 
 if (! function_exists('laravext_location')) {
     /**
