@@ -21,6 +21,9 @@ use Laravext\Laravext;
  * 
  * @see https://laravext.dev/docs/1.x/routing#route-methods-laravext for more detailed examples
  */
+
+Route::redirect('/', 'books');
+
 Route::laravext();
 
 Route::get('books/{slug}', function($slug){

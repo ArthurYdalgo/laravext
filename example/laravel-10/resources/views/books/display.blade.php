@@ -2,7 +2,9 @@
 @section('content')
     @strand('PrivacyToggle')
     <br/>
-    # These is server side rendered
+    <a href="{{route('books')}}">Return to books</a>
+    <br/>
+    # These are server side rendered
     <h1>Title: {{ $laravext['nexus']['props']['book']->title }}</h1>
     <p>Autor: {{ $laravext['nexus']['props']['book']->author?->name ?? '--' }}</p>
     <br>

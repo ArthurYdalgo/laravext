@@ -28,8 +28,7 @@ export default ({ laravext }) => {
             <a href={route('books.display', {slug})}>Return to book</a>
             <br/>
             <br/>
-            <h2>Chapter {chapter_id}</h2>
-            <p>This is the content of chapter {chapter_id} - {chapter.title}.</p>
+            <h2>Chapter "{chapter.title}"</h2>
             <br />
             <p>{chapter.content}</p>
         </div>}

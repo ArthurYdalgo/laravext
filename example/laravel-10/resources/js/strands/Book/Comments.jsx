@@ -38,7 +38,7 @@ export default ({ laravext }) => {
                     <h2>Comments</h2>
                     <ul>
                         {bookComments.map(comment => (
-                            <li key={comment.id} >- {comment.user.name} ({privacyToggle ? '***@***.com' : comment.user.email}) {comment.content}</li>
+                            <li key={comment.id} >- {comment.user.name} ({privacyToggle ? '***@***' : comment.user.email}): {comment.content}</li>
                         ))}
                     </ul>
                 </div>}
