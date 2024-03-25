@@ -47,7 +47,7 @@ Route::get('books/{slug}', function($slug){
 // Route::laravext('dashboard', [
 //     'inspiring_quote' => 'You are the creator of your own destiny.',
 // ], route_group_attributes: [
-//     // 'prefix' => 'dashboard', // the prefix key is unset internally, to avoid conflicts with the router
+//     // 'prefix' => 'dashboard', // the prefix key is unset internally, to avoid conflicts with the laravext router
 //     'middleware' => [
 //         'auth',
 //         'verified'
