@@ -5,7 +5,7 @@ return [
     /**
      * The root template that is loaded on the first page visit
      */
-    'root_view' => env('VEXT_ROOT_VIEW', 'app'),
+    'root_view' => env('VEXT_ROOT_VIEW', 'sections.app'),
 
     'default_nexus_component' => env('VEXT_DEFAULT_NEXUS_COMPONENT'),
 

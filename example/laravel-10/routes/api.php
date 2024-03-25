@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Http;
 
 Route::get('books', function () {
-    return Book::paginate();
+    return Book::with('author')->paginate();
 })->name('api.books.index');
 
 Route::get('books/{book}/comments', function (Book $book) {
