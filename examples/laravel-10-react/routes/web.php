@@ -24,7 +24,7 @@ Route::laravext();
     
 //     // Using the Laravext facade, or nexus helper function, you can render a view with the defined props
 //     // return Laravext::nexus(props: compact('book'))->rootView('books.display')->render();
-//     return nexus(props: compact('book'))->rootView('books.display')->render();
+//     // return nexus(props: compact('book'))->rootView('books.display')->render();
 
 //     // Althogh you may consider this quite verbose, because it could simply be done like the example below, calling a view directly.
 //     // But remember to use the $book variable in the view, as the $laravext variable will not be available
@@ -35,7 +35,7 @@ Route::laravext();
 //     // ...
 //     // Although I couldn't find a good use case for this, it's an example of how you can use the nexus blade directive
 //     // to do some additional reactive stuff along with strands, and with the server-side rendered data for SEO purposes.
-//     // return nexus('books/{slug}', compact('book'))->rootView('section.good-view-for-seo')->render();
+//     return nexus('books/{slug}', compact('book'))->render();
 
 // })->name('books.slug');
 
