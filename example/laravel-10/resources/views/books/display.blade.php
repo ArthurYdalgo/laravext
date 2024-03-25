@@ -1,4 +1,4 @@
-@extends('layouts.guest')
+@extends('layouts.app')
 @section('content')
     @strand('PrivacyToggle')
     <br/>
