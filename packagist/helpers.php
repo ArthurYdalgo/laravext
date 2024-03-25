@@ -19,14 +19,8 @@ if (! function_exists('laravext_location')) {
     }
 }
 
-if (! function_exists('laravext')){
-    function laravext($component = null, $props = []){
-        return Laravext::nexus($component, $props);
-    }
-}
-
 if (! function_exists('nexus')){
     function nexus($component = null, $props = []){
-        laravext($component, $props);
+        return Laravext::nexus($component, $props);
     }
 }

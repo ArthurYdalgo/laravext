@@ -39,18 +39,17 @@ class Directive
             return '';
         }
 
+        // dd($expression);
+
         $args = explode(',', $expression);
 
         eval('$component = ' . $args[0] . ';');
 
-        if(isset($args[1])){
-            eval('$props = ' . $args[1] . ';');
-        }
+        $strand_data = isset($args[1]) && $args[1] ? $args[1] : '[]';
         
         $id = str()->random($strand_id_length);
-        $data = json_encode(compact('props'));
 
-        $template = "<section id='{$id}' section-type='laravext-strand-section' strand-component='{$component}' strand-data='{$data}'></section>";
+        $template = '<section id="' . $id . '" section-type="laravext-strand-section" strand-component="' . $component . '" strand-data=\'{!! json_encode('. $strand_data .')!!}\'></section>';
 
         return $template    ;
     }

@@ -1,19 +1,31 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use App\Models\Author;
+use App\Models\Book;
+use App\Models\Chapter;
+use App\Models\User;
+use Illuminate\Support\Facades\Http;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
+Route::get('books', function () {
+    return Book::paginate();
+})->name('api.books.index');
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::get('books/{book}/comments', function (Book $book) {
+    return $book->comments()->with('user')->paginate();
+})->name('api.books.book.comments.index');
+
+Route::get('books/{book}/chapters', function (Book $book) {
+    return $book->chapters()->paginate();
+})->name('api.books.book.chapters.index');
+
+Route::get('chapters/{chapter}', function (Chapter $chapter) {
+    return $chapter;
+})->name('api.chapters.chapter.show');
+
+Route::get('authors/{author}/books', function (Author $author) {
+    return $author->books()->paginate();
+})->name('api.authors.author.books.book.index');
+
+Route::get('users', function () {
+    return User::paginate();
+})->name('api.users.index');

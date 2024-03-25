@@ -25,7 +25,7 @@ export function createLaravextApp({ nexusResolver, strandsResolver }) {
     const laravext = window.__laravext;
 
     if (nexusResolver) {
-        const nexusComponentPath = laravext?.nexus?.component.replaceAll('\\', '/');
+        const nexusComponentPath = laravext?.nexus?.component?.replaceAll('\\', '/');
         const nexus = findNexus();
         nexus.forEach((nexusElement) => {
             nexusResolver(nexusComponentPath).then((NexusModule) => {
@@ -42,6 +42,7 @@ export function createLaravextApp({ nexusResolver, strandsResolver }) {
         strands.forEach((strandElement) => {
             const strandComponentPath = strandElement.getAttribute('strand-component');
             const strandData = JSON.parse(strandElement.getAttribute('strand-data'));
+            
             strandsResolver(strandComponentPath).then((StrandModule) => {
                 createRoot(strandElement).render(<StrandModule.default laravext={{ ...laravext, ...strandData }} />);
             })

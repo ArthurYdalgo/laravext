@@ -5,6 +5,7 @@ namespace Laravext;
 use Illuminate\Support\Facades\Facade;
 
 /**
+ * @method static string nexus(string $component, array $props = [])
  * @method static void share(string|array|\Illuminate\Contracts\Support\Arrayable $key, mixed $value = null)
  * @method static array pageData()
  *
