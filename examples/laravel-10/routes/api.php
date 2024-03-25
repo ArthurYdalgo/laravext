@@ -10,6 +10,11 @@ Route::get('books', function () {
     return Book::with('author')->paginate();
 })->name('api.books.index');
 
+Route::get('books/{slug}', function ($slug) {
+    $book = Book::where('slug', $slug)->with('author')->firstOrFail();
+    return $book;
+})->name('api.books.book.show');
+
 Route::get('books/{book}/comments', function (Book $book) {
     return $book->comments()->with('user')->paginate();
 })->name('api.books.book.comments.index');

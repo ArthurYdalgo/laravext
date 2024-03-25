@@ -27,7 +27,7 @@ export default ({ laravext }) => {
                     <h2>Books by {author.name}</h2>
                     <ul>
                         {authorBooks.map(book => (
-                            <li key={book.id}>- <a href={route('books.display', {slug: book.id})}>{book.title}</a></li>
+                            <li key={book.id}>- <a href={route('books.slug', {slug: book.id})}>{book.title}</a></li>
                         ))}
                     </ul>
                 </div>}

@@ -28,7 +28,7 @@ export default ({ laravext }) => {
                     <h2>Books</h2>
                     <ul>
                         {books.map(book => (
-                            <li key={book.id}>-#{book.id} <a href={route('books.display', {slug: book.slug})}>"{book.title}"</a> from {book.author.name} ({
+                            <li key={book.id}>-#{book.id} <a href={route('books.slug', {slug: book.slug})}>"{book.title}"</a> from {book.author.name} ({
                                 privacyToggle ? '***@***' : book.author.email
                             })</li>
                         ))}

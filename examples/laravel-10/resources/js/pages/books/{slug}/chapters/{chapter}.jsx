@@ -25,7 +25,7 @@ export default ({ laravext }) => {
         <>
         {isLoading && <div>Loading...</div>}
         {!isLoading && <div>
-            <a href={route('books.display', {slug})}>Return to book</a>
+            <a href={route('books.slug', {slug})}>Return to book</a>
             <br/>
             <br/>
             <h2>Chapter "{chapter.title}"</h2>
