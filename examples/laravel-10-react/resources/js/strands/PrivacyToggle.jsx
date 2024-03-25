@@ -5,7 +5,7 @@ export default ({laravext}) => {
 
     return (
         <>
-            <button className="cursor-pointer"  onClick={toggle}>{active ? 'Click to Turn Privacy Off' : 'Click to Turn Privacy On'}</button>
+            <span className="cursor-pointer"  onClick={toggle}>{active ? 'Click to Turn Privacy Off' : 'Click to Turn Privacy On'}</span>
         </>
 
     )

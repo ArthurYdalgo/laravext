@@ -3,6 +3,4 @@
     @strand('PrivacyToggle')
     <br/>
     @nexus
-    <br/>
-    @footer('')
 @endsection
