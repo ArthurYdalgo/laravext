@@ -1,9 +1,5 @@
 # Laravext
 
-In case you want to help me...
-
-[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/arthurydalgo)
-
 ## What is it Laravext?
 
 Laravext is a set of tools aimed to assist the development of [Laravel](https://laravel.com/) applications. It's name is (just in case you didn't get it) a mix of Laravel and [Next.js](https://nextjs.org/), although not affiliated or endorsed by any of them. I tried to fit in something that also sounded like "Vue" or "Inertia" in the name, but "Laravext" sounded the better, of all the options I thought of.
@@ -12,16 +8,22 @@ You may think of it as a (way more) simplified version of [Inertia.js](https://i
 
 ### What is it not?
 
-It's not an SPA, as for every new page you want to load, a new visit will be made. Also, there's no server-side rending of any React/Vue component, as it'd require some kind of node engine for it, and I want simplicity.
+ It's not a server-side renderer of any React/Vue component, as it'd require some kind of javascript engine for it, and I wanted simplicity. It's not an (out-of-the-box) SPA like Inertia, as for every new page you want to load, a new visit will be made... that being said, nothing stops you from using a traditional react router insde the `@nexus` directive (this directive is explained in the "What does it do?" section), although I think that would look a bit peculiar, and would defeat the purpose of having the automatic file-based router.
+
+### In case you want to help me...
+
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/arthurydalgo)
 
 ## Why does it exist?
+
+You might be thinking "Why don't you just use Next.js? It has server-side rendering by default and client-side rendering". 
 
 I wanted to get what I (personally) considered the best parts of Inertia.js and Next.js, and put them together. I was going to make this inside a project of mine, but then I realized I could actually try to make a package for other people to use.
 
 I don't claim that this is supposed to replace or be better then Next.js/Inertia.js, because I don't think I even have that kind of expertise, but this might be a good way for me to:
 
-1. Learn about how to build a composer/npm package
-2. Maybe provide a good tool for whoever think this might be usefull for them
+1. Maybe provide a good tool for whoever think this might be usefull for them
+2. Learn about how to build a composer/npm package
 
 ## What does it do?
 
