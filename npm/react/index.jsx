@@ -28,12 +28,14 @@ export function createLaravextApp({ nexusResolver, strandsResolver }) {
         const nexusComponentPath = laravext?.nexus?.component?.replaceAll('\\', '/');
         const nexus = findNexus();
         nexus.forEach((nexusElement) => {
-            nexusResolver(nexusComponentPath).then((NexusModule) => {
-                createRoot(nexusElement).render(<NexusModule.default laravext={laravext} />);
-            })
-                .catch((error) => {
-                    console.error(`Error loading component at ${nexusComponentPath}:`, error);
-                });
+            if (nexusComponentPath) {
+                nexusResolver(nexusComponentPath).then((NexusModule) => {
+                    createRoot(nexusElement).render(<NexusModule.default laravext={laravext} />);
+                })
+                    .catch((error) => {
+                        console.error(`Error loading component at ${nexusComponentPath}:`, error);
+                    });
+            }
         });
     }
 
@@ -42,13 +44,15 @@ export function createLaravextApp({ nexusResolver, strandsResolver }) {
         strands.forEach((strandElement) => {
             const strandComponentPath = strandElement.getAttribute('strand-component');
             const strandData = JSON.parse(strandElement.getAttribute('strand-data'));
-            
-            strandsResolver(strandComponentPath).then((StrandModule) => {
-                createRoot(strandElement).render(<StrandModule.default laravext={{ ...laravext, ...strandData }} />);
-            })
-                .catch((error) => {
-                    console.error(`Error loading component at ${strandComponentPath}:`, error);
-                });
+
+            if(strandComponentPath) {
+                strandsResolver(strandComponentPath).then((StrandModule) => {
+                    createRoot(strandElement).render(<StrandModule.default laravext={{ ...laravext, ...strandData }} />);
+                })
+                    .catch((error) => {
+                        console.error(`Error loading component at ${strandComponentPath}:`, error);
+                    });
+            }
         });
     }
 }
