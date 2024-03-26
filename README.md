@@ -8,9 +8,7 @@ You may think of it as a (way more) simplified version of [Inertia.js](https://i
 
 ### What is it not?
 
- It's not a server-side renderer of any React/Vue component, as it'd require some kind of javascript engine for it, and I wanted simplicity. It's not an (out-of-the-box) SPA like Inertia, as for every new page you want to load, a new visit will be made... that being said, nothing stops you from using a traditional react router insde the `@nexus` directive (this directive is explained in the "What does it do?" section), although I think that would look a bit peculiar, and would defeat the purpose of having the automatic file-based router.
-
-
+It's not a server-side renderer of any React/Vue component, as it'd require some kind of javascript engine for it, and I wanted simplicity. It's not an (out-of-the-box) SPA like Inertia, as for every new page you want to load, a new visit will be made... that being said, nothing stops you from using a traditional react router insde the `@nexus` directive (this directive is explained in the "What does it do?" section), although I think that would look a bit peculiar, and would defeat the purpose of having the automatic file-based router.
 
 ### In case you want to help me...
 
@@ -18,15 +16,17 @@ You may think of it as a (way more) simplified version of [Inertia.js](https://i
 
 ## Why does it exist?
 
-First things first: I don't claim that this is supposed to replace or be better then Next.js/Inertia.js, as each project may have different kind of needs and each team might have their preference, and maybe just using blade files with [Laravel Folio](https://laravel.com/docs/10.x/folio) to automagically create routes from them could be enough for you.
+First things first: I don't claim that this is supposed to replace or be better then Next.js/Inertia.js, as each project may have different kind of needs and each team might have their preference, and maybe just using blade files with [Laravel Folio](https://laravel.com/docs/10.x/folio) to automagically create routes from them could be enough for you, or maybe the [TALL](https://tallstack.dev/) stack is the right choice for you.
 
 I wanted to get what I (personally) considered the best parts of Inertia.js and Next.js, and put them together. This was going to be inside a project of mine, but then I realized I could actually try to make a package for other people to use, and I would try to learn something along the way about how to build composer and npm packages.
 
-Adittionally, you might be asking yourself:
+Additionally, you might be asking yourself:
 
-"Why not use Next.js?", or even "Why not use Inertia.js?"
+"Why don't you use Next.js?", or even "Why don't you use Inertia.js?"
 
-Before somebody light up their torches or grab their forks: the following points are my opinion only, based on my personal experiences and troubles, you may disagree with them, and that's fine. Feel free to skip this section.
+![image](https://github.com/ArthurYdalgo/laravext/blob/main/docs/images/i-dont-like-nextjs-mard-crowd-with-forks-meme.jpg?raw=true)
+
+Before somebody light up their torches or grab their forks: the following points are my opinion only, based on my personal (in)experiences and troubles, you may disagree with them, and that's fine. Feel free to skip this section.
 
 Inertia.js offers server-side rendering of React/Vue pages, but it requires that you keep a `php artisan inertia:start-ssr` artisan command running through supervisor or something similar, which may not be available in a shared environments. You also don't have a file-based routing system like the one Next.js offers.
 
@@ -34,11 +34,12 @@ Next.js offers server-side rendering of React components, and a great routing sy
 
 ## What does it do?
 
-As mentioned before, Laravext takes a lot of inspiration in how Inertia.js and Next.js do things. 
+As mentioned before, Laravext takes a lot of inspiration in how Inertia.js and Next.js do things.
 
 Laravext offers a way to automagically create routes based on the file structure of the `resources/js/pages` (this location is customizable) directory, much like Next.js.
 
 Using the following structure:
+
 ```
 # In a Laravel project
 - resources/js/pages
@@ -60,6 +61,7 @@ Route::laravext();
 ```
 
 Automagically registers the following (GET|HEAD) routes:
+
 - /dashboard
 - /login
 - /users
@@ -71,7 +73,7 @@ A blade view (either the default one set in the config or specified one when the
 
 ![image](https://github.com/ArthurYdalgo/laravext/blob/main/docs/images/rick-morty-blade-jquery-meme.jpg?raw=true)
 
-<sup>__Credits: Rick and Morty - Adult Swim__<sub>
+<sup>**Credits: Rick and Morty - Adult Swim**<sub>
 
 Well, "yes"... Moving on.
 
@@ -103,6 +105,6 @@ This section is just so I don't get my ass sued by anyone.
 
 This is my first "big" project aimed to be used by the community, and it's just a side project. This repo may contain flaws/bad choices (but who doesn't), or code that may cringe the hell out of you. Use it if you like, ignore it if you hate it.
 
-PRs are welcome, but I may ignore them at my disclosure. 
+PRs are welcome, but I may ignore them at my disclosure.
 
-But hey, this is open-source, so fork it and to whatever the hell you want with it.
+But hey, this is open-source, so you have my blessing (not that you need it anyway) to fork it and to whatever the hell you want with it.
