@@ -65,12 +65,13 @@ class LaravextServiceProvider extends ServiceProvider
             unset($route_group_attributes['prefix']);
 
             return $this->group($route_group_attributes, function () use ($uri, $props, $root_view) {
-                $pages_root = config('laravext.pages_root');
+                $nexus_root = config('laravext.nexus_root');
                 $case_sensitive_component_matcher = config('laravext.case_sensitive_component_matcher', false);
                 $router_cache_driver = config('laravext.router_cache_driver', 'file');
                 $router_cacher_is_enabled = config('laravext.router_cacher_is_enabled', true);
                 $router_cacher_key_prefix = config('laravext.router_cacher_key_prefix', 'laravext-route-cache');
                 $router_route_name_is_enabled = config('laravext.router_route_naming_is_enabled', true);
+                $router_root_route_is_enabled = config('laravext.router_root_route_is_enabled', true);
                 $version = Laravext::version();
 
                 $router_cacher_key = str($router_cacher_key_prefix)->when($version, function ($str) use ($version) {
@@ -82,18 +83,18 @@ class LaravextServiceProvider extends ServiceProvider
                     Cache::store($router_cache_driver)->forget($router_cacher_key);
                 }
 
-                $files = Cache::store($router_cache_driver)->rememberForever($router_cacher_key, function () use ($pages_root) {
-                    $files = File::allFiles($pages_root);
+                $files = Cache::store($router_cache_driver)->rememberForever($router_cacher_key, function () use ($nexus_root) {
+                    $files = File::allFiles($nexus_root);
 
-                    return collect($files)->map(function (SplFileInfo $file) use ($pages_root) {
+                    return collect($files)->map(function (SplFileInfo $file) use ($nexus_root) {
                         $extension = $file->getExtension();
 
                         $path = $file->getPath();
                         $filename = $file->getFilename();
                         $pathname = $file->getPathname();
 
-                        $relative_path_name = str($pathname)->replaceFirst($pages_root, '');
-                        $relative_path = str($path)->replaceFirst($pages_root, '');
+                        $relative_path_name = str($pathname)->replaceFirst($nexus_root, '');
+                        $relative_path = str($path)->replaceFirst($nexus_root, '');
 
                         if ($relative_path_name->startsWith(['/', '\\'])) {
                             $relative_path_name = $relative_path_name->substr(1);
@@ -116,6 +117,10 @@ class LaravextServiceProvider extends ServiceProvider
                         ];
                     })->values()->toArray();
                 });
+
+                if($router_root_route_is_enabled){
+                    $this->nexus('')->name('root');
+                }
 
                 foreach ($files as $file) {
                     $extension = $file['extension'];
