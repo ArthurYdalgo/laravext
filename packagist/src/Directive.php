@@ -23,7 +23,16 @@ class Directive
      */
     public static function nexus($expression = '')
     {
-        $template = '<section section-type="laravext-nexus-section"></section>';
+        $skeleton_content = '';
+
+        if($expression) {
+            $args = explode(',', $expression);
+            eval('$skeleton = ' . $args[0] . ';');
+    
+            $skeleton_content = view($skeleton)->render();   
+        }
+        
+        $template = '<section section-type="laravext-nexus-section">'. $skeleton_content . '</section>';
 
         return $template;
     }
@@ -38,8 +47,6 @@ class Directive
         if (!$expression) {
             return '';
         }
-
-        // dd($expression);
 
         $args = explode(',', $expression);
 

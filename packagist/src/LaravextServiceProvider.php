@@ -71,7 +71,6 @@ class LaravextServiceProvider extends ServiceProvider
                 $router_cacher_is_enabled = config('laravext.router_cacher_is_enabled', true);
                 $router_cacher_key_prefix = config('laravext.router_cacher_key_prefix', 'laravext-route-cache');
                 $router_route_name_is_enabled = config('laravext.router_route_naming_is_enabled', true);
-                $router_root_route_is_enabled = config('laravext.router_root_route_is_enabled', true);
                 $version = Laravext::version();
 
                 $router_cacher_key = str($router_cacher_key_prefix)->when($version, function ($str) use ($version) {
@@ -117,10 +116,6 @@ class LaravextServiceProvider extends ServiceProvider
                         ];
                     })->values()->toArray();
                 });
-
-                if($router_root_route_is_enabled){
-                    $this->nexus('')->name('root');
-                }
 
                 foreach ($files as $file) {
                     $extension = $file['extension'];
