@@ -11,7 +11,7 @@ return [
 
     'case_sensitive_component_matcher' => env('VEXT_CASE_SENSITIVE_COMPONENT_MATCHER', false),
 
-    'pages_root' => env("VEXT_NEXUS_ROOT", resource_path('js/pages')),
+    'nexus_root' => env("VEXT_NEXUS_ROOT", resource_path('js/nexus')),
 
     'strands_root' => env('VEXT_COMPONENTS_ROOT', resource_path('js/strands')),
 
@@ -25,5 +25,10 @@ return [
 
     'strand_id_length' => 64,
 
+    'router_root_route_is_enabled' => true,
 
+    /**
+     * 
+     */
+    'router_mode' => 'app',
 ];
