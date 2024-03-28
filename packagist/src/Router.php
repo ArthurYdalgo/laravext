@@ -98,9 +98,11 @@ class Router
         });
     }
 
-    public static function getRoutingTree($nexus_root, $cached = true, $cache_driver = 'file')
+    public static function laravextRouteGroup($router, $nexus_root, $cached = true, $cache_driver = 'file')
     {
         $nexus_directories = self::getNexusDirectories($nexus_root, $cached, $cache_driver);
+
+        
     }
 
     public static function generateRoutingTreeCacheKey($nexus_root)
