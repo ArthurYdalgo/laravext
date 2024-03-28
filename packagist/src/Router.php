@@ -35,10 +35,14 @@ class Router
             $children_directories[] = $parsed_children_directory;
         }
 
+        $relative_path = str($directory_path)->replaceFirst($root, '')->toString();
+        $relative_path = Str::startsWith($relative_path, '/') ? Str::replaceFirst('/', '', $relative_path) : $relative_path;
+        $relative_path = str($relative_path)->explode('/')->filter()->implode('/');
+
         return [
             'name' =>  str($directory_path)->replaceFirst($root, '')->explode('/')->last(),
             'path' => $directory_path,
-            'relative_path' => str($directory_path)->replaceFirst("$root/", '')->toString(),
+            'relative_path' => $relative_path,
             'conventions' => $conventions,
             'is_group' => $is_directory_a_group,
             'children' => $children_directories,
@@ -98,11 +102,108 @@ class Router
         });
     }
 
-    public static function laravextRouteGroup($router, $nexus_root, $cached = true, $cache_driver = 'file')
+    public static function laravextNexusRoutes(&$router, $directory)
     {
-        $nexus_directories = self::getNexusDirectories($nexus_root, $cached, $cache_driver);
+        $case_sensitive_component_matcher = config('laravext.case_sensitive_component_matcher', false);
+        $router_route_name_is_enabled = config('laravext.router_route_naming_is_enabled', true);
 
-        
+        $page = $directory['conventions']['page'] ?? null;
+
+        if ($page) {
+            $router->nexus($directory['relative_path'], $page, []);
+        }
+    }
+
+    public static function laravextRouteGroup(&$router, $nexus_root, $props = [], $route_group_attributes = [], $root_view = null)
+    {
+        $router_cache_driver = config('laravext.router_cache_driver', 'file');
+        $router_cacher_is_enabled = config('laravext.router_cacher_is_enabled', true);
+
+        $nexus_directories = self::getNexusDirectories($nexus_root, $router_cacher_is_enabled, $router_cache_driver);
+
+        return $router->group($route_group_attributes, function () use ($router, $props, $root_view, $nexus_directories) {
+            self::laravextNexusRoutes($router, $nexus_directories);
+
+            // if(!$router_cacher_is_enabled) {
+            //     Cache::store($router_cache_driver)->forget(LaravextRouter::generateRoutingTreeCacheKey($nexus_root));
+            // }
+
+            // $files = Cache::store($router_cache_driver)->rememberForever($router_cacher_key, function () use ($nexus_root) {
+            //     $files = File::allFiles($nexus_root);
+
+            //     return collect($files)->map(function (SplFileInfo $file) use ($nexus_root) {
+            //         $extension = $file->getExtension();
+
+            //         $path = $file->getPath();
+            //         $filename = $file->getFilename();
+            //         $pathname = $file->getPathname();
+
+            //         $relative_path_name = str($pathname)->replaceFirst($nexus_root, '');
+            //         $relative_path = str($path)->replaceFirst($nexus_root, '');
+
+            //         if ($relative_path_name->startsWith(['/', '\\'])) {
+            //             $relative_path_name = $relative_path_name->substr(1);
+            //         }
+
+            //         if ($relative_path->startsWith(['/', '\\'])) {
+            //             $relative_path = $relative_path->substr(1);
+            //         }
+
+            //         $extension = $extension ? $extension : null;
+
+
+            //         return [
+            //             'path' => $path,
+            //             'filename' => $filename,
+            //             'pathname' => $pathname,
+            //             'relative_path_name' => $relative_path_name->toString(),
+            //             'relative_path' => $relative_path->toString(),
+            //             'extension' => $extension,
+            //         ];
+            //     })->values()->toArray();
+            // });
+
+            // foreach ($files as $file) {
+            //     $extension = $file['extension'];
+
+            //     $relative_path_name = str($file['relative_path_name']);
+
+            //     if ($relative_path_name->startsWith(['/'])) {
+            //         $relative_path_name = $relative_path_name->replaceFirst('/', '');
+            //     }
+
+            //     if ($uri) {
+            //         $uri = str($uri);
+
+            //         if ($uri->endsWith('/')) {
+            //             $uri = $uri->replaceLast('/', '');
+            //         }
+
+            //         if ($uri->startsWith('/')) {
+            //             $uri = $uri->replaceFirst('/', '');
+            //         }
+
+            //         if (!$relative_path_name->startsWith($uri)) {
+            //             continue;
+            //         }
+            //     }
+
+            //     $route_uri = $relative_path_name->replace('\\', '/')->when(str($relative_path_name)->startsWith('/'), function ($str) {
+            //         return $str->replaceFirst('/', '');
+            //     })->when($extension, function ($string) use ($extension) {
+            //         return $string->replaceLast(".$extension", '');
+            //     });
+
+            //     $route_uri = $case_sensitive_component_matcher ? $route_uri : $route_uri->lower();
+
+            //     $name = !$router_route_name_is_enabled ? null : $route_uri->explode('/')->map(function ($segment) {
+            //         return str($segment)->remove(["{", "}", "?"]);
+            //     })->join('.');
+
+
+            //     $this->nexus($route_uri, $route_uri, $props, $root_view)->name($name);
+            // }
+        });
     }
 
     public static function generateRoutingTreeCacheKey($nexus_root)
