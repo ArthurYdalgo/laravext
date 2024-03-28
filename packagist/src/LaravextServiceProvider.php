@@ -113,8 +113,6 @@ class LaravextServiceProvider extends ServiceProvider
                     })->values()->toArray();
                 });
 
-                // dd($files);
-
                 foreach ($files as $file) {
                     $extension = $file['extension'];
 
