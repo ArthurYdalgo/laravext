@@ -110,7 +110,22 @@ class Router
         $page = $directory['conventions']['page'] ?? null;
 
         if ($page) {
-            $router->nexus($directory['relative_path'], $page, []);
+            $segments = str($directory['relative_path'])->when(!$case_sensitive_component_matcher, function ($str) {
+                return $str->lower();
+            })->explode('/')->filter(function($segment){
+                return !preg_match('/\([\w]+\)$/', $segment);
+            });
+
+            $uri = $segments->implode('/');
+            $name = $router_route_name_is_enabled ? $segments->map(function($segment){
+                return str($segment)->remove(["{", "}", "?"]);
+            })->join('.') : null;
+
+            $router->nexus($uri, $page, [])->name($name);
+        }
+
+        foreach($directory['children'] as $child) {
+            self::laravextNexusRoutes($router, $child);
         }
     }
 
@@ -123,86 +138,6 @@ class Router
 
         return $router->group($route_group_attributes, function () use ($router, $props, $root_view, $nexus_directories) {
             self::laravextNexusRoutes($router, $nexus_directories);
-
-            // if(!$router_cacher_is_enabled) {
-            //     Cache::store($router_cache_driver)->forget(LaravextRouter::generateRoutingTreeCacheKey($nexus_root));
-            // }
-
-            // $files = Cache::store($router_cache_driver)->rememberForever($router_cacher_key, function () use ($nexus_root) {
-            //     $files = File::allFiles($nexus_root);
-
-            //     return collect($files)->map(function (SplFileInfo $file) use ($nexus_root) {
-            //         $extension = $file->getExtension();
-
-            //         $path = $file->getPath();
-            //         $filename = $file->getFilename();
-            //         $pathname = $file->getPathname();
-
-            //         $relative_path_name = str($pathname)->replaceFirst($nexus_root, '');
-            //         $relative_path = str($path)->replaceFirst($nexus_root, '');
-
-            //         if ($relative_path_name->startsWith(['/', '\\'])) {
-            //             $relative_path_name = $relative_path_name->substr(1);
-            //         }
-
-            //         if ($relative_path->startsWith(['/', '\\'])) {
-            //             $relative_path = $relative_path->substr(1);
-            //         }
-
-            //         $extension = $extension ? $extension : null;
-
-
-            //         return [
-            //             'path' => $path,
-            //             'filename' => $filename,
-            //             'pathname' => $pathname,
-            //             'relative_path_name' => $relative_path_name->toString(),
-            //             'relative_path' => $relative_path->toString(),
-            //             'extension' => $extension,
-            //         ];
-            //     })->values()->toArray();
-            // });
-
-            // foreach ($files as $file) {
-            //     $extension = $file['extension'];
-
-            //     $relative_path_name = str($file['relative_path_name']);
-
-            //     if ($relative_path_name->startsWith(['/'])) {
-            //         $relative_path_name = $relative_path_name->replaceFirst('/', '');
-            //     }
-
-            //     if ($uri) {
-            //         $uri = str($uri);
-
-            //         if ($uri->endsWith('/')) {
-            //             $uri = $uri->replaceLast('/', '');
-            //         }
-
-            //         if ($uri->startsWith('/')) {
-            //             $uri = $uri->replaceFirst('/', '');
-            //         }
-
-            //         if (!$relative_path_name->startsWith($uri)) {
-            //             continue;
-            //         }
-            //     }
-
-            //     $route_uri = $relative_path_name->replace('\\', '/')->when(str($relative_path_name)->startsWith('/'), function ($str) {
-            //         return $str->replaceFirst('/', '');
-            //     })->when($extension, function ($string) use ($extension) {
-            //         return $string->replaceLast(".$extension", '');
-            //     });
-
-            //     $route_uri = $case_sensitive_component_matcher ? $route_uri : $route_uri->lower();
-
-            //     $name = !$router_route_name_is_enabled ? null : $route_uri->explode('/')->map(function ($segment) {
-            //         return str($segment)->remove(["{", "}", "?"]);
-            //     })->join('.');
-
-
-            //     $this->nexus($route_uri, $route_uri, $props, $root_view)->name($name);
-            // }
         });
     }
 

@@ -56,9 +56,20 @@ class LaravextServiceProvider extends ServiceProvider
 
     protected function registerRouterMacro(): void
     {
-        Router::macro('nexus', function ($uri = '{nexusSlug?}', $component = null, $props = [], $root_view = null) {
-            return $this->match(['GET', 'HEAD'], $uri, function () use ($component, $props, $root_view) {
-                return nexus($component, $props)->rootView($root_view)->render();
+        Router::macro('nexus', function ($uri = '{nexusSlug?}', $page = null, $props = [], $root_view = null, ...$parameters) {
+
+            return $this->match(['GET', 'HEAD'], $uri, function () use ($page, $props, $root_view, $parameters) {
+                $middleware = $parameters['middleware'] ?? null;
+                $layout = $parameters['layout'] ?? null;
+                $loading = $parameters['loading'] ?? null;
+                $error = $parameters['error'] ?? null;
+                $with_trashed = $parameters['with_trashed'] ?? false;
+
+                return nexus($page, $props)->rootView($root_view)
+                    ->withMiddleware($middleware)
+                    ->withLayout($layout)
+                    ->withLoading($loading)
+                    ->withError($error)->render();
             });
         });
 
@@ -66,7 +77,7 @@ class LaravextServiceProvider extends ServiceProvider
             unset($route_group_attributes['prefix']);
             $nexus_root = config('laravext.nexus_root');
 
-            LaravextRouter::laravextRouteGroup($this, $nexus_root);
+            LaravextRouter::laravextRouteGroup($this, $nexus_root, $props = [], $route_group_attributes = [], $root_view = null);
         });
     }
 }

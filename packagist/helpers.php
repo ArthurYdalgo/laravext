@@ -20,7 +20,7 @@ if (! function_exists('laravext_location')) {
 }
 
 if (! function_exists('nexus')){
-    function nexus($component = null, $props = []){
-        return Laravext::nexus($component, $props);
+    function nexus($page = null, $props = []){
+        return Laravext::nexus($page, $props);
     }
 }

@@ -7,23 +7,26 @@ use Illuminate\Support\Facades\View;
 
 class ResponseFactory
 {
-    public $root_view;
-    public $component;
     public $props;
+    public $root_view;
     public $query_params;
     public $route_params;
     public $shared_props;
+
+    // Page Conventions
+    public $middleware, $layout , $loading, $error, $page;
     
     public function __construct()
     {
         $this->props = [];
-        $this->query_params = [];
+        $this->query_params = request()?->query();
         $this->shared_props = [];
+        $this->route_params = request()?->route()?->parameters();
     }
 
-    public function nexus($component = null, $props = [])
+    public function nexus($page = null, $props = [])
     {
-        $this->component = $component;
+        $this->page = $page;
 
         return $this->withProps($props);
     }
@@ -53,9 +56,44 @@ class ResponseFactory
         return $this;
     }
 
+    public function withMiddleware($middleware)
+    {
+        $this->middleware = $middleware;
+
+        return $this;
+    }
+
+    public function withLayout($layout)
+    {
+        $this->layout = $layout;
+
+        return $this;
+    }
+
+    public function withLoading($loading)
+    {
+        $this->loading = $loading;
+
+        return $this;
+    }
+
+    public function withError($error)
+    {
+        $this->error = $error;
+
+        return $this;
+    }
+
     public function withQueryParams($query_params = [])
     {
         $this->query_params = array_merge($this->query_params, $query_params);
+
+        return $this;
+    }
+
+    public function withRouteParams($route_params = [])
+    {
+        $this->route_params = array_merge($this->route_params, $route_params);
 
         return $this;
     }
@@ -71,12 +109,12 @@ class ResponseFactory
     {
         return [
             'nexus' => [
-                'component' => $this->component,
+                'page' => $this->page,
                 'props' => $this->props,
             ],
             'shared_props' => $this->shared_props,
-            'route_params' => request()?->route()?->parameters(),
-            'query_params' => array_merge($this->query_params, request()?->query()),
+            'route_params' => $this->route_params,
+            'query_params' => $this->query_params,
         ];
     }
 
