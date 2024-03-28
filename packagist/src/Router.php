@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 
 class Router
 {
-    public static function parseDirectory($directory_path, $root, $conventions = [])
+    public static function parseDirectory($directory_path, $root, $parent_conventions = [])
     {
         $root = Str::replace('\\', '/', $root);
         $directory_path = Str::replace('\\', '/', $directory_path);
@@ -25,17 +25,15 @@ class Router
         $name = str($directory_path)->replaceFirst($root, '')->explode('/')->last();
         $is_directory_a_group = preg_match('/\([\w]+\)$/', $name);
 
-        $conventions = array_merge($conventions, self::parseDirectoryConventions($directory_path, $root));
+        $conventions = array_merge($parent_conventions, self::parseDirectoryConventions($directory_path, $root));
 
         $children_directories = [];
 
         foreach (File::directories($directory_path) as $child_directory) {
-            $parsed_children_directory = self::parseDirectory($child_directory, $root, $is_directory_a_group ? $conventions : []);
+            $parsed_children_directory = self::parseDirectory($child_directory, $root, $is_directory_a_group ? $conventions : $parent_conventions);
 
             $children_directories[] = $parsed_children_directory;
         }
-
-        // dd(compact('directory_path', 'root', 'conventions', 'is_directory_a_group', 'children_directories'));
 
         return [
             'name' =>  str($directory_path)->replaceFirst($root, '')->explode('/')->last(),
@@ -63,11 +61,11 @@ class Router
         $files = File::files($directory_path);
 
         $convention_patterns = [
-            'middleware' => '/middleware(\.jsx|\.tsx|\.vue)$/',
             'loading' => '/loading(\.html|\.jsx|\.tsx|\.vue)$/',
             'layout' => '/layout(\.jsx|\.tsx|\.vue)$/',
-            'page' => '/page(\.jsx|\.tsx|\.vue)$/',
+            'middleware' => '/middleware(\.jsx|\.tsx|\.vue)$/',
             'error' => '/error(\.jsx|\.tsx|\.vue)$/',
+            'page' => '/page(\.jsx|\.tsx|\.vue)$/',
         ];
 
         $conventions = [];
@@ -75,7 +73,9 @@ class Router
         foreach ($convention_patterns as $convention => $pattern) {
             foreach ($files as $file) {
                 if (preg_match($pattern, $file->getFilename())) {
-                    $conventions[$convention] = str($directory_path)->replaceFirst("$root/", '')->append( $file->getFilename())->toString();
+                    $convention_relative_path = str($directory_path)->replaceFirst($root, '')->toString();
+                    $convention_relative_path = Str::startsWith($convention_relative_path, '/') ? Str::replaceFirst('/', '', $convention_relative_path) : $convention_relative_path;
+                    $conventions[$convention] = str($convention_relative_path)->explode('/')->filter()->push($file->getFilename())->implode('/');
                     break;
                 }
             }
@@ -93,41 +93,8 @@ class Router
             Cache::store($cache_driver)->forget($cache_key);
         }
 
-
-
         return Cache::store($cache_driver)->rememberForever($cache_key, function () use ($nexus_root) {
-            $files = File::allFiles($nexus_root);
-
-            return collect($files)->map(function (SplFileInfo $file) use ($nexus_root) {
-                $extension = $file->getExtension();
-
-                $path = $file->getPath();
-                $filename = $file->getFilename();
-                $pathname = $file->getPathname();
-
-                $relative_path_name = str($pathname)->replaceFirst($nexus_root, '');
-                $relative_path = str($path)->replaceFirst($nexus_root, '');
-
-                if ($relative_path_name->startsWith(['/', '\\'])) {
-                    $relative_path_name = $relative_path_name->substr(1);
-                }
-
-                if ($relative_path->startsWith(['/', '\\'])) {
-                    $relative_path = $relative_path->substr(1);
-                }
-
-                $extension = $extension ? $extension : null;
-
-
-                return [
-                    'path' => str_replace('\\', '/', $path),
-                    'filename' => $filename,
-                    'pathname' => str_replace('\\', '/', $pathname),
-                    'relative_path_name' => str_replace('\\', '/', $relative_path_name->toString()),
-                    'relative_path' => str_replace('\\', '/', $relative_path->toString()),
-                    'extension' => $extension,
-                ];
-            })->values()->toArray();
+            return self::parseDirectory($nexus_root, $nexus_root);
         });
     }
 

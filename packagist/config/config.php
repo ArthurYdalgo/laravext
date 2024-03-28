@@ -19,14 +19,7 @@ return [
 
     'router_cacher_is_enabled' => env('VEXT_ROUTER_CACHER_IS_ENABLED', !app()->environment(['local', 'testing'])),
 
-    'router_cacher_key_prefix' => env('VEXT_ROUTER_CACHER_KEY_PREFIX'),
-
     'router_route_naming_is_enabled' => env('VEXT_ROUTER_ROUTE_NAMING_IS_ENABLED', true),
 
     'strand_id_length' => 64,
-
-    /**
-     * 
-     */
-    'router_mode' => 'app',
 ];
