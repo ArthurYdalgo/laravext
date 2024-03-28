@@ -5,9 +5,86 @@ namespace Laravext;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 use SplFileInfo;
+use Illuminate\Support\Str;
 
 class Router
 {
+    public static function parseDirectory($directory_path, $root, $conventions = [])
+    {
+        $root = Str::replace('\\', '/', $root);
+        $directory_path = Str::replace('\\', '/', $directory_path);
+
+        if (Str::endsWith($root, '/')) {
+            $root = Str::replaceLast('/', '', $root);
+        }
+
+        if (Str::endsWith($directory_path, '/')) {
+            $directory_path = Str::replaceLast('/', '', $directory_path);
+        }
+
+        $name = str($directory_path)->replaceFirst($root, '')->explode('/')->last();
+        $is_directory_a_group = preg_match('/\([\w]+\)$/', $name);
+
+        $conventions = array_merge($conventions, self::parseDirectoryConventions($directory_path, $root));
+
+        $children_directories = [];
+
+        foreach (File::directories($directory_path) as $child_directory) {
+            $parsed_children_directory = self::parseDirectory($child_directory, $root, $is_directory_a_group ? $conventions : []);
+
+            $children_directories[] = $parsed_children_directory;
+        }
+
+        // dd(compact('directory_path', 'root', 'conventions', 'is_directory_a_group', 'children_directories'));
+
+        return [
+            'name' =>  str($directory_path)->replaceFirst($root, '')->explode('/')->last(),
+            'path' => $directory_path,
+            'relative_path' => str($directory_path)->replaceFirst("$root/", '')->toString(),
+            'conventions' => $conventions,
+            'is_group' => $is_directory_a_group,
+            'children' => $children_directories,
+        ];
+    }
+
+    public static function parseDirectoryConventions($directory_path, $root)
+    {
+        $root = Str::replace('\\', '/', $root);
+        $directory_path = Str::replace('\\', '/', $directory_path);
+
+        if (Str::endsWith($root, '/')) {
+            $root = Str::replaceLast('/', '', $root);
+        }
+
+        if (Str::endsWith($directory_path, '/')) {
+            $directory_path = Str::replaceLast('/', '', $directory_path);
+        }
+
+        $files = File::files($directory_path);
+
+        $convention_patterns = [
+            'middleware' => '/middleware(\.jsx|\.tsx|\.vue)$/',
+            'loading' => '/loading(\.html|\.jsx|\.tsx|\.vue)$/',
+            'layout' => '/layout(\.jsx|\.tsx|\.vue)$/',
+            'page' => '/page(\.jsx|\.tsx|\.vue)$/',
+            'error' => '/error(\.jsx|\.tsx|\.vue)$/',
+        ];
+
+        $conventions = [];
+
+        foreach ($convention_patterns as $convention => $pattern) {
+            foreach ($files as $file) {
+                if (preg_match($pattern, $file->getFilename())) {
+                    $conventions[$convention] = str($directory_path)->replaceFirst("$root/", '')->append( $file->getFilename())->toString();
+                    break;
+                }
+            }
+        }
+
+        return $conventions;
+    }
+
+
     public static function getNexusDirectories($nexus_root, $cached = true, $cache_driver = 'file')
     {
         $cache_key = self::generateRoutingTreeCacheKey($nexus_root);
@@ -15,6 +92,8 @@ class Router
         if (!$cached || app()->environment(['local', 'testing'])) {
             Cache::store($cache_driver)->forget($cache_key);
         }
+
+
 
         return Cache::store($cache_driver)->rememberForever($cache_key, function () use ($nexus_root) {
             $files = File::allFiles($nexus_root);
@@ -43,7 +122,7 @@ class Router
                 return [
                     'path' => str_replace('\\', '/', $path),
                     'filename' => $filename,
-                    'pathname' => str_replace('\\', '', $pathname),
+                    'pathname' => str_replace('\\', '/', $pathname),
                     'relative_path_name' => str_replace('\\', '/', $relative_path_name->toString()),
                     'relative_path' => str_replace('\\', '/', $relative_path->toString()),
                     'extension' => $extension,
@@ -55,8 +134,6 @@ class Router
     public static function getRoutingTree($nexus_root, $cached = true, $cache_driver = 'file')
     {
         $nexus_directories = self::getNexusDirectories($nexus_root, $cached, $cache_driver);
-
-
     }
 
     public static function generateRoutingTreeCacheKey($nexus_root)
