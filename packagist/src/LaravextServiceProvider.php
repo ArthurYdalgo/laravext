@@ -7,6 +7,7 @@ use Illuminate\Routing\Router;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
+use Laravext\Router as LaravextRouter;
 use SplFileInfo;
 
 class LaravextServiceProvider extends ServiceProvider
@@ -69,18 +70,10 @@ class LaravextServiceProvider extends ServiceProvider
                 $case_sensitive_component_matcher = config('laravext.case_sensitive_component_matcher', false);
                 $router_cache_driver = config('laravext.router_cache_driver', 'file');
                 $router_cacher_is_enabled = config('laravext.router_cacher_is_enabled', true);
-                $router_cacher_key_prefix = config('laravext.router_cacher_key_prefix', 'laravext-route-cache');
                 $router_route_name_is_enabled = config('laravext.router_route_naming_is_enabled', true);
-                $version = Laravext::version();
+                
 
-                $router_cacher_key = str($router_cacher_key_prefix)->when($version, function ($str) use ($version) {
-                    return $str->append(":$version");
-                });
-
-                if (!$router_cacher_is_enabled) {
-
-                    Cache::store($router_cache_driver)->forget($router_cacher_key);
-                }
+                $router_cacher_key = LaravextRouter::generateRoutingTreeCacheKey($nexus_root);
 
                 $files = Cache::store($router_cache_driver)->rememberForever($router_cacher_key, function () use ($nexus_root) {
                     $files = File::allFiles($nexus_root);

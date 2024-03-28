@@ -25,8 +25,6 @@ return [
 
     'strand_id_length' => 64,
 
-    'router_root_route_is_enabled' => true,
-
     /**
      * 
      */
