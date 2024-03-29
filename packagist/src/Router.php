@@ -152,13 +152,7 @@ class Router
                 if ($uri->startsWith('/')) {
                     $uri = $uri->replaceFirst('/', '');
                 }
-
-                // if (!str($route_uri)->startsWith($uri)) {
-                //     continue;
-                // }
             }
-
-            // dd(compact('uri', 'route_uri', 'name', 'server_skeleton', 'middleware', 'loading', 'layout', 'error', 'page'));
 
             if(!$uri || ($uri && str($route_uri)->startsWith($uri))) {
                 $router->nexus(
