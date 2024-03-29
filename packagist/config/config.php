@@ -22,4 +22,7 @@ return [
     'router_route_naming_is_enabled' => env('VEXT_ROUTER_ROUTE_NAMING_IS_ENABLED', true),
 
     'strand_id_length' => 64,
+
+
+    // 'file_extensions' => ['jsx', 'tsx', 'js', 'ts', 'vue'],
 ];

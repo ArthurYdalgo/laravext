@@ -62,7 +62,7 @@ Route::laravext();
 //  * This will override any automagically generated route previously defined to the same uri.
 //  * These kind of routes are not automagically named
 //  * 
-//  * @see https://laravext.dev/docs/1.x/routing#route-methods-nexus
+//  * @see https://laravext.dev/docs/routing/route-methods-nexus
 //  */
 Route::nexus('dashboard/settings', '(app)/dashboard/settings/page.jsx')->middleware([
     // 'auth'
