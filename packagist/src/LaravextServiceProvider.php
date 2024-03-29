@@ -63,12 +63,13 @@ class LaravextServiceProvider extends ServiceProvider
                 $layout = $parameters['layout'] ?? null;
                 $loading = $parameters['loading'] ?? null;
                 $error = $parameters['error'] ?? null;
-                $with_trashed = $parameters['with_trashed'] ?? false;
+                $server_skeleton = $parameters['server_skeleton'] ?? null;
 
                 return nexus($page, $props)->rootView($root_view)
                     ->withMiddleware($middleware)
                     ->withLayout($layout)
                     ->withLoading($loading)
+                    ->withServerSkeleton($server_skeleton)
                     ->withError($error)->render();
             });
         });

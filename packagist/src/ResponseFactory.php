@@ -14,16 +14,16 @@ class ResponseFactory
     public $shared_props;
 
     // Page Conventions
-    public $middleware, $layout , $loading, $error, $page;
+    public $middleware, $layout , $loading, $error, $page, $server_skeleton;
     
     public function __construct()
     {
         $this->props = [];
-        $this->query_params = request()?->query();
         $this->shared_props = [];
+        $this->query_params = request()?->query();
         $this->route_params = request()?->route()?->parameters();
     }
-
+    
     public function nexus($page = null, $props = [])
     {
         $this->page = $page;
@@ -84,6 +84,13 @@ class ResponseFactory
         return $this;
     }
 
+    public function withServerSkeleton($server_skeleton)
+    {
+        $this->server_skeleton = $server_skeleton;
+
+        return $this;
+    }
+
     public function withQueryParams($query_params = [])
     {
         $this->query_params = array_merge($this->query_params, $query_params);
@@ -111,6 +118,11 @@ class ResponseFactory
             'nexus' => [
                 'page' => $this->page,
                 'props' => $this->props,
+                'server_skeleton' => $this->server_skeleton,
+                'middleware' => $this->middleware,
+                'layout' => $this->layout,
+                'loading' => $this->loading,
+                'error' => $this->error,
             ],
             'shared_props' => $this->shared_props,
             'route_params' => $this->route_params,

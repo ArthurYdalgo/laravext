@@ -32,7 +32,7 @@ class Directive
             $skeleton_content = view($skeleton)->render();   
         }
         
-        $template = '<section section-type="laravext-nexus-section">'. $skeleton_content . '</section>';
+        $template = '<section section-type="laravext-nexus-section">{!! $laravext["nexus"]["server_skeleton"] ?? \''. $skeleton_content . '\' !!}</section>';
 
         return $template;
     }

@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client';
 
-export async function resolvePageComponent(path, pages) {
+export async function resolveComponent(path, pages) {
     const page = pages[path];
     if (typeof page === 'undefined') {
         throw new Error(`Page not found: ${path}`);
@@ -23,17 +23,56 @@ export function findStrands() {
 
 export function createLaravextApp({ nexusResolver, strandsResolver }) {
     const laravext = window.__laravext;
+    const env = import.meta.env.VITE_APP_ENV ?? 'production';
+    const isEnvProduction = !['development', 'local'].includes(env);
 
     if (nexusResolver) {
-        const nexusComponentPath = laravext?.nexus?.component?.replaceAll('\\', '/');
-        const nexus = findNexus();
-        nexus.forEach((nexusElement) => {
+        const nexusComponentPath = laravext?.nexus?.page?.replaceAll('\\', '/');
+        const nexus_tags = findNexus();
+        nexus_tags.forEach((nexusElement) => {
             if (nexusComponentPath) {
-                nexusResolver(nexusComponentPath).then((NexusModule) => {
-                    createRoot(nexusElement).render(<NexusModule.default laravext={laravext} />);
+                nexusResolver(nexusComponentPath).then(async (NexusModule) => {
+                    if(!isEnvProduction){
+                        console.log(`Loading page at ${nexusComponentPath}`);
+                    }
+                    let nexus = <NexusModule.default laravext={laravext} />
+                    if(!isEnvProduction){
+                        console.log(`Page at ${nexusComponentPath} loaded successfully`, {
+                            NexusModule
+                        });
+                    }   
+
+                    let conventions = [
+                        'error',
+                        'middleware',
+                        'layout',
+                        'loading'
+                    ];
+
+                    for (let i = 0; i < conventions.length; i++) {
+                        if (laravext?.nexus?.[conventions[i]]) {
+                            try {
+                                if (!isEnvProduction) {
+                                    console.log(`Loading convention ${conventions[i]} at ${laravext?.nexus?.[conventions[i]]}`)
+                                };
+                                let Convention = await nexusResolver(laravext?.nexus?.[conventions[i]]);
+                                if(!isEnvProduction){
+                                    console.log(`Convention ${conventions[i]} at ${laravext?.nexus?.[conventions[i]]} loaded successfully`, {
+                                        Convention
+                                    });
+                                }
+
+                                nexus = <Convention.default laravext={laravext}>{nexus}</Convention.default>;
+                            } catch (error) {
+                                console.error(`Error loading convention ${conventions[i]} at ${laravext?.nexus?.[conventions[i]]}:`, error);
+                            }
+                        }
+                    }
+
+                    createRoot(nexusElement).render(nexus);
                 })
                     .catch((error) => {
-                        console.error(`Error loading component at ${nexusComponentPath}:`, error);
+                        console.error(`Error loading page at ${nexusComponentPath}:`, error);
                     });
             }
         });
@@ -45,7 +84,7 @@ export function createLaravextApp({ nexusResolver, strandsResolver }) {
             const strandComponentPath = strandElement.getAttribute('strand-component');
             const strandData = JSON.parse(strandElement.getAttribute('strand-data'));
 
-            if(strandComponentPath) {
+            if (strandComponentPath) {
                 strandsResolver(strandComponentPath).then((StrandModule) => {
                     createRoot(strandElement).render(<StrandModule.default laravext={{ ...laravext, ...strandData }} />);
                 })

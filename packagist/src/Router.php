@@ -65,7 +65,7 @@ class Router
         $files = File::files($directory_path);
 
         $convention_patterns = [
-            'loading' => '/loading(\.html|\.jsx|\.tsx|\.vue)$/',
+            'loading' => '/loading(\.jsx|\.tsx|\.vue)$/',
             'layout' => '/layout(\.jsx|\.tsx|\.vue)$/',
             'middleware' => '/middleware(\.jsx|\.tsx|\.vue)$/',
             'error' => '/error(\.jsx|\.tsx|\.vue)$/',
@@ -81,6 +81,10 @@ class Router
                     $convention_relative_path = Str::startsWith($convention_relative_path, '/') ? Str::replaceFirst('/', '', $convention_relative_path) : $convention_relative_path;
                     $conventions[$convention] = str($convention_relative_path)->explode('/')->filter()->push($file->getFilename())->implode('/');
                     break;
+                }
+
+                if (preg_match('/loading(\.html)$/', $file->getFilename())) {
+                    $conventions['server_skeleton'] = File::get($file->getPathname());
                 }
             }
         }
@@ -112,19 +116,33 @@ class Router
         if ($page) {
             $segments = str($directory['relative_path'])->when(!$case_sensitive_component_matcher, function ($str) {
                 return $str->lower();
-            })->explode('/')->filter(function($segment){
+            })->explode('/')->filter(function ($segment) {
                 return !preg_match('/\([\w]+\)$/', $segment);
             });
 
             $uri = $segments->implode('/');
-            $name = $router_route_name_is_enabled ? $segments->map(function($segment){
+            $name = $router_route_name_is_enabled ? $segments->map(function ($segment) {
                 return str($segment)->remove(["{", "}", "?"]);
             })->join('.') : null;
 
-            $router->nexus($uri, $page, [])->name($name);
+            $server_skeleton = $directory['conventions']['server_skeleton'] ?? null;
+            $middleware = $directory['conventions']['middleware'] ?? null;
+            $loading = $directory['conventions']['loading'] ?? null;
+            $layout = $directory['conventions']['layout'] ?? null;
+            $error = $directory['conventions']['error'] ?? null;
+
+            $router->nexus(
+                $uri,
+                $page,
+                server_skeleton: $server_skeleton,
+                middleware: $middleware,
+                loading: $loading,
+                layout: $layout,
+                error: $error
+            )->name($name);
         }
 
-        foreach($directory['children'] as $child) {
+        foreach ($directory['children'] as $child) {
             self::laravextNexusRoutes($router, $child);
         }
     }
