@@ -106,7 +106,7 @@ class Router
         });
     }
 
-    public static function laravextNexusRoutes(&$router, $directory)
+    public static function laravextNexusRoutes($uri, &$router, $directory, $props = [], $root_view = null)
     {
         $case_sensitive_component_matcher = config('laravext.case_sensitive_component_matcher', false);
         $router_route_name_is_enabled = config('laravext.router_route_naming_is_enabled', true);
@@ -120,7 +120,7 @@ class Router
                 return !preg_match('/\([\w]+\)$/', $segment);
             });
 
-            $uri = $segments->implode('/');
+            $route_uri = $segments->implode('/');
             $name = $router_route_name_is_enabled ? $segments->map(function ($segment) {
                 return str($segment)->remove(["{", "}", "?"]);
             })->join('.') : null;
@@ -131,42 +131,69 @@ class Router
             $layout = $directory['conventions']['layout'] ?? null;
             $error = $directory['conventions']['error'] ?? null;
 
-            Cache::store('array')->put("laravext-uri:{$uri}-cache", [
+            Cache::store('array')->put("laravext-uri:{$route_uri}-cache", [
                 'server_skeleton' => $server_skeleton,
                 'middleware' => $middleware,
                 'loading' => $loading,
                 'layout' => $layout,
                 'error' => $error,
                 'page' => $page, 
-                'uri' => $uri,
+                'uri' => $route_uri,
                 'name' => $name,
             ]);
 
-            $router->nexus(
-                $uri,
-                $page,
-                server_skeleton: $server_skeleton,
-                middleware: $middleware,
-                loading: $loading,
-                layout: $layout,
-                error: $error
-            )->name($name);
+            if ($uri) {
+                $uri = str($uri);
+
+                if ($uri->endsWith('/')) {
+                    $uri = $uri->replaceLast('/', '');
+                }
+
+                if ($uri->startsWith('/')) {
+                    $uri = $uri->replaceFirst('/', '');
+                }
+
+                // if (!str($route_uri)->startsWith($uri)) {
+                //     continue;
+                // }
+            }
+
+            // dd(compact('uri', 'route_uri', 'name', 'server_skeleton', 'middleware', 'loading', 'layout', 'error', 'page'));
+
+            if(!$uri || ($uri && str($route_uri)->startsWith($uri))) {
+                $router->nexus(
+                    $route_uri,
+                    $page,
+                    $props,
+                    $root_view,
+                    server_skeleton: $server_skeleton,
+                    middleware: $middleware,
+                    loading: $loading,
+                    layout: $layout,
+                    error: $error
+                )->name($name);
+            }
         }
 
         foreach ($directory['children'] as $child) {
-            self::laravextNexusRoutes($router, $child);
+            self::laravextNexusRoutes($uri, $router, $child, $props, $root_view);
         }
     }
 
-    public static function laravextRouteGroup(&$router, $nexus_root, $props = [], $route_group_attributes = [], $root_view = null)
+    public static function laravextRouteGroup($uri, &$router, $nexus_root, $props = [], $route_group_attributes = [], $root_view = null)
     {
         $router_cache_driver = config('laravext.router_cache_driver', 'file');
         $router_cacher_is_enabled = config('laravext.router_cacher_is_enabled', true);
 
-        $nexus_directories = self::getNexusDirectories($nexus_root, $router_cacher_is_enabled, $router_cache_driver);
+        try {
+            $nexus_directories = self::getNexusDirectories($nexus_root, $router_cacher_is_enabled, $router_cache_driver);
+        } catch (\Throwable $th) {
+            dd($th->getMessage(), $nexus_root);
+        }
 
-        return $router->group($route_group_attributes, function () use ($router, $props, $root_view, $nexus_directories) {
-            self::laravextNexusRoutes($router, $nexus_directories);
+
+        return $router->group($route_group_attributes, function () use ($uri, $router, $props, $root_view, $nexus_directories) {
+            self::laravextNexusRoutes($uri, $router, $nexus_directories, $props, $root_view);
         });
     }
 

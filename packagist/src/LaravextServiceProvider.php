@@ -88,7 +88,7 @@ class LaravextServiceProvider extends ServiceProvider
             unset($route_group_attributes['prefix']);
             $nexus_root = config('laravext.nexus_root');
 
-            LaravextRouter::laravextRouteGroup($this, $nexus_root, $props = [], $route_group_attributes = [], $root_view = null);
+            LaravextRouter::laravextRouteGroup($uri, $this, $nexus_root, $props, $route_group_attributes, $root_view);
         });
     }
 }
