@@ -131,6 +131,17 @@ class Router
             $layout = $directory['conventions']['layout'] ?? null;
             $error = $directory['conventions']['error'] ?? null;
 
+            Cache::store('array')->put("laravext-uri:{$uri}-cache", [
+                'server_skeleton' => $server_skeleton,
+                'middleware' => $middleware,
+                'loading' => $loading,
+                'layout' => $layout,
+                'error' => $error,
+                'page' => $page, 
+                'uri' => $uri,
+                'name' => $name,
+            ]);
+
             $router->nexus(
                 $uri,
                 $page,

@@ -64,6 +64,8 @@ Route::laravext();
 //  * 
 //  * @see https://laravext.dev/docs/1.x/routing#route-methods-nexus
 //  */
-// Route::nexus('dashboard/settings')->middleware(['auth'])->withoutMiddleware([
-//     // 'exampleMiddlewareToBeRemoved'
-// ])->name('admin.dashboard.settings');
+Route::nexus('dashboard/settings', '(app)/dashboard/settings/page.jsx')->middleware([
+    // 'auth'
+    ])->withoutMiddleware([
+    // 'exampleMiddlewareToBeRemoved'
+])->name('admin.dashboard.settings');

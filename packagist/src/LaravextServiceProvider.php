@@ -58,12 +58,22 @@ class LaravextServiceProvider extends ServiceProvider
     {
         Router::macro('nexus', function ($uri = '{nexusSlug?}', $page = null, $props = [], $root_view = null, ...$parameters) {
 
-            return $this->match(['GET', 'HEAD'], $uri, function () use ($page, $props, $root_view, $parameters) {
+            return $this->match(['GET', 'HEAD'], $uri, function () use ($page, $props, $root_view, $parameters, $uri) {
+                $merge_with_existing_route = $parameters['merge_with_existing_route'] ?? true;
                 $middleware = $parameters['middleware'] ?? null;
                 $layout = $parameters['layout'] ?? null;
                 $loading = $parameters['loading'] ?? null;
                 $error = $parameters['error'] ?? null;
                 $server_skeleton = $parameters['server_skeleton'] ?? null;
+
+                if($merge_with_existing_route && ($nexus_route_data = Cache::driver("array")->get("laravext-uri:{$uri}-cache"))) {
+                    $page ??= $nexus_route_data['page'];
+                    $middleware ??= $nexus_route_data['middleware'];
+                    $layout ??= $nexus_route_data['layout'];
+                    $loading ??= $nexus_route_data['loading'];
+                    $error ??= $nexus_route_data['error'];
+                    $server_skeleton ??= $nexus_route_data['server_skeleton'];
+                }
 
                 return nexus($page, $props)->rootView($root_view)
                     ->withMiddleware($middleware)

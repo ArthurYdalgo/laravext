@@ -1,12 +1,12 @@
 import './bootstrap';
 import '../css/app.css';
 
-import { createLaravextApp, resolvePageComponent } from "@laravext/react"
+import { createLaravextApp, resolveComponent } from "@laravext/react"
 
 document.addEventListener('DOMContentLoaded', function() {
     createLaravextApp({
-        nexusResolver: (name) => resolvePageComponent(`./nexus/${name}.jsx`, import.meta.glob('./nexus/**/*.jsx')),
-        strandsResolver: (name) => resolvePageComponent(`./strands/${name}.jsx`, import.meta.glob('./strands/**/*.jsx'))
+        nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
+        strandsResolver: (name) => resolveComponent(`./strands/${name}.jsx`, import.meta.glob('./strands/**/*.jsx'))
     })
  }, false);
 

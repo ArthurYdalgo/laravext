@@ -2,5 +2,5 @@
 @section('content')
     @strand('PrivacyToggle')
     <br/>
-    @nexus
+    @nexus('skeletons.card')
 @endsection
