@@ -110,32 +110,32 @@ class Router
      * These directories will contain the name, path, relative path, conventions, whether it is a group, and its children.
      * For efficiency, the result will be cached.
      * 
-     * @param string $nexus_root
+     * @param string $nexus_directory
      * @param bool $cached
      * @param string $cache_driver
      * 
      * @return array
      */
-    public static function getNexusDirectories($nexus_root, $cached = true, $cache_driver = 'file')
+    public static function getNexusDirectories($nexus_directory, $cached = true, $cache_driver = 'file')
     {
-        $cache_key = self::generateRoutingTreeCacheKey($nexus_root);
+        $cache_key = self::generateRoutingTreeCacheKey($nexus_directory);
 
-        if (!$cached || app()->environment(['local', 'testing'])) {
+        if (!$cached) {
             Cache::store($cache_driver)->forget($cache_key);
         }
 
-        return Cache::store($cache_driver)->rememberForever($cache_key, function () use ($nexus_root) {
-            return self::parseDirectory($nexus_root, $nexus_root);
+        return Cache::store($cache_driver)->rememberForever($cache_key, function () use ($nexus_directory) {
+            return self::parseDirectory($nexus_directory, $nexus_directory);
         });
     }
 
     /**
      * Generate route segments from a relative path.
      */
-    public static function generateRouteSegments($relative_path, $case_sensitive_component_matcher = null)
+    public static function generateRouteSegments($relative_path, $router_is_case_sensitive = null)
     {
-        $case_sensitive_component_matcher ??= config('laravext.case_sensitive_component_matcher', false);
-        return str($relative_path)->when(!$case_sensitive_component_matcher, function ($str) {
+        $router_is_case_sensitive ??= config('laravext.router_is_case_sensitive', false);
+        return str($relative_path)->when(!$router_is_case_sensitive, function ($str) {
             return $str->lower();
         })->explode('/')->filter(function ($segment) {
             return !preg_match('/\([\w]+\)$/', $segment);
@@ -170,16 +170,10 @@ class Router
             $layout = $directory['conventions']['layout'] ?? null;
             $error = $directory['conventions']['error'] ?? null;
 
-            Cache::store('array')->put("laravext-uri:{$route_uri}-cache", [
-                'server_skeleton' => $server_skeleton,
-                'middleware' => $middleware,
-                'loading' => $loading,
-                'layout' => $layout,
-                'error' => $error,
-                'page' => $page,
-                'uri' => $route_uri,
-                'name' => $name,
-            ]);
+            Cache::store('array')->put(
+                "laravext-uri:{$route_uri}-cache",
+                compact('server_skeleton', 'middleware', 'loading', 'layout', 'error', 'page', 'uri', 'name')
+            );
 
             $uri = $uri ? self::trimStartingSlash($uri) : null;
 
@@ -189,11 +183,7 @@ class Router
                     $page,
                     $props,
                     $root_view,
-                    server_skeleton: $server_skeleton,
-                    middleware: $middleware,
-                    loading: $loading,
-                    layout: $layout,
-                    error: $error
+                    ...compact('middleware', 'loading', 'layout', 'error', 'server_skeleton')
                 )->name($name);
             }
         }
@@ -208,19 +198,19 @@ class Router
      * 
      * @param \Illuminate\Routing\Router $router
      * @param string $uri
-     * @param string $nexus_root
+     * @param string $nexus_directory
      * @param array $props
      * @param array $route_group_attributes
      * @param string|null $root_view
      * 
      * @return \Illuminate\Routing\Router
      */
-    public static function laravextRouteGroup(&$router, $uri, $nexus_root, $props = [], $route_group_attributes = [], $root_view = null)
+    public static function laravextRouteGroup(&$router, $uri, $nexus_directory, $props = [], $route_group_attributes = [], $root_view = null)
     {
         $router_cache_driver = config('laravext.router_cache_driver', 'file');
         $router_cacher_is_enabled = config('laravext.router_cacher_is_enabled', true);
 
-        $nexus_directories = self::getNexusDirectories($nexus_root, $router_cacher_is_enabled, $router_cache_driver);
+        $nexus_directories = self::getNexusDirectories($nexus_directory, $router_cacher_is_enabled, $router_cache_driver);
 
         return $router->group($route_group_attributes, function () use ($uri, $router, $props, $root_view, $nexus_directories) {
             self::laravextNexusRoutes($router, $nexus_directories, $uri, $props, $root_view);
@@ -232,15 +222,15 @@ class Router
     /**
      * Generate a cache key for the routing tree.
      * 
-     * @param string $nexus_root
+     * @param string $nexus_directory
      * 
      * @return string
      */
-    public static function generateRoutingTreeCacheKey($nexus_root)
+    public static function generateRoutingTreeCacheKey($nexus_directory)
     {
         $version = self::version();
 
-        return str("laravext-router-routing-tree-{$nexus_root}")->when($version, function ($key, $version) {
+        return str("laravext-router-routing-tree-{$nexus_directory}")->when($version, function ($key, $version) {
             return $key->append(":{$version}");
         })->toString();
     }
