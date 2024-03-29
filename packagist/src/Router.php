@@ -83,19 +83,7 @@ class Router
 
         $files = File::files($directory_path);
 
-        $file_extensions = config('laravext.file_extensions', self::$convention_extensions);
-
-        $extension_patterns = collect($file_extensions)->map(function ($extension) {
-            return "\.{$extension}";
-        })->implode('|');
-
-        $convention_patterns = [
-            'loading' => "/loading({$extension_patterns})$/",
-            'layout' => "/layout({$extension_patterns})$/",
-            'middleware' => "/middleware({$extension_patterns})$/",
-            'error' => "/error({$extension_patterns})$/",
-            'page' => "/page({$extension_patterns})$/",
-        ];
+        $convention_patterns = self::generateFileConventionPatterns();
 
         $conventions = [];
 
@@ -104,7 +92,7 @@ class Router
         foreach ($files as $file) {
             foreach ($convention_patterns as $convention => $pattern) {
                 if (preg_match($pattern, $file->getFilename())) {
-                    $conventions[$convention] = collect([$relative_path , $file->getFilename()])->filter()->implode('/');
+                    $conventions[$convention] = collect([$relative_path, $file->getFilename()])->filter()->implode('/');
                     break;
                 }
             }
@@ -154,7 +142,15 @@ class Router
         });
     }
 
-    public static function laravextNexusRoutes(&$router, $uri, $directory, $props = [], $root_view = null)
+    /**
+     * Define the Nexus routes, and recursively define the children Nexus routes.
+     * 
+     * @param \Illuminate\Routing\Router $router
+     * @param string $uri
+     * @param array $directory
+     * 
+     */
+    public static function laravextNexusRoutes(&$router, $directory, $uri, $props = [], $root_view = null)
     {
         $router_route_name_is_enabled = config('laravext.router_route_naming_is_enabled', true);
 
@@ -185,10 +181,7 @@ class Router
                 'name' => $name,
             ]);
 
-            if ($uri) {
-                $uri = self::trimEndingSlash($uri);
-                $uri = self::trimStartingSlash($uri);
-            }
+            $uri = $uri ? self::trimStartingSlash($uri) : null;
 
             if (!$uri || ($uri && str($route_uri)->startsWith($uri))) {
                 $router->nexus(
@@ -205,8 +198,8 @@ class Router
             }
         }
 
-        foreach ($directory['children'] as $child) {
-            self::laravextNexusRoutes($router, $uri, $child, $props, $root_view);
+        foreach ($directory['children'] as $child_directory) {
+            self::laravextNexusRoutes($router, $child_directory, $uri, $props, $root_view);
         }
     }
 
@@ -230,7 +223,7 @@ class Router
         $nexus_directories = self::getNexusDirectories($nexus_root, $router_cacher_is_enabled, $router_cache_driver);
 
         return $router->group($route_group_attributes, function () use ($uri, $router, $props, $root_view, $nexus_directories) {
-            self::laravextNexusRoutes($router, $uri, $nexus_directories, $props, $root_view);
+            self::laravextNexusRoutes($router, $nexus_directories, $uri, $props, $root_view);
         });
     }
 
@@ -294,6 +287,11 @@ class Router
         return Str::startsWith($path, '/') ? Str::replaceFirst('/', '', $path) : $path;
     }
 
+    public static function trimSurroundingSlashes($path)
+    {
+        return self::trimStartingSlash(self::trimEndingSlash($path));
+    }
+
     /**
      * Replace reverse slashes with forward slashes.
      * 
@@ -304,9 +302,41 @@ class Router
         return Str::replace('\\', '/', $path);
     }
 
+    /**
+     * Generate a relative path from a directory path.
+     * 
+     * @param string $directory_path
+     * @param string $root
+     * 
+     * @return string
+     */
     public static function generateRelativePath($directory_path, $root)
     {
         $relative_path = str($directory_path)->replaceFirst($root, '')->toString();
         return  str(self::trimStartingSlash($relative_path))->explode('/')->filter()->implode('/');
+    }
+
+    /**
+     * Generate the convention patterns for the file conventions.
+     * 
+     * @param array $file_extensions
+     * 
+     * @return array
+     */
+    public static function generateFileConventionPatterns()
+    {
+        $file_extensions = config('laravext.file_extensions', self::$convention_extensions);
+
+        $extension_patterns = collect($file_extensions)->map(function ($extension) {
+            return "\.{$extension}";
+        })->implode('|');
+
+        return [
+            'loading' => "/loading({$extension_patterns})$/",
+            'layout' => "/layout({$extension_patterns})$/",
+            'middleware' => "/middleware({$extension_patterns})$/",
+            'error' => "/error({$extension_patterns})$/",
+            'page' => "/page({$extension_patterns})$/",
+        ];
     }
 }
