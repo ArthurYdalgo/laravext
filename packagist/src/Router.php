@@ -98,19 +98,19 @@ class Router
         ];
 
         $conventions = [];
-        
+
         $relative_path = self::generateRelativePath($directory_path, $root);
 
-        foreach ($convention_patterns as $convention => $pattern) {
-            foreach ($files as $file) {
+        foreach ($files as $file) {
+            foreach ($convention_patterns as $convention => $pattern) {
                 if (preg_match($pattern, $file->getFilename())) {
-                    $conventions[$convention] = "{$relative_path}/" . $file->getFilename();
+                    $conventions[$convention] = collect([$relative_path , $file->getFilename()])->filter()->implode('/');
                     break;
                 }
+            }
 
-                if (preg_match('/loading\.html$/', $file->getFilename())) {
-                    $conventions['server_skeleton'] = File::get($file->getPathname());
-                }
+            if (preg_match('/loading\.html$/', $file->getFilename())) {
+                $conventions['server_skeleton'] = File::get($file->getPathname());
             }
         }
 
