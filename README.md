@@ -34,15 +34,21 @@ Additionally, you might be asking yourself:
 
 Before somebody light up their torches or grab their forks: the following points are my opinion only, based on my personal (in)experiences and troubles, you may disagree with them, and that's fine. Feel free to skip this section.
 
-Inertia.js offers server-side rendering of React/Vue pages, but it requires that you keep a `php artisan inertia:start-ssr` artisan command running through supervisor or something similar, which may not be available in a shared environments. You also don't have a file-based routing system like the one Next.js offers.
+Inertia.js offers server-side rendering of React/Vue pages, but it requires that you keep a `php artisan inertia:start-ssr` artisan command running through supervisor or something similar, which may not be available in a shared environments. You also don't have an out-of-the-box file-based routing system like the one Next.js offers. (To the best of my knoledge, at the time of writting)
 
-Next.js offers server-side rendering of React components, and a great routing system, but I (personally) don't like their caching strategy, and for my use cases there was the need to slap a `"use client"` for nearly all pages. I felt a really degraded developer experience while using it, so for me became a no-no.
+Next.js offers server-side rendering of React components, and a great routing system, but I (personally) don't like their caching strategy, and for my use cases there was the need to slap a `"use client"` for nearly all pages. I felt a really degraded developer experience while using it, so for me became a no-no. I have other points about it, but I feel that the ["Why I don't use Next.js" article](https://www.epicweb.dev/why-i-wont-use-nextjs) from Kent C. Dodds summarizes most of what I mean way better than I could. It's a good reading if you're interested. 
+
+But, once again, I don't want to trash talk Next.js, or Inertia or any other tool. You should use whatever makes you more productive and pays your bills, and in the end, quoting Kent:
+
+"Whatever you use is probably fine.
+
+Your tool choice matters much less than your skill at using the tool to accomplish your desired outcome (a great user experience)."
 
 ## What does it do?
 
 As mentioned before, Laravext takes a lot of inspiration in how Inertia.js and Next.js do things.
 
-Laravext offers a way to automagically create routes based on the file structure of the `resources/js/pages` (this location is customizable) directory, much like Next.js.
+Laravext offers a way to automagically create routes based on the file structure of the `resources/js/nexus` (this location is customizable) directory, much like Next.js.
 
 Using the following structure:
 
@@ -109,4 +115,4 @@ This is my first "big" project aimed to be used by the community, and it's just 
 
 PRs are welcome, but I may ignore them at my disclosure.
 
-But hey, this is open-source, so you have my blessing (not that you need it anyway) to fork it and to whatever the hell you want with it.
+But hey, this is open-source, so you have my blessing (not that you need it anyway) to fork it and to do whatever the hell you want with it.
