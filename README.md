@@ -123,7 +123,7 @@ Here's an example to how you could use it in a `app.blade.php` file:
 ```blade
 <x-guest-layout>
 
-    @strand('NavBar')
+    @strand('NavBar', ['some' => 'data'])
 
     ...
 
@@ -131,6 +131,8 @@ Here's an example to how you could use it in a `app.blade.php` file:
 
 </x-guest-layout>
 ```
+
+The NavBar component will be rendered and receive the props sent to it in the directive.
 
 For more details, and examples, check [the docs](#to-be-added)
 
