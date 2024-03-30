@@ -39,7 +39,7 @@ class Directive
 
     public static function strand($expression = '')
     {
-        $strand_id_length = config('laravext.strand_id_length', 128);
+        $strand_id_length = config('laravext.strand_id_length', 64);
 
         $component = '';
         $props = [];
@@ -52,7 +52,7 @@ class Directive
 
         eval('$component = ' . $args[0] . ';');
 
-        $strand_data = isset($args[1]) && $args[1] ? $args[1] : '[]';
+        $strand_data = isset($args[1]) && $args[1] ? $args[1] : '{}';
         
         $id = str()->random($strand_id_length);
 
