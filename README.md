@@ -6,9 +6,15 @@ Laravext is a set of tools aimed to assist the development of [Laravel](https://
 
 You may think of it as a (way more) simplified version of [Inertia.js](https://inertiajs.com/), with Next.js's file based router, and something similar to [Blade Components](https://laravel.com/docs/11.x/blade#components) that is actually a [React](https://react.dev/)/[Vue](https://vuejs.org/) component.
 
+![image](https://github.com/ArthurYdalgo/laravext/blob/main/docs/images/rick-morty-blade-jquery-meme.jpg?raw=true)
+
+<sup>**Credits: Rick and Morty - Adult Swim**<sub>
+
+Well, yes... Moving on.
+
 ### What is it not?
 
-It's not a server-side renderer of any React/Vue component, as it'd require some kind of javascript engine for it, and I wanted simplicity. It's not an (out-of-the-box) SPA like Inertia, as for every new page you want to load, a new visit will be made... that being said, nothing stops you from using a traditional react router insde the `@nexus` directive (this directive is explained in the "What does it do?" section), although I think that would look a bit peculiar, and would defeat the purpose of having the automatic file-based router.
+It's not a server-side renderer of any React/Vue component, as it'd require some kind of javascript engine for it, and I wanted simplicity. It's not an (out-of-the-box) SPA like Inertia, as for every new page you want to load, a new visit will be made... that being said, nothing stops you from using a traditional react router insde the `@nexus` directive (explained later), although I think that would look a bit peculiar, and would defeat the purpose of having the automatic file-based router. But hey, you do you.
 
 ### In case you want to help me...
 
@@ -71,11 +77,7 @@ Automagically registers the following (GET|HEAD) routes:
 
 A blade view (either the default one set in the config or specified one when the `Route::laravext()` is called and a `root_view` parameter is sent) is then rendered by blade template engine. This view must contain what is called a `@nexus` blade directive, where the react component will be rendered. There're other ways render a nexus that are covered in the documentation.
 
-![image](https://github.com/ArthurYdalgo/laravext/blob/main/docs/images/rick-morty-blade-jquery-meme.jpg?raw=true)
 
-<sup>**Credits: Rick and Morty - Adult Swim**<sub>
-
-Well, "yes"... Moving on.
 
 Additionally, in case you have components that are common to multiple pages, such as navbars, you can use the `@strand('Path/To/NavBar')` directive alongside a `@nexus`, which will use the name as a path to find a react component inside the `resources/js/strands` (which is customizable). The previous example would load a `NavBar.jsx` from the `resources/js/strands/Path/To` directory.
 
