@@ -103,7 +103,7 @@ Using the following structure:
         + {slug}
           - page.jsx # /library/{slug}
     ...
-    # The rest of your project
+    # The rest of your pages
 ```
 
 and inserting the following inside the `routes/web.php`:
