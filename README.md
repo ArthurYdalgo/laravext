@@ -54,7 +54,7 @@ Using the following structure:
 
 ```
 # In a Laravel project
-- resources/js/nexus
++ resources/js/nexus
 
   - page.jsx # your-domain.com/
 
