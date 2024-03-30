@@ -1,0 +1,3 @@
+# Laravext
+
+Docs coming soon
