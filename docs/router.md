@@ -119,7 +119,8 @@ you can call the nexus in your `resouces/views/sections/app.blade.php` (assuming
 @endsection
 ```
 
-
 ## Route Groups
+
+Sometimes you might want to apply layouts, middleware, etc to children directories. You can do this by creating route groups. Simply name a directory with surrounding parenthesis
 
 ## Sending props

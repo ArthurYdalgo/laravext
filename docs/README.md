@@ -6,7 +6,7 @@ Laravext is a set of tools aimed to assist the development of [Laravel](https://
 
 You may think of it as a (way more) simplified version of Inertia.js, with Next.js's file based router, and something similar to [Blade Components](https://laravel.com/docs/11.x/blade#components) that is actually a React/Vue component.
 
-![image](https://github.com/ArthurYdalgo/laravext/blob/main/docs/images/rick-morty-blade-jquery-meme.jpg?raw=true)
+![image](images/rick-morty-blade-jquery-meme.jpg)
 
 <sup>**Credits: Rick and Morty - Adult Swim**<sub>
 
@@ -30,7 +30,7 @@ Additionally, you might be asking yourself:
 
 "Why don't you use Next.js?", or even "Why don't you use Inertia.js?"
 
-![image](https://github.com/ArthurYdalgo/laravext/blob/main/docs/images/i-dont-like-nextjs-mard-crowd-with-forks-meme.jpg?raw=true)
+![image](images/i-dont-like-nextjs-mard-crowd-with-forks-meme.jpg?raw=true)
 
 Before somebody light up their torches or grab their forks: the following points are my opinion only, based on my personal (in)experiences and troubles. You may disagree with them, and that's fine. Feel free to skip this section.
 
