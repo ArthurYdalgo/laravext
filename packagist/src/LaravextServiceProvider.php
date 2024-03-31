@@ -19,7 +19,7 @@ class LaravextServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__ . '/../config/config.php' => config_path('laravext.php'),
-        ], 'config');
+        ], 'laravext-config');
     }
 
     /**

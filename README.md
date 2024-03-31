@@ -1,5 +1,9 @@
 # Laravext
 
+## Documentation
+
+Check the documentation at [laravext.dev](https://laravext.dev)
+
 ## What is it Laravext?
 
 Laravext is a set of tools aimed to assist the development of [Laravel](https://laravel.com/) applications with [React](https://react.dev/) or [Vue](https://vuejs.org/). It's name is (just in case you didn't get it) a mix of Laravel and [Next.js](https://nextjs.org/), although not affiliated or endorsed by any of them. I tried to fit in something that also sounded like "Vue" or "[Inertia.js](https://inertiajs.com/)" in the name, but "Laravext" sounded the better, of all the options I thought of. Not that creative, I know. Sue me (just kidding, don't).
@@ -112,9 +116,9 @@ and inserting the following inside the `routes/web.php`:
 Route::laravext();
 ```
 
-Automagically registers the routes of your application (the resulting URIs are displayed next to each page.jsx as example). [Next.js's file conventions](https://nextjs.org/docs/app/building-your-application/routing#file-conventions) can also be applied, such as middlewares, layouts, loading, error, etc. You can have granular control about what happens before a route is rendered, if need. Check [the docs](#to-be-added) for more details and examples.
+Automagically registers the routes of your application (the resulting URIs are displayed next to each page.jsx as example). [Next.js's file conventions](https://nextjs.org/docs/app/building-your-application/routing#file-conventions) can also be applied, such as middlewares, layouts, loading, error, etc. You can have granular control about what happens before a route is rendered, if need. Check [the docs](https://laravext.dev) for more details and examples.
 
-A blade view (either the default one set in the config or specified one when the `Route::laravext()` is called and a `root_view` parameter is sent) is then rendered by the blade template engine. This view must contain what is called a `@nexus` blade directive, where the react component will be rendered. There're other ways render a nexus that are covered in the [documentation](#to-be-added).
+A blade view (either the default one set in the config or specified one when the `Route::laravext()` is called and a `root_view` parameter is sent) is then rendered by the blade template engine. This view must contain what is called a `@nexus` blade directive, where the react component will be rendered. There're other ways render a nexus that are covered in the documentation.
 
 Additionally, in case you have components that are common to multiple pages, such as navbars, you can use the `@strand('Path/To/NavBar')` directive alongside a `@nexus`, which will use the name as a path to find a react component inside the `resources/js/strands` (which is customizable). The previous example would load a `NavBar.jsx` from the `resources/js/strands/Path/To` directory.
 
@@ -133,8 +137,6 @@ Here's an example to how you could use it in a `app.blade.php` file:
 ```
 
 The NavBar component will be rendered and receive the props sent to it in the directive.
-
-For more details, and examples, check [the docs](#to-be-added)
 
 ## Legal Disclaimer
 
