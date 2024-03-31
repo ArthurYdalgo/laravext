@@ -26,7 +26,7 @@ return [
     /**
      * Wheter or not the router cacher is enabled.
      */
-    'router_cacher_is_enabled' => env('VEXT_ROUTER_CACHER_IS_ENABLED', !app()->environment(['local', 'testing'])),
+    'router_cacher_is_enabled' => env('VEXT_ROUTER_CACHER_IS_ENABLED', !in_array(env('APP_ENV'), ['local', 'testing'])),
 
     /**
      * Wheter ot not the routes should be automagically named.

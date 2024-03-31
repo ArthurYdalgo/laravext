@@ -2,7 +2,7 @@
 
 This tutorial assumes you already have a Laravel project up and running, and that you use the vite bundler. These instructions are based on the [examples provided in the laravext repository](https://github.com/ArthurYdalgo/laravext/tree/main/examples).
 
-## Composer <!-- {docsify-ignore} -->
+## Composer
 
 First, install the composer package:
 
@@ -24,7 +24,7 @@ Route::laravext();
 
 It is recomended that you put it in the beggining of the file, so you can overwrite any created route to fit your needs. For more details, check the [router section](/router)
 
-## NPM <!-- {docsify-ignore} -->
+## NPM      
 
 Install the npm module:
 
@@ -59,6 +59,8 @@ document.addEventListener('DOMContentLoaded', function() {
 ```
 
 You might change the nexus and strands' locations if you want to. Make sure to change the nexus directory in the `./config/laravext.php` file. For more details on how the router works, check the [router section](/router).
+
+## Blade
 
 Assuming you have a `./resources/views/layouts/app.blade.php` file, where a section is inserted, you'll need to insert some blade directives in it.
 

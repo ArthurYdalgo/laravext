@@ -17,7 +17,7 @@
   />
 </head>
 <body>
-  <div id="app">We are building somthing special for you ...</div>
+  <div id="app">We are building something special for you ...</div>
   <script>
     window.$docsify = {
       search: 'auto',
@@ -58,6 +58,11 @@
   <script 
     src="//cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/dist/index.min.js"
     type="text/javascript">
+  </script>
+  <script>
+    if (typeof navigator.serviceWorker !== 'undefined') {
+      navigator.serviceWorker.register('sw.js')
+    }
   </script>
 </body>
 </html>
