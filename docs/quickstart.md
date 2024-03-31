@@ -1,9 +1,41 @@
-# React
+# Quickstart <!-- {docsify-ignore} -->
+
+This tutorial assumes you already have a Laravel project up and running, and that you use the vite bundler. These instructions are based on the [examples provided in the laravext repository](https://github.com/ArthurYdalgo/laravext/tree/main/examples).
+
+## Composer <!-- {docsify-ignore} -->
+
+First, install the composer package:
+
+```bash
+composer require arthurydalgo/laravext
+```
+
+you can also publish the config file to make changes such as default root view, nexus/strands directory, etc:
+
+```bash
+php artisan vendor:publish --tag=laravext-config
+```
+
+on your `./routes/web.php`, insert the following:
+
+```php
+Route::laravext();
+```
+
+It is recomended that you put it in the beggining of the file, so you can overwrite any created route to fit your needs. For more details, check the [router section](/router)
+
+## NPM <!-- {docsify-ignore} -->
 
 Install the npm module:
 
 ```bash
 npm install @laravext/react
+```
+
+or
+
+```bash
+npm install @laravext/vue
 ```
 
 This example also assumes that you have a `bootstrap.js` at `./resources/js` and an `app.css` in you `./resources/css` directory. You might or not have any need for those.
@@ -15,16 +47,18 @@ import './bootstrap';
 import '../css/app.css';
 
 import { createLaravextApp, resolveComponent } from "@laravext/react"
+// or
+import { createLaravextApp, resolveComponent } from "@laravext/vue"
 
 document.addEventListener('DOMContentLoaded', function() {
     createLaravextApp({
         nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
-        strandsResolver: (name) => resolveComponent(`./strands/${name}.jsx`, import.meta.glob('./strands/**/*.jsx'))
+        strandsResolver: (name) => resolveComponent(`./strands/${name}`, import.meta.glob('./strands/**/*'))
     })
  }, false);
 ```
 
-You might change the nexus and strands' locations, if you want to, make sure to change the nexus directory in the `./config/laravext.php` file. For more details on how the router works, check the [router section](/router).
+You might change the nexus and strands' locations if you want to. Make sure to change the nexus directory in the `./config/laravext.php` file. For more details on how the router works, check the [router section](/router).
 
 Assuming you have a `./resources/views/layouts/app.blade.php` file, where a section is inserted, you'll need to insert some blade directives in it.
 
@@ -51,8 +85,8 @@ Assuming you have a `./resources/views/layouts/app.blade.php` file, where a sect
                 @yield('content')
             </div>
         </div>
-        @laravextScripts  {{-- This will create a __laravext context variable --}} 
-        @viteReactRefresh
+        @laravextScripts  <!-- This will create a __laravext context variable -->> 
+        @viteReactRefresh <!-- In case you're using React -->
         @vite(['resources/js/app.js'])
     </body>
 </html>
