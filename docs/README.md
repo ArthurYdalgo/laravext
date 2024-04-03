@@ -30,7 +30,7 @@ Additionally, you might be asking yourself:
 
 "Why don't you use Next.js?", or even "Why don't you use Inertia.js?"
 
-![image](images/i-dont-like-nextjs-mard-crowd-with-forks-meme.jpg?raw=true)
+![image](images/i-dont-like-nextjs-mard-crowd-with-forks-meme.jpg)
 
 Before somebody light up their torches or grab their forks: the following points are my opinion only, based on my personal (in)experiences and troubles. You may disagree with them, and that's fine. Feel free to skip this section.
 
