@@ -121,6 +121,24 @@ you can call the nexus in your `resouces/views/sections/app.blade.php` (assuming
 
 ## Route Groups
 
-Sometimes you might want to apply layouts, middleware, etc to children directories. You can do this by creating route groups. Simply name a directory with surrounding parenthesis
+Sometimes you might want to apply layouts, middleware, etc to children directories. You can do this by creating route groups. Simply name a directory with surrounding parenthesis. The group will not be used to create the route segments, and is just a way to semantically group routes that share common attributes, such as middleware, layout, loading, etc. 
+
+(This paragraph might sound confusing, but there's an example following it to make it better) Once you create a group directory, every file convention inside it will cascade down to it's children directories, and will be used by any page from that point on, unless another route group specifies a different file convention (which will now be the convention cascaded down) or unless a directory specifies a different file convention (another layout, middleware, etc). This new convention will not cascade down (considering it's not a group), and will only be used on that specific directory.
+
+Here's an example:
+
+```
++ resources/js/nexus
+  - page.jsx
+  + (app)
+  + (guest)
+    - layout.jsx
+    + marketplace
+      - page.jsx
+    + cart
+      - layout jsx
+      - page.jsx
+
+```
 
 ## Sending props
