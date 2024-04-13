@@ -6,5 +6,5 @@ If you liked this documentation (or at least the looks of it), here are the tool
     - Dark Theme by boopathikumar018  [@gihub/boopathikumar018/docsify-darklight-theme](https://github.com/boopathikumar018/docsify-darklight-theme)
 - Illustrations:
     - Rick and Morty Extra Steps Meme by [imgflip](https://imgflip.com/memegenerator/88661119/rick-and-morty-extra-steps)
-    - Mad Crowd by [imgflip](https://imgflip.com/memegenerator/192596849/Mad-crowd-happy-crowd) (with some cropping/editing)
+    - Mad Crowd Meme by [imgflip](https://imgflip.com/memegenerator/192596849/Mad-crowd-happy-crowd) (with some cropping/editing)
     - [Excalidraw](https://excalidraw.com/) for various illustrations

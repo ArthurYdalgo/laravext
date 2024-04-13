@@ -11,5 +11,5 @@
     - [Blade Directives](tools/blade-directives.md)
     - [Routing](tools/routing.md)
     - [Nexus Response](tools/nexus-response.md)
-- Outro
-    - [About this doc](outro/about-this-doc.md)
+- Misc
+    - [About this doc](misc/about-this-doc.md)
