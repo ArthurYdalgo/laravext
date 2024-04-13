@@ -4,7 +4,7 @@
 
 Laravext is a set of tools aimed to assist the development of [Laravel](https://laravel.com/) applications with [React](https://react.dev/) or [Vue](https://vuejs.org/). It's name is (just in case you didn't get it) a mix of Laravel and [Next.js](https://nextjs.org/), although not affiliated or endorsed by any of them. I tried to fit in something that also sounded like "Vue" or "[Inertia.js](https://inertiajs.com/)" in the name, but "Laravext" sounded the better, of all the options I thought of. Not that creative, I know. Sue me (just kidding, don't).
 
-You may think of it as a (waaay more) simplified version of Inertia.js, with Next.js's file based router, and something similar to [Blade Components](https://laravel.com/docs/11.x/blade#components) that is actually a React/Vue component.
+You may think of it as a Next.js's file based router inside your Laravel project, and something similar to [Blade Components](https://laravel.com/docs/11.x/blade#components) that is actually a React/Vue component. There're some methods that slightly remember Inertia.js as well
 
 ![image](images/rick-morty-blade-jquery-meme.jpg)
 
@@ -30,7 +30,7 @@ Additionally, you might be asking yourself:
 
 "Why don't you use Next.js?", or even "Why don't you use Inertia.js?"
 
-![image](images/i-dont-like-nextjs-mard-crowd-with-forks-meme.jpg?raw=true)
+![image](images/i-dont-like-nextjs-mard-crowd-with-forks-meme.jpg)
 
 Before somebody light up their torches or grab their forks: the following points are my opinion only, based on my personal (in)experiences and troubles. You may disagree with them, and that's fine. Feel free to skip this section.
 
