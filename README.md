@@ -8,7 +8,7 @@ Check the documentation at [laravext.dev](https://laravext.dev)
 
 Laravext is a set of tools aimed to assist the development of [Laravel](https://laravel.com/) applications with [React](https://react.dev/) or [Vue](https://vuejs.org/). It's name is (just in case you didn't get it) a mix of Laravel and [Next.js](https://nextjs.org/), although not affiliated or endorsed by any of them. I tried to fit in something that also sounded like "Vue" or "[Inertia.js](https://inertiajs.com/)" in the name, but "Laravext" sounded the better, of all the options I thought of. Not that creative, I know. Sue me (just kidding, don't).
 
-You may think of it as a (way more) simplified version of Inertia.js, with Next.js's file based router, and something similar to [Blade Components](https://laravel.com/docs/11.x/blade#components) that is actually a React/Vue component.
+You may think of it as a (waaay more) simplified version of Inertia.js, with Next.js's file based router, and something similar to [Blade Components](https://laravel.com/docs/11.x/blade#components) that is actually a React/Vue component.
 
 ![image](https://github.com/ArthurYdalgo/laravext/blob/main/docs/images/rick-morty-blade-jquery-meme.jpg?raw=true)
 
@@ -38,7 +38,7 @@ Additionally, you might be asking yourself:
 
 Before somebody light up their torches or grab their forks: the following points are my opinion only, based on my personal (in)experiences and troubles. You may disagree with them, and that's fine. Feel free to skip this section.
 
-Inertia.js offers server-side rendering of React/Vue pages, but it requires that you keep a `php artisan inertia:start-ssr` artisan command running through supervisor or something similar, which may not be available in a shared environments. You also don't have an out-of-the-box file-based routing system like the one Next.js offers. (To the best of my knoledge, at the time of writting)
+Inertia.js offers server-side rendering of React/Vue pages, but it requires that you keep a `php artisan inertia:start-ssr` artisan command running through supervisor or something similar, which may not be available in a shared environment. You also don't have an out-of-the-box file-based routing system like the one Next.js offers. (To the best of my knoledge, at the time of writting)
 
 Next.js offers server-side rendering of React components, and a great routing system, but I (personally) don't like their caching strategy, and for my use cases there was the need to slap a `"use client"` for nearly all pages. I felt a really degraded developer experience while using it, so for me became a no-no. I have other points about it, but I feel that the ["Why I Won't Use Next.js" article](https://www.epicweb.dev/why-i-wont-use-nextjs) from Kent C. Dodds summarizes most of what I mean way better than I could. It's a good reading if you're interested. 
 
@@ -54,7 +54,7 @@ As mentioned before, Laravext takes a lot of inspiration in how Next.js do thing
 
 Laravext offers a way to automagically create routes based on the file structure of the `resources/js/nexus` (this location is customizable) directory, much like Next.js.
 
-Using the following structure:
+Using the following structure (the example uses .jsx files, but you may also use it with .vue files):
 
 ```
 # In a Laravel project

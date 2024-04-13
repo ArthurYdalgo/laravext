@@ -1,4 +1,4 @@
-# Router
+# Strand
 
 The Laravext router follows the same pattern as [Next.js](https://nextjs.org/)' App Router. Each directory will be, in most cases, a url segment that might be a page. For a directory do be a page it must contain a `page.(jsx|tsx|vue|ts|js)` file. (These types are the default ones, but can be customized). Other file conventions from Next.js also exist here, and will be explained further ahead. Every time an automagically generated route is accessed, the application will load the default root view (which can be overwritten for a specific route, if necessary). This route view might extend a layout or not, depending on your needs, and must contain a @nexus directory. The `createLaravextApp` will then look for every nexus in the DOM (although it'd usually only make sense to have one), and render the page component of that URL path.
 

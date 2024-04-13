@@ -1,4 +1,4 @@
-# Quickstart <!-- {docsify-ignore} -->
+# Nexus Response <!-- {docsify-ignore} -->
 
 This tutorial assumes you already have a Laravel project up and running, and that you use the vite bundler. These instructions are based on the [examples provided in the laravext repository](https://github.com/ArthurYdalgo/laravext/tree/main/examples).
 
