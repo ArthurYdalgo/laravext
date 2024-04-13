@@ -1,12 +1,15 @@
 
 
 - [Laravext](README.md)
+- [Before You Start](before-you-start.md)
 - [Quick Start](quickstart.md)
 - Concepts
     - [Router](concepts/router.md)
-    - [Nexus](concepts/nexus.md)
-    - [Strand](concepts/strand.md)
+    - [File Conventions](concepts/file-conventions.md)
+    - [Laravext Prop](concepts/laravext-prop.md)
 - Tools
     - [Blade Directives](tools/blade-directives.md)
     - [Routing](tools/routing.md)
     - [Nexus Response](tools/nexus-response.md)
+- Outro
+    - [About this doc](outro/about-this-doc.md)
