@@ -2,6 +2,10 @@
 
 Every time a component is rendered by the `createLaravextApp`, a `laravext` props is passed to it. Considering the previous example from the [Concepts/Router](/concepts/router) page, having a `./resources/js/nexus/dashbord/orders/{order}/page.jsx`:
 
+<!-- tabs:start -->
+
+#### **React**
+
 ```jsx
 export default ({laravext}) => {
     console.log(laravext);
@@ -9,6 +13,53 @@ export default ({laravext}) => {
     ...
 }
 ```
+
+#### **Vue**
+<!-- @todo -->
+
+```vue
+<script setup>
+import { computed } from 'vue'
+import { usePage } from '@inertiajs/vue3'
+
+const page = usePage()
+
+const user = computed(() => page.props.auth.user)
+</script>
+
+<template>
+  <main>
+    <header>
+      You are logged in as: {{ user.name }}
+    </header>
+    <content>
+      <slot />
+    </content>
+  </main>
+</template>
+```
+
+#### **Svelte**
+<!-- @todo -->
+
+```svelte
+<script>
+  import { page } from '@inertiajs/svelte'
+</script>
+
+<main>
+  <header>
+    You are logged in as: {$page.props.auth.user.name}
+  </header>
+  <content>
+    <slot />
+  </content>
+</main>
+
+```
+
+<!-- tabs:end -->
+
 
 When accessing `/dashboard/orders/12345?foo=bar`
 You'd get something similar to

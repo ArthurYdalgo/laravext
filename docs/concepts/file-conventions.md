@@ -14,7 +14,7 @@ File conventions are special files that are used when rendering a nexus. They fo
 </Loading>
 ```
 
-Most of these are client-side rendered, except for the [Loading/Server Side](/concepts/file-conventions?id=server-side)
+Most of these are client-side rendered, except for the [Loading/Server Side](/concepts/file-conventions?id=server-side-basic-html)
 
 ## Page
 
