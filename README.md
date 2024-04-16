@@ -112,9 +112,9 @@ and inserting the following inside the `routes/web.php`:
 Route::laravext();
 ```
 
-Automagically registers the routes of your application (the resulting URIs are displayed next to each page.jsx as example). [Next.js's file conventions](https://nextjs.org/docs/app/building-your-application/routing#file-conventions) can also be applied, such as middlewares, layouts, loading, error, etc. You can have granular control about what happens before a route is rendered, if needed (check the []() documentation section for more details).
+Automagically registers the routes of your application (the resulting URIs are displayed next to each page.jsx as example). [Next.js' file conventions](https://nextjs.org/docs/app/building-your-application/routing#file-conventions) can also be applied, such as middlewares, layouts, loading, error, etc. You can have granular control about what happens before a route is rendered, if needed (check the []() documentation section for more details).
 
-A blade view (either the default one set in the config or specified one when the `Route::laravext()` is called and a `root_view` parameter is sent) is then rendered by the blade template engine. This view must contain what is called a `@nexus` blade directive, where the react component will be rendered. There're other ways render a nexus that are covered in the [here](#to-be-added).
+A blade view (either the default one set in the config or specified one when the `Route::laravext()` is called and a `root_view` parameter is sent) is then rendered by the blade template engine. This view must contain what is called a `@nexus` blade directive, where the react component will be rendered. There're other ways render a nexus that are covered in the docs, more specifically in the [Tools/Routing](https://laravext.dev/#/tools/rountings) and [Tools/Nexus Response](https://laravext.dev/#/tools/nexus-response).
 
 Additionally, in case you have components that are common to multiple pages, such as navbars, you can use the `@strand('Path/To/NavBar')` directive alongside a `@nexus`, which will use the name as a path to find a react component inside the `resources/js/strands` (which is customizable). The previous example would load a `NavBar.jsx` from the `resources/js/strands/Path/To` directory.
 
