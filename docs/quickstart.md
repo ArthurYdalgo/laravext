@@ -1,6 +1,6 @@
 # Quickstart <!-- {docsify-ignore} -->
 
-This tutorial assumes you already have a Laravel project up and running, and that you use the vite bundler. These instructions are based on the [examples provided in the laravext repository](https://github.com/ArthurYdalgo/laravext/tree/main/examples).
+This tutorial assumes that you already have a Laravel project up and running, and that you use the vite bundler. These instructions are based on the [examples provided in the laravext repository](https://github.com/ArthurYdalgo/laravext/tree/main/examples).
 
 ## Composer
 
@@ -24,7 +24,7 @@ Route::laravext();
 
 It is recomended that you put it in the beggining of the file, so you can overwrite any created route to fit your needs. For more details, check the [router section](/concepts/router).
 
-This technically optional, as there're other ways to generate your routes in a more granular way (which you can check at (...)), but it's entirely up to you on how you want to use it.
+This technically optional, as there're other ways to generate your routes in a more granular way (which you can check at [Tools/Routing](/tools/routing.md)), but it's entirely up to you on how you want to use it.
 
 ## NPM      
 
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
  }, false);
 ```
 
-You might change the nexus and strands' locations if you want to. Make sure to change the nexus directory in the `./config/laravext.php` file. For more details on how the router works, check the [router section](/router).
+You can change the nexus and strands' locations if you want to. Make sure to change the nexus directory in the `./config/laravext.php` file. For more details on how the router works, check the [router section](/router).
 
 ## Blade
 

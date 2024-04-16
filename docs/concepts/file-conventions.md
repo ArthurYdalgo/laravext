@@ -48,7 +48,7 @@ Loading UI for a segment and its children. This can be defined three different w
 
 Defining a `loading.jsx` can be used so to to data fetching, and then conditionally render the components inside it. **ONCE AGAIN, REMEMBER** that this component will not be server side rendered.
 
-### Server Side
+### Server Side (Basic HTML)
 
 Defining a `loading.html` will make it's content be used by the [nexus directive](/tools/blade-directives), and it'll be rendered server side (this will be passed in the `server_skeleton` property of the [laravext's nexus property](/concepts/laravext-prop)). This is useful to show something to your user while the javascript assets are being loaded to improve the UX. 
 
@@ -56,7 +56,9 @@ Defining a `loading.html` will make it's content be used by the [nexus directive
 <div class="your-really-cool-spinner"></div>
 ```
 
-Because using just html can limit how complex your loading screen can be, you can give a `path.to.a.skeleton.view` as a parameter for the `@nexus` directive. Assuming you have a `resouces.views.skeletons.orders`, containing:
+### Server Side (Blade Template)
+
+Because using just html can limit how complex your loading screen can be, you can give a `path.to.a.skeleton.view` as a parameter for the `@nexus` [blade directive](/tools/blade-directives.md). Assuming you have a `resouces.views.skeletons.orders`, containing:
 
 ```php
 <div>

@@ -12,6 +12,7 @@ class ResponseFactory
     public $query_params;
     public $route_params;
     public $shared_props;
+    public $route_name;
 
     // Page Conventions
     public $middleware, $layout , $loading, $error, $page, $server_skeleton;
@@ -22,6 +23,8 @@ class ResponseFactory
         $this->shared_props = [];
         $this->query_params = request()?->query();
         $this->route_params = request()?->route()?->parameters();
+        $this->route_name = request()?->route()?->getName();
+
     }
     
     public function nexus($page = null, $props = [])
@@ -127,6 +130,7 @@ class ResponseFactory
             'shared_props' => $this->shared_props,
             'route_params' => $this->route_params,
             'query_params' => $this->query_params,
+            'route_name' => $this->route_name,
         ];
     }
 
