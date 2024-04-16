@@ -1,4 +1,3 @@
-# Laravext
 
 
 <p align="center">
@@ -6,6 +5,9 @@
   <img width="150" src="https://github.com/ArthurYdalgo/laravext/blob/main/docs/images/logo/laravext.png?raw=true"/></a>
 </p>
 
+# Laravext
+
+Welcome to the Laravext repo!
 
 ## What is it Laravext?
 
