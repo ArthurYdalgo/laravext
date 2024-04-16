@@ -1,5 +1,12 @@
 # Laravext
 
+
+<p align="center">
+<a href="https://laravext.dev" target="_blank">
+  <img src="https://github.com/ArthurYdalgo/laravext/blob/master/docs/images/logos/laravext.png?raw=true"/></a>
+</p>
+
+
 ## What is it Laravext?
 
 Laravext is a set of tools aimed to assist the development of [Laravel](https://laravel.com/) applications with [React](https://react.dev/) or [Vue](https://vuejs.org/). It's name is (just in case you didn't get it) a mix of Laravel and [Next.js](https://nextjs.org/), although not affiliated or endorsed by any of them. I tried to fit in something that also sounded like "Vue" or "[Inertia.js](https://inertiajs.com/)" in the name, but "Laravext" sounded the better, of all the options I thought of. Not that creative, I know. Sue me (just kidding, don't).
