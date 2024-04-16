@@ -6,7 +6,7 @@ Laravext is a set of tools aimed to assist the development of [Laravel](https://
 
 You may think of it as a Next.js' file based router inside your Laravel project, and something similar to [Blade Components](https://laravel.com/docs/11.x/blade#components) that is actually a React/Vue component. There're some methods that slightly remember Inertia.js as well
 
-![image](images/memes/rick-morty-blade-jquery-meme.jpg)
+![image](/docs/images/memes/rick-morty-blade-jquery-meme.jpg)
 
 <sup>**Credits: Rick and Morty - Adult Swim**<sub>
 
