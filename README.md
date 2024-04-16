@@ -3,7 +3,7 @@
 
 <p align="center">
 <a href="https://laravext.dev" target="_blank">
-  <img width="250" src="https://github.com/ArthurYdalgo/laravext/blob/main/docs/images/logo/laravext.png?raw=true"/></a>
+  <img width="150" src="https://github.com/ArthurYdalgo/laravext/blob/main/docs/images/logo/laravext.png?raw=true"/></a>
 </p>
 
 
