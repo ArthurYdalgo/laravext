@@ -1,5 +1,5 @@
 export default ({ laravext, children }) => {
-    return (<div> App Group Layout
+    return (<div> Dashboard/Settings Layout
         <div className="container">
             {children}
         </div>

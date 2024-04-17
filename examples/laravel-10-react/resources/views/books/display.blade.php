@@ -2,8 +2,8 @@
 @section('content')
     @strand('PrivacyToggle')
     <br/>
-    <a href="{{route('books')}}">Return to books</a>
-    <br/>
+    
+    {{-- <br/>
     # These are server side rendered
     <h1>Title: {{ $laravext['nexus']['props']['book']->title }}</h1>
     <p>Autor: {{ $laravext['nexus']['props']['book']->author?->name ?? '--' }}</p>
@@ -17,11 +17,11 @@
     <br>
     @strand('Book/Comments', ['book' => $laravext['nexus']['props']['book']])
     <br>
-    @strand('Author/Books', ['author' => $laravext['nexus']['props']['book']->author])
+    @strand('Author/Books', ['author' => $laravext['nexus']['props']['book']->author]) --}}
     
     {{-- In case you're rendering a blade though the view method directly (as mentioned in the /routes/web.php file), but still are using strands: --}}
 
-    {{-- <h1>Title: {{ $book->title }}</h1>
+    <h1>Title: {{ $book->title }}</h1>
     <p>Autor: {{ $book->author?->name ?? '--' }}</p>
     <br>
     <p>Description: {{ $book->description }}</p>
@@ -30,6 +30,6 @@
     <br>
     @strand('Book/Comments', ['book' => $book])
     <br>
-    @strand('Author/Books', ['author' => $book->author]) --}}
+    @strand('Author/Books', ['author' => $book->author])
 
 @endsection

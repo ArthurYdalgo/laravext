@@ -37,7 +37,7 @@ Route::laravext();
 //     // ...
 //     // Although I couldn't find a good use case for this, it's an example of how you can use the nexus blade directive
 //     // to do some additional reactive stuff along with strands, and with the server-side rendered data for SEO purposes.
-//     // return nexus('page.jsx', compact('books'))->render();
+//     // return nexus('page.jsx', compact('book'))->render();
 
 // })->name('books.slug');
 
