@@ -9,7 +9,6 @@
   "author": "Arthur Ydalgo",
   "license": "ISC",
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "vue": "^3.4.23"
   }
 }
