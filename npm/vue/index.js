@@ -1,4 +1,5 @@
-import { createApp, h } from 'vue';
+import { createApp, defineAsyncComponent, defineComponent } from 'vue';
+
 
 export async function resolveComponent(path, pages) {
     const page = pages[path];
@@ -24,6 +25,56 @@ export function createLaravextApp({ nexusResolver, strandsResolver }) {
     const env = import.meta.env.VITE_APP_ENV ?? 'production';
     const isEnvProduction = !['development', 'local'].includes(env);
 
+    if (nexusResolver) {
+        const nexusComponentPath = laravext?.nexus?.page?.replaceAll('\\', '/');
+        const nexusTags = findNexus();
+        nexusTags.forEach((nexusElement) => {
+            if (nexusComponentPath) {
+                nexusResolver(nexusComponentPath).then((NexusComponent) => {
+                    if(!isEnvProduction){
+                        console.log(`Loading page at ${nexusComponentPath}`);
+                    }
+
+                    const NexusComponentAsync = defineAsyncComponent(() => NexusComponent);
+                    let app = createApp(NexusComponentAsync, { laravext });
+                    
+                    if(!isEnvProduction){
+                        console.log(`Page at ${nexusComponentPath} loaded successfully`);
+                    }
+
+                    let conventions = [
+                        'error',
+                        'middleware',
+                        'layout',
+                        'loading'
+                    ];
+
+                    conventions.forEach(async (convention) => {
+                        if (laravext?.nexus?.[convention]) {
+                            try {
+                                if (!isEnvProduction) {
+                                    console.log(`Loading convention ${convention} at ${laravext?.nexus?.[convention]}`)
+                                };
+                                const ConventionComponent = await nexusResolver(laravext?.nexus?.[convention]);
+                                app.component(convention, ConventionComponent);
+
+                                if(!isEnvProduction){
+                                    console.log(`Convention ${convention} loaded successfully`);
+                                }
+                            } catch (error) {
+                                console.error(`Error loading convention ${convention}:`, error);
+                            }
+                        }
+                    });
+
+                    app.mount(nexusElement);
+                }).catch((error) => {
+                    console.error(`Error loading page at ${nexusComponentPath}:`, error);
+                });
+            }
+        });
+    }
+
     if (strandsResolver) {
         const strands = findStrands();
         strands.forEach((strandElement) => {
@@ -32,15 +83,8 @@ export function createLaravextApp({ nexusResolver, strandsResolver }) {
 
             if (strandComponentPath) {
                 strandsResolver(strandComponentPath).then((StrandComponent) => {
-                    
-                    // Create a new Vue application instance with the resolved component
-                    const app = createApp({
-                        render: () => h(StrandComponent.default, strandData)
-                    });
-                    // Mount the Vue application to the current strandElement
+                    const app = createApp(StrandComponent.default);
                     app.mount(strandElement);
-
-
                 }).catch((error) => {
                     console.error(`Error loading component at ${strandComponentPath}:`, error);
                 });
