@@ -35,8 +35,7 @@ export function createLaravextApp({ nexusResolver, strandsResolver }) {
                         console.log(`Loading page at ${nexusComponentPath}`);
                     }
 
-                    const NexusComponentAsync = defineAsyncComponent(() => NexusComponent);
-                    let app = createApp(NexusComponentAsync, { laravext });
+                    let app = createApp(NexusComponent.default, { laravext });
                     
                     if(!isEnvProduction){
                         console.log(`Page at ${nexusComponentPath} loaded successfully`);
@@ -56,7 +55,7 @@ export function createLaravextApp({ nexusResolver, strandsResolver }) {
                                     console.log(`Loading convention ${convention} at ${laravext?.nexus?.[convention]}`)
                                 };
                                 const ConventionComponent = await nexusResolver(laravext?.nexus?.[convention]);
-                                app.component(convention, ConventionComponent);
+                                app.component(convention, ConventionComponent.default);
 
                                 if(!isEnvProduction){
                                     console.log(`Convention ${convention} loaded successfully`);
@@ -83,7 +82,7 @@ export function createLaravextApp({ nexusResolver, strandsResolver }) {
 
             if (strandComponentPath) {
                 strandsResolver(strandComponentPath).then((StrandComponent) => {
-                    const app = createApp(StrandComponent.default);
+                    const app = createApp(StrandComponent.default, { laravext, ...strandData });
                     app.mount(strandElement);
                 }).catch((error) => {
                     console.error(`Error loading component at ${strandComponentPath}:`, error);
