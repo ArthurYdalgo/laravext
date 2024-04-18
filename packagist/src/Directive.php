@@ -68,7 +68,7 @@ class Directive
 
         eval('$component = ' . $args[0] . ';');
 
-        $strand_data = isset($args[1]) && $args[1] ? $args[1] : '{}';
+        $strand_data = isset($args[1]) && $args[1] ? $args[1] : '[]';
         
         $id = str()->random($strand_id_length);
 
