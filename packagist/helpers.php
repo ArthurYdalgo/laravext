@@ -1,9 +1,6 @@
 <?php
 
 use Laravext\Laravext;
-use Laravext\LaravextFacade;
-use Laravext\ResponseFactory;
-
 if (! function_exists('laravext_location')) {
     /**
      * Inertia location helper.
