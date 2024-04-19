@@ -61,8 +61,9 @@ export function createLaravextApp({ nexusResolver, strandsResolver }) {
                                     console.log(`Convention ${conventions[i]} at ${laravext?.nexus?.[conventions[i]]} loaded successfully`);
                                 }
 
-                                renderer = h(conventionComponent, {laravext}, {
-                                    default: renderer
+                                const previousRenderer = renderer;
+                                renderer = () => h(conventionComponent, {laravext}, {
+                                    default: () => previousRenderer()
                                 });
                             } catch (error) {
                                 console.error(`Error loading convention ${conventions[i]} at ${laravext?.nexus?.[conventions[i]]}:`, error);
@@ -72,7 +73,7 @@ export function createLaravextApp({ nexusResolver, strandsResolver }) {
 
                     const rootComponent = defineComponent({
                         render() {
-                            return renderer
+                            return renderer()
                         }
                     });
                     
