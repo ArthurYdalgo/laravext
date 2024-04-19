@@ -36,16 +36,43 @@ export function createLaravextApp({ nexusResolver, strandsResolver }) {
                         console.log(`Page at ${nexusComponentPath} loaded successfully`);
                     }
 
-                    let layoutComponent = (await nexusResolver(laravext.nexus['layout'])).default;
-                    let pageCompoennt = NexusComponent.default
+                    // let middlewareComponent = (await nexusResolver(laravext.nexus['middleware'])).default;
+                    // let layoutComponent = (await nexusResolver(laravext.nexus['layout'])).default;
+                    let pageComponent = NexusComponent.default
+
+                    let renderer = () => h(pageComponent, {laravext});
                     
-                    // define a vue component where the layout has the page component as a slot
+                    const conventions = [
+                        'page',
+                        'error',
+                        'middleware',
+                        'layout',
+                        'loading',
+                    ];
+
+                    for (let i = 0; i < conventions.length; i++) {
+                        if (laravext?.nexus?.[conventions[i]]) {
+                            try {
+                                if (!isEnvProduction) {
+                                    console.log(`Loading convention ${conventions[i]} at ${laravext?.nexus?.[conventions[i]]}`)
+                                };
+                                let conventionComponent = (await nexusResolver(laravext?.nexus?.[conventions[i]])).default;
+                                if(!isEnvProduction){
+                                    console.log(`Convention ${conventions[i]} at ${laravext?.nexus?.[conventions[i]]} loaded successfully`);
+                                }
+
+                                renderer = h(conventionComponent, {laravext}, {
+                                    default: renderer
+                                });
+                            } catch (error) {
+                                console.error(`Error loading convention ${conventions[i]} at ${laravext?.nexus?.[conventions[i]]}:`, error);
+                            }
+                        }
+                    }
 
                     const rootComponent = defineComponent({
                         render() {
-                            return h(layoutComponent, {laravext}, {
-                                default: () => h(pageCompoennt, {laravext})
-                            });
+                            return renderer
                         }
                     });
                     
