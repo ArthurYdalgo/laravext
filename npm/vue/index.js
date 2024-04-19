@@ -43,8 +43,8 @@ export function createLaravextApp({ nexusResolver, strandsResolver }) {
 
                     const rootComponent = defineComponent({
                         render() {
-                            return h(layoutComponent, {}, {
-                                default: () => h(pageCompoennt)
+                            return h(layoutComponent, {laravext}, {
+                                default: () => h(pageCompoennt, {laravext})
                             });
                         }
                     });
