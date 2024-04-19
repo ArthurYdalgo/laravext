@@ -20,7 +20,7 @@ export function findStrands() {
     return strands;
 }
 
-export function createLaravextApp({ nexusResolver, strandsResolver }) {
+export function createLaravextApp({ nexusResolver, strandsResolver, uses = [] }) {
     const laravext = window.__laravext;
     const env = import.meta.env.VITE_APP_ENV ?? 'production';
     const isEnvProduction = !['development', 'local'].includes(env);
@@ -86,6 +86,11 @@ export function createLaravextApp({ nexusResolver, strandsResolver }) {
                     
 
                     const app = createApp(rootComponent);
+
+                    for (let i = 0; i < uses.length; i++) {
+                        app.use(uses[i].plugin, uses[i].options ?? {});
+                    }
+
                     app.mount(nexusElement);
                 }).catch((error) => {
                     console.error(`Error loading page at ${nexusComponentPath}:`, error);
