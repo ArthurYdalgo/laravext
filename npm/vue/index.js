@@ -40,7 +40,11 @@ export function createLaravextApp({ nexusResolver, strandsResolver }) {
                     // let layoutComponent = (await nexusResolver(laravext.nexus['layout'])).default;
                     let pageComponent = NexusComponent.default
 
-                    let renderer = () => h(pageComponent, {laravext});
+                    let renderer = () => h(pageComponent, {laravext}, {
+                        props: () => ({
+                            laravext
+                        }),
+                    });
                     
                     const conventions = [
                         'page',
@@ -63,7 +67,10 @@ export function createLaravextApp({ nexusResolver, strandsResolver }) {
 
                                 const previousRenderer = renderer;
                                 renderer = () => h(conventionComponent, {laravext}, {
-                                    default: () => previousRenderer()
+                                    default: () => previousRenderer(),
+                                    props: () => ({
+                                        laravext
+                                    })
                                 });
                             } catch (error) {
                                 console.error(`Error loading convention ${conventions[i]} at ${laravext?.nexus?.[conventions[i]]}:`, error);
