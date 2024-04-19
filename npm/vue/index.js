@@ -1,4 +1,4 @@
-import { createApp, defineAsyncComponent, defineComponent } from 'vue';
+import { createApp, defineComponent, h, compile, defineAsyncComponent } from 'vue';
 
 
 export async function resolveComponent(path, pages) {
@@ -30,42 +30,27 @@ export function createLaravextApp({ nexusResolver, strandsResolver }) {
         const nexusTags = findNexus();
         nexusTags.forEach((nexusElement) => {
             if (nexusComponentPath) {
-                nexusResolver(nexusComponentPath).then((NexusComponent) => {
-                    if(!isEnvProduction){
+                nexusResolver(nexusComponentPath).then(async (NexusComponent) => {
+                    if (!isEnvProduction) {
                         console.log(`Loading page at ${nexusComponentPath}`);
-                    }
-
-                    let app = createApp(NexusComponent.default, { laravext });
-                    
-                    if(!isEnvProduction){
                         console.log(`Page at ${nexusComponentPath} loaded successfully`);
                     }
 
-                    let conventions = [
-                        'error',
-                        'middleware',
-                        'layout',
-                        'loading'
-                    ];
+                    let layoutComponent = (await nexusResolver(laravext.nexus['layout'])).default;
+                    let pageCompoennt = NexusComponent.default
+                    
+                    // define a vue component where the layout has the page component as a slot
 
-                    conventions.forEach(async (convention) => {
-                        if (laravext?.nexus?.[convention]) {
-                            try {
-                                if (!isEnvProduction) {
-                                    console.log(`Loading convention ${convention} at ${laravext?.nexus?.[convention]}`)
-                                };
-                                const ConventionComponent = await nexusResolver(laravext?.nexus?.[convention]);
-                                app.component(convention, ConventionComponent.default);
-
-                                if(!isEnvProduction){
-                                    console.log(`Convention ${convention} loaded successfully`);
-                                }
-                            } catch (error) {
-                                console.error(`Error loading convention ${convention}:`, error);
-                            }
+                    const rootComponent = defineComponent({
+                        render() {
+                            return h(layoutComponent, {}, {
+                                default: () => h(pageCompoennt)
+                            });
                         }
                     });
+                    
 
+                    const app = createApp(rootComponent);
                     app.mount(nexusElement);
                 }).catch((error) => {
                     console.error(`Error loading page at ${nexusComponentPath}:`, error);
