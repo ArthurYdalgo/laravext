@@ -5,11 +5,11 @@ const $cookies = inject('$cookies');
 const props = defineProps(['laravext'])
 
 console.log("page", props.laravext)
-console.log($cookies.set('foo', 'bar'))
 
 </script>
 <template>
     Main {{ privacy.active ? '****@****.com' : "email@email.com" }}
+    {{ $t('message.hello') }}
 </template>
 <script>
 </script>

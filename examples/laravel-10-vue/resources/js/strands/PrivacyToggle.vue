@@ -6,6 +6,12 @@ if(props.initialState !== undefined) {
     privacy.setActive(props.initialState)
 }
 
+console.log("PrivacyToggle Component", {
+    props: {
+        initialState: props.initialState
+    }
+})
+
 </script>
 <template>
     <span @click="privacy.toggle" class="cursor-pointer">
