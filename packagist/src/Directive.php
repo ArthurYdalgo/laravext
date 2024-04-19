@@ -31,18 +31,36 @@ class Directive
      * @param string $expression
      */
     public static function nexus($expression = '')
-    {
-        $skeleton_content = '';
+    {   
+        $template = '<section section-type="laravext-nexus-section">{!! $laravext["nexus"]["server_skeleton"] ?? "" !!}</section>';
+        return $template;
+    }
 
-        if($expression) {
-            $args = explode(',', $expression);
-            eval('$skeleton = ' . $args[0] . ';');
-    
-            $skeleton_content = view($skeleton)->render();   
-        }
-        
-        $template = '<section section-type="laravext-nexus-section">{!! $laravext["nexus"]["server_skeleton"] ?? \''. $skeleton_content . '\' !!}</section>';
+    /**
+     * The startNexus directive is used to define where the main page of a route will be inserted. This version of the directive
+     * is similar to the nexus directive, but it doesn't render the server skeleton. This is useful when you want to render 
+     * something else inside it using blade directives for more complex server side rendering.
+     *
+     * @see https://laravext.dev/docs/blade-directives#start-nexus
+     * 
+     * @param string $expression
+     */
+    public static function startNexus($expression = '')
+    {   
+        $template = '<section section-type="laravext-nexus-section">';
+        return $template;
+    }
 
+    /**
+     * The endNexus directive is used to close the startNexus
+     *
+     * @see https://laravext.dev/docs/blade-directives#end-nexus
+     * 
+     * @param string $expression
+     */
+    public static function endNexus($expression = '')
+    {   
+        $template = '</section>';
         return $template;
     }
 

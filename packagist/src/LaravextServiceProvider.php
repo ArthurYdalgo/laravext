@@ -50,6 +50,8 @@ class LaravextServiceProvider extends ServiceProvider
         $this->callAfterResolving('blade.compiler', function ($blade) {
             $blade->directive('laravextScripts', [Directive::class, 'laravextScripts']);
             $blade->directive('nexus', [Directive::class, 'nexus']);
+            $blade->directive('startNexus', [Directive::class, 'startNexus']);
+            $blade->directive('endNexus', [Directive::class, 'endNexus']);
             $blade->directive('strand', [Directive::class, 'strand']);
         });
     }
