@@ -2,7 +2,7 @@
   "name": "@laravext/svelte",
   "version": "1.0.0",
   "description": "Laravext for Svelte",
-  "main": "index.js",
+  "main": "index.svelte",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

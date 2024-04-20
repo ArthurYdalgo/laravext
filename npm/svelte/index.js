@@ -43,7 +43,7 @@ export function createLaravextApp({ nexusResolver, strandsResolver }) {
                         target: nexusElement,
                         props: {
                             laravext
-                        }
+                        },
                     })
 
 
