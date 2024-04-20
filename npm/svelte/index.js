@@ -1,4 +1,4 @@
-import { createRoot } from 'react-dom/client';
+
 
 export async function resolveComponent(path, pages) {
     const page = pages[path];
@@ -35,41 +35,52 @@ export function createLaravextApp({ nexusResolver, strandsResolver }) {
                     if(!isEnvProduction){
                         console.log(`Loading page at ${nexusComponentPath}`);
                     }
-                    let nexus = <NexusModule.default laravext={laravext} />
-                    if(!isEnvProduction){
-                        console.log(`Page at ${nexusComponentPath} loaded successfully`, {
-                            NexusModule
-                        });
-                    }   
+                    
+                    const { default: Component } = NexusModule;
 
-                    let conventions = [
-                        'error',
-                        'middleware',
-                        'layout',
-                        'loading'
-                    ];
-
-                    for (let i = 0; i < conventions.length; i++) {
-                        if (laravext?.nexus?.[conventions[i]]) {
-                            try {
-                                if (!isEnvProduction) {
-                                    console.log(`Loading convention ${conventions[i]} at ${laravext?.nexus?.[conventions[i]]}`)
-                                };
-                                let Convention = await nexusResolver(laravext?.nexus?.[conventions[i]]);
-                                if(!isEnvProduction){
-                                    console.log(`Convention ${conventions[i]} at ${laravext?.nexus?.[conventions[i]]} loaded successfully`, {
-                                        Convention
-                                    });
-                                }
-
-                                nexus = <Convention.default laravext={laravext}>{nexus}</Convention.default>;
-                            } catch (error) {
-                                console.error(`Error loading convention ${conventions[i]} at ${laravext?.nexus?.[conventions[i]]}:`, error);
-                            }
+                    nexusElement.innerHTML = '';
+                    new Component({
+                        target: nexusElement,
+                        props: {
+                            laravext
                         }
-                    }
+                    })
 
-                    createRoot(nexusElement).render(nexus);
+
+                    // if(!isEnvProduction){
+                    //     console.log(`Page at ${nexusComponentPath} loaded successfully`, {
+                    //         NexusModule
+                    //     });
+                    // }   
+
+                    // let conventions = [
+                    //     'error',
+                    //     'middleware',
+                    //     'layout',
+                    //     'loading'
+                    // ];
+
+                    // for (let i = 0; i < conventions.length; i++) {
+                    //     if (laravext?.nexus?.[conventions[i]]) {
+                    //         try {
+                    //             if (!isEnvProduction) {
+                    //                 console.log(`Loading convention ${conventions[i]} at ${laravext?.nexus?.[conventions[i]]}`)
+                    //             };
+                    //             let Convention = await nexusResolver(laravext?.nexus?.[conventions[i]]);
+                    //             if(!isEnvProduction){
+                    //                 console.log(`Convention ${conventions[i]} at ${laravext?.nexus?.[conventions[i]]} loaded successfully`, {
+                    //                     Convention
+                    //                 });
+                    //             }
+
+                    //             nexus = <Convention.default laravext={laravext}>{nexus}</Convention.default>;
+                    //         } catch (error) {
+                    //             console.error(`Error loading convention ${conventions[i]} at ${laravext?.nexus?.[conventions[i]]}:`, error);
+                    //         }
+                    //     }
+                    // }
+
+                    // createRoot(nexusElement).render(nexus);
                 })
                     .catch((error) => {
                         console.error(`Error loading page at ${nexusComponentPath}:`, error);
@@ -78,20 +89,20 @@ export function createLaravextApp({ nexusResolver, strandsResolver }) {
         });
     }
 
-    if (strandsResolver) {
-        const strands = findStrands();
-        strands.forEach((strandElement) => {
-            const strandComponentPath = strandElement.getAttribute('strand-component');
-            const strandData = JSON.parse(strandElement.getAttribute('strand-data'));
+    // if (strandsResolver) {
+    //     const strands = findStrands();
+    //     strands.forEach((strandElement) => {
+    //         const strandComponentPath = strandElement.getAttribute('strand-component');
+    //         const strandData = JSON.parse(strandElement.getAttribute('strand-data'));
 
-            if (strandComponentPath) {
-                strandsResolver(strandComponentPath).then((StrandModule) => {
-                    createRoot(strandElement).render(<StrandModule.default laravext={{ ...laravext, ...strandData }} />);
-                })
-                    .catch((error) => {
-                        console.error(`Error loading component at ${strandComponentPath}:`, error);
-                    });
-            }
-        });
-    }
+    //         if (strandComponentPath) {
+    //             strandsResolver(strandComponentPath).then((StrandModule) => {
+    //                 createRoot(strandElement).render(<StrandModule.default laravext={{ ...laravext, ...strandData }} />);
+    //             })
+    //                 .catch((error) => {
+    //                     console.error(`Error loading component at ${strandComponentPath}:`, error);
+    //                 });
+    //         }
+    //     });
+    // }
 }
