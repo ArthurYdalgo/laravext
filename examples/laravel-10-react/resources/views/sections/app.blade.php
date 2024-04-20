@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    @strand('PrivacyToggle')
+    @strand('PrivacyToggle', ['initialState' => false])
     <br/>
-    @nexus('skeletons.card')
+    @nexus
 @endsection
