@@ -62,6 +62,60 @@ document.addEventListener('DOMContentLoaded', function() {
 
 You can change the nexus and strands' locations if you want to. Make sure to change the nexus directory in the `./config/laravext.php` file. For more details on how the router works, check the [router section](/router).
 
+## Vite Config
+
+Make sure you have a vite.config.js that looks something like this (assuming you've already installed either [@vitejs/plugin-react](https://www.npmjs.com/package/@vitejs/plugin-react) or [@vitejs/plugin-vue](https://www.npmjs.com/package/@vitejs/plugin-vue)). 
+
+This example assumes you've defined a `VITE_APP_ENV` and `VITE_APP_DOMAIN` in your `.env` file, which contain the `APP_ENV` and `APP_DOMAIN` values, respectively. 
+
+Change any configuration to fit your needs.
+
+```javascript
+
+import { defineConfig, loadEnv } from 'vite';
+import laravel, { refreshPaths } from "laravel-vite-plugin";
+
+// For React
+import react from "@vitejs/plugin-react";
+
+// For Vue
+import vue from '@vitejs/plugin-vue';
+
+export default function ({ mode }) {
+    const env = loadEnv(mode, process.cwd());
+
+    const host = env.VITE_APP_ENV == "local" ? env.VITE_APP_DOMAIN : undefined;
+
+    return defineConfig({
+        server: { host },
+        plugins: [
+            laravel({
+                input: [
+                    'resources/css/app.css',
+                    'resources/js/app.js',
+                ],
+                refresh: [...refreshPaths, "resources/js/**", "app/**"],
+            }),
+
+            // For React
+            react(),
+
+            // For Vue
+            vue({
+                template: {
+                    transformAssetUrls: {
+                        base: null,
+                        includeAbsolute: false,
+                    },
+                },
+            }),
+        ],
+    })
+};
+
+
+```
+
 ## Blade
 
 Assuming you have a `./resources/views/layouts/app.blade.php` file, where a section is inserted, you'll need to insert some blade directives in it.

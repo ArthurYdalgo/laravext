@@ -1,5 +1,5 @@
 
-This documentation assumes that you have some experience with PHP, Laravel and Javascript, and also that you already have a development environment that meets the requirements to run a Laravel project.
+This documentation assumes that you have some experience with PHP, Laravel and Javascript, and also that you already have a development environment that meets the requirements to run a Laravel project using Vite as your bundler.
 
 ## Example Standards <!-- {docsify-ignore} -->
 
@@ -9,6 +9,60 @@ I might use `.jsx` as an extension for most files, assuming that you'll know tha
 
 If I'm showing some code that wouldn't vary much betweem those libraries/frameworks (one or two lines), I might just show how it's be done for each one of them in the surrouding lines.
 
-If the example is **too** specific, such as a component/page/etc, I will show implementations on all of them. Please submit a PR if you think that an example is not clear enough and you think it could use some improvements.
+If the example is **too** specific, such as a component/page/etc, I will show implementations on all of them, like the example below:
+
+<!-- tabs:start -->
+
+#### **React**
+
+`page.jsx`:
+
+```jsx
+export default ({laravext}) => {
+    console.log(laravext);
+
+    return (
+        <div>
+            - Hello, there...
+            - General Kenoby!
+        </div>
+    )
+}
+```
+
+#### **Vue**
+
+`page.vue`:
+
+```vue
+<script setup>
+import { defineProps } from 'vue'
+const { laravext } = defineProps(['laravext'])
+
+</script>
+<template>
+    <div>
+        - Hello, there...
+        - General Kenoby!
+    </div>
+</template>
+```
+
+<!-- tabs:end -->
+
+
+Please submit a PR if you think that an example is not clear enough and you think it could use some improvements.
 
 The examples are meant to help you understand how to use these tools, and are not meant to reflect how a real world application would be designed, so everything will be as simple as possible.
+
+## The Example Project(s) <!-- {docsify-ignore} -->
+
+Every code or file structure example in this documentation is derived from the [laravext examples available at GitHub](https://github.com/ArthurYdalgo/laravext/tree/main/examples), and it'll be either the [laravel-10-react](https://github.com/ArthurYdalgo/laravext/tree/main/examples/laravel-10-react) or [laravel-10-vue](https://github.com/ArthurYdalgo/laravext/tree/main/examples/laravel-10-vue). It's a basic developer team manager, where teams have developers and projects, and these projects belong to companies (needless to say that this does not reflect how a real world application of this kind would be designed).
+
+In order for you to have some basic comprehension of the project itself, here's the database structure:
+
+![image](/images/illustrations/example-developer-team-database-diagram.png)
+
+<sup>Database diagram of the example project. Designed on [dbdiagram.io](https://dbdiagram.io). The declaration used to create this illustration can be found in the [laravext repository](https://github.com/ArthurYdalgo/laravext/tree/main/docs/images/illustrations/example-developer-team-database-diagram.dbdiagram.io)</sub>
+
+
