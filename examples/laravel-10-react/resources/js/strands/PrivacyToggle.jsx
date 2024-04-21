@@ -12,6 +12,7 @@ export default ({ laravext, initialState }) => {
     }, [initialState]);
 
     const handleToggle = () => {
+        // This is done like this because the active wouldn't always be updated immediately
         let currentState = active;
         toggle();
         axios.put('/api/auth/user/privacy', { privacy: !currentState })
