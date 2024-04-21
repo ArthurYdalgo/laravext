@@ -3,9 +3,9 @@ This documentation assumes that you have some experience with PHP, Laravel and J
 
 ## Example Standards <!-- {docsify-ignore} -->
 
-Because this set of tools is meant to be used with React/Vue/Svelte, you should be aware of some standards...
+Because this set of tools is meant to be used with React/Vue, you should be aware of some standards...
 
-I might use `.jsx` as an extension for most files, assuming that you'll know that it may change depending on what you're using or what you're using it for (that means changing to `.vue`, `.tsx`, `.svelte`, etc).
+I might use `.jsx` as an extension for most files, assuming that you'll know that it may change depending on what you're using or what you're using it for (that means changing to `.vue`, `.tsx`, etc).
 
 If I'm showing some code that wouldn't vary much betweem those libraries/frameworks (one or two lines), I might just show how it's be done for each one of them in the surrouding lines.
 

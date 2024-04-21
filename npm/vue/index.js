@@ -36,8 +36,6 @@ export function createLaravextApp({ nexusResolver, strandsResolver, uses = [] })
                         console.log(`Page at ${nexusComponentPath} loaded successfully`);
                     }
 
-                    // let middlewareComponent = (await nexusResolver(laravext.nexus['middleware'])).default;
-                    // let layoutComponent = (await nexusResolver(laravext.nexus['layout'])).default;
                     let pageComponent = NexusComponent.default
 
                     let renderer = () => h(pageComponent, {laravext}, {
@@ -84,7 +82,6 @@ export function createLaravextApp({ nexusResolver, strandsResolver, uses = [] })
                         }
                     });
                     
-
                     const app = createApp(rootComponent);
 
                     for (let i = 0; i < uses.length; i++) {

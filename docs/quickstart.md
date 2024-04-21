@@ -40,12 +40,6 @@ or
 npm install @laravext/vue
 ```
 
-or
-
-```bash
-npm install @laravext/svelte
-```
-
 This example also assumes that you have a `bootstrap.js` at `./resources/js` and an `app.css` in you `./resources/css` directory. You might or not have any need for those.
 
 Now, make sure that you have an `app.js` in your `./resources/js` directory, with the following:

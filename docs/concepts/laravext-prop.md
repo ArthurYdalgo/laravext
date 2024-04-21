@@ -39,25 +39,6 @@ const user = computed(() => page.props.auth.user)
 </template>
 ```
 
-#### **Svelte**
-<!-- @todo -->
-
-```svelte
-<script>
-  import { page } from '@inertiajs/svelte'
-</script>
-
-<main>
-  <header>
-    You are logged in as: {$page.props.auth.user.name}
-  </header>
-  <content>
-    <slot />
-  </content>
-</main>
-
-```
-
 <!-- tabs:end -->
 
 
