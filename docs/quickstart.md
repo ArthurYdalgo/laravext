@@ -54,7 +54,10 @@ import { createLaravextApp, resolveComponent } from "@laravext/vue"
 
 document.addEventListener('DOMContentLoaded', function() {
     createLaravextApp({
+        // Remember to change this path if you've modified the default path in the ./config/laravext.php file
         nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
+
+        // Remember to change this path if you're using another path to store your strands
         strandsResolver: (name) => resolveComponent(`./strands/${name}`, import.meta.glob('./strands/**/*'))
     })
  }, false);
