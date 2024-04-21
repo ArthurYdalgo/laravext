@@ -1,8 +1,9 @@
 export async function resolveComponent(path, pages) {
     const page = pages[path];
-    if (!page) {
+    if (typeof page === 'undefined') {
         throw new Error(`Page not found: ${path}`);
     }
+
     return typeof page === 'function' ? page() : page;
 }
 
@@ -52,6 +53,7 @@ export function createLaravextApp({ nexusResolver, strandsResolver }) {
 
             // Create the nested structure of components
             createNestedStructure(componentsToLoad, nexusElement);
+            
 
             if (!isEnvProduction) {
                 console.log(`Loaded and wrapped: ${nexusComponentPath}`);
@@ -63,7 +65,7 @@ export function createLaravextApp({ nexusResolver, strandsResolver }) {
 
     if (strandsResolver) {
         const strands = findStrands();
-        
+
         strands.forEach((strandElement) => {
             const strandComponentPath = strandElement.getAttribute('strand-component');
             const strandData = JSON.parse(strandElement.getAttribute('strand-data'));
