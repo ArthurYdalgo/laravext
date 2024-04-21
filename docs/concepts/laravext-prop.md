@@ -1,16 +1,21 @@
 # Laravext Prop
 
-Every time a component is rendered by the `createLaravextApp`, a `laravext` props is passed to it. Considering the previous example from the [Concepts/Router](/concepts/router) page, having a `./resources/js/nexus/dashbord/orders/{order}/page.jsx`:
+Every time a component is rendered by the `createLaravextApp`, a `laravext` props is passed to it. Considering the previous example from the [Concepts/Router](/concepts/router) page, having a `./resources/js/nexus/dashbord/orders/{order}/page.(jsx|tsx|vue)`:
 
 <!-- tabs:start -->
-
+<!-- @todo -->
 #### **React**
 
 ```jsx
 export default ({laravext}) => {
     console.log(laravext);
 
-    ...
+    return (
+        <div>
+            - Hello, there...
+            - General Kenoby!
+        </div>
+    )
 }
 ```
 
@@ -19,23 +24,15 @@ export default ({laravext}) => {
 
 ```vue
 <script setup>
-import { computed } from 'vue'
-import { usePage } from '@inertiajs/vue3'
+import { defineProps } from 'vue'
+const { laravext } = defineProps(['laravext'])
 
-const page = usePage()
-
-const user = computed(() => page.props.auth.user)
 </script>
-
 <template>
-  <main>
-    <header>
-      You are logged in as: {{ user.name }}
-    </header>
-    <content>
-      <slot />
-    </content>
-  </main>
+    <div>
+        - Hello, there...
+        - General Kenoby!
+    </div>
 </template>
 ```
 

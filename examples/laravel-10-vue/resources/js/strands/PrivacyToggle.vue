@@ -1,20 +1,23 @@
 <script setup>
 import { privacy } from '@/composables/usePrivacy'
-const props = defineProps(['initialState'])
+import axios from 'axios';
+const {initialState, laravext} = defineProps(['initialState', 'laravext'])
 
-if(props.initialState !== undefined) {
-    privacy.setActive(props.initialState)
+if(initialState !== undefined) {
+    privacy.setActive(initialState)
 }
 
-console.log("PrivacyToggle Component", {
-    props: {
-        initialState: props.initialState
-    }
-})
+const handleToggle = () => {
+    privacy.toggle();
+
+    axios.put('/api/auth/user/privacy', {
+        privacy: privacy.active
+    });
+}
 
 </script>
 <template>
-    <span @click="privacy.toggle" class="cursor-pointer">
+    <span @click="handleToggle" class="cursor-pointer">
         {{ privacy.active ? 'Click to Turn Privacy Off' : 'Click to Turn Privacy On' }}
     </span>
 </template>

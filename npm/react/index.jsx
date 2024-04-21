@@ -86,7 +86,9 @@ export function createLaravextApp({ nexusResolver, strandsResolver }) {
 
             if (strandComponentPath) {
                 strandsResolver(strandComponentPath).then((StrandModule) => {
-                    createRoot(strandElement).render(<StrandModule.default laravext={{ ...laravext, ...strandData }} />);
+                    // pass strand data to component
+                    console.log(strandData);
+                    createRoot(strandElement).render(<StrandModule.default laravext={{ ...laravext}} {...strandData} />);
                 })
                     .catch((error) => {
                         console.error(`Error loading component at ${strandComponentPath}:`, error);

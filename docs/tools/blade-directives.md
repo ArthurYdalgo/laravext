@@ -38,18 +38,87 @@ Once again... Remember that anything in between those two directives will be cle
 
 ## @strand
 
-You can use the @strand('Path/To/Component') directive alongside a @nexus, which will use the name as a path to find a React/Vue component inside the resources/js/strands (which is customizable).
+You can use the @strand('Path/To/Component') directive alongside a @nexus, which will use the name as a path to find a React/Vue component inside the resources/js/strands (which is customizable). The first parateters is the `path/to/the/component`, and the second one is `['any' => 'data', 'you' => 'might need']`
 
 ```blade
 @extends('layouts.app')
 @section('content')
 
-    @strand('PrivacyToggle')
+    @strand('PrivacyToggle', ['initialState' => auth()->user()?->privacy ?? false])
 
     @nexus
 
 @endsection
 ```
+
+For some context, here's the component:
+
+<!-- tabs:start -->
+
+#### **React**
+
+`PrivacyToggle.jsx`:
+
+```jsx
+import usePrivacy from '@/hooks/usePrivacy'
+import axios from 'axios';
+import { useEffect } from 'react'
+
+export default ({ laravext, initialState }) => {
+    const { active, setActive, toggle } = usePrivacy();
+    
+    useEffect(() => {
+        if(initialState !== undefined){
+            setActive(initialState);
+        }
+    }, [initialState]);
+
+    const handleToggle = () => {
+        let currentState = active;
+        toggle();
+        axios.put('/api/auth/user/privacy', { privacy: !currentState })
+    }
+
+    return (
+        <>
+            <span className="cursor-pointer" onClick={handleToggle}>{active ? 'Click to Turn Privacy Off' : 'Click to Turn Privacy On'}</span>
+        </>
+    )
+}
+```
+
+#### **Vue**
+
+`PrivacyToggle.vue`:
+
+```vue
+<script setup>
+import { privacy } from '@/composables/usePrivacy'
+import axios from 'axios';
+const {initialState} = defineProps(['initialState'])
+
+if(initialState !== undefined) {
+    privacy.setActive(initialState)
+}
+
+const handleToggle = () => {
+    privacy.toggle();
+
+    axios.put('/api/auth/user/privacy', {
+        privacy: privacy.active
+    });
+}
+
+</script>
+<template>
+    <span @click="handleToggle" class="cursor-pointer">
+        {{ privacy.active ? 'Click to Turn Privacy Off' : 'Click to Turn Privacy On' }}
+    </span>
+</template>
+```
+
+<!-- tabs:end -->
+
 
 ## Overview 
 
