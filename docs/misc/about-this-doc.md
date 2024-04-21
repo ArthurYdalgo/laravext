@@ -8,3 +8,4 @@ If you liked this documentation (or at least the looks of it), here are the tool
     - Rick and Morty Extra Steps Meme by [imgflip](https://imgflip.com/memegenerator/93241516/rick-and-morty-slavery-with-extra-steps)
     - Mad Crowd Meme by [imgflip](https://imgflip.com/memegenerator/192596849/Mad-crowd-happy-crowd) (with some cropping/editing)
     - [Excalidraw](https://excalidraw.com/) for various illustrations
+    - [dbdiagram.io](https://dbdiagram.io/) for database diagrams
