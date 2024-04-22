@@ -38,13 +38,13 @@ Once again... Remember that anything in between those two directives will be cle
 
 ## @strand
 
-You can use the @strand('Path/To/Component') directive alongside a @nexus, which will use the name as a path to find a React/Vue component inside the resources/js/strands (which is customizable).
+You can use the @strand('Path/To/Component') directive alongside a @nexus, which will use the name as a path to find a React/Vue component inside the resources/js/strands (which is customizable). The first parateters is the `path/to/the/component`, and the second one is `['any' => 'data', 'you' => 'might need']`
 
 ```php
 @extends('layouts.app')
 @section('content')
 
-    @strand('PrivacyToggle')
+    @strand('PrivacyToggle', ['initialState' => auth()->user()?->privacy ?? false])
 
     @nexus
 

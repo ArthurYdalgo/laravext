@@ -41,6 +41,8 @@ Table companies {
 Table teams {
   id integer [primary key]
   name varchar
+  created_at timestamp
+  updated_at timestamp
 }
 
 Ref: "companies"."id" < "projects"."company_id"
