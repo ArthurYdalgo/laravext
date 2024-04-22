@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 You can change the nexus and strands' locations if you want to. Make sure to change the nexus directory in the `./config/laravext.php` file. For more details on how the router works, check the [router section](/router).
 
-## Vite Config
+## Vite Configuration
 
 Make sure you have a vite.config.js that looks something like this (assuming you've already installed either [@vitejs/plugin-react](https://www.npmjs.com/package/@vitejs/plugin-react) or [@vitejs/plugin-vue](https://www.npmjs.com/package/@vitejs/plugin-vue)). 
 
