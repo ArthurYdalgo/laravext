@@ -5,7 +5,7 @@ This documentation assumes that you have some experience with PHP, Laravel and J
 
 Because this set of tools is meant to be used with React/Vue, you should be aware of some standards...
 
-I might use `.jsx` as an extension for most files, assuming that you'll know that it may change depending on what you're using or what you're using it for (that means changing to `.vue`, `.tsx`, etc).
+I might use `.jsx` as an extension for most files, or something like `.(jsx|tsx|vue)`, assuming that you'll know that it may change depending on what you're using or what you're using it for (that means changing to `.vue`, `.tsx`, etc).
 
 If I'm showing some code that wouldn't vary much betweem those libraries/frameworks (one or two lines), I might just show how it's be done for each one of them in the surrouding lines.
 
@@ -57,7 +57,7 @@ The examples are meant to help you understand how to use these tools, and are no
 
 ## The Example Project(s) <!-- {docsify-ignore} -->
 
-Every code or file structure example in this documentation is derived from the [laravext examples available at GitHub](https://github.com/ArthurYdalgo/laravext/tree/main/examples), and it'll be either the [laravel-10-react](https://github.com/ArthurYdalgo/laravext/tree/main/examples/laravel-10-react) or [laravel-10-vue](https://github.com/ArthurYdalgo/laravext/tree/main/examples/laravel-10-vue). It's a basic developer team manager, where teams have developers and projects, and these projects belong to companies (needless to say that this does not reflect how a real world application of this kind would be designed).
+Some code or file structures in this documentation might be derived from the [laravext examples available at GitHub](https://github.com/ArthurYdalgo/laravext/tree/main/examples), and it'll be either the [laravel-10-react](https://github.com/ArthurYdalgo/laravext/tree/main/examples/laravel-10-react) or [laravel-10-vue](https://github.com/ArthurYdalgo/laravext/tree/main/examples/laravel-10-vue). It's a basic developer team manager, where teams have developers and projects, and these projects belong to companies (needless to say that this does not reflect how a real world application of this kind would be designed). Whenever it's the case, it'll be specified next to the example the file where it was taken from, along with a link for file itself in the repository. If for some reason no file name or link was provided, assume it's a one-off example for that part of the documentation.
 
 In order for you to have some basic comprehension of the project itself, here's the database structure:
 
