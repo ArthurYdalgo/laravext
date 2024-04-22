@@ -3,6 +3,7 @@
 - [Laravext](README.md)
 - [Before You Start](before-you-start.md)
 - [Quick Start](quickstart.md)
+- [Configuration](configuration.md)
 - Concepts
     - [Router](concepts/router.md)
     - [File Conventions](concepts/file-conventions.md)

@@ -129,7 +129,7 @@ Additionally, in case you have components that are common to multiple pages, suc
 
 Here's an example to how you could use it in a `app.blade.php` file:
 
-```blade
+```php
 <x-guest-layout>
 
     @strand('NavBar', ['some' => 'data'])

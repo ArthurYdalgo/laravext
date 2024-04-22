@@ -6,7 +6,7 @@ Laravext offers some blade directives to be used in your project.
 
 The `@nexus` directive is used to define where the content of the `page.(jsx|tsx|vue)` files (an all the outer file conventions) will be rendered. Assuming you have a `./resources/views/layouts/app.blade.php` blade view (with a `@yield('content')` inside it), inside a `./resources/views/sections/app.blade.php` you should use the `@nexus` directive like this:
 
-```blade
+```php
 @extends('layouts.app')
 @section('content')
 
@@ -19,7 +19,7 @@ The `@nexus` directive is used to define where the content of the `page.(jsx|tsx
 
 As mentioned before in the [Concepts/Loading/Server Side](/concepts/file-conventions?id=server-side-blade-template) section of this documentation, you might need more complex server side skeletons to be rendered while the javascript is loaded, so you can use the `@startNexus` and `@endNexus` directives to define where the content of the `page.(jsx|tsx|vue)` files (an all the outer file conventions) will be rendered. Assuming you have a `./resources/views/layouts/app.blade.php` blade view (with a `@yield('content')` inside it), inside a `./resources/views/sections/app.blade.php` you should use the `@startNexus` and `@endNexus` directives like this:
 
-```blade
+```php
 @extends('layouts.app')
 @section('content')
     @startNexus
@@ -40,7 +40,7 @@ Once again... Remember that anything in between those two directives will be cle
 
 You can use the @strand('Path/To/Component') directive alongside a @nexus, which will use the name as a path to find a React/Vue component inside the resources/js/strands (which is customizable).
 
-```blade
+```php
 @extends('layouts.app')
 @section('content')
 
