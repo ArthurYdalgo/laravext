@@ -38,8 +38,7 @@ class Middleware
     }
 
     /**
-     * Determines what to do when an Inertia action returned with no response.
-     * By default, we'll redirect the user back to where they came from.
+     * Determines what to do when an action returned with no response.
      */
     public function onEmptyResponse(Request $request, Response $response): Response
     {
