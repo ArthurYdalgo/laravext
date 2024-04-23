@@ -69,7 +69,7 @@ You'd get something similar to
 }
 ```
 
-## Nexus <!-- {docsify-ignore} -->
+## Nexus 
 
 The `__laravext.nexus` property will contain informations about your rendered nexus, the most useful one is going to be the `props`, which contains any prop that was sent to it that was pre-fetched before the page was loaded. There're two ways to do this, either using a [Nexus Response](/tools/nexus-response.md) or creating a [Nexus Route](/tools/routing?id=nexus). 
 
