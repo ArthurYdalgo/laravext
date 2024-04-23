@@ -52,9 +52,9 @@ This method is used to define the props that will be passed to the view. It can 
 
 This method is used to define the shared props that will be passed to the view. It'll be merged with any previously defined shared props. Check [Tools/Shared Props](/tools/shared-props) for more information.
 
-## File Convention Overrides
+## File Conventions
 
-You can also override the file conventions for the view that will be rendered. You can do so by using one of the following methods, passing the `path/to/the/convention/you/want/to/use/convention.(jsx|tsx|js|ts|vue)`, except for the `withSkeleton`, which receives the html content of the skeleton:
+You can also use [file conventions](/concepts/file-conventions) for the view that will be rendered. You can do so by using one of the following methods, passing the `path/to/the/convention/you/want/to/use/convention.(jsx|tsx|js|ts|vue)`, except for the `withSkeleton`, which receives the html content of the skeleton:
 
 - `withLayout($layout)`
 - `withMiddleware($middleware)`
