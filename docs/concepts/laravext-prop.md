@@ -84,7 +84,7 @@ The `__laravext.shared_props` property will contain whatever you defined in your
   'user' => $request->user(),
 ]
 ```
-Check the [Shared Props](/tools/share-props.md) page for more details.
+Check the [Shared Props](/tools/shared-props.md) page for more details.
 
 ## Route Params
 
