@@ -28,8 +28,6 @@ Route::get('books', function($slug){
 })->name('books');
 ```
 
-The nexus method 
-
 You might have noticed the `rootView` chained method. This method is used to define the view that will be rendered. If you don't define it, the default view set in the configuration file will be used. The `render` method will render the view with the props you've defined.
 
 Other methods that can be chained after the `nexus` method are:
