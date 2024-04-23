@@ -1,6 +1,8 @@
 # Nexus Response
 
-Similar to [Inertia.js' Responses](https://inertiajs.com/responses), the nexus Response is a way render a view containing a `@nexus` blade directive (or `@startNexus/@endNexus`). Here's an example of how to use it (for the sake of simplicity, I won't use a controller):
+Similar to [Inertia.js' Responses](https://inertiajs.com/responses), the nexus response is a way render a view containing a `@nexus` blade directive (or `@startNexus/@endNexus`). Here's an example of how to use it (for the sake of simplicity, I won't use a controller):
+
+`Laravext::nexus($page = null, $props = [])`
 
 ```php
 <?php
@@ -8,12 +10,8 @@ Similar to [Inertia.js' Responses](https://inertiajs.com/responses), the nexus R
 use Illuminate\Support\Facades\Route;
 use Laravext\Laravext;
 
-Route::laravext();
-
 /**
- * The example below shows how you can use laravext in a traditional way, server-side fetching any data, and then
- * rendering a nexus (or a view) with the fetched data. This is useful for SEO purposes, as the data will be
- * available in the HTML response.
+ * The example below shows how you can use laravext in a traditional way, as a response to a route, much like you would with Inertia.js.
  */
 Route::get('books', function($slug){
     // Some code that needs to be executed server side
@@ -22,17 +20,19 @@ Route::get('books', function($slug){
     ])->get('https://external-service.com/api/books')->json();
 
     // Using the Laravext facade...
-    return Laravext::nexus(props: compact('books'))->rootView('books.display')->render();
+    return Laravext::nexus('path/to/page.(jsx|tsx|js|ts|vue)', compact('books'))->rootView('books.display')->render();
 
     // or nexus helper function, you can render a view with the defined props
-    return nexus(props: compact('books'))->rootView('books.display')->render();
+    return nexus('path/to/page.(jsx|tsx|js|ts|vue)' compact('books'))->rootView('books.display')->render();
 
 })->name('books');
 ```
 
-You might have noticed the `rootView` method. This method is used to define the view that will be rendered. If you don't define it, the default view set in the configuration file will be used. The `render` method will render the view with the props you've defined.
+The nexus method 
 
-Other parameters that can be used in the `nexus` method are:
+You might have noticed the `rootView` chained method. This method is used to define the view that will be rendered. If you don't define it, the default view set in the configuration file will be used. The `render` method will render the view with the props you've defined.
+
+Other methods that can be chained after the `nexus` method are:
 
 ## rootView($root_view)
 
