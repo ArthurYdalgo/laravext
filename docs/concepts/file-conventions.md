@@ -64,7 +64,7 @@ Because using only html can limit how complex your skeleton can be, you can call
 @extends('layouts.app')
 @section('content')
     @startNexus
-        Hold up, {{ auth()->user() ? auth()->user()->name : 'stranger' }}...
+        Hold up, {{ auth()->user()?->name ?? 'stranger' }}...
     @endNexus
 @endsection
 ```
