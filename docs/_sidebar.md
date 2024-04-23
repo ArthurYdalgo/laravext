@@ -12,5 +12,6 @@
     - [Blade Directives](tools/blade-directives.md)
     - [Routing](tools/routing.md)
     - [Nexus Response](tools/nexus-response.md)
+    - [Shared Props](tools/shared-props.md)
 - Misc
     - [About this doc](misc/about-this-doc.md)

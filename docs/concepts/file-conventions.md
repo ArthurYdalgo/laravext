@@ -20,25 +20,25 @@ Most of these are client-side rendered, except for the [Loading/Server Side](/co
 
 Unique UI of a route.
 
-File name: `page.(jsx|vue)`
+File name: `page.(jsx|tsx|js|ts|vue)`
 
 ## Layout
 
 Shared UI for a segment and its children
 
-File name: `layout.(jsx|vue)`
+File name: `layout.(jsx|tsx|js|ts|vue)`
 
 ## Middleware
 
 Shared verifier for a segment and it's children. **REMEMBER** that this is done in the client-side.
 
-File name: `middleware.(jsx|vue)`
+File name: `middleware.(jsx|tsx|js|ts|vue)`
 
 ## Error
 
 Error UI for a segment and its children
 
-File name: `error.(jsx|vue)`
+File name: `error.(jsx|tsx|js|ts|vue)`
 
 ## Loading (Server/Client Side)
 

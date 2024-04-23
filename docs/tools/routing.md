@@ -65,10 +65,10 @@ The (named) parameters:
 - `root_view`: is used to define the root view that will be used to render the component. This will override the default root view [defined in the configuration file](/configuration.md?id=root-view). If nothing is set, the default root view will be used.
 - `parameters`: is a variadic parameter that can be used to pass one or more of the following parameters:
   - `merge_with_existing_route`: wether or not this nexus declaration will be merged to any automagically created route before it by a `Route::laravext()`. This is so that you don't have to redeclare every file convention for that route, and define only those that you want to to override. This defaults to true, but you can set it to false if you want to completely override the automagically generated route.
-  - `middleware`: the path to the `middleware.(jsx|tsx|vue)` file that will be used to this route.
-  - `layout`: the path to the `layout.(jsx|tsx|vue)` file that will be used to this route.
-  - `loading`: the path to the `loading.(jsx|tsx|vue)` file that will be used to this route.
-  - `error`: the path to the `error.(jsx|tsx|vue)` file that will be used to this route.
+  - `middleware`: the path to the `middleware.(jsx|tsx|js|ts|vue)` file that will be used to this route.
+  - `layout`: the path to the `layout.(jsx|tsx|js|ts|vue)` file that will be used to this route.
+  - `loading`: the path to the `loading.(jsx|tsx|js|ts|vue)` file that will be used to this route.
+  - `error`: the path to the `error.(jsx|tsx|js|ts|vue)` file that will be used to this route.
   - `server_skeleton`: the ⚠️**html content**⚠️ of a skeleton that will be server-side rendered. See [FileConvention/Server Side (Basic HTML)](/concepts/file-conventions?id=server-side-basic-html) for more details.
 
 You can also chain methods such as `->middleware('auth')`, `->withoutMiddleware('verified')` or `->name('admin.dashboard')` to the route declaration, as you would with a common route declaration.
@@ -126,4 +126,4 @@ Route::nexus('orders/{order}', '(app)/orders/order/page.jsx', [
 
 <sup>Hint: there's no need to set a root view, as the default one will still be used, but you can override as well, if you want</sub>
 
-On both previous examples, the `order` route param would be available in the `laravext` prop passed to the `page.(jsx|tsx|vue)` component, more specifically in the `laravext.route_params.order` key. Check [Concepts/Laravext Prop](/concepts/laravext-prop) for more details.
+On both previous examples, the `order` route param would be available in the `laravext` prop passed to the `page.(jsx|tsx|js|ts|vue)` component, more specifically in the `laravext.route_params.order` key. Check [Concepts/Laravext Prop](/concepts/laravext-prop) for more details.

@@ -136,7 +136,7 @@ The NavBar component will be rendered and receive the props sent to it in the di
 
 ## Legal Disclaimer
 
-This project has no financial intent, and is meerly a Frankenstein of Inertia.js and Next.js. I fully disclose that it may contain code that is straight up ~~copied from~~ inspired by the [inertia](https://github.com/inertiajs/inertia/) and [inertia-laravel](https://github.com/inertiajs/inertia-laravel) repos ~~, and changed to fit my needs~~.
+This project has no financial intent, and is meerly a Frankenstein of Inertia.js and Next.js. I fully disclose that it may contain code that is straight up ~~copied from~~ inspired by the [inertiajs/inertia](https://github.com/inertiajs/inertia/), [inertiajs/inertia-laravel](https://github.com/inertiajs/inertia-laravel) and [laravel/folio](https://github.com/laravel/folio) repos ~~, and changed to fit my needs~~.
 
 I'm not responsible for anything you do with this code. I might stop supporting this at any given time, so please be aware of that before using it for anything that might be too important to you.
 

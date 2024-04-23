@@ -1,4 +1,4 @@
 .app-name-link > img {
-    width: 75px !important; /* or any other width */
+    width: 100px; /* or any other width */
     height: auto; /* preserve the aspect ratio */
 }
