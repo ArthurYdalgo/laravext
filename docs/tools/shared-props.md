@@ -72,8 +72,8 @@ namespace App\SomeNamespace;
 use Laravext\Laravext;
 
 // some code
-
 Laravext::share('app_name', 'My App With An Original Name');
+Laravext::share('motivation', 'You have bills to pay');
 
 // or
 Laravext::share([
@@ -82,5 +82,8 @@ Laravext::share([
 ]);
 
 // or
-Laravext::withSharedProps(['app_name' => 'My App With An Original Name']);
+Laravext::withSharedProps([
+    'app_name' => 'My App With An Original Name'
+    'motivation' => 'You have bills to pay',
+]);
 ```
