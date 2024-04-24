@@ -1,4 +1,4 @@
-# Laravext
+# Laravext (not yet released, go away!)
 
 ## What is it Laravext?
 
