@@ -6,6 +6,11 @@ use Laravext\Laravext;
 
 Route::redirect('/', 'books');
 
+Route::get("/login-as/{user}", function($user){
+    auth()->loginUsingId($user);
+    return redirect()->to('');
+});
+
 /**
  * This will automagically generate all the file based routes of your application.
  * It creates a route group that you can send parameters/props to.
@@ -74,7 +79,7 @@ Route::laravext();
 
 /**
  * You can also define a custom component to be rendered in the nexus route. This will override the default component created
- * by the laravext router. This will only override the page. Route conventions, route names, etc will be retained...
+ * by the laravext router. This will only override the component. Route conventions, route names, etc will be retained...
  */
 // Route::nexus('dashboard/settings', '(app)/dashboard/page.jsx')->middleware([
 //     // 'auth'
@@ -82,10 +87,6 @@ Route::laravext();
 //     // 'exampleMiddlewareToBeRemoved'
 // ])->name('admin.dashboard.settings');
 
-/**
- * You can also define a custom layout to be used in the nexus route. This will override the default layout created
- * by the laravext router. This will only override the layout. Route conventions, route names, etc will be retained...
- */
 // Route::nexus('dashboard/settings', layout: '(app)/layout.jsx')->middleware([
 //     // 'auth'
 // ])->withoutMiddleware([

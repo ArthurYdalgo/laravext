@@ -1,10 +1,10 @@
 <script setup>
 
 const props = defineProps(['laravext'])
-console.log("loading", props.laravext)
+console.log("layout", props.laravext)
 </script>
 <template>
-  Loading 
+  Layout Order/{Order}
   <br />
   <slot></slot>
 </template>

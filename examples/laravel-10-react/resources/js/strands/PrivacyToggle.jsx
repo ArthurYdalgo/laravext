@@ -4,12 +4,14 @@ import { useEffect } from 'react'
 
 export default ({ laravext, initialState }) => {
     const { active, setActive, toggle } = usePrivacy();
+
+    console.log({laravext})
     
     useEffect(() => {
         if(initialState !== undefined){
             setActive(initialState);
         }
-    }, [initialState]);
+    }, []);
 
     const handleToggle = () => {
         // This is done like this because the active wouldn't always be updated immediately

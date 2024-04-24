@@ -6,6 +6,16 @@ use App\Models\Chapter;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
 
+Route::put("auth/user/privacy", function(){
+    $user = auth()->user();
+
+    $user->update([
+        'privacy' => request('privacy', false)
+    ]);
+
+    return $user;
+})->middleware('auth');
+
 Route::get('books', function () {
     return Book::with('author')->paginate();
 })->name('api.books.index');

@@ -71,7 +71,7 @@ export default ({ laravext, initialState }) => {
         if(initialState !== undefined){
             setActive(initialState);
         }
-    }, [initialState]);
+    }, []);
 
     const handleToggle = () => {
         // This is done like this because the active wouldn't always be updated immediately

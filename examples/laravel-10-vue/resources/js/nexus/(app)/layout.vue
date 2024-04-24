@@ -4,7 +4,8 @@ const props = defineProps(['laravext'])
 console.log("layout", props.laravext)
 </script>
 <template>
-  Layout 
+  Layout Pai
   <br />
   <slot></slot>
+  !Layout Pai
 </template>

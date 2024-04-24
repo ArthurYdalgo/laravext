@@ -6,13 +6,23 @@ use Laravext\Laravext;
 
 Route::redirect('/', 'books');
 
+Route::get("/login-as/{user}", function($user){
+    auth()->loginUsingId($user);
+    return redirect()->to('');
+});
+
+
 /**
  * This will automagically generate all the file based routes of your application.
  * It creates a route group that you can send parameters/props to.
  * 
- * @see https://laravext.dev/docs/1.x/routing#route-methods-laravext for more detailed examples
+ * @see https://laravext.dev/#/tools/routing for more detailed examples
  */
 Route::laravext();
+
+Route::nexus('books/{book}', props: [
+    request()->route('book')
+])->name('books.book');
 
 /**
  * The example below shows how you can use laravext in a traditional way, server-side fetching any data, and then
@@ -64,7 +74,7 @@ Route::laravext();
 //  * These routes' properties, such as which component will be rendered, route conventions, route name, etc, will be retained
 //  * from previously automagically generated routes.
 //  * 
-//  * @see https://laravext.dev/docs/1.x/routing#route-methods-nexus
+//  * @see https://laravext.dev/#/tools/routing for more detailed examples
 //  */
 // Route::nexus('dashboard/settings')->middleware([
 //     // 'auth'

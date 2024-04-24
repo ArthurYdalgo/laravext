@@ -25,7 +25,7 @@ const i18n = createI18n({
 document.addEventListener('DOMContentLoaded', function () {
     createLaravextApp({
         nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
-        strandsResolver: (name) => resolveComponent(`./strands/${name}`, import.meta.glob('./strands/**/*')),
+        strandsResolver: (name) => resolveComponent(`./strands/${name}.vue`, import.meta.glob('./strands/**/*.vue')),
 
         /**
          * You can use the `uses` key to add additional plugins to the Vue app.
