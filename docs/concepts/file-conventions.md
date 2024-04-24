@@ -46,6 +46,8 @@ Example:
 
 #### **React**
 
+You might want to use [react-error-boundary](https://www.npmjs.com/package/react-error-boundary) to handle errors in your components. I wanted to keep external libraries to a minimum in the examples, so I've created a simple error boundary component [based on React's documentation](https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary).
+
 <!-- tabs:start -->
 
 #### **error.jsx**
@@ -105,6 +107,8 @@ export default ErrorBoundary;
 <!-- tabs:end -->
 
 #### **Vue**
+
+You might want to use [vue-error-boundary](https://www.npmjs.com/package/vue-error-boundary) to handle errors in your components. I wanted to keep external libraries to a minimum in the examples, so I've created a simple error boundary component [based on Vue's documentation](https://vuejs.org/error-reference/).
 
 <!-- tabs:start -->
 
