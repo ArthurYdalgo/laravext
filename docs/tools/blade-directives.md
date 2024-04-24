@@ -57,7 +57,9 @@ For some context, here's the component:
 
 #### **React**
 
-`PrivacyToggle.jsx`:
+<!-- tabs:start -->
+
+#### **PrivacyToggle.jsx**
 
 ```jsx
 import usePrivacy from '@/hooks/usePrivacy'
@@ -88,9 +90,29 @@ export default ({ laravext, initialState }) => {
 }
 ```
 
+#### **usePrivacy.js**
+
+⚠️This example uses the [zustand](https://github.com/pmndrs/zustand) package⚠️
+
+```js
+import { create } from 'zustand'
+
+const usePrivacy = create((set) => ({
+  active: false,
+  setActive: (active) => set(() => ({ active })),
+  toggle: () => set((state) => ({ active: !state.active })),
+}))
+
+export default usePrivacy;
+```
+
+<!-- tabs:end -->
+
 #### **Vue**
 
-`PrivacyToggle.vue`:
+<!-- tabs:start -->
+
+#### **PrivacyToggle.vue**
 
 ```vue
 <script setup>
@@ -117,6 +139,24 @@ const handleToggle = () => {
     </span>
 </template>
 ```
+
+#### **usePrivacy.js**
+
+```js
+import { reactive } from 'vue'
+
+export const privacy = reactive({
+  active: false,
+  toggle() {
+    this.active = !this.active
+  },
+  setActive(value) {
+    this.active = value
+  }
+})
+```
+
+<!-- tabs:end -->
 
 <!-- tabs:end -->
 
