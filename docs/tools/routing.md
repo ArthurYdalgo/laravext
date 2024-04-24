@@ -94,7 +94,10 @@ use App\Models\Order;
 Route::laravext();
 
 Route::nexus('orders/{order}', props: [
-    'order' => request()->route('order')
+    'order' => request()->route('order'),
+
+    // or ...
+    'order' => Order::find(request()->route('order'))
 ],layout: '(app)/layout.jsx')->middleware([
     'auth',
     'can:read,order' // assuming you have a policy for the Order model
@@ -103,7 +106,7 @@ Route::nexus('orders/{order}', props: [
 ])->name('admin.orders.order');
 ```
 
-<sup>⚠️Important note⚠️: you'll need to use [Laravel's explicit binding](https://laravel.com/docs/11.x/routing#explicit-binding) so that `request()->route('order')` returns the model itself. As of today, the implicit binding isn't working (hopefully it'll change in the future)</sub>
+<sup>⚠️Important note⚠️: you can use [Laravel's explicit binding](https://laravel.com/docs/11.x/routing#explicit-binding) so that `request()->route('order')` returns the model itself. Remember to set your middlewares accordingly (like the `can:read,order` from the example), so that you don't send any sensitive information to the client that shouldn't be there.</sub>
 
 Once again, this declaration will already know the page file conventions to use because it was already found before to this uri before. If you want to completely override the automagically generated route's file conventions, you can set the `merge_with_existing_route` parameter to `false`:
 
