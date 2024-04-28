@@ -20,7 +20,12 @@ export function findStrands() {
     return strands;
 }
 
-export function createLaravextApp({ nexusResolver, strandsResolver, uses = [] }) {
+export function createLaravextApp({ nexusResolver, strandsResolver, uses = [], conventions = [
+    'error',
+    'loading',
+    'layout',
+    'middleware',
+] }) {
     const laravext = window.__laravext;
     const env = import.meta.env.VITE_APP_ENV ?? 'production';
     const isEnvProduction = !['development', 'local'].includes(env);
@@ -43,14 +48,8 @@ export function createLaravextApp({ nexusResolver, strandsResolver, uses = [] })
                             laravext
                         }),
                     });
-                    
-                    const conventions = [
-                        'page',
-                        'error',
-                        'middleware',
-                        'layout',
-                        'loading',
-                    ];
+
+                    conventions = conventions.filter(convention => convention !== 'page');
 
                     for (let i = 0; i < conventions.length; i++) {
                         if (laravext?.nexus?.[conventions[i]]) {

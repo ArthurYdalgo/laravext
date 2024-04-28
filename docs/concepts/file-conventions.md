@@ -1,20 +1,68 @@
 # File Conventions
 
-File conventions are special files that are used when rendering a nexus. They follow the hierarchy below:
+File conventions are special files that are used when rendering a nexus, and they are inspired by the [Next.js' file conventions](https://nextjs.org/docs/app/building-your-application/routing#file-conventions). They follow the hierarchy below:
 
-```jsx
-<Loading>
+```
+<Middleware>
   <Layout>
-    <Middleware>
+    <Loading>
       <Error>
         <Page />
       </Error>
-    </Middleware>
+    </Loading>
   </Layout>
-</Loading>
+</Middleware>
 ```
 
 Most of these are client-side rendered, except for the [Loading/Server Side](/concepts/file-conventions?id=server-side-basic-html)
+
+You can modify this hierarchy by sending the list of conventions when calling the `createLaravextApp`. The list of the conventions should be an array of strings, and should be in order that you want to be rendered from the inside out after the page. The default list of conventions is:
+
+```javascript
+[
+  'error',
+  'loading',
+  'layout',
+  'middleware',
+]
+```
+
+There's no need to include the `page` convention, as it's filtered out before the list is used. Here's an example:
+
+```javascript
+// For Vue
+import { createLaravextApp, resolveComponent } from "@laravext/vue"
+
+// For React
+import { createLaravextApp, resolveComponent } from "@laravext/react"
+
+createLaravextApp({
+    nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
+
+    // ...
+
+    conventions: [
+        'error',
+        'loading',
+        'middleware',
+        'layout',
+    ]
+})
+```
+
+In this example, the file hierarchy would be:
+
+```
+<Layout>
+  <Middleware>
+    <Loading>
+      <Error>
+        <Page />
+      </Error>
+    </Loading>
+  </Middleware>
+</Layout>
+```
 
 ## Page
 
