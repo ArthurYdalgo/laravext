@@ -5,6 +5,7 @@ Table users {
   id integer [primary key]
   name integer 
   privacy boolean
+  locale string
   created_at timestamp
   updated_at timestamp
 }
