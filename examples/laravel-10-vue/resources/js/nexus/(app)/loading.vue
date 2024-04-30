@@ -7,4 +7,6 @@ console.log("loading", props.laravext)
   Loading Pai
   <br />
   <slot></slot>
+  <br /> 
+  !Loading Pai
 </template>

@@ -4,27 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Comment extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
-    protected $fillable = [
-        'user_id',
-        'chapter_id',
-        'content',
-    ];
+    protected $fillable = ['content', 'project_id', 'user_id'];
 
-    public function user(){
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
+    }
+
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
-
-    public function chapter(){
-        return $this->belongsTo(Chapter::class);
-    }
-
-    public function book(){
-        return $this->chapter->book();
-    }
-
 }

@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Chapter>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Company>
  */
-class ChapterFactory extends Factory
+class CompanyFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,8 +17,8 @@ class ChapterFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => str($this->faker->sentence)->limit(500)->toString(),
-            'content' => $this->faker->paragraph(20),
+            'name' => $this->faker->company,
+            'email' => $this->faker->unique()->safeEmail,
         ];
     }
 }

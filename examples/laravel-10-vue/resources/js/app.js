@@ -4,21 +4,13 @@ import { createLaravextApp, resolveComponent } from "@laravext/vue"
 
 import VueCookies from 'vue-cookies'
 import { createI18n } from 'vue-i18n'
+import pt from './../../lang/pt.json'
 
 const i18n = createI18n({
-    locale: 'en',
+    locale: 'pt',
     fallbackLocale: 'en',
     messages: {
-        en: {
-            message: {
-                hello: 'hello world'
-            }
-        },
-        ja: {
-            message: {
-                hello: 'こんにちは、世界'
-            }
-        }
+        pt
     }
 })
 

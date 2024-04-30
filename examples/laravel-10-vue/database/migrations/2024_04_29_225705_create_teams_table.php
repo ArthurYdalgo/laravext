@@ -11,8 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->boolean('privacy')->default(0)->after('password');
+        Schema::create('teams', function (Blueprint $table) {
+            $table->id();
+
+            $table->string("name");
+
+            $table->softDeletes();
+            $table->timestamps();
         });
     }
 
@@ -21,8 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('privacy');
-        });
+        Schema::dropIfExists('teams');
     }
 };

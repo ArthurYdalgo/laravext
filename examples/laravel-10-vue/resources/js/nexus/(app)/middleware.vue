@@ -7,4 +7,6 @@ console.log("middleware", props.laravext)
   Middleware 
   <br /> 
   <slot></slot>
+  <br /> 
+  !Middleware
 </template>

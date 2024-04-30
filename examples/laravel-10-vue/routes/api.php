@@ -1,46 +1,29 @@
 <?php
 
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\CurrentUserController;
+use App\Http\Controllers\DeveloperController;
+use App\Http\Controllers\ProjectCommentController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ProjectDeveloperController;
+use App\Http\Controllers\TeamController;
 use App\Models\Author;
 use App\Models\Book;
 use App\Models\Chapter;
 use App\Models\User;
+
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Route;
 
-Route::put("auth/user/privacy", function(){
-    $user = auth()->user();
-
-    $user->update([
-        'privacy' => request('privacy', false)
-    ]);
-
-    return $user;
-})->middleware('auth');
-
-Route::get('books', function () {
-    return Book::with('author')->paginate();
-})->name('api.books.index');
-
-Route::get('books/{slug}', function ($slug) {
-    $book = Book::where('slug', $slug)->with('author')->firstOrFail();
-    return $book;
-})->name('api.books.book.show');
-
-Route::get('books/{book}/comments', function (Book $book) {
-    return $book->comments()->with('user')->paginate();
-})->name('api.books.book.comments.index');
-
-Route::get('books/{book}/chapters', function (Book $book) {
-    return $book->chapters()->paginate();
-})->name('api.books.book.chapters.index');
-
-Route::get('chapters/{chapter}', function (Chapter $chapter) {
-    return $chapter;
-})->name('api.chapters.chapter.show');
-
-Route::get('authors/{author}/books', function (Author $author) {
-    return $author->books()->paginate();
-})->name('api.authors.author.books.book.index');
-
-Route::get('users', function () {
-    return User::paginate();
-})->name('api.users.index');
+Route::group([
+    // 'middleware' => 'auth'
+], function(){
+    Route::put("auth/user", [CurrentUserController::class, 'update']);
+    
+    Route::apiResource('developers', DeveloperController::class);
+    Route::apiResource('teams', TeamController::class);
+    Route::apiResource('companies', CompanyController::class);
+    Route::apiResource('projects', ProjectController::class);
+    Route::apiResource('projects.comments', ProjectCommentController::class);
+    Route::apiResource('projects.developers', ProjectDeveloperController::class)->only(['store', 'update', 'destroy']);
+});

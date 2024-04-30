@@ -52,7 +52,7 @@
     "repositories": [
         {
             "type": "path",
-            "url": "../laravext/packagist",
+            "url": "../../packagist",
             "options": {
                 "symlink": true
             }

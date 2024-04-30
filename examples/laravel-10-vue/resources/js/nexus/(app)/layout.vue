@@ -7,5 +7,6 @@ console.log("layout", props.laravext)
   Layout Pai
   <br />
   <slot></slot>
+  <br /> 
   !Layout Pai
 </template>

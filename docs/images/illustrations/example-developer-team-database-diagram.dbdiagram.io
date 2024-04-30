@@ -5,7 +5,6 @@ Table users {
   id integer [primary key]
   name integer 
   privacy boolean
-  locale string
   created_at timestamp
   updated_at timestamp
 }
@@ -46,8 +45,21 @@ Table teams {
   updated_at timestamp
 }
 
+Table comments {
+  id integer [primary key]
+  user_id integer
+  project_id integer
+  content text
+  created_at timestamp
+  updated_at timestamp
+}
+
 Ref: "companies"."id" < "projects"."company_id"
 
 Ref: "teams"."id" < "developers"."team_id"
 
 Ref: "teams"."id" < "projects"."team_id"
+
+Ref: "projects"."id" < "comments"."project_id"
+
+Ref: "users"."id" < "comments"."user_id"

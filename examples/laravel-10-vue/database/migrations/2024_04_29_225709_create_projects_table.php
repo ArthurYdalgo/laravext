@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Company;
+use App\Models\Team;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,13 +13,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('authors', function (Blueprint $table) {
+        Schema::create('projects', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(Company::class)->nullable()->constrained()->nullOnDelete();
+            $table->foreignIdFor(Team::class)->nullable()->constrained()->nullOnDelete();
 
             $table->string('name');
-            $table->string('email')->unique();
-            $table->date('birthday');
+            $table->text('description')->nullable();
 
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -27,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('authors');
+        Schema::dropIfExists('projects');
     }
 };
