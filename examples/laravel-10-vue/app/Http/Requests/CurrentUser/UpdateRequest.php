@@ -24,6 +24,7 @@ class UpdateRequest extends FormRequest
         return [
             'privacy' => 'nullable:boolean',
             'locale' => 'nullable|string',
+            'name' => 'nullable|string',
         ];
     }
 }

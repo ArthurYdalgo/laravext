@@ -20,13 +20,23 @@
 								"type": "text"
 							}
 						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"default@email.com\",\r\n    \"password\": \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{app-url}}/api/login",
+							"raw": "{{app-url}}/api/auth/login",
 							"host": [
 								"{{app-url}}"
 							],
 							"path": [
 								"api",
+								"auth",
 								"login"
 							]
 						}
@@ -37,21 +47,75 @@
 					"name": "Logout",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{app-url}}/api/logout?Accept=application/json",
+							"raw": "{{app-url}}/api/auth/logout",
 							"host": [
 								"{{app-url}}"
 							],
 							"path": [
 								"api",
+								"auth",
 								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Current User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{app-url}}/api/auth/user",
+							"host": [
+								"{{app-url}}"
 							],
-							"query": [
-								{
-									"key": "Accept",
-									"value": "application/json"
+							"path": [
+								"api",
+								"auth",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Current User",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Arthur Ydalgo\",\r\n    \"locale\": \"pt\",\r\n    \"privacy\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
+							}
+						},
+						"url": {
+							"raw": "{{app-url}}/api/auth/user",
+							"host": [
+								"{{app-url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"user"
 							]
 						}
 					},

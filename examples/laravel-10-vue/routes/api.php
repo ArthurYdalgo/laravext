@@ -7,18 +7,20 @@ use App\Http\Controllers\ProjectCommentController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectDeveloperController;
 use App\Http\Controllers\TeamController;
-use App\Models\Author;
-use App\Models\Book;
-use App\Models\Chapter;
-use App\Models\User;
-
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
-    // 'middleware' => 'auth'
+    'prefix' => 'auth'
 ], function(){
-    Route::put("auth/user", [CurrentUserController::class, 'update']);
+    Route::get("user", [CurrentUserController::class, 'show'])->middleware('auth');
+    Route::put("user", [CurrentUserController::class, 'update'])->middleware('auth');
+    Route::post('login', [CurrentUserController::class, 'login']);
+    Route::post('logout', [CurrentUserController::class, 'logout'])->middleware('auth');
+});
+
+Route::group([
+    'middleware' => 'auth'
+], function(){
     
     Route::apiResource('developers', DeveloperController::class);
     Route::apiResource('teams', TeamController::class);
