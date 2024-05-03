@@ -90,6 +90,7 @@ export function createLaravextApp({ nexusResolver, strandsResolver, uses = [], c
                     app.mount(nexusElement);
                 }).catch((error) => {
                     console.error(`Error loading page at ${nexusComponentPath}:`, error);
+                    throw error;
                 });
             }
         });

@@ -3,8 +3,10 @@ import '../css/app.css';
 import { createLaravextApp, resolveComponent } from "@laravext/vue"
 
 import VueCookies from 'vue-cookies'
+
 import { createI18n } from 'vue-i18n'
 import pt from './../../lang/pt.json'
+import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 
 const i18n = createI18n({
     locale: 'pt',
@@ -25,6 +27,8 @@ document.addEventListener('DOMContentLoaded', function () {
         uses: [
             /** @see https://www.npmjs.com/package/vue-cookies for original example */
             { plugin: VueCookies, options: { expires: '7d' } },
+
+            { plugin: ZiggyVue },
 
             /** @see https://vue-i18n.intlify.dev/guide/essentials/started.html for original example */
             { plugin: i18n },
