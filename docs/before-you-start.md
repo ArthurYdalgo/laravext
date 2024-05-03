@@ -49,7 +49,6 @@ export default ({laravext}) => {
 
 ```vue
 <script setup>
-import { defineProps } from 'vue'
 const { laravext } = defineProps(['laravext'])
 
 </script>

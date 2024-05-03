@@ -5,7 +5,7 @@ use App\Http\Controllers\CurrentUserController;
 use App\Http\Controllers\DeveloperController;
 use App\Http\Controllers\ProjectCommentController;
 use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\ProjectDeveloperController;
+use App\Http\Controllers\TeamDeveloperController;
 use App\Http\Controllers\TeamController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,10 +22,13 @@ Route::group([
     'middleware' => 'auth'
 ], function(){
     
-    Route::apiResource('developers', DeveloperController::class);
     Route::apiResource('teams', TeamController::class);
+    Route::apiResource('teams.developers', TeamDeveloperController::class)->only(['store', 'index']);
+    Route::put('teams/{team}/developers', [TeamDeveloperController::class, 'update'])->name('teams.developers.update');
+    Route::delete('teams/{team}/developers', [TeamDeveloperController::class, 'destroy'])->name('teams.developers.destroy');
+    
+    Route::apiResource('developers', DeveloperController::class);
     Route::apiResource('companies', CompanyController::class);
     Route::apiResource('projects', ProjectController::class);
-    Route::apiResource('projects.comments', ProjectCommentController::class);
-    Route::apiResource('projects.developers', ProjectDeveloperController::class)->only(['store', 'update', 'destroy']);
+    Route::apiResource('projects.comments', ProjectCommentController::class)->except(['show']);
 });

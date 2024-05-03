@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'default@email.com'
         ]);
         
-        User::factory(20)->create();
+        $users = User::factory(20)->create();
 
         Company::factory(20)->hasProjects(10)->create();
 
@@ -65,6 +65,19 @@ class DatabaseSeeder extends Seeder
         
         foreach ($projects as $project) {
             $project->update(['team_id' => $teams->random()->id]);
+
+            foreach($users->random(random_int(10,20)) as $user) {
+                $user->comments()->create([
+                    'content' => fake()->text(random_int(200,500)),
+                    'project_id' => $project->id
+                ]);
+            }
+
+            $user->comments()->create([
+                'content' => fake()->text(random_int(200,500)),
+                'project_id' => $project->id,
+                'deleted_at' => now()
+            ]);
         }
 
 

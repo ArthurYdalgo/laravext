@@ -11,7 +11,9 @@ class UpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        $comment = $this->route('comment');
+
+        return $comment->user->is(auth()->user());
     }
 
     /**
@@ -22,7 +24,7 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'content' => 'required|string|max:32767',
+            'content' => 'sometimes|string|max:32767',
         ];
     }
 }

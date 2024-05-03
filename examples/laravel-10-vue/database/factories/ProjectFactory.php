@@ -18,6 +18,9 @@ class ProjectFactory extends Factory
     {
         return [
             'name' => $this->faker->randomElement([
+                "Catedral de Brasília",
+                "Palácio da Alvorada",
+                "Cristo Redentor",
                 "Death Star",
                 "Tower of Babel",
                 "Starkiller Base",

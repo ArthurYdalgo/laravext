@@ -22,10 +22,10 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
+            'name' => 'sometimes|string|min:5|max:255',
             'description' => 'nullable|string',
-            'team_id' => 'required|integer|exists:teams,id',
-            'company_id' => 'required|integer|exists:companies,id',
+            'team_id' => 'sometimes|integer|exists:teams,id',
+            'company_id' => 'sometimes|integer|exists:companies,id',
         ];
     }
 }

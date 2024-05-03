@@ -10,7 +10,7 @@ class Comment extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['content', 'project_id', 'user_id'];
+    protected $fillable = ['content', 'project_id', 'user_id', 'deleted_at'];
 
     public function project()
     {

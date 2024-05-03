@@ -3,7 +3,7 @@
 Every time a component is rendered by the `createLaravextApp`, a `laravext` props is passed to it. Considering the previous example from the [Concepts/Router](/concepts/router) page, having a `./resources/js/nexus/dashbord/orders/{order}/page.(jsx|tsx|js|ts|vue)`:
 
 <!-- tabs:start -->
-<!-- @todo -->
+
 #### **React**
 
 ```jsx
@@ -20,11 +20,9 @@ export default ({laravext}) => {
 ```
 
 #### **Vue**
-<!-- @todo -->
 
 ```vue
 <script setup>
-import { defineProps } from 'vue'
 const { laravext } = defineProps(['laravext'])
 
 </script>

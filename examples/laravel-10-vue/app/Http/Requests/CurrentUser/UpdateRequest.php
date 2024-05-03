@@ -22,9 +22,9 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'privacy' => 'nullable:boolean',
-            'locale' => 'nullable|string',
-            'name' => 'nullable|string',
+            'privacy' => 'sometimes|boolean',
+            'locale' => 'sometimes|string',
+            'name' => 'sometimes|string|min:5|max:255',
         ];
     }
 }

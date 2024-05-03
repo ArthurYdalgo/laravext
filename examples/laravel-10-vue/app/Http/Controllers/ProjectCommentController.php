@@ -2,53 +2,43 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Project\Comment\DestroyRequest;
 use App\Http\Requests\Project\Comment\StoreRequest;
 use App\Http\Requests\Project\Comment\UpdateRequest;
-use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\CommentResource;
 use App\Models\Comment;
 use App\Models\Project;
-use Illuminate\Http\Request;
 
 class ProjectCommentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Project $project)
     {
-        return JsonResource::collection($project->comments()->latest()->paginate());
+        $comments = $project->comments()
+            ->with(['user'])
+            ->withTrashed()
+            ->latest()->paginate();
+
+        return CommentResource::collection($comments);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreRequest $request, Project $project)
     {
-        return $project->comments()->create($request->validated());
+        $data = $request->validated();
+        $data['user_id'] = auth()->id();
+
+        $comment = $project->comments()->create($data);
+
+        return new CommentResource($comment);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Project $project, Comment $comment)
-    {
-        return $comment;
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateRequest $request, Project $project, Comment $comment)
     {
         $comment->update($request->validated());
 
-        return $comment;
+        return new CommentResource($comment);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Project $project, Comment $comment)
+    public function destroy(DestroyRequest $request, Project $project, Comment $comment)
     {
         $comment->delete();
 

@@ -9,33 +9,23 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class TeamController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         return JsonResource::collection(Team::withCount(['developers'])->paginate());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreRequest $request)
     {
         return Team::create($request->validated());
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Team $team)
     {
+        $team->loadCount(['developers']);
+        
         return $team;
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateRequest $request, Team $team)
     {
         $team->update($request->validated());
@@ -43,9 +33,6 @@ class TeamController extends Controller
         return $team;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Team $team)
     {
         $team->delete();
