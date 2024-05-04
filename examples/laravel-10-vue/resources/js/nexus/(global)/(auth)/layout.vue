@@ -3,12 +3,20 @@ import { ref } from 'vue';
 import ApplicationLogo from '@/components/ApplicationLogo.vue';
 import Dropdown from '@/components/Dropdown.vue';
 import DropdownLink from '@/components/DropdownLink.vue';
+import DropdownButton from '@/components/DropdownButton.vue';
 import NavLink from '@/components/NavLink.vue';
+import Link from '@/components/Link.vue';
 import ResponsiveNavLink from '@/components/ResponsiveNavLink.vue';
+import axios from 'axios';
 
 const {laravext} = defineProps(['laravext']);
 
 const {shared_props} = laravext;
+
+const logout = async () => {
+    await axios.post('/api/auth/logout');
+    window.location.href = '/';
+};
 
 const showingNavigationDropdown = ref(false);
 </script>
@@ -23,16 +31,17 @@ const showingNavigationDropdown = ref(false);
                         <div class="flex">
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
-                                
+                                <Link routeName='dashboard'>
                                     <ApplicationLogo
                                         class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200"
                                     />
+                                </Link>
                                 
                             </div>
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink :routeName="dashboard">
+                                <NavLink routeName="dashboard">
                                     Dashboard
                                 </NavLink>
                             </div>
@@ -67,10 +76,10 @@ const showingNavigationDropdown = ref(false);
                                     </template>
 
                                     <template #content>
-                                        <DropdownLink > Profile </DropdownLink>
-                                        <DropdownLink method="post" as="button">
+                                        <DropdownLink routeName='profile'> Profile </DropdownLink>
+                                        <DropdownButton @click="logout">
                                             Log Out
-                                        </DropdownLink>
+                                        </DropdownButton>
                                     </template>
                                 </Dropdown>
                             </div>

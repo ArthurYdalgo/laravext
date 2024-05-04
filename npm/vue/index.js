@@ -20,6 +20,20 @@ export function findStrands() {
     return strands;
 }
 
+export const Head = defineComponent({
+    props: {
+        title: String
+    },
+    mounted() {
+        if(this.title){
+            document.title = this.title;
+        }
+    },
+    render() {
+        return null;
+    }
+});
+
 export function createLaravextApp({ nexusResolver, strandsResolver, uses = [], conventions = [
     'error',
     'loading',
@@ -43,7 +57,7 @@ export function createLaravextApp({ nexusResolver, strandsResolver, uses = [], c
 
                     let pageComponent = NexusComponent.default
 
-                    let renderer = () => h(pageComponent, {laravext}, {
+                    let renderer = () => h(pageComponent, { laravext }, {
                         props: () => ({
                             laravext
                         }),
@@ -58,12 +72,12 @@ export function createLaravextApp({ nexusResolver, strandsResolver, uses = [], c
                                     console.log(`Loading convention ${conventions[i]} at ${laravext?.nexus?.[conventions[i]]}`)
                                 };
                                 let conventionComponent = (await nexusResolver(laravext?.nexus?.[conventions[i]])).default;
-                                if(!isEnvProduction){
+                                if (!isEnvProduction) {
                                     console.log(`Convention ${conventions[i]} at ${laravext?.nexus?.[conventions[i]]} loaded successfully`);
                                 }
 
                                 const previousRenderer = renderer;
-                                renderer = () => h(conventionComponent, {laravext}, {
+                                renderer = () => h(conventionComponent, { laravext }, {
                                     default: () => previousRenderer(),
                                     props: () => ({
                                         laravext
@@ -80,7 +94,7 @@ export function createLaravextApp({ nexusResolver, strandsResolver, uses = [], c
                             return renderer()
                         }
                     });
-                    
+
                     const app = createApp(rootComponent);
 
                     for (let i = 0; i < uses.length; i++) {

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Head } from '@laravext/react';
 
 export default ({ laravext }) => {
 
@@ -9,6 +10,7 @@ export default ({ laravext }) => {
     }
 
     return (<div>
+        <Head title="React Page" />
         <button onClick={() => setShouldCauseError(true)}>
             Click me to cause an error
         </button>

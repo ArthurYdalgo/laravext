@@ -25,6 +25,7 @@ class UpdateRequest extends FormRequest
             'privacy' => 'sometimes|boolean',
             'locale' => 'sometimes|string',
             'name' => 'sometimes|string|min:5|max:255',
+            'theme' => 'sometimes|string|in:light,dark',
         ];
     }
 }

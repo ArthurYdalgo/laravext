@@ -1761,6 +1761,15 @@
 								"type": "text"
 							}
 						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"New Name\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "{{app-url}}/api/teams/:team_id",
 							"host": [
@@ -1774,7 +1783,7 @@
 							"variable": [
 								{
 									"key": "team_id",
-									"value": ""
+									"value": "1"
 								}
 							]
 						}

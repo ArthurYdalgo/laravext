@@ -21,6 +21,14 @@ export function findStrands() {
     return strands;
 }
 
+export function Head({ title }) {
+    if(title){
+        document.title = title;
+    }
+
+    return null;
+}
+
 export function createLaravextApp({ nexusResolver, strandsResolver, conventions = [
     'error',
     'loading',
