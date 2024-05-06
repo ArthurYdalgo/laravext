@@ -14,7 +14,7 @@ const props = defineProps({
     },
 });
 
-let href = props.href || (props.routeName && route().has(props.routeName) && route(props.routeName));
+let href = props.href ? props.href : (props.routeName && route().has(props.routeName) ? route(props.routeName) : '');
 let classes = props.classes ?? '';
 
 </script>
