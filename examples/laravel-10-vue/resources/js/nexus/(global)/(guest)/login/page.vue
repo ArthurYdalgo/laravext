@@ -12,9 +12,32 @@ let form = reactive({
     email: '',
     password: '',
     remember: false,
-    errors: {},
+    response: null,
     processing: false,
 });
+
+const submit = async () => {
+    form.processing = true;
+
+    const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            email: form.email,
+            password: form.password,
+            remember: form.remember,
+        }),
+    });
+
+    if (response.ok) {
+        window.location.href = route('dashboard');
+    } else {
+        form.response = await response.json();
+        form.processing = false;
+    }
+};
 
 </script>
 
@@ -32,7 +55,7 @@ let form = reactive({
                 <TextInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autofocus
                     autocomplete="username" />
 
-                <InputError class="mt-2" :message="form.errors.email" />
+                <InputError class="mt-2" :message="form.response?.errors?.email" />
             </div>
 
             <div class="mt-4">
@@ -41,7 +64,7 @@ let form = reactive({
                 <TextInput id="password" type="password" class="mt-1 block w-full" v-model="form.password" required
                     autocomplete="current-password" />
 
-                <InputError class="mt-2" :message="form.errors.password" />
+                <InputError class="mt-2" :message="form.response?.errors?.password" />
             </div>
 
             <div class="block mt-4">

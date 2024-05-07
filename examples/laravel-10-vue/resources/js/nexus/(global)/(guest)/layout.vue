@@ -13,30 +13,29 @@ const { shared_props } = laravext;
             <div class=" w-full px-6 lg:max-w-7xl">
                 <header class="gap-2 py-6 ">
                     <nav class="-mx-3 flex flex-1 justify-end">
-                        <Link routeName="dashboard"
+                        <Link href='/'
                             class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
                             Home
                         </Link>
-                        <Link routeName="dashboard"
+                        <Link routeName="our-projects"
                             class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
                             Our Projects
                         </Link>
-                        <Link routeName="dashboard"
+                        <Link routeName="our-teams"
                             class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
                             Our Teams
                         </Link>
-                        <Link routeName="dashboard"
+                        <Link routeName="contact-us"
                             class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
                             Contact
                         </Link>
+
                         <span class="text-black/50 py-2 dark:text-white/50">|</span>
 
                         <Link v-if="shared_props.auth.user" routeName="dashboard"
                             class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
                             Dashboard
                         </Link>
-
-
 
                         <Link v-if="!shared_props.auth.user" routeName="login"
                             class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">

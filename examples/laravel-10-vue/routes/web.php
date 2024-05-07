@@ -19,6 +19,8 @@ Route::get("/login-as/{user}", function($user){
  */
 Route::laravext();
 
+Route::nexus("contact-us", "(guest)/contact-us/page.vue", root_view: "sections.contact-us")->name('contact-us');
+
 /**
  * The example below shows how you can use laravext in a traditional way, server-side fetching any data, and then
  * rendering a nexus (or a view) with the fetched data. This is useful for SEO purposes, as the data will be
