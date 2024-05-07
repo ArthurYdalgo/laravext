@@ -54,6 +54,13 @@ Table comments {
   updated_at timestamp
 }
 
+Table contact_requests {
+  id integer [primary key]
+  name varchar
+  email varchar
+  message text
+}
+
 Ref: "companies"."id" < "projects"."company_id"
 
 Ref: "teams"."id" < "developers"."team_id"

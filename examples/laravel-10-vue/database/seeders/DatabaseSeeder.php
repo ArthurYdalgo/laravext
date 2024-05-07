@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\Author;
 use App\Models\Company;
+use App\Models\ContactRequest;
 use App\Models\Developer;
 use App\Models\Project;
 use App\Models\Team;
@@ -80,6 +81,6 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-
+        ContactRequest::factory(20)->create();
     }
 }
