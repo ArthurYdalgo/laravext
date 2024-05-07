@@ -31,7 +31,7 @@ It's not a server-side renderer of any React/Vue component, as it'd require some
 
 ## Why does it exist?
 
-First things first: I don't claim that this is supposed to replace or be better then Next.js/Inertia.js, as each project may have different kind of needs and it's team might have it's preference, and maybe just using blade files with [Laravel Folio](https://laravel.com/docs/10.x/folio) to automagically create routes from them could be enough for you, or maybe the [TALL](https://tallstack.dev/) stack is the right choice for you.
+First things first: I don't claim that this is supposed to replace or be better then Next.js/Inertia.js, as each project may have different kind of needs and it's team might have it's preference, and maybe just using blade files with [Laravel Folio](https://laravel.com/docs/10.x/folio) to automagically create routes from them could be enough for you, or maybe the [TALL](https://tallstack.dev/) stack is the right choice for you, or maybe [Nuxt.js](https://nuxtjs.org/) is the way to go for you.
 
 I wanted to get what I (personally) considered the best parts of Inertia.js and Next.js, and put them together. This was going to be inside a project of mine, but then I realized I could actually try to make a package for other people to use, and I would try to learn something along the way about how to build composer and npm packages.
 
@@ -45,13 +45,35 @@ Before somebody light up their torches or grab their forks: the following points
 
 Inertia.js offers server-side rendering of React/Vue pages, but it requires that you keep a `php artisan inertia:start-ssr` artisan command running through supervisor or something similar, which may not be available in a shared environment. You also don't have an out-of-the-box file-based routing system like the one Next.js offers. (To the best of my knoledge, at the time of writting)
 
-Next.js offers server-side rendering of React components, and a great routing system, but I (personally) don't like their caching strategy, and for my use cases there was the need to slap a `"use client"` for nearly all pages. I felt a really degraded developer experience while using it, so for me became a no-no. I have other points about it, but I feel that the ["Why I Won't Use Next.js" article](https://www.epicweb.dev/why-i-wont-use-nextjs) from Kent C. Dodds summarizes most of what I mean way better than I could. It's a good reading if you're interested. 
+Next.js offers server-side rendering of React components, and a great routing system, but I (personally) don't like their caching strategy, and for my use cases there was the need to slap a `"use client"` for nearly all pages. I felt a really degraded developer experience while using it, so for me it'd make sense to have a way of being 'use client' by default, and 'use server' when needed. I have other points about it, but I feel that the ["Why I Won't Use Next.js" article](https://www.epicweb.dev/why-i-wont-use-nextjs) from Kent C. Dodds summarizes most of what I mean way better than I could. It's a good reading if you're interested. 
 
 But, once again, I don't want to trash talk Next.js, or Inertia or any other tool. You should use whatever makes you more productive and pays your bills, and in the end, quoting Kent:
 
 "Whatever you use is probably fine.
 
 Your tool choice matters much less than your skill at using the tool to accomplish your desired outcome (a great user experience)."
+
+## Who is it for?
+
+My take is that you might be interested in using Laravext if you fall into one or more of the following categories:
+- you want to have a file-based routing system like Next.js (because you don't want to use react router or vue router)
+- you don't want to set up a separate project for your frontend (like Next.js or Nuxt.js)
+- you want some kind of flexibility to sometimes have a partially server-side rendered page for SEO purposes (and don't want to use Inertia.js)
+- you don't like the way Next.js handles their caching strategy
+- you don't want to slap a `"use client"` in nearly all component you have in your app because it becomes cubersome
+
+## Who is it **not** for?
+
+I'll try to be as less biased as possible, but you might not be interested in using Laravext if you fall into one or more of the following categories:
+
+- you have a simple static page that Next.js could handle just fine
+- you have the need for you app to be an SPA, with no page visits after the first one
+- you don't like the idea of having a file-based routing system
+- you don't want to risk using a new package that may not be as stable as you'd like, or runs the risk of being abandoned
+- you want to keep your frontend and backend in separate projects
+- you didn't like it (to each their own)
+
+Remember, this is just my opinion, and you should use whatever makes you more productive and pays your bills, and there're plenty of tools available for you to use, such as the aforementioned Next.js, Inertia.js, Nuxt.js, TALL stack, Blade Components with Folio, etc.
 
 ## What does it do?
 
