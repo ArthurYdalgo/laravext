@@ -11,7 +11,7 @@ const { shared_props } = laravext;
         <div
             class=" flex flex-col items-center selection:bg-[#FF2D20] selection:text-white">
             <div class=" w-full px-6 lg:max-w-7xl">
-                <header class="gap-2 py-4 ">
+                <header class="gap-2 py-6 ">
                     <nav class="-mx-3 flex flex-1 justify-end">
                         <Link routeName="dashboard"
                             class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
@@ -40,12 +40,7 @@ const { shared_props } = laravext;
 
                         <Link v-if="!shared_props.auth.user" routeName="login"
                             class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
-                        Log in
-                        </Link>
-
-                        <Link v-if="!shared_props.auth.user" routeName="register"
-                            class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
-                        Register
+                        Login
                         </Link>
 
                     </nav>
