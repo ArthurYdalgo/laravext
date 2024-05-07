@@ -7,29 +7,43 @@ const { shared_props } = laravext;
 </script>
 
 <template>
-    <div class="bg-gray-50 text-black/50 dark:bg-black dark:text-white/50">
-        <img id="background" class="absolute -left-20 top-0 max-w-[877px]"
-            src="https://laravel.com/assets/img/welcome/background.svg" />
+    <div class="min-h-screen bg-gray-50 text-black/50 dark:bg-black dark:text-white/50">
         <div
-            class="relative min-h-screen flex flex-col items-center justify-center selection:bg-[#FF2D20] selection:text-white">
-            <div class="relative w-full max-w-2xl px-6 lg:max-w-7xl">
-                <header class=" gap-2 py-10 ">
+            class=" flex flex-col items-center selection:bg-[#FF2D20] selection:text-white">
+            <div class=" w-full px-6 lg:max-w-7xl">
+                <header class="gap-2 py-4 ">
                     <nav class="-mx-3 flex flex-1 justify-end">
-                        <span class="text-black/50 py-2 dark:text-white/50">|</span>
-                        
                         <Link routeName="dashboard"
                             class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
-                        Dashboard
+                            Home
+                        </Link>
+                        <Link routeName="dashboard"
+                            class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
+                            Our Projects
+                        </Link>
+                        <Link routeName="dashboard"
+                            class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
+                            Our Teams
+                        </Link>
+                        <Link routeName="dashboard"
+                            class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
+                            Contact
+                        </Link>
+                        <span class="text-black/50 py-2 dark:text-white/50">|</span>
+
+                        <Link v-if="shared_props.auth.user" routeName="dashboard"
+                            class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
+                            Dashboard
                         </Link>
 
-                        
 
-                        <Link routeName="login"
+
+                        <Link v-if="!shared_props.auth.user" routeName="login"
                             class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
                         Log in
                         </Link>
 
-                        <Link routeName="register"
+                        <Link v-if="!shared_props.auth.user" routeName="register"
                             class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
                         Register
                         </Link>
@@ -37,12 +51,17 @@ const { shared_props } = laravext;
                     </nav>
                 </header>
 
-                <slot />
-
-                <footer class="py-16 text-center text-sm text-black dark:text-white/70">
-                    Made with <span class="text-red-600">❤</span> and <span class="text-blue-600">🥤</span>
-                </footer>
             </div>
         </div>
+
+        <div class="px-16 min-h-[75vh]">
+            <slot />
+        </div>
+
+        <footer class="py-6 text-center text-sm text-black dark:text-white/70">
+            <span>Powered by <a href="https://laravel.com" class="text-blue-500" target="_blank">Laravel</a> and <a href="https://laravext.dev" class="text-blue-500" target="_blank">Laravext</a></span>
+            <br>
+            <span>Made with <span class="text-red-600 text-xs">❤</span> and <span class="text-blue-600">🥤</span></span>
+        </footer>
     </div>
 </template>
