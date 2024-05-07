@@ -51,7 +51,7 @@ My take is that you might be interested in using Laravext if you fall into one o
 - you don't want to set up a separate project for your frontend (like Next.js or Nuxt.js)
 - you want some kind of flexibility to sometimes have a partially server-side rendered page for SEO purposes (and don't want to use Inertia.js)
 - you don't like the way Next.js handles their caching strategy
-- you don't want to slap a `"use client"` in nearly all component you have in your app because it becomes cubersome
+- you don't want to slap a `"use client"` in nearly every component you have in your app because it becomes cubersome
 
 ## Who is it **not** for?
 
