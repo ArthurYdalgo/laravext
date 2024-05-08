@@ -10,7 +10,10 @@ Every time a component is rendered by the `createLaravextApp`, a `laravext` prop
 export default ({ laravext }) => {
   console.log(laravext);
 
-  return <div>- Hello, there... - General Kenoby!</div>;
+  return <div>
+    - Hello, there... 
+    - General Kenoby!
+  </div>;
 };
 ```
 
@@ -21,7 +24,10 @@ export default ({ laravext }) => {
 const { laravext } = defineProps(["laravext"]);
 </script>
 <template>
-  <div>- Hello, there... - General Kenoby!</div>
+  <div>
+    - Hello, there... 
+    - General Kenoby!
+  </div>
 </template>
 ```
 
@@ -97,14 +103,14 @@ Following the previous example, `laravext.query_params` would contain:
 
 ## Helper Functions
 
-There're also other ways to access any data from the laravext props:
+There're also other ways to access any data from the laravext prop:
 
 <!-- tabs:start -->
 
 #### **React**
 
 ```jsx
-import { nexus, nexusProps, queryParams, routeParams, sharedProps } from '@laravext/react'
+import { laravext, nexus, nexusProps, queryParams, routeParams, sharedProps } from '@laravext/react'
 
 export default () => {
   return (
@@ -125,7 +131,7 @@ export default () => {
 
 ```vue
 <script setup>
-import { nexus, nexusProps, queryParams, routeParams, sharedProps } from '@laravext/vue'
+import { laravext, nexus, nexusProps, queryParams, routeParams, sharedProps } from '@laravext/vue'
 <script setup>
 </script>
 <template>
