@@ -18,8 +18,7 @@ onMounted(async () => {
             console.error(error);
             data.loading = false;
         });
-})
-
+});
 </script>
 
 
