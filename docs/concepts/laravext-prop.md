@@ -7,35 +7,25 @@ Every time a component is rendered by the `createLaravextApp`, a `laravext` prop
 #### **React**
 
 ```jsx
-export default ({laravext}) => {
-    console.log(laravext);
+export default ({ laravext }) => {
+  console.log(laravext);
 
-    return (
-        <div>
-            - Hello, there...
-            - General Kenoby!
-        </div>
-    )
-}
+  return <div>- Hello, there... - General Kenoby!</div>;
+};
 ```
 
 #### **Vue**
 
 ```vue
 <script setup>
-const { laravext } = defineProps(['laravext'])
-
+const { laravext } = defineProps(["laravext"]);
 </script>
 <template>
-    <div>
-        - Hello, there...
-        - General Kenoby!
-    </div>
+  <div>- Hello, there... - General Kenoby!</div>
 </template>
 ```
 
 <!-- tabs:end -->
-
 
 When accessing `/dashboard/orders/12345?foo=bar`
 You'd get something similar to
@@ -67,26 +57,27 @@ You'd get something similar to
 }
 ```
 
-## Nexus 
+## Nexus
 
-The `__laravext.nexus` property will contain informations about your rendered nexus, the most useful one is going to be the `props`, which contains any prop that was sent to it that was pre-fetched before the page was loaded. There're two ways to do this, either using a [Nexus Response](/tools/nexus-response.md) or creating a [Nexus Route](/tools/routing?id=nexus). 
+The `laravext.nexus` property will contain informations about your rendered nexus, the most useful one is going to be the `props`, which contains any prop that was sent to it that was pre-fetched before the page was loaded. There're two ways to do this, either using a [Nexus Response](/tools/nexus-response.md) or creating a [Nexus Route](/tools/routing?id=nexus).
 
 Other than that, there're also other props which are related to the [File Conventions](/concepts/file-conventions.md), which are used by the `createLaravextApp` to actually render the nexus.
 
 ## Shared Props
 
-The `__laravext.shared_props` property will contain whatever you defined in your `HandleLaravextRequests` to be the shared data. By default, when declaring this middleware and extending the `\Laravext\Middlweware`, it will contain a
+The `laravext.shared_props` property will contain whatever you defined in your `HandleLaravextRequests` to be the shared data. By default, when declaring this middleware and extending the `\Laravext\Middlweware`, it will contain a
 
 ```
 'auth' => [
   'user' => $request->user(),
 ]
 ```
+
 Check the [Shared Props](/tools/shared-props.md) page for more details.
 
 ## Route Params
 
-Using the example defined in the beginning of this page, assuming you have a `./resources/js/nexus/dashbord/orders/{order}/page.jsx` file which creates a `dashboard/orders/{order}` route, upon accessing `dashboard/orders/12345?foo=bar`, the `__laravext.route_params` would contain
+Using the example defined in the beginning of this page, assuming you have a `./resources/js/nexus/dashbord/orders/{order}/page.jsx` file which creates a `dashboard/orders/{order}` route, upon accessing `dashboard/orders/12345?foo=bar`, the `laravext.route_params` would contain
 
 ```
 {
@@ -96,10 +87,56 @@ Using the example defined in the beginning of this page, assuming you have a `./
 
 ## Query Params
 
-Following the previous example, `__laravext.query_params` would contain:
+Following the previous example, `laravext.query_params` would contain:
 
 ```
 {
   "foo": "bar
 }
 ```
+
+## Helper Functions
+
+There're also other ways to access any data from the laravext props:
+
+<!-- tabs:start -->
+
+#### **React**
+
+```jsx
+import { nexus, nexusProps, queryParams, routeParams, sharedProps } from '@laravext/react'
+
+export default () => {
+  return (
+    <div>
+      These...
+      <ul>
+        {nexusProps().droids.map(droid => (
+          <li key={droid.id}>{droid.name}</li>
+        ))}
+      </ul>
+      are not the droids you are looking for.
+    </div>
+  )
+};
+```
+
+#### **Vue**
+
+```vue
+<script setup>
+import { nexus, nexusProps, queryParams, routeParams, sharedProps } from '@laravext/vue'
+<script setup>
+</script>
+<template>
+  These...
+  <ul>
+    <li v-for="droid in nexusProps().droids" :key="droid.id">
+      {{ droid.name }}
+    </li>
+  </ul>
+  are not the droids you are looking for.
+</template>
+```
+
+<!-- tabs:end -->

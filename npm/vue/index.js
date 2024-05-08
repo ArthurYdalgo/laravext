@@ -1,5 +1,32 @@
-import { createApp, defineComponent, h, compile, defineAsyncComponent } from 'vue';
+import { createApp, defineComponent, h } from 'vue';
 
+export const laravext = () => {
+    return window.__laravext;
+}
+
+export const nexus = () => {
+    return laravext().nexus;
+}
+
+export const nexusProps = () => {
+    return nexus().props;
+}
+
+export const sharedProps = () => {
+    return laravext().shared_props;
+}
+
+export const routeParams = () => {
+    return laravext().route_params;
+}
+
+export const routeName = () => {
+    return laravext().route_name;
+}
+
+export const queryParams = () => {
+    return laravext().query_params;
+}
 
 export async function resolveComponent(path, pages) {
     const page = pages[path];

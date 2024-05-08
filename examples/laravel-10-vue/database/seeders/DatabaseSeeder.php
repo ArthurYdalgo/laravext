@@ -30,7 +30,18 @@ class DatabaseSeeder extends Seeder
 
         $projects = Project::all();
 
-        $teams = Team::factory(10)->create();
+        Team::factory()->create([
+            /**
+            * In memory of one of the best brazilian 🇧🇷 rock bands
+            * 
+            * @see https://en.wikipedia.org/wiki/Mamonas_Assassinas
+            */
+            'name' => 'Mamonas Assassinas'
+        ]);
+
+        Team::factory(10)->create();
+
+        $teams = Team::all();
 
         foreach ($teams as $team) {
             Developer::factory()->create([

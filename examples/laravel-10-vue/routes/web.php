@@ -1,27 +1,47 @@
 <?php
 
-use App\Models\Book;
+use App\Models\Team;
 use Illuminate\Support\Facades\Route;
-use Laravext\Laravext;
-
-Route::redirect('/', 'books');
-
-Route::get("/login-as/{user}", function ($user) {
-    auth()->loginUsingId($user);
-    return redirect()->to('');
-});
-
 /**
  * This will automagically generate all the file based routes of your application.
  * It creates a route group that you can send parameters/props to.
  * 
- * @see https://laravext.dev/docs/1.x/routing#route-methods-laravext for more detailed examples
+ * @see https://laravext.dev/#/tools/routing?id=routelaravext for more detailed examples
  */
 Route::laravext();
 
+/**
+ * Nothing stops you from creating your own custom routes, like this one.
+ * 
+ * @see https://laravel.com/docs/11.x/routing#view-routes for more details
+ */
 Route::view('/', 'sections.home')->name('home');
 
-Route::nexus('contact-us', '(global)/(guest)/contact-us/page.vue', root_view: 'sections.contact-us')->name('contact-us');
+/**
+ * Let's say that you need this route to use this specific view file for SEO reason, because it contains contact information,
+ * so you can set the root_view parameter to the view file you want to use. You could set a different 
+ * page file, but by default it'll use any file it has already found for that route.
+ * 
+ * @see https://laravext.dev/#/tools/routing?id=routenexus for more detailed examples
+ */
+Route::nexus('contact-us', root_view: 'sections.contact-us')->name('contact-us');
+
+/**
+ * In case you want to send server-side fetched data to a route, for some reason. You could set a different 
+ * page file, but by default it'll use any file it has already found for that route.
+ * 
+ * @see https://laravext.dev/#/tools/routing?id=routenexus for more detailed examples
+ */ 
+Route::nexus('our-teams', props: [
+    'teams' => Team::all()
+])->name('our-teams');
+
+/**
+ * You can also make it so that any child route of admin will require the user to be authenticated, and also
+ * set a different root view file for the admin route group.
+ * 
+ * @see https://laravext.dev/#/tools/routing?id=routelaravext for more detailed examples
+ */
 Route::laravext("admin",  route_group_attributes: [
     'middleware' => 'auth',
 ], root_view: 'sections.app');

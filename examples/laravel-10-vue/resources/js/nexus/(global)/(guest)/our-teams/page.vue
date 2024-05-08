@@ -1,15 +1,18 @@
 <script setup>
-import { Head } from '@laravext/vue'
-
+import { Head, nexusProps } from '@laravext/vue'
 </script>
-
-
 <template>
 
-    <Head title="Out Teams" />
-    <div class="flex justify-center items-center min-h-[70vh]  mt-6">
-
-        Our teams... (under construction)
+    <Head title="Our Teams" />
+    <div class="flex justify-center items-center min-h-[70vh] mt-6">
+        <div>
+        <h3 class="text-2xl mb-2">Our teams...</h3>
+        <ul>
+            <li v-for="team in nexusProps().teams" :key="team.id">
+                {{ team.name }}
+            </li>
+        </ul>
+    </div>
     </div>
 
 </template>

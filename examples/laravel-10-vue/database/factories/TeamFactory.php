@@ -18,13 +18,6 @@ class TeamFactory extends Factory
     {
         return [
             'name' => $this->faker->randomElement([
-                /**
-                 * In memory of one of the best brazilian 🇧🇷 rock bands
-                 * 
-                 * @see https://en.wikipedia.org/wiki/Mamonas_Assassinas
-                 */
-                "Mamonas Assassinas",
-                
                 "Avengers",
                 "Jedi Order",
                 "Guardians of the Galaxy",
