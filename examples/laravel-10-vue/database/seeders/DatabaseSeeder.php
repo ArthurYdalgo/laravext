@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
         
         $users = User::factory(20)->create();
 
-        Company::factory(20)->hasProjects(10)->create();
+        Company::factory(5)->hasProjects(3)->create();
 
         $projects = Project::all();
 

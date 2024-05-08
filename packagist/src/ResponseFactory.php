@@ -15,7 +15,7 @@ class ResponseFactory
     public $route_name;
 
     // Page Conventions
-    public $middleware, $layout , $loading, $error, $page, $server_skeleton;
+    public $middleware, $layout, $error, $page, $server_skeleton;
     
     public function __construct()
     {
@@ -73,13 +73,6 @@ class ResponseFactory
         return $this;
     }
 
-    public function withLoading($loading)
-    {
-        $this->loading = $loading;
-
-        return $this;
-    }
-
     public function withError($error)
     {
         $this->error = $error;
@@ -124,7 +117,6 @@ class ResponseFactory
                 'server_skeleton' => $this->server_skeleton,
                 'middleware' => $this->middleware,
                 'layout' => $this->layout,
-                'loading' => $this->loading,
                 'error' => $this->error,
             ],
             'shared_props' => $this->shared_props,

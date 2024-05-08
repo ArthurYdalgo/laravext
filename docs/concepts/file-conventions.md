@@ -5,11 +5,9 @@ File conventions are special files that are used when rendering a nexus, and the
 ```
 <Middleware>
   <Layout>
-    <Loading>
-      <Error>
-        <Page />
-      </Error>
-    </Loading>
+    <Error>
+      <Page />
+    </Error>
   </Layout>
 </Middleware>
 ```
@@ -21,7 +19,6 @@ You can modify this hierarchy by sending the list of conventions when calling th
 ```javascript
 [
   'error',
-  'loading',
   'layout',
   'middleware',
 ]
@@ -43,7 +40,6 @@ createLaravextApp({
 
     conventions: [
         'error',
-        'loading',
         'middleware',
         'layout',
     ]
@@ -55,11 +51,9 @@ In this example, the file hierarchy would be:
 ```
 <Layout>
   <Middleware>
-    <Loading>
-      <Error>
-        <Page />
-      </Error>
-    </Loading>
+    <Error>
+      <Page />
+    </Error>
   </Middleware>
 </Layout>
 ```
@@ -212,15 +206,11 @@ onErrorCaptured((error, vm, info) => {
 
 <!-- tabs:end -->
 
-## Loading (Server/Client Side)
+## Loading
 
-Loading UI for a segment and its children. This can be defined three different ways:
+Loading UI for a segment and its children. This can be defined in two different ways:
 
-### Client Side
-
-Defining a `loading.jsx` can be used so to to data fetching, and then conditionally render the components inside it. **ONCE AGAIN, REMEMBER** that this component will not be server side rendered.
-
-### Server Side (Basic HTML)
+### Basic HTML
 
 Defining a `loading.html` will make it's content be used by the [nexus directive](/tools/blade-directives?id=nexus), and it'll be rendered server side (this will be passed in the `server_skeleton` property of the [laravext's nexus property](/concepts/laravext-prop)). This is useful to show something to your user while the javascript assets are being loaded to improve the UX.
 
@@ -228,7 +218,7 @@ Defining a `loading.html` will make it's content be used by the [nexus directive
 <div class="your-really-cool-spinner"></div>
 ```
 
-### Server Side (Blade Template)
+### Blade Template
 
 Because using only html can limit how complex your skeleton can be, you can call the `@startNexus` and `@endNexus` in your `resouces/views/sections/app.blade.php`, like the example below:
 

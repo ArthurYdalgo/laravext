@@ -9,6 +9,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProjectController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => ['index']]);    
+    }
+
     public function index()
     {
         return JsonResource::collection(Project::paginate());

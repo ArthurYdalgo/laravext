@@ -44,7 +44,6 @@ You'd get something similar to
     "server_skeleton": null,
     "middleware": null,
     "layout": null,
-    "loading": null,
     "error": null
   },
   "shared_props": {

@@ -17,7 +17,7 @@ The `@nexus` directive is used to define where the content of the `page.(jsx|tsx
 
 ## @startNexus and @endNexus
 
-As mentioned before in the [Concepts/Loading/Server Side](/concepts/file-conventions?id=server-side-blade-template) section of this documentation, you might need more complex server side skeletons to be rendered while the javascript is loaded, so you can use the `@startNexus` and `@endNexus` directives to define where the content of the `page.(jsx|tsx|js|ts|vue)` files (an all the outer file conventions) will be rendered. Assuming you have a `./resources/views/layouts/app.blade.php` blade view (with a `@yield('content')` inside it), inside a `./resources/views/sections/app.blade.php` you should use the `@startNexus` and `@endNexus` directives like this:
+As mentioned before in the [Concepts/File Conventions/Loading](/concepts/file-conventions?id=loading) section of this documentation, you might need more complex server side skeletons to be rendered while the javascript is loaded, so you can use the `@startNexus` and `@endNexus` directives to define where the content of the `page.(jsx|tsx|js|ts|vue)` files (an all the outer file conventions) will be rendered. Assuming you have a `./resources/views/layouts/app.blade.php` blade view (with a `@yield('content')` inside it), inside a `./resources/views/sections/app.blade.php` you should use the `@startNexus` and `@endNexus` directives like this:
 
 ```php
 @extends('layouts.app')

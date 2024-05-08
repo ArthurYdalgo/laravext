@@ -58,7 +58,6 @@ You can also use [file conventions](/concepts/file-conventions) for the view tha
 
 - `withLayout($layout)`
 - `withMiddleware($middleware)`
-- `withLoading($loading)`
 - `withError($error)`
 - `withServerSkeleton($server_skeleton)`
 

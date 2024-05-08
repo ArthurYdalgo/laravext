@@ -166,13 +166,12 @@ class Router
 
             $server_skeleton = $directory['conventions']['server_skeleton'] ?? null;
             $middleware = $directory['conventions']['middleware'] ?? null;
-            $loading = $directory['conventions']['loading'] ?? null;
             $layout = $directory['conventions']['layout'] ?? null;
             $error = $directory['conventions']['error'] ?? null;
 
             Cache::store('array')->put(
                 "laravext-uri:{$route_uri}-cache",
-                compact('server_skeleton', 'middleware', 'loading', 'layout', 'error', 'page', 'uri', 'name')
+                compact('server_skeleton', 'middleware', 'layout', 'error', 'page', 'uri', 'name')
             );
 
             $uri = $uri ? self::trimStartingSlash($uri) : null;
@@ -183,7 +182,7 @@ class Router
                     $page,
                     $props,
                     $root_view,
-                    ...compact('middleware', 'loading', 'layout', 'error', 'server_skeleton')
+                    ...compact('middleware', 'layout', 'error', 'server_skeleton')
                 )->name($name);
             }
         }
@@ -322,7 +321,6 @@ class Router
         })->implode('|');
 
         return [
-            'loading' => "/loading({$extension_patterns})$/",
             'layout' => "/layout({$extension_patterns})$/",
             'middleware' => "/middleware({$extension_patterns})$/",
             'error' => "/error({$extension_patterns})$/",

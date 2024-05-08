@@ -64,7 +64,6 @@ class LaravextServiceProvider extends ServiceProvider
                     'merge_with_existing_route' => true,
                     'middleware' => null,
                     'layout' => null,
-                    'loading' => null,
                     'error' => null,
                     'server_skeleton' => null,
                 ];
@@ -75,7 +74,6 @@ class LaravextServiceProvider extends ServiceProvider
                     $page ??= $nexus_route_data['page'];
                     $middleware ??= $nexus_route_data['middleware'];
                     $layout ??= $nexus_route_data['layout'];
-                    $loading ??= $nexus_route_data['loading'];
                     $error ??= $nexus_route_data['error'];
                     $server_skeleton ??= $nexus_route_data['server_skeleton'];
                 }
@@ -83,7 +81,6 @@ class LaravextServiceProvider extends ServiceProvider
                 return nexus($page, $props)->rootView($root_view)
                     ->withMiddleware($middleware)
                     ->withLayout($layout)
-                    ->withLoading($loading)
                     ->withServerSkeleton($server_skeleton)
                     ->withError($error)->render();
             });

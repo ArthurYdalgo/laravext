@@ -67,7 +67,6 @@ The (named) parameters:
   - `merge_with_existing_route`: wether or not this nexus declaration will be merged to any automagically created route before it by a `Route::laravext()`. This is so that you don't have to redeclare every file convention for that route, and define only those that you want to to override. This defaults to true, but you can set it to false if you want to completely override the automagically generated route.
   - `middleware`: the path to the `middleware.(jsx|tsx|js|ts|vue)` file that will be used to this route.
   - `layout`: the path to the `layout.(jsx|tsx|js|ts|vue)` file that will be used to this route.
-  - `loading`: the path to the `loading.(jsx|tsx|js|ts|vue)` file that will be used to this route.
   - `error`: the path to the `error.(jsx|tsx|js|ts|vue)` file that will be used to this route.
   - `server_skeleton`: the ⚠️**html content**⚠️ of a skeleton that will be server-side rendered. See [FileConvention/Server Side (Basic HTML)](/concepts/file-conventions?id=server-side-basic-html) for more details.
 

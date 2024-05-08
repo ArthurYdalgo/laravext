@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Facade;
  * @method static \Laravext\ResponseFactory withSharedProps(array $props)
  * @method static \Laravext\ResponseFactory withMiddleware(string $middleware)
  * @method static \Laravext\ResponseFactory withLayout(string $layout)
- * @method static \Laravext\ResponseFactory withLoading(string $loading)
  * @method static \Laravext\ResponseFactory withError(string $error)
  * @method static \Laravext\ResponseFactory rootView(string $root_view)
  * @method static \Laravext\ResponseFactory withQueryParams(array $query_params)

@@ -59,7 +59,6 @@ export function Head({ title }) {
 
 export function createLaravextApp({ nexusResolver, strandsResolver, conventions = [
     'error',
-    'loading',
     'layout',
     'middleware',
 ] }) {

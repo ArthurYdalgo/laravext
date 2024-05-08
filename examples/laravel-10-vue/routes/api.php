@@ -29,6 +29,6 @@ Route::group([
     
     Route::apiResource('developers', DeveloperController::class);
     Route::apiResource('companies', CompanyController::class);
-    Route::apiResource('projects', ProjectController::class);
+    Route::apiResource('projects', ProjectController::class)->withoutMiddleware('auth');
     Route::apiResource('projects.comments', ProjectCommentController::class)->except(['show']);
 });
