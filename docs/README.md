@@ -53,7 +53,7 @@ My take is that you might be interested in using Laravext if you fall into one o
 - you don't like the way Next.js handles their caching strategy
 - you don't want to slap a `"use client"` in nearly every component you have in your app because it becomes cubersome
 
-## Who is it **not** for?
+## Who is it **NOT** for?
 
 I'll try to be as less biased as possible, but you might not be interested in using Laravext if you fall into one or more of the following categories:
 
