@@ -72,6 +72,8 @@ The (named) parameters:
 
 You can also chain methods such as `->middleware('auth')`, `->withoutMiddleware('verified')` or `->name('admin.dashboard')` to the route declaration, as you would with a common route declaration.
 
+<sup>⚠️Important note⚠️: if you're declaring a nexus route, it'll not have the name of a previously automagically generated route, as it's a completely new route declaration. If you want to use the same name, you'll have to set it manually.</sub>
+
 ```php
 use Illuminate\Support\Facades\Route;
 

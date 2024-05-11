@@ -5,8 +5,6 @@ Similar to [Inertia.js' Responses](https://inertiajs.com/responses), the nexus r
 `Laravext::nexus($page = null, $props = [])`
 
 ```php
-<?php
-
 use Illuminate\Support\Facades\Route;
 use Laravext\Laravext;
 

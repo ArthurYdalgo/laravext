@@ -13,5 +13,10 @@
     - [Routing](tools/routing.md)
     - [Nexus Response](tools/nexus-response.md)
     - [Shared Props](tools/shared-props.md)
+    - [Head Component](tools/head-component.md)
+- [Examples](examples.md)
+    - [Page](examples/page.md)
+    - [Middleware](examples/middleware.md)
+    - [Layout](examples/layout.md)
 - Misc
     - [About this doc](misc/about-this-doc.md)

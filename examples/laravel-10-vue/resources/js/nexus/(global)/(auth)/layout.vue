@@ -8,10 +8,9 @@ import NavLink from '@/components/NavLink.vue';
 import Link from '@/components/Link.vue';
 import ResponsiveNavLink from '@/components/ResponsiveNavLink.vue';
 import axios from 'axios';
+import { sharedProps } from '@laravext/vue';
 
-const {laravext} = defineProps(['laravext']);
-
-const {shared_props} = laravext;
+const {user} = sharedProps().auth;
 
 const logout = async () => {
     await axios.post('/api/auth/logout');
@@ -31,7 +30,7 @@ const showingNavigationDropdown = ref(false);
                         <div class="flex">
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
-                                <Link routeName='dashboard'>
+                                <Link routeName='admin.dashboard'>
                                     <ApplicationLogo
                                         class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200"
                                     />
@@ -41,7 +40,7 @@ const showingNavigationDropdown = ref(false);
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink routeName="dashboard">
+                                <NavLink routeName="admin.dashboard">
                                     Dashboard
                                 </NavLink>
                             </div>
@@ -57,7 +56,7 @@ const showingNavigationDropdown = ref(false);
                                                 type="button"
                                                 class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150"
                                             >
-                                                {{ shared_props.auth.user.name }}
+                                                {{ user.name }}
 
                                                 <svg
                                                     class="ms-2 -me-0.5 h-4 w-4"
@@ -124,18 +123,18 @@ const showingNavigationDropdown = ref(false);
                     class="sm:hidden"
                 >
                     <div class="pt-2 pb-3 space-y-1">
-                        <!-- <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                        <ResponsiveNavLink routeName='admin.dashboard'>
                             Dashboard
-                        </ResponsiveNavLink> -->
+                        </ResponsiveNavLink>
                     </div>
 
                     <!-- Responsive Settings Options -->
                     <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
                         <div class="px-4">
                             <div class="font-medium text-base text-gray-800 dark:text-gray-200">
-                                {{shared_props.auth.user.name }}
+                                {{user.name }}
                             </div>
-                            <div class="font-medium text-sm text-gray-500">{{shared_props.auth.user.email }}</div>
+                            <div class="font-medium text-sm text-gray-500">{{user.email }}</div>
                         </div>
 
                         <div class="mt-3 space-y-1">
@@ -147,13 +146,6 @@ const showingNavigationDropdown = ref(false);
                     </div>
                 </div>
             </nav>
-
-            <!-- Page Heading -->
-            <header class="bg-white dark:bg-gray-800 shadow" v-if="$slots.header">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    <slot name="header" />
-                </div>
-            </header>
 
             <!-- Page Content -->
             <main>

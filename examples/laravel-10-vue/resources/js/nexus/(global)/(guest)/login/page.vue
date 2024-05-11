@@ -32,7 +32,7 @@ const submit = async () => {
     });
 
     if (response.ok) {
-        window.location.href = route('dashboard');
+        window.location.href = route('admin.dashboard');
     } else {
         form.response = await response.json();
         form.processing = false;

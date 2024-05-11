@@ -3,8 +3,6 @@
 Shared props are props that you might want to pass to every page in your application. They can be used to pass data that is common to all pages, such as the current user, the application's name, etc. This is done in a similar way to [Inertia.js' shared data](https://inertiajs.com/shared-data). In order to use shared props, for every route, you must create a middleware, such as the example below:
 
 ```php
-<?php
-
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
@@ -28,8 +26,6 @@ class HandleLaravextRequests extends Middleware
 and then include it in your `app/Http/Kernel.php` file:
 
 ```php
-<?php
-
 namespace App\Http;
 
 use App\Http\Middleware\HandleLaravextRequests;
@@ -65,8 +61,6 @@ After this, you can access this data through the [Laravext prop](/concepts/larav
 Another way to set shared props is by using one of the methods below:
 
 ```php
-<?php
-
 namespace App\SomeNamespace;
 
 use Laravext\Laravext;

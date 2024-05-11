@@ -11,14 +11,13 @@ class ProjectController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['index']]);    
+        $this->middleware('auth', ['except' => ['index', 'show']]);
     }
 
     public function index()
     {
         return JsonResource::collection(Project::paginate());
     }
-
 
     public function store(StoreRequest $request)
     {

@@ -67,7 +67,7 @@ Please submit a PR if you think that an example is not clear enough and you thin
 
 The examples are meant to help you understand how to use these tools, and are not meant to reflect how a real world application would be designed, so everything will be as simple as possible.
 
-## The Example Project(s) <!-- {docsify-ignore} -->
+## The Example Project(s)
 
 Some code or file structures in this documentation might (or not) be derived from the [laravext examples available at GitHub](https://github.com/ArthurYdalgo/laravext/tree/main/examples), and it'll be either the [laravel-10-react](https://github.com/ArthurYdalgo/laravext/tree/main/examples/laravel-10-react) or [laravel-10-vue](https://github.com/ArthurYdalgo/laravext/tree/main/examples/laravel-10-vue). It's a basic developer team manager, where teams have developers and projects, and these projects belong to companies (needless to say that this does not reflect how a real world application of this kind would be designed). 
 In order for you to have some basic comprehension of the project itself, here's the database structure:

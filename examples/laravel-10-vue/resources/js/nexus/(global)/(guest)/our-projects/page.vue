@@ -19,27 +19,22 @@ onMounted(async () => {
             data.loading = false;
         });
 });
+
 </script>
-
-
 <template>
-
     <Head title="Our Projects" />
-
     <div v-if="data.loading" class="flex justify-center items-center min-h-[70vh] mt-6">
         Loading...
     </div>
     <div v-else class="flex justify-center items-center min-h-[70vh]  mt-6">
 
         <div>
-        <h3 class="text-2xl mb-2">Our projects...</h3>
-        <ul>
-            <li v-for="project in data.projects" :key="project.id">
-                {{ project.name }}
-            </li>
-        </ul>
+            <h3 class="text-2xl mb-2">Our projects...</h3>
+            <ul>
+                <li v-for="project in data.projects" :key="project.id">
+                    {{ project.name }}
+                </li>
+            </ul>
+        </div>
     </div>
-
-    </div>
-
 </template>

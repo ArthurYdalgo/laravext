@@ -18,7 +18,6 @@ const {routeName, href, active} = defineProps({
     },
 });
 
-console.log(active)
 
 const classes = computed(() =>
     (active !== null ? active : (routeName && route().has(routeName) && route().current(routeName)) || (href && navigator.location.href.includes(href)))

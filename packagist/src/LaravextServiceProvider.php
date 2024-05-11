@@ -59,7 +59,9 @@ class LaravextServiceProvider extends ServiceProvider
     protected function registerRouterMacro(): void
     {
         Router::macro('nexus', function ($uri = '{nexusSlug?}', $page = null, $props = [], $root_view = null, ...$parameters) {
-            return $this->match(['GET', 'HEAD'], $uri, function () use ($uri, $page, $props, $root_view, $parameters) {
+            $nexus_route_data = Cache::driver("array")->get("laravext-uri:{$uri}-cache");
+            
+            return $this->match(['GET', 'HEAD'], $uri, function () use ($uri, $page, $props, $root_view, $parameters, $nexus_route_data)  {
                 $defaults = [
                     'merge_with_existing_route' => true,
                     'middleware' => null,
@@ -70,7 +72,7 @@ class LaravextServiceProvider extends ServiceProvider
         
                 extract(array_merge($defaults, $parameters));
         
-                if($merge_with_existing_route && ($nexus_route_data = Cache::driver("array")->get("laravext-uri:{$uri}-cache"))) {
+                if($merge_with_existing_route && $nexus_route_data) {
                     $page ??= $nexus_route_data['page'];
                     $middleware ??= $nexus_route_data['middleware'];
                     $layout ??= $nexus_route_data['layout'];

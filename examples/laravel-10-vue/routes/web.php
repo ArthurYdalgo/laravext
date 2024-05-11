@@ -36,6 +36,10 @@ Route::nexus('our-teams', props: [
     'teams' => Team::all()
 ])->name('our-teams');
 
+Route::nexus('our-projects', props: [
+    'projects' => Team::all()
+])->name('our-projects');
+
 /**
  * You can also make it so that any child route of admin will require the user to be authenticated, and also
  * set a different root view file for the admin route group.
