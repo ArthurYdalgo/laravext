@@ -61,6 +61,63 @@ onMounted(async () => {
                 <div
                     class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 text-gray-900 dark:text-gray-100">
 
+                    <div class="flex items
+                    -center justify-between mb-4">
+                        <div class="flex items
+                        -center">
+                            
+                            <input type="text" id="search" v-model="data.filters.search" placeholder="Search"
+                                class="border border-gray-300 rounded px-3 py-2" />
+                        </div>
+                        <div class="flex items
+                        -center">
+                            <Link routeName="admin.developers.create"
+                                class="bg-blue-500 text-white rounded px-3 py-2">Create Developer</Link>
+                        </div>
+                    </div>
+
+                    <table class="min-w-full divide-y divide-gray-200 border mb-4">
+                        <thead>
+                            <tr>
+                                <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                    ID
+                                </th>
+                                <th class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                    Name
+                                </th>
+                                <th class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                    Email
+                                </th>
+                                <th class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800" v-for="developer in data.developers.data" :key="developer.id">
+                                <td class="border-t px-6 py-4 whitespace-no-wrap text-sm text-gray-900 w-28">
+                                    <div class="text-sm leading-5 font-medium text-gray-900">
+                                        {{ developer.id }}
+                                    </div>
+                                </td>
+                                <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
+                                    <div class="text-sm leading-5 font-medium text-gray-900">
+                                        {{ developer.name }}
+                                    </div>
+                                </td>
+                                <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
+                                    <div class="text-sm leading-5 text-gray-500">
+                                        {{ developer.email }}
+                                    </div>
+                                </td>
+                                <td class="border-t border-l px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
+                                    <Link :href="`/admin/developers/${developer.id}`" class="text-indigo-600 hover:text-indigo-900">View</Link>
+                                    <Link :href="`/admin/developers/${developer.id}/edit`" class="text-indigo-600 hover:text-indigo-900">Edit</Link>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
                     <Pagination v-if="!data.loading || data.developers?.meta" @paginate-to="paginateTo" :meta="data.developers?.meta ?? {}" />
                 </div>
             </div>
