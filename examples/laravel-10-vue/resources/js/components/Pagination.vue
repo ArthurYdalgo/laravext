@@ -64,6 +64,9 @@ const handleUpdatePerPage = () => {
 };
 
 const onBlur = () => {
+    if (currentPage.value > props.meta.last_page) {
+        currentPage.value = props.meta.last_page;
+    }
     paginateTo();
 };
 </script>
@@ -71,18 +74,22 @@ const onBlur = () => {
 <template>
     <div class="flex items-center justify-between">
         <div class="flex items-center">
+            <button @click="currentPage = 1; paginateTo()" :disabled="currentPage === 1" class="border border-gray-300 rounded px-3 py-2 cursor-pointer"><<</button>
+            <button @click="currentPage--; paginateTo()" :disabled="currentPage === 1" class="border border-gray-300 rounded px-3 py-2 mr-3 cursor-pointer"><</button>
             <ul class="flex list-none border border-gray-300 rounded overflow-hidden">
                 <li v-for="page in pages" :key="page" :class="{ 'bg-blue-500 text-white cursor-pointer': page === currentPage, 'text-gray-700 cursor-pointer': page !== currentPage }" class="px-3 py-2 border-r last:border-r-0" @click="if (typeof page === 'number') { currentPage = page; paginateTo(); }">
                     <button v-if="typeof page === 'number'" class="focus:outline-none w-full h-full">{{ page }}</button>
                     <span v-else>{{ page }}</span>
                 </li>
             </ul>
+            <button @click="currentPage++; paginateTo()" :disabled="currentPage === props.meta.last_page" class="border border-gray-300 rounded px-3 py-2 ml-3 cursor-pointer">></button>
+            <button @click="currentPage = props.meta.last_page; paginateTo()" :disabled="currentPage === props.meta.last_page" class="border border-gray-300 rounded px-3 py-2 cursor-pointer">>></button>
         </div>
         <div class="flex items-center">
             <select v-model="perPage" @change="handleUpdatePerPage" class="border border-gray-300 rounded px-3 py-2 mr-3 pr-8">
                 <option v-for="option in perPageOptions" :key="option" :value="option">{{ option }}</option>
             </select>
-            <input type="number" v-model="currentPage" :max="props.meta.last_page" @blur="onBlur" class="border border-gray-300 rounded px-3 py-2" />
+            <input type="number" v-model="currentPage" :max="props.meta.last_page" @blur="onBlur" min="1" class="border border-gray-300 rounded px-3 py-2" />
         </div>
     </div>
 </template>
