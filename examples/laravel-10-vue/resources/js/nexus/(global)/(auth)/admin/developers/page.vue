@@ -1,8 +1,12 @@
 <script setup>
-import { sharedProps } from '@laravext/vue';
+import { watch } from 'vue';
 import { onMounted, reactive } from 'vue';
 import Pagination from '@/components/Pagination.vue';
 import { debounce } from 'lodash';
+
+let searchChanged = true;
+
+
 
 const data = reactive({
     developers: [],
@@ -22,7 +26,15 @@ const paginateTo = ({ page, perPage }) => {
     fetchRecords();
 };
 
+watch(() => data.filters.search, () => {
+    searchChanged = true;
+});
+
 const fetchRecords = () => {
+    if (!searchChanged) {
+        return;
+    }
+
     data.loading = true;
 
     axios.get('/api/developers', {
@@ -40,6 +52,8 @@ const fetchRecords = () => {
             console.error(error);
             data.loading = false;
         });
+
+    searchChanged = false;
 };
 
 const debouncedFetchRecords = debounce(fetchRecords, 1000);
@@ -59,7 +73,10 @@ onMounted(async () => {
     <div>
         <div class="py-6">
             <div class="mx-auto sm:px-6 lg:px-4">
-                <div
+                <div v-if="data.loading" class="absolute inset-0 flex items-center justify-center">
+                    <div class="loader"></div>
+                </div>
+                <div :class="{ 'opacity-50': data.loading }"
                     class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 text-gray-900 dark:text-gray-100">
 
                     <div class="flex items
@@ -75,7 +92,9 @@ onMounted(async () => {
                         -center">
                             <!-- <Link routeName="admin.developers.create" class="bg-blue-500 text-white rounded px-3 py-2">
                             Create Developer</Link> -->
-                            <Pagination v-if="(!data.loading || data.developers?.meta) && data.developers?.meta.per_page > 10" :hide-page-input="true" :hide-per-page-selector="true" @paginate-to="paginateTo"
+                            <Pagination
+                                v-if="(!data.loading || data.developers?.meta) && data.developers?.meta.per_page > 10"
+                                :hide-per-page-selector="true" @paginate-to="paginateTo"
                                 :meta="data.developers?.meta ?? {}" />
                         </div>
                     </div>
@@ -138,5 +157,6 @@ onMounted(async () => {
         </div>
     </div>
 </template>
-<script>
-</script>
+<style scoped>
+
+</style>
