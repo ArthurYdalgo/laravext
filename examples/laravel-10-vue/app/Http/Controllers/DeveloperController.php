@@ -17,7 +17,7 @@ class DeveloperController extends Controller
                 $query->where('name', 'like', "%$search%")
                     ->orWhere('email', 'like', "%$search%");
             })
-            ->paginate(request()->query('per_page'))
+            ->paginate(request()->query('per_page', 10))
             ->appends(request()->query());
 
         return JsonResource::collection($developers);
