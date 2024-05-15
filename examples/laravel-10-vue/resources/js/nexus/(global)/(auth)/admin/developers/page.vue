@@ -1,12 +1,7 @@
 <script setup>
-import { watch } from 'vue';
 import { onMounted, reactive } from 'vue';
 import Pagination from '@/components/Pagination.vue';
 import { debounce } from 'lodash';
-
-let searchChanged = true;
-
-
 
 const data = reactive({
     developers: [],
@@ -26,15 +21,7 @@ const paginateTo = ({ page, perPage }) => {
     fetchRecords();
 };
 
-watch(() => data.filters.search, () => {
-    searchChanged = true;
-});
-
 const fetchRecords = () => {
-    if (!searchChanged) {
-        return;
-    }
-
     data.loading = true;
 
     axios.get('/api/developers', {
@@ -52,8 +39,6 @@ const fetchRecords = () => {
             console.error(error);
             data.loading = false;
         });
-
-    searchChanged = false;
 };
 
 const debouncedFetchRecords = debounce(fetchRecords, 1000);
@@ -85,15 +70,14 @@ onMounted(async () => {
                         -center">
 
                             <input type="text" id="search" v-model="data.filters.search" placeholder="Search"
-                                class="border border-gray-300 rounded px-3 py-2" @input="debouncedFetchRecords"
-                                @blur="fetchRecords" />
+                                class="border border-gray-300 rounded px-3 py-2" @input="debouncedFetchRecords" />
                         </div>
                         <div class="flex items
                         -center">
                             <!-- <Link routeName="admin.developers.create" class="bg-blue-500 text-white rounded px-3 py-2">
                             Create Developer</Link> -->
                             <Pagination
-                                v-if="(!data.loading || data.developers?.meta) && data.developers?.meta.per_page > 10"
+                                v-if="(!data.loading || data.developers?.meta) && data.developers?.meta.total > 10"
                                 :hide-per-page-selector="true" @paginate-to="paginateTo"
                                 :meta="data.developers?.meta ?? {}" />
                         </div>
