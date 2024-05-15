@@ -61,7 +61,7 @@ onMounted(async () => {
                 <div
                     class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 text-gray-900 dark:text-gray-100">
 
-                    <Pagination v-if="!data.loading" @paginate-to="paginateTo" :meta="data.developers?.meta ?? {}" />
+                    <Pagination v-if="!data.loading || data.developers?.meta" @paginate-to="paginateTo" :meta="data.developers?.meta ?? {}" />
                 </div>
             </div>
         </div>
