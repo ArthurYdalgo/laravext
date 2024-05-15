@@ -11,7 +11,11 @@ class DeveloperController extends Controller
 {
     public function index()
     {
-        return JsonResource::collection(Developer::paginate());
+        $developers = Developer::query()
+            ->paginate(request()->query('per_page'))
+            ->appends(request()->query());
+
+        return JsonResource::collection($developers);
     }
 
 

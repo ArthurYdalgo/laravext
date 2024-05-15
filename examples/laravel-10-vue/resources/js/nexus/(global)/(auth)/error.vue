@@ -2,7 +2,8 @@
 import ErrorBoundary from "@/components/ErrorBoundary.vue";
 
 const doSomething = () => {
-  window.location.reload();
+  // window.location.reload();
+  
 };
 
 </script>

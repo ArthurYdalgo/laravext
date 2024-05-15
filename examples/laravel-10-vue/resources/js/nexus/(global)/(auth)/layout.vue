@@ -43,6 +43,18 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink routeName="admin.dashboard">
                                     Dashboard
                                 </NavLink>
+                                <NavLink routeName="admin.teams">
+                                    Teams
+                                </NavLink>
+                                <NavLink routeName="admin.developers">
+                                    Developers
+                                </NavLink>
+                                <NavLink routeName="admin.projects">
+                                    Projects
+                                </NavLink>
+                                <NavLink routeName="admin.companies">
+                                    Companies
+                                </NavLink>
                             </div>
                         </div>
 

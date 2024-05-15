@@ -24,36 +24,36 @@
                     <nav class="-mx-3 flex flex-1 justify-end">
                         <a href='/'
                             class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
-                        Home
-                    </a>
-                        <a href={{route("our-projects")}}
-                            class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
-                        Our Projects
+                            Home
                         </a>
-                        <a href={{route("our-teams")}}
+                        <a href={{ route('our-projects') }}
                             class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
-                        Our Teams
+                            Our Projects
                         </a>
-                        <a href={{route("contact-us")}}
+                        <a href={{ route('our-teams') }}
                             class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
-                        Contact
+                            Our Teams
+                        </a>
+                        <a href={{ route('contact-us') }}
+                            class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
+                            Contact
                         </a>
 
                         <span class="text-black/50 py-2 dark:text-white/50">|</span>
 
                         @auth
-                            <a href={{route("admin.dashboard")}}
+                            <a href={{ route('admin.dashboard') }}
                                 class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
-                            Dashboard
+                                Dashboard
                             </a>
                         @endauth
-                        
+
                         @guest
-                        <a href={{route("login")}}
-                            class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
-                        Login
-                        </a>
-                            
+                            <a href={{ route('login') }}
+                                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
+                                Login
+                            </a>
+
                         @endguest
 
                     </nav>
@@ -73,7 +73,7 @@
             <span>Made with <span class="text-red-600 text-xs">❤</span> and <span class="text-blue-600">🥤</span></span>
         </footer>
     </div>
-    
+
     @routes
     @laravextScripts
     @vite(['resources/js/app.js'])
