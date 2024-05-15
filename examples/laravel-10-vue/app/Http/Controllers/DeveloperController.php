@@ -11,7 +11,12 @@ class DeveloperController extends Controller
 {
     public function index()
     {
+        $search = request()->query('search');
         $developers = Developer::query()
+            ->when($search, function ($query, $search) {
+                $query->where('name', 'like', "%$search%")
+                    ->orWhere('email', 'like', "%$search%");
+            })
             ->paginate(request()->query('per_page'))
             ->appends(request()->query());
 
