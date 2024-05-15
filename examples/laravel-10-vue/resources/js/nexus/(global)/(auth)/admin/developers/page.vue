@@ -73,13 +73,13 @@ onMounted(async () => {
                         </div>
                         <div class="flex items
                         -center">
-                            <Link routeName="admin.developers.create" class="bg-blue-500 text-white rounded px-3 py-2">
-                            Create Developer</Link>
+                            <!-- <Link routeName="admin.developers.create" class="bg-blue-500 text-white rounded px-3 py-2">
+                            Create Developer</Link> -->
+                            <Pagination v-if="(!data.loading || data.developers?.meta) && data.developers?.meta.per_page > 10" :hide-page-input="true" :hide-per-page-selector="true" @paginate-to="paginateTo"
+                                :meta="data.developers?.meta ?? {}" />
                         </div>
                     </div>
 
-                    <Pagination v-if="(!data.loading || data.developers?.meta) && data.developers?.meta.per_page > 10" :hide-page-input="true" :hide-per-page-selector="true" @paginate-to="paginateTo"
-                        :meta="data.developers?.meta ?? {}" />
 
                     <table class="min-w-full divide-y divide-gray-200 border my-4">
                         <thead>
