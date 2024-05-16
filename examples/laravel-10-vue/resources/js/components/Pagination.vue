@@ -2,9 +2,9 @@
 import { ref, computed } from 'vue';
 
 const props = defineProps({
-    meta: {
-        type: [Object],
-        required: false,
+    pagination: {
+        type: Object,
+        required: true,
     },
     hidePageInput: {
         type: Boolean,
@@ -23,12 +23,12 @@ const props = defineProps({
 const emit = defineEmits(['paginate-to']);
 
 const perPageOptions = [5, 10, 25, 50, 100, 200];
-const perPage = ref(props.meta.per_page);
-const currentPage = ref(props.meta.current_page);
+const perPage = ref(props.pagination.meta.per_page);
+const currentPage = ref(props.pagination.meta.current_page);
 const pageRange = 1;
 
 const pages = computed(() => {
-    const total = props.meta.last_page;
+    const total = props.pagination.meta.last_page;
     let pagesArray = [];
 
     if (total <= 2 * pageRange + 1) {
@@ -76,8 +76,8 @@ const handleUpdatePerPage = () => {
 };
 
 const onBlur = () => {
-    if (currentPage.value > props.meta.last_page) {
-        currentPage.value = props.meta.last_page;
+    if (currentPage.value > props.pagination.meta.last_page) {
+        currentPage.value = props.pagination.meta.last_page;
     }
     paginateTo();
 };
@@ -102,11 +102,11 @@ const onBlur = () => {
                     <span v-else>{{ page }}</span>
                 </li>
             </ul>
-            <button @click="currentPage++; paginateTo()" :disabled="currentPage === props.meta.last_page" class="border border-gray-300 rounded px-3 py-2 ml-3 cursor-pointer">></button>
-            <button @click="currentPage = props.meta.last_page; paginateTo()" :disabled="currentPage === props.meta.last_page" class="border border-gray-300 rounded px-3 py-2 cursor-pointer">>></button>
+            <button @click="currentPage++; paginateTo()" :disabled="currentPage === props.pagination.meta.last_page" class="border border-gray-300 rounded px-3 py-2 ml-3 cursor-pointer">></button>
+            <button @click="currentPage = props.pagination.meta.last_page; paginateTo()" :disabled="currentPage === props.pagination.meta.last_page" class="border border-gray-300 rounded px-3 py-2 cursor-pointer">>></button>
             <span v-if="!hidePageSelector && !hidePageInput" class="text-black/50 py-2 dark:text-white/50 mx-4">|</span>
             <label v-if="!hidePageInput" for="current-page-input" class="mr-2">Current Page:</label>
-            <input v-if="!hidePageInput" id="current-page-input" type="number" v-model="currentPage" :max="props.meta.last_page" @blur="onBlur" class="border border-gray-300 w-24 rounded px-3 py-2" />
+            <input v-if="!hidePageInput" id="current-page-input" type="number" v-model="currentPage" :max="props.pagination.meta.last_page" @blur="onBlur" class="border border-gray-300 w-24 rounded px-3 py-2" />
         </div>
     </div>
 </template>

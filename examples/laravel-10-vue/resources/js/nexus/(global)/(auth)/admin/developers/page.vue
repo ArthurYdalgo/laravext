@@ -1,43 +1,44 @@
 <script setup>
-import { onMounted, reactive } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import Pagination from '@/components/Pagination.vue';
 import { debounce } from 'lodash';
 
-const data = reactive({
-    developers: [],
-    filters: {
-        search: '',
-    },
-    page: 1,
-    per_page: 10,
+const pagination = reactive({
+    data: [],
+    meta: {},
     loading: true,
 });
 
+const filters = reactive({
+    search: '',
+});
+
 const paginateTo = ({ page, perPage }) => {
-    data.page = page;
-    data.per_page = perPage;
-    console.log(data.page, data.per_page);
+    pagination.page = page;
+    pagination.per_page = perPage;
+    console.log(pagination.page, pagination.per_page);
 
     fetchRecords();
 };
 
 const fetchRecords = () => {
-    data.loading = true;
+    pagination.loading = true;
 
     axios.get('/api/developers', {
         params: {
-            page: data.page,
-            per_page: data.per_page,
-            search: data.filters.search,
+            page: pagination.page,
+            per_page: pagination.per_page,
+            search: filters.search,
         },
     })
         .then(response => {
-            data.developers = response.data;
-            data.loading = false;
+            pagination.data = response.data.data;
+            pagination.meta = response.data.meta;
+            pagination.loading = false;
         })
         .catch(error => {
             console.error(error);
-            data.loading = false;
+            pagination.loading = false;
         });
 };
 
@@ -58,10 +59,10 @@ onMounted(async () => {
     <div>
         <div class="py-6">
             <div class="mx-auto sm:px-6 lg:px-4">
-                <div v-if="data.loading" class="absolute inset-0 flex items-center justify-center">
+                <div v-if="pagination.loading" class="absolute inset-0 flex items-center justify-center">
                     <div class="loader"></div>
                 </div>
-                <div :class="{ 'opacity-50': data.loading }"
+                <div :class="{ 'opacity-50': pagination.loading }"
                     class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 text-gray-900 dark:text-gray-100">
 
                     <div class="flex items
@@ -69,17 +70,11 @@ onMounted(async () => {
                         <div class="flex items
                         -center">
 
-                            <input type="text" id="search" v-model="data.filters.search" placeholder="Search"
+                            <input type="text" id="search" v-model="filters.search" placeholder="Search"
                                 class="border border-gray-300 rounded px-3 py-2" @input="debouncedFetchRecords" />
                         </div>
                         <div class="flex items
                         -center">
-                            <!-- <Link routeName="admin.developers.create" class="bg-blue-500 text-white rounded px-3 py-2">
-                            Create Developer</Link> -->
-                            <Pagination
-                                v-if="(!data.loading || data.developers?.meta) && data.developers?.meta.total > 10"
-                                :hide-per-page-selector="true" @paginate-to="paginateTo"
-                                :meta="data.developers?.meta ?? {}" />
                         </div>
                     </div>
 
@@ -107,7 +102,7 @@ onMounted(async () => {
                         </thead>
                         <tbody>
                             <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800"
-                                v-for="developer in data.developers.data" :key="developer.id">
+                                v-for="developer in pagination.data" :key="developer.id">
                                 <td class="border-t px-6 py-4 whitespace-no-wrap text-sm text-gray-900 w-28">
                                     <div class="text-sm leading-5 font-medium text-gray-900">
                                         {{ developer.id }}
@@ -134,8 +129,10 @@ onMounted(async () => {
                         </tbody>
                     </table>
 
-                    <Pagination v-if="!data.loading || data.developers?.meta" @paginate-to="paginateTo"
-                        :meta="data.developers?.meta ?? {}" />
+                     <Pagination
+                                v-if="(!pagination.loading || pagination.meta != {}) && pagination.meta?.total > 10"
+                                 @paginate-to="paginateTo"
+                                :pagination="pagination ?? {}" />
                 </div>
             </div>
         </div>
