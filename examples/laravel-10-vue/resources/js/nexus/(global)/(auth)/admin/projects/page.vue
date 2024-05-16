@@ -7,6 +7,8 @@ const pagination = reactive({
     data: [],
     meta: {},
     loading: true,
+    page: 1,
+    per_page: 10
 });
 
 const filters = reactive({
@@ -41,7 +43,11 @@ const fetchRecords = () => {
         });
 };
 
-const debouncedFetchRecords = debounce(fetchRecords, 1000);
+const debouncedFetchRecords = debounce(() => {
+    pagination.page = 1;
+    
+    fetchRecords();
+}, 1000);
 
 onMounted(async () => {
     fetchRecords();
