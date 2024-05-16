@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, reactive, ref } from 'vue';
 import Pagination from '@/components/Pagination.vue';
-import { debounce } from 'lodash';
+import { debounce, _ } from 'lodash';
 
 const pagination = reactive({
     data: [],
@@ -16,7 +16,6 @@ const filters = reactive({
 const paginateTo = ({ page, perPage }) => {
     pagination.page = page;
     pagination.per_page = perPage;
-    console.log(pagination.page, pagination.per_page);
 
     fetchRecords();
 };
@@ -101,28 +100,28 @@ onMounted(async () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800"
-                                v-for="developer in pagination.data" :key="developer.id">
+                            <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 hover:bg-gray-100 hover:dark:bg-gray-700"
+                                v-for="resource in pagination.data" :key="resource.id">
                                 <td class="border-t px-6 py-4 whitespace-no-wrap text-sm text-gray-900 w-28">
                                     <div class="text-sm leading-5 font-medium text-gray-900">
-                                        {{ developer.id }}
+                                        {{ resource.id }}
                                     </div>
                                 </td>
                                 <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
                                     <div class="text-sm leading-5 font-medium text-gray-900">
-                                        {{ developer.name }}
+                                        {{ resource.name }}
                                     </div>
                                 </td>
                                 <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
                                     <div class="text-sm leading-5 text-gray-900">
-                                        {{ developer.email }}
+                                        {{ resource.email }}
                                     </div>
                                 </td>
                                 <td
                                     class="border-t border-l px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
-                                    <Link :href="`/admin/developers/${developer.id}`"
+                                    <Link :href="`/admin/developers/${resource.id}`"
                                         class="text-indigo-600 hover:text-indigo-900">View</Link>
-                                    <Link :href="`/admin/developers/${developer.id}/edit`"
+                                    <Link :href="`/admin/developers/${resource.id}/edit`"
                                         class="text-indigo-600 hover:text-indigo-900">Edit</Link>
                                 </td>
                             </tr>
@@ -130,7 +129,7 @@ onMounted(async () => {
                     </table>
 
                      <Pagination
-                                v-if="(!pagination.loading || pagination.meta != {}) && pagination.meta?.total > 10"
+                                v-if="(!pagination.loading || !_.isEmpty(pagination.meta))"
                                  @paginate-to="paginateTo"
                                 :pagination="pagination ?? {}" />
                 </div>

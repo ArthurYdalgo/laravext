@@ -16,7 +16,16 @@ class ProjectController extends Controller
 
     public function index()
     {
-        return JsonResource::collection(Project::paginate());
+        $search = request()->query('search');
+        $projects = Project::query()
+            ->when($search, function ($query, $search) {
+                $query->where('name', 'like', "%$search%");
+            })
+            ->with(['company', 'team'])
+            ->paginate(request()->query('per_page', 10))
+            ->appends(request()->query());
+
+        return JsonResource::collection($projects);
     }
 
     public function store(StoreRequest $request)
@@ -26,6 +35,8 @@ class ProjectController extends Controller
 
     public function show(Project $project)
     {
+        $project->load(['company', 'team']);
+        
         return $project;
     }
 

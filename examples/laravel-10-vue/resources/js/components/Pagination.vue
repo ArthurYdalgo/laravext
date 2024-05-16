@@ -18,6 +18,10 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    hideTotal: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 const emit = defineEmits(['paginate-to']);
@@ -86,6 +90,8 @@ const onBlur = () => {
 <template>
     <div class="flex items-center justify-between">
         <div class="flex items-center">
+            <label v-if="!hideTotal" for="per-page-selector" class="mr-2">Total: {{ props.pagination.meta.total }}</label>
+            <span v-if="!hidePerPageSelector && !hideTotal" class="text-black/50 py-2 dark:text-white/50 mx-4">|</span>
             <label v-if="!hidePerPageSelector" for="per-page-selector" class="mr-2">Per Page:</label>
             <select v-if="!hidePerPageSelector" id="per-page-selector"  v-model="perPage" @change="handleUpdatePerPage" class="border border-gray-300 rounded px-3 py-2 pr-8">
                 <option v-for="option in perPageOptions" :key="option" :value="option">{{ option }}</option>

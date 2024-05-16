@@ -11,7 +11,16 @@ class TeamController extends Controller
 {
     public function index()
     {
-        return JsonResource::collection(Team::withCount(['developers'])->paginate());
+        $search = request()->query('search');
+        $teams = Team::query()
+            ->when($search, function ($query, $search) {
+                $query->where('name', 'like', "%$search%");
+            })
+            ->withCount(['developers', 'projects'])
+            ->paginate(request()->query('per_page', 10))
+            ->appends(request()->query());
+
+        return JsonResource::collection($teams);
     }
 
     public function store(StoreRequest $request)

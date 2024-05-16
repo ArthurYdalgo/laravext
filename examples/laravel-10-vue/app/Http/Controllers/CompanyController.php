@@ -11,7 +11,17 @@ class CompanyController extends Controller
 {
     public function index()
     {
-        return JsonResource::collection(Company::withCount(['projects'])->paginate());
+        $search = request()->query('search');
+        $companies = Company::query()
+            ->when($search, function ($query, $search) {
+                $query->where('name', 'like', "%$search%")
+                    ->orWhere('email', 'like', "%$search%");
+            })
+            ->withCount(['projects'])
+            ->paginate(request()->query('per_page', 10))
+            ->appends(request()->query());
+
+        return JsonResource::collection($companies);
     }
 
 
