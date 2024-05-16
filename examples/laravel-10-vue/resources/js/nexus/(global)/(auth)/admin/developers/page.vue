@@ -134,7 +134,7 @@ onMounted(async () => {
                         </tbody>
                     </table>
 
-                     <Pagination v-if="(!pagination.loading)" @paginate-to="paginateTo" :pagination="pagination ?? {}" />
+                     <Pagination v-if="!pagination.loading" @paginate-to="paginateTo" :pagination="pagination ?? {}" />
                 </div>
             </div>
         </div>
