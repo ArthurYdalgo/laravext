@@ -86,7 +86,7 @@ onMounted(async () => {
 
                     <table class="min-w-full divide-y divide-gray-200 border my-4">
                         <thead>
-                            <tr>
+                            <!-- <tr> -->
                                 <th
                                     class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                     ID
@@ -103,12 +103,12 @@ onMounted(async () => {
                                     class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                     Actions
                                 </th>
-                            </tr>
+                            <!-- </tr> -->
                         </thead>
                         <tbody>
-                            <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 hover:bg-gray-100 hover:dark:bg-gray-700"
+                            <tr class="odd:bg-gray-100 odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 hover:bg-gray-200 hover:dark:bg-gray-700"
                                 v-for="resource in pagination.data" :key="resource.id">
-                                <td class="border-t px-6 py-4 whitespace-no-wrap text-sm text-gray-900 w-28">
+                                <td class="border-t border-l px-6 py-4 whitespace-no-wrap text-sm text-gray-900 w-28">
                                     <div class="text-sm leading-5 font-medium text-gray-900">
                                         {{ resource.id }}
                                     </div>
@@ -134,7 +134,7 @@ onMounted(async () => {
                         </tbody>
                     </table>
 
-<Pagination v-if="!pagination.loading" @paginate-to="paginateTo" :pagination="pagination ?? {}" />
+                        <Pagination v-if="!pagination.loading" @paginate-to="paginateTo" :pagination="pagination ?? {}" />
                 </div>
             </div>
         </div>

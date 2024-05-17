@@ -110,7 +110,7 @@ onMounted(async () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 hover:bg-gray-100 hover:dark:bg-gray-700"
+                            <tr class="odd:bg-gray-100 odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 hover:bg-gray-200 hover:dark:bg-gray-700"
                                 v-for="resource in pagination.data" :key="resource.id">
                                 <td class="border-t px-6 py-4 whitespace-no-wrap text-sm text-gray-900 w-28">
                                     <div class="text-sm leading-5 font-medium text-gray-900">
