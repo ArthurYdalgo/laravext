@@ -169,7 +169,7 @@ class Router
             $middleware = $directory['conventions']['middleware'] ?? null;
             $layout = $directory['conventions']['layout'] ?? null;
             $error = $directory['conventions']['error'] ?? null;
-
+            
             Cache::store('array')->put(
                 "laravext-uri:{$route_uri}-cache",
                 compact('server_skeleton', 'middleware', 'layout', 'error', 'page', 'uri', 'name', 'root_view')
@@ -181,7 +181,6 @@ class Router
                 $router->nexus(
                     $route_uri,
                     $page,
-                    $props,
                     $root_view,
                     ...compact('middleware', 'layout', 'error', 'server_skeleton')
                 )->name($name);

@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 /**
  * This will automagically generate all the file based routes of your application.
- * It creates a route group that you can send parameters/props to.
+ * It creates a route group that you can send parameters to.
  * 
  * @see https://laravext.dev/#/tools/routing?id=routelaravext for more detailed examples
  */
@@ -37,10 +37,6 @@ Route::nexus('our-teams', props: [
     'teams' => Team::all()
 ])->name('our-teams');
 
-Route::nexus('our-projects', props: [
-    'projects' => Team::all()
-])->name('our-projects');
-
 /**
  * You can also make it so that any child route of admin will require the user to be authenticated, and also
  * set a different root view file for the admin route group.
@@ -51,6 +47,8 @@ Route::laravext("admin",  route_group_attributes: [
     'middleware' => 'auth',
 ], root_view: 'sections.app');
 
-Route::get('admin/teams/{team}', function($request) {
-    return nexus()->render();
+Route::get('admin/teams/{team}', function($team) {
+    return nexus(props: [
+        'team' => Team::find($team)
+    ])->render();
 })->name('admin.teams.team');

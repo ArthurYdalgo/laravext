@@ -60,34 +60,12 @@ class LaravextServiceProvider extends ServiceProvider
     protected function registerRouterMacro(): void
     {
         Router::macro('nexus', function ($uri = '{nexusSlug?}', $page = null, $root_view = null, ...$parameters) {
-            $nexus_route_data = Cache::store("array")->get("laravext-uri:{$uri}-cache");
-            
-            return $this->match(['GET', 'HEAD'], $uri, function () use ($uri, $page, $root_view, $parameters, $nexus_route_data)  {
-                $defaults = [
-                    'merge_with_existing_route' => true,
-                    'middleware' => null,
-                    'layout' => null,
-                    'error' => null,
-                    'server_skeleton' => null,
-                    'root_view' => null,
-                ];
-        
-                extract(array_merge($defaults, $parameters));
-        
-                if($merge_with_existing_route && $nexus_route_data) {
-                    $root_view ??= $nexus_route_data['root_view'];
-                    $page ??= $nexus_route_data['page'];
-                    $middleware ??= $nexus_route_data['middleware'];
-                    $layout ??= $nexus_route_data['layout'];
-                    $error ??= $nexus_route_data['error'];
-                    $server_skeleton ??= $nexus_route_data['server_skeleton'];
+            return $this->match(['GET', 'HEAD'], $uri, function () use ($uri, $page, $root_view, $parameters)  {
+                if(isset($parameters['merge_with_existing_route']) && !boolval($parameters['merge_with_existing_route'])){
+                    Laravext::clearUriCache($uri);
                 }
         
-                return nexus($page)->rootView($root_view)
-                    ->withMiddleware($middleware)
-                    ->withLayout($layout)
-                    ->withServerSkeleton($server_skeleton)
-                    ->withError($error)->render();
+                return nexus($page)->rootView($root_view)->render();
             });
         });
 

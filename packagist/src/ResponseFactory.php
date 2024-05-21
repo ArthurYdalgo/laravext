@@ -28,15 +28,29 @@ class ResponseFactory
 
     }
 
-    private static function getUriCache(){
-        $uri = request()->route()->uri();
+    public static function getUriCache($uri = null){
+        $uri = $uri ?? request()?->route()?->uri();
+
+        if(!$uri){
+            return null;
+        }
 
         return Cache::store('array')->get("laravext-uri:{$uri}-cache");
+    }
+
+    public static function clearUriCache($uri = null){
+        $uri = $uri ?? request()?->route()?->uri();
+
+        if(!$uri){
+            return null;
+        }
+
+        return Cache::store('array')->forget("laravext-uri:{$uri}-cache");
     }
     
     public function nexus($page = null, $props = [])
     {
-        $this->page = $page ?? $this->getUriCache()['page'] ?? null;
+        $this->page = $page;
 
         return $this->withProps($props);
     }
@@ -117,14 +131,16 @@ class ResponseFactory
 
     public function pageData()
     {
+        $uri_cache = $this->getUriCache();
+
         return [
             'nexus' => [
-                'page' => $this->page,
+                'page' => $this->page ?? $uri_cache['page'] ?? null,
                 'props' => $this->props,
-                'server_skeleton' => $this->server_skeleton,
-                'middleware' => $this->middleware,
-                'layout' => $this->layout,
-                'error' => $this->error,
+                'server_skeleton' => $this->server_skeleton ?? $uri_cache['server_skeleton'] ?? null,
+                'middleware' => $this->middleware ?? $uri_cache['middleware'] ?? null,
+                'layout' => $this->layout ?? $uri_cache['layout'] ?? null,
+                'error' => $this->error ?? $uri_cache['error'] ?? null,
             ],
             'shared_props' => $this->shared_props,
             'route_params' => $this->route_params,
@@ -135,6 +151,8 @@ class ResponseFactory
 
     public function render()
     {
+        $uri_cache = $this->getUriCache();
+        
         $this->root_view ??= config('laravext.root_view');
 
         $laravext = $this->pageData();

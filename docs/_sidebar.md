@@ -1,6 +1,6 @@
 
 
-- [Laravext](README.md)
+- [Laravext (BETA)](README.md)
 - [Before You Start](before-you-start.md)
 - [Quick Start](quickstart.md)
 - [Configuration](configuration.md)

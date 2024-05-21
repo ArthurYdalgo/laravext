@@ -5,8 +5,8 @@ namespace Laravext;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static \Laravext\ResponseFactory nexus(string $component, mixed $props = [])
- * @method static \Laravext\ResponseFactory withProps(mixed $props)
+ * @method static \Laravext\ResponseFactory nexus(string $component = null, array $props = [])
+ * @method static \Laravext\ResponseFactory withProps(array $props)
  * @method static \Laravext\ResponseFactory withSharedProps(array $props)
  * @method static \Laravext\ResponseFactory withMiddleware(string $middleware)
  * @method static \Laravext\ResponseFactory withLayout(string $layout)
