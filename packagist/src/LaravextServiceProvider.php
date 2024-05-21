@@ -2,6 +2,7 @@
 
 namespace Laravext;
 
+use Closure;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Routing\Router;
 use Illuminate\Http\Request;
@@ -58,21 +59,23 @@ class LaravextServiceProvider extends ServiceProvider
 
     protected function registerRouterMacro(): void
     {
-        Router::macro('nexus', function ($uri = '{nexusSlug?}', $page = null, $props = [], $root_view = null, ...$parameters) {
-            $nexus_route_data = Cache::driver("array")->get("laravext-uri:{$uri}-cache");
+        Router::macro('nexus', function ($uri = '{nexusSlug?}', $page = null, $root_view = null, ...$parameters) {
+            $nexus_route_data = Cache::store("array")->get("laravext-uri:{$uri}-cache");
             
-            return $this->match(['GET', 'HEAD'], $uri, function () use ($uri, $page, $props, $root_view, $parameters, $nexus_route_data)  {
+            return $this->match(['GET', 'HEAD'], $uri, function () use ($uri, $page, $root_view, $parameters, $nexus_route_data)  {
                 $defaults = [
                     'merge_with_existing_route' => true,
                     'middleware' => null,
                     'layout' => null,
                     'error' => null,
                     'server_skeleton' => null,
+                    'root_view' => null,
                 ];
         
                 extract(array_merge($defaults, $parameters));
         
                 if($merge_with_existing_route && $nexus_route_data) {
+                    $root_view ??= $nexus_route_data['root_view'];
                     $page ??= $nexus_route_data['page'];
                     $middleware ??= $nexus_route_data['middleware'];
                     $layout ??= $nexus_route_data['layout'];
@@ -80,7 +83,7 @@ class LaravextServiceProvider extends ServiceProvider
                     $server_skeleton ??= $nexus_route_data['server_skeleton'];
                 }
         
-                return nexus($page, $props)->rootView($root_view)
+                return nexus($page)->rootView($root_view)
                     ->withMiddleware($middleware)
                     ->withLayout($layout)
                     ->withServerSkeleton($server_skeleton)
@@ -96,3 +99,4 @@ class LaravextServiceProvider extends ServiceProvider
         });
     }
 }
+

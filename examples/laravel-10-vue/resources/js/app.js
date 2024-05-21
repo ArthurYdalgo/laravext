@@ -7,6 +7,9 @@ import VueCookies from 'vue-cookies'
 import { createI18n } from 'vue-i18n'
 import pt from './../../lang/pt.json'
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+
 
 const i18n = createI18n({
     locale: 'pt',
@@ -32,6 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             /** @see https://vue-i18n.intlify.dev/guide/essentials/started.html for original example */
             { plugin: i18n },
+            { plugin: VueSweetalert2 }
         ]
     })
 }, false);

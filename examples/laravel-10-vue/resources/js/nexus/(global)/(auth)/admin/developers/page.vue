@@ -1,7 +1,12 @@
 <script setup>
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive, ref , inject } from 'vue';
 import Pagination from '@/components/Pagination.vue';
 import { debounce, _ } from 'lodash';
+import PrimaryButton from '@/components/PrimaryButton.vue';
+import DangerButton from '@/components/DangerButton.vue';
+import VueSweetalert2 from 'vue-sweetalert2';
+
+const swal = inject('$swal')
 
 const pagination = reactive({
     data: [],
@@ -19,10 +24,10 @@ const paginateTo = ({ page, perPage }) => {
     pagination.page = page;
     pagination.per_page = perPage;
 
-    fetchRecords();
+    fetchResources();
 };
 
-const fetchRecords = () => {
+const fetchResources = () => {
     pagination.loading = true;
 
     axios.get('/api/developers', {
@@ -43,14 +48,41 @@ const fetchRecords = () => {
         });
 };
 
-const debouncedFetchRecords = debounce(() => {
+const destroyResource = (id) => {
+    swal({
+        title: 'Are you sure?',
+        icon: 'warning',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, cancel!',
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        showCancelButton: true,
+        showCloseButton: true,
+        
+    })
+        .then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(`/api/developers/${id}`)
+                    .then(() => {
+                        fetchResources();
+                        swal('Deleted!', 'The developer has been deleted.', 'success');
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        swal('Error!', 'An error occurred while deleting the developer.', 'error');
+                    });
+            }
+        });
+}
+
+const debouncedFetchResources = debounce(() => {
     pagination.page = 1;
 
-    fetchRecords();
+    fetchResources();
 }, 1000);
 
 onMounted(async () => {
-    fetchRecords();
+    fetchResources();
 });
 
 </script>
@@ -76,7 +108,7 @@ onMounted(async () => {
                         -center">
 
                             <input type="text" id="search" v-model="filters.search" placeholder="Search"
-                                class="border border-gray-300 rounded px-3 py-2" @input="debouncedFetchRecords" />
+                                class="border border-gray-300 rounded px-3 py-2" @input="debouncedFetchResources" />
                         </div>
                         <div class="flex items
                         -center">
@@ -129,17 +161,20 @@ onMounted(async () => {
                                         class="text-indigo-600 hover:text-indigo-900">View</Link>
                                     <Link :href="`/admin/developers/${resource.id}/edit`"
                                         class="text-indigo-600 hover:text-indigo-900">Edit</Link>
+                                    <DangerButton
+                                        @click="destroyResource(resource.id)"
+                                        class="text-red-600 hover:text-red-900">Delete</DangerButton>
+
+
                                 </td>
                             </tr>
                         </tbody>
                     </table>
 
-                     <Pagination v-if="!pagination.loading" @paginate-to="paginateTo" :pagination="pagination ?? {}" />
+                    <Pagination v-if="!pagination.loading" @paginate-to="paginateTo" :pagination="pagination ?? {}" />
                 </div>
             </div>
         </div>
     </div>
 </template>
-<style scoped>
-
-</style>
+<style scoped></style>

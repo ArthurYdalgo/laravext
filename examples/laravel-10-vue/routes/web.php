@@ -2,6 +2,7 @@
 
 use App\Models\Team;
 use Illuminate\Support\Facades\Route;
+
 /**
  * This will automagically generate all the file based routes of your application.
  * It creates a route group that you can send parameters/props to.
@@ -31,7 +32,7 @@ Route::nexus('contact-us', root_view: 'sections.contact-us')->name('contact-us')
  * page file, but by default it'll use any file it has already found for that route.
  * 
  * @see https://laravext.dev/#/tools/routing?id=routenexus for more detailed examples
- */ 
+ */
 Route::nexus('our-teams', props: [
     'teams' => Team::all()
 ])->name('our-teams');
@@ -49,3 +50,7 @@ Route::nexus('our-projects', props: [
 Route::laravext("admin",  route_group_attributes: [
     'middleware' => 'auth',
 ], root_view: 'sections.app');
+
+Route::get('admin/teams/{team}', function($request) {
+    return nexus()->render();
+})->name('admin.teams.team');

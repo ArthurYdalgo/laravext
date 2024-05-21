@@ -3,6 +3,7 @@
 namespace Laravext;
 
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\View;
 
 class ResponseFactory
@@ -26,10 +27,16 @@ class ResponseFactory
         $this->route_name = request()?->route()?->getName();
 
     }
+
+    private static function getUriCache(){
+        $uri = request()->route()->uri();
+
+        return Cache::store('array')->get("laravext-uri:{$uri}-cache");
+    }
     
     public function nexus($page = null, $props = [])
     {
-        $this->page = $page;
+        $this->page = $page ?? $this->getUriCache()['page'] ?? null;
 
         return $this->withProps($props);
     }

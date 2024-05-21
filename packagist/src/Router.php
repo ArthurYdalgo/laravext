@@ -2,6 +2,7 @@
 
 namespace Laravext;
 
+use Closure;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 use SplFileInfo;
@@ -171,7 +172,7 @@ class Router
 
             Cache::store('array')->put(
                 "laravext-uri:{$route_uri}-cache",
-                compact('server_skeleton', 'middleware', 'layout', 'error', 'page', 'uri', 'name')
+                compact('server_skeleton', 'middleware', 'layout', 'error', 'page', 'uri', 'name', 'root_view')
             );
 
             $uri = $uri ? self::trimStartingSlash($uri) : null;
@@ -198,7 +199,7 @@ class Router
      * @param \Illuminate\Routing\Router $router
      * @param string $uri
      * @param string $nexus_directory
-     * @param array $props
+     * @param mixed $props
      * @param array $route_group_attributes
      * @param string|null $root_view
      * 

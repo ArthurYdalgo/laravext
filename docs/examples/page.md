@@ -107,7 +107,7 @@ export default ({laravext}) => {
 <script setup>
 import { Head, nexusProps } from '@laravext/vue'
 
-const {teams} = nexusProps();
+const { teams } = nexusProps();
 
 </script>
 <template>
