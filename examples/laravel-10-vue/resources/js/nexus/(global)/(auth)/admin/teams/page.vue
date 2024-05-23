@@ -1,9 +1,12 @@
 <script setup>
 import { onMounted, reactive, ref } from 'vue';
 import Pagination from '@/components/Pagination.vue';
+import PrimaryButton from '@/components/PrimaryButton.vue'
 import { debounce } from 'lodash';
 import DangerButton from '@/components/DangerButton.vue';
 import Header from '@/components/Header.vue';
+import Link from '@/components/Link.vue';
+import SecondaryButton from '@/components/SecondaryButton.vue';
 
 const pagination = reactive({
     data: [],
@@ -105,6 +108,9 @@ onMounted(async () => {
                         </div>
                         <div class="flex items
                         -center">
+                            <Link routeName="admin.teams.create">
+                            <PrimaryButton>Create</PrimaryButton>
+                            </Link>
                         </div>
                     </div>
 
@@ -149,11 +155,9 @@ onMounted(async () => {
                                     </div>
                                 </td>
                                 <td
-                                    class="border-t border-l px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
-                                    <Link :href="`/admin/teams/${resource.id}`"
-                                        class="text-indigo-600 hover:text-indigo-900">View</Link>
-                                    <Link :href="`/admin/teams/${resource.id}/edit`"
-                                        class="text-indigo-600 hover:text-indigo-900">Edit</Link>
+                                    class="border-t border-l px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium space-x-2">
+                                    <Link :href="`/admin/teams/${resource.id}`"><PrimaryButton>Ver</PrimaryButton></Link>
+                                    <Link :href="`/admin/teams/${resource.id}/edit`"><SecondaryButton>Edit</SecondaryButton></Link>
                                     <DangerButton @click="destroyResource(resource.id)"
                                         class="text-red-600 hover:text-red-900">Delete</DangerButton>
                                 </td>

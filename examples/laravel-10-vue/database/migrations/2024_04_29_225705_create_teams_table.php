@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('teams', function (Blueprint $table) {
             $table->id();
-
+            
             $table->string("name");
 
             $table->softDeletes();

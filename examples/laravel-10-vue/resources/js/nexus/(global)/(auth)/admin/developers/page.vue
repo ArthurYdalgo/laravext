@@ -1,11 +1,13 @@
 <script setup>
-import { onMounted, reactive, ref , inject } from 'vue';
+import { onMounted, reactive, ref, inject } from 'vue';
 import Pagination from '@/components/Pagination.vue';
 import { debounce, _ } from 'lodash';
 import PrimaryButton from '@/components/PrimaryButton.vue';
 import DangerButton from '@/components/DangerButton.vue';
 import VueSweetalert2 from 'vue-sweetalert2';
 import Header from '@/components/Header.vue';
+import Link from '@/components/Link.vue';
+import SecondaryButton from '@/components/SecondaryButton.vue';
 
 const swal = inject('$swal')
 
@@ -59,7 +61,7 @@ const destroyResource = (id) => {
         cancelButtonColor: '#3085d6',
         showCancelButton: true,
         showCloseButton: true,
-        
+
     })
         .then((result) => {
             if (result.isConfirmed) {
@@ -153,13 +155,14 @@ onMounted(async () => {
                                     </div>
                                 </td>
                                 <td
-                                    class="border-t border-l px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
-                                    <Link :href="`/admin/developers/${resource.id}`"
-                                        class="text-indigo-600 hover:text-indigo-900">View</Link>
-                                    <Link :href="`/admin/developers/${resource.id}/edit`"
-                                        class="text-indigo-600 hover:text-indigo-900">Edit</Link>
-                                    <DangerButton
-                                        @click="destroyResource(resource.id)"
+                                    class="border-t border-l px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium space-x-2">
+                                    <Link :href="`/admin/developers/${resource.id}`">
+                                    <PrimaryButton>Ver</PrimaryButton>
+                                    </Link>
+                                    <Link :href="`/admin/developers/${resource.id}/edit`">
+                                    <SecondaryButton>Edit</SecondaryButton>
+                                    </Link>
+                                    <DangerButton @click="destroyResource(resource.id)"
                                         class="text-red-600 hover:text-red-900">Delete</DangerButton>
 
 
