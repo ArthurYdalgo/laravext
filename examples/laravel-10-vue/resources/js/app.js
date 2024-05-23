@@ -8,13 +8,13 @@ import { createI18n } from 'vue-i18n'
 import pt from './../../lang/pt.json'
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import { plugin as fkPluging, defaultConfig as fkDefaultConfig } from '@formkit/vue'
-import { en as fkEn, pt as fkPt } from '@formkit/i18n'
 import VueSweetalert2 from 'vue-sweetalert2';
+import fkConfig from './../../formkit.theme.js'
 import 'sweetalert2/dist/sweetalert2.min.css';
 
 
 const i18n = createI18n({
-    locale: 'pt',
+    locale: 'en',
     fallbackLocale: 'en',
     messages: {
         pt
@@ -38,10 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
             /** @see https://vue-i18n.intlify.dev/guide/essentials/started.html for original example */
             { plugin: i18n },
             { plugin: VueSweetalert2 },
-            { plugin: fkPluging, options: fkDefaultConfig ({
-                locales: { fkPt, fkEn },
-                locale: 'en'
-            }) }
+            { plugin: fkPluging, options: fkDefaultConfig (fkConfig) }
         ]
     })
 }, false);

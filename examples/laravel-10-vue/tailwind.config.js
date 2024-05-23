@@ -13,6 +13,8 @@ export default {
         './resources/js/**/*.tsx',
         './resources/js/**/*.vue',
         './resources/js/**/*.html',
+        "./formkit.theme.js",
+        "./formkit.theme.mjs"
     ],
 
     theme: {
