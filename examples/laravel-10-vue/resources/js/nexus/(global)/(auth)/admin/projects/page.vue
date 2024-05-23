@@ -7,6 +7,7 @@ import Header from '@/components/Header.vue';
 import Link from '@/components/Link.vue';
 import PrimaryButton from '@/components/PrimaryButton.vue';
 import SecondaryButton from '@/components/SecondaryButton.vue';
+import PageContent from '@/components/PageContent.vue';
 
 const pagination = reactive({
     data: [],
@@ -91,96 +92,89 @@ onMounted(async () => {
         Projects
     </Header>
 
-    <div>
-        <div class="py-6">
-            <div class="mx-auto sm:px-6 lg:px-4">
-                <div v-if="pagination.loading" class="absolute inset-0 flex items-center justify-center">
-                    <div class="loader"></div>
-                </div>
-                <div :class="{ 'opacity-50': pagination.loading }"
-                    class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 text-gray-900 dark:text-gray-100">
+    <PageContent>
+        <div v-if="pagination.loading" class="absolute inset-0 flex items-center justify-center">
+            <div class="loader"></div>
+        </div>
 
-                    <div class="flex items
+        <div class="flex items
                     -center justify-between mb-4">
-                        <div class="flex items
+            <div class="flex items
                         -center">
 
-                            <input type="text" id="search" v-model="filters.search" placeholder="Search"
-                                class="border border-gray-300 rounded px-3 py-2" @input="debouncedFetchResources" />
-                        </div>
-                        <div class="flex items
+                <input type="text" id="search" v-model="filters.search" placeholder="Search"
+                    class="border border-gray-300 rounded px-3 py-2" @input="debouncedFetchResources" />
+            </div>
+            <div class="flex items
                         -center">
-                        </div>
-                    </div>
-
-
-                    <table class="min-w-full divide-y divide-gray-200 border my-4">
-                        <thead>
-                            <tr>
-                                <th
-                                    class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                    ID
-                                </th>
-                                <th
-                                    class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                    Name
-                                </th>
-                                <th
-                                    class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                    Team
-                                </th>
-                                <th
-                                    class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                    Company
-                                </th>
-                                <th
-                                    class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                    Actions
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="odd:bg-gray-100 odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 hover:bg-gray-200 hover:dark:bg-gray-700"
-                                v-for="resource in pagination.data" :key="resource.id">
-                                <td class="border-t px-6 py-4 whitespace-no-wrap text-sm text-gray-900 w-28">
-                                    <div class="text-sm leading-5 font-medium text-gray-900">
-                                        {{ resource.id }}
-                                    </div>
-                                </td>
-                                <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
-                                    <div class="text-sm leading-5 font-medium text-gray-900">
-                                        {{ resource.name }}
-                                    </div>
-                                </td>
-                                <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
-                                    <div class="text-sm leading-5 font-medium text-gray-900">
-                                        {{ resource.team.name }}
-                                    </div>
-                                </td>
-                                <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
-                                    <div class="text-sm leading-5 font-medium text-gray-900">
-                                        {{ resource.company.name }}
-                                    </div>
-                                </td>
-                                <td
-                                    class="border-t border-l px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium space-x-2">
-                                    <Link :href="`/admin/projects/${resource.id}`">
-                                    <PrimaryButton>Ver</PrimaryButton>
-                                    </Link>
-                                    <Link :href="`/admin/projects/${resource.id}/edit`">
-                                    <SecondaryButton>Edit</SecondaryButton>
-                                    </Link>
-                                    <DangerButton @click="destroyResource(resource.id)"
-                                        class="text-red-600 hover:text-red-900">Delete</DangerButton>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <Pagination v-if="!pagination.loading" @paginate-to="paginateTo" :pagination="pagination ?? {}" />
-                </div>
             </div>
         </div>
-    </div>
+
+
+        <table :class="{ 'opacity-50': pagination.loading }" class="min-w-full divide-y divide-gray-200 border my-4">
+            <thead>
+                <tr>
+                    <th
+                        class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                        ID
+                    </th>
+                    <th
+                        class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                        Name
+                    </th>
+                    <th
+                        class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                        Team
+                    </th>
+                    <th
+                        class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                        Company
+                    </th>
+                    <th
+                        class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="odd:bg-gray-100 odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 hover:bg-gray-200 hover:dark:bg-gray-700"
+                    v-for="resource in pagination.data" :key="resource.id">
+                    <td class="border-t px-6 py-4 whitespace-no-wrap text-sm text-gray-900 w-28">
+                        <div class="text-sm leading-5 font-medium text-gray-900">
+                            {{ resource.id }}
+                        </div>
+                    </td>
+                    <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
+                        <div class="text-sm leading-5 font-medium text-gray-900">
+                            {{ resource.name }}
+                        </div>
+                    </td>
+                    <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
+                        <div class="text-sm leading-5 font-medium text-gray-900">
+                            {{ resource.team.name }}
+                        </div>
+                    </td>
+                    <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
+                        <div class="text-sm leading-5 font-medium text-gray-900">
+                            {{ resource.company.name }}
+                        </div>
+                    </td>
+                    <td
+                        class="border-t border-l px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium space-x-2">
+                        <Link :href="`/admin/projects/${resource.id}`">
+                        <PrimaryButton>Show</PrimaryButton>
+                        </Link>
+                        <Link :href="`/admin/projects/${resource.id}/edit`">
+                        <SecondaryButton>Edit</SecondaryButton>
+                        </Link>
+                        <DangerButton @click="destroyResource(resource.id)" class="text-red-600 hover:text-red-900">
+                            Delete</DangerButton>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <Pagination v-if="!pagination.loading" @paginate-to="paginateTo" :pagination="pagination ?? {}" />
+    </PageContent>
 </template>
 <style scoped></style>
