@@ -19,11 +19,10 @@ Route::laravext();
 
 It does, however, accept some parameters so you can use it in a more customized way:
 
-`Route::laravext($uri = null, $props = [], $route_group_attributes = [], $root_view = null)`
+`Route::laravext($uri = null, $route_group_attributes = [], $root_view = null)`
 
 The parameters:
 - `uri`: is used so you can define which urls will be matched to this route declaration. If nothing is set, then it'll apply to all the routes created by the Laravext router.
-- `props`: is used to define the properties that will be passed to the component
 - `route_group_attributes`: is used to define the attributes that will be passed to the route group, (such as `middleware`, `as`). In order to avoid conflicts with the automagically generate route segments, the `prefix` parameters that you'd usually use with a route group is not used
 - `root_view`: is used to define the root view that will be used to render the component. This will override the default root view [defined in the configuration file](/configuration.md?id=root-view). If nothing is set, the default root view will be used.
 
@@ -56,7 +55,7 @@ As mentioned before, in the [Quickstart](/quickstart.md) section, this is techni
 
 Similar to [Inertia.js' Shorthand Routes](https://inertiajs.com/routing), you can manually set a route to a specific nexus component using the `Route::nexus` method. This method is useful when you want to create a route that doesn't follow the file-based route structure of Laravext, or when you want to pass specific props, set a specific file convention (see [FileConvention](/concepts/file-conventions) for more details), root view, etc.
 
-`Route::nexus($uri = '{nexusSlug?}', $page = null, $props = [], $root_view = null, ...$parameters)`
+`Route::nexus($uri = '{nexusSlug?}', $page = null, $root_view = null, ...$parameters)`
 
 The (named) parameters:
 - `uri`: is used to define the url that will be matched to this route declaration. If nothing is set, then it'll apply to all the routes created by the Laravext router. Unlike the `Route::laravext` method, this parameter does not affect any subroute.
@@ -94,20 +93,13 @@ use App\Models\Order;
 
 Route::laravext();
 
-Route::nexus('orders/{order}', props: [
-    'order' => request()->route('order'),
-
-    // or ...
-    'order' => Order::find(request()->route('order'))
-],layout: '(app)/layout.jsx')->middleware([
+Route::nexus('orders/{order}', layout: '(app)/layout.jsx')->middleware([
     'auth',
     'can:read,order' // assuming you have a policy for the Order model
 ])->withoutMiddleware([
     'verified'
 ])->name('admin.orders.order');
 ```
-
-<sup>⚠️Important note⚠️: you can use [Laravel's explicit binding](https://laravel.com/docs/11.x/routing#explicit-binding) so that `request()->route('order')` returns the model itself. Remember to set your middlewares accordingly (like the `can:read,order` from the example), so that you don't send any sensitive information to the client that shouldn't be there.</sub>
 
 Once again, this declaration will already know the page file conventions to use because it was already found before to this uri before. If you want to completely override the automagically generated route's file conventions, you can set the `merge_with_existing_route` parameter to `false`:
 
@@ -118,9 +110,7 @@ use App\Models\Order;
 Route::laravext(); 
 
 // assuming a route for 'orders/{order}' was already created by the router
-Route::nexus('orders/{order}', '(app)/orders/order/page.jsx', [
-    'order' => request()->route('order')
-], layout: '(app)/layout.jsx')->middleware([
+Route::nexus('orders/{order}', '(app)/orders/order/page.jsx', layout: '(app)/layout.jsx')->middleware([
     'auth',
     'can:read,order' // assuming you have a policy for the Order model
 ], merge_with_existing_route: false)->withoutMiddleware([

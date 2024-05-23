@@ -5,6 +5,7 @@ import { debounce, _ } from 'lodash';
 import PrimaryButton from '@/components/PrimaryButton.vue';
 import DangerButton from '@/components/DangerButton.vue';
 import VueSweetalert2 from 'vue-sweetalert2';
+import Header from '@/components/Header.vue';
 
 const swal = inject('$swal')
 
@@ -87,11 +88,7 @@ onMounted(async () => {
 
 </script>
 <template>
-    <header class="bg-white dark:bg-gray-800 shadow">
-        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-            <h2 class="font-semibold text-lg text-gray-800 dark:text-gray-200 leading-tight">Developers</h2>
-        </div>
-    </header>
+    <Header>Developers</Header>
 
     <div>
         <div class="py-6">

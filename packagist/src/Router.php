@@ -151,7 +151,7 @@ class Router
      * @param array $directory
      * 
      */
-    public static function laravextNexusRoutes(&$router, $directory, $uri, $props = [], $root_view = null)
+    public static function laravextNexusRoutes(&$router, $directory, $uri, $root_view = null)
     {
         $router_route_name_is_enabled = config('laravext.router_route_naming_is_enabled', true);
 
@@ -188,7 +188,7 @@ class Router
         }
 
         foreach ($directory['children'] as $child_directory) {
-            self::laravextNexusRoutes($router, $child_directory, $uri, $props, $root_view);
+            self::laravextNexusRoutes($router, $child_directory, $uri, $root_view);
         }
     }
 
@@ -198,21 +198,20 @@ class Router
      * @param \Illuminate\Routing\Router $router
      * @param string $uri
      * @param string $nexus_directory
-     * @param mixed $props
      * @param array $route_group_attributes
      * @param string|null $root_view
      * 
      * @return \Illuminate\Routing\Router
      */
-    public static function laravextRouteGroup(&$router, $uri, $nexus_directory, $props = [], $route_group_attributes = [], $root_view = null)
+    public static function laravextRouteGroup(&$router, $uri, $nexus_directory, $route_group_attributes = [], $root_view = null)
     {
         $router_cache_driver = config('laravext.router_cache_driver', 'file');
         $router_cacher_is_enabled = config('laravext.router_cacher_is_enabled', true);
 
         $nexus_directories = self::getNexusDirectories($nexus_directory, $router_cacher_is_enabled, $router_cache_driver);
 
-        return $router->group($route_group_attributes, function () use ($uri, $router, $props, $root_view, $nexus_directories) {
-            self::laravextNexusRoutes($router, $nexus_directories, $uri, $props, $root_view);
+        return $router->group($route_group_attributes, function () use ($uri, $router, $root_view, $nexus_directories) {
+            self::laravextNexusRoutes($router, $nexus_directories, $uri, $root_view);
         });
     }
 

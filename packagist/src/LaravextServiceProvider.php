@@ -69,11 +69,11 @@ class LaravextServiceProvider extends ServiceProvider
             });
         });
 
-        Router::macro('laravext', function ($uri = null, $props = [], $route_group_attributes = [], $root_view = null) {
+        Router::macro('laravext', function ($uri = null, $route_group_attributes = [], $root_view = null) {
             unset($route_group_attributes['prefix']);
             $nexus_directory = config('laravext.nexus_directory');
 
-            LaravextRouter::laravextRouteGroup($this, $uri, $nexus_directory, $props, $route_group_attributes, $root_view);
+            LaravextRouter::laravextRouteGroup($this, $uri, $nexus_directory, $route_group_attributes, $root_view);
         });
     }
 }

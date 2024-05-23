@@ -28,16 +28,6 @@ Route::view('/', 'sections.home')->name('home');
 Route::nexus('contact-us', root_view: 'sections.contact-us')->name('contact-us');
 
 /**
- * In case you want to send server-side fetched data to a route, for some reason. You could set a different 
- * page file, but by default it'll use any file it has already found for that route.
- * 
- * @see https://laravext.dev/#/tools/routing?id=routenexus for more detailed examples
- */
-Route::nexus('our-teams', props: [
-    'teams' => Team::all()
-])->name('our-teams');
-
-/**
  * You can also make it so that any child route of admin will require the user to be authenticated, and also
  * set a different root view file for the admin route group.
  * 

@@ -22,7 +22,7 @@ Route::group([
     'middleware' => 'auth'
 ], function(){
     
-    Route::apiResource('teams', TeamController::class);
+    Route::apiResource('teams', TeamController::class)->withoutMiddleware('auth');
     Route::apiResource('teams.developers', TeamDeveloperController::class)->only(['store', 'index']);
     Route::put('teams/{team}/developers', [TeamDeveloperController::class, 'update'])->name('teams.developers.update');
     Route::delete('teams/{team}/developers', [TeamDeveloperController::class, 'destroy'])->name('teams.developers.destroy');
