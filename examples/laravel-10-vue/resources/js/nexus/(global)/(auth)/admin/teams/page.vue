@@ -135,13 +135,8 @@ onMounted(async () => {
                         </div>
                     </td>
                     <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
-                        <div class="text-sm leading-5 font-medium text-gray-900">
-                            {{ resource.name }}
-                        </div>
-                    </td>
-                    <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
                         <div class="text-sm leading-5 text-gray-900">
-                            {{ resource.email }}
+                            {{ resource.name }}
                         </div>
                     </td>
                     <td
