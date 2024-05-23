@@ -153,7 +153,7 @@ class ResponseFactory
     {
         $uri_cache = $this->getUriCache();
         
-        $this->root_view ??= config('laravext.root_view');
+        $this->root_view ??= $uri_cache['root_view'] ?? config('laravext.root_view');
 
         $laravext = $this->pageData();
 
