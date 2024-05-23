@@ -94,16 +94,13 @@ onMounted(async () => {
             <div class="loader"></div>
         </div>
 
-        <div class="flex items
-                    -center justify-between mb-4">
-            <div class="flex items
-                        -center">
+        <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center">
 
                 <input type="text" id="search" v-model="filters.search" placeholder="Search"
                     class="border border-gray-300 rounded px-3 py-2" @input="debouncedFetchResources" />
             </div>
-            <div class="flex items
-                        -center">
+            <div class="flex items-center">
             </div>
         </div>
 
