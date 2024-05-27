@@ -12,10 +12,34 @@ class DeveloperController extends Controller
     public function index()
     {
         $search = request()->query('search');
+        $filter = request()->query('filter');
+        $prioritize_developers_in_team = request()->query('prioritize_developers_in_team');
+        $not_in_team_ids = $filter['not_in_team_id'] ?? null;
+        $in_team_ids = $filter['in_team_id'] ?? null;
+        $doesnt_have_a_team = $filter['doesnt_have_a_team'] ?? null;
+
         $developers = Developer::query()
             ->when($search, function ($query, $search) {
                 $query->where('name', 'like', "%$search%")
                     ->orWhere('email', 'like', "%$search%");
+            })
+            ->when($prioritize_developers_in_team, function ($query) use ($prioritize_developers_in_team) {
+                // when this is set, the developers from this team should be on top
+                $query->orderByRaw("team_id = {$prioritize_developers_in_team} desc, id asc");
+            })
+            ->when($doesnt_have_a_team, function ($query) {
+                $query->whereNull('team_id');
+            })
+            ->when($not_in_team_ids, function ($query, $not_in_team_ids) {
+                $not_in_team_ids = is_array($not_in_team_ids) ? $not_in_team_ids : explode(',', $not_in_team_ids);
+
+                $query->whereNull('team_id')
+                    ->orWhereNotIn('team_id', $not_in_team_ids);
+            })
+            ->when($in_team_ids, function ($query, $in_team_ids) {
+                $in_team_ids = is_array($in_team_ids) ? $in_team_ids : explode(',', $in_team_ids);
+
+                $query->whereIn('team_id', $in_team_ids);
             })
             ->paginate(request()->query('per_page', 10))
             ->appends(request()->query());
