@@ -12,6 +12,12 @@ class DeveloperController extends Controller
     public function index()
     {
         $search = request()->query('search');
+        $filter = request()->query('filter');
+        $prioritize_developers_in_team = request()->query('prioritize_developers_in_team');
+        $not_in_team_ids = $filter['not_in_team_id'] ?? null;
+        $in_team_ids = $filter['in_team_id'] ?? null;
+        $doesnt_have_a_team = $filter['doesnt_have_a_team'] ?? null;
+
         $developers = Developer::query()
             ->when($search, function ($query, $search) {
                 $query->where('name', 'like', "%$search%")
@@ -20,12 +26,8 @@ class DeveloperController extends Controller
             ->when($prioritize_developers_in_team, function ($query) use ($prioritize_developers_in_team) {
                 $query->orderByRaw("team_id = {$prioritize_developers_in_team} desc, id asc");
             })
-            ->when(!is_null($doesnt_have_a_team), function ($query)  use($doesnt_have_a_team){
-                if ($doesnt_have_a_team) {
-                    $query->whereNull('team_id');
-                } else {
-                    $query->whereNotNull('team_id');
-                }
+            ->when($doesnt_have_a_team, function ($query) {
+                $query->whereNull('team_id');
             })
             ->when($not_in_team_ids, function ($query, $not_in_team_ids) {
                 $not_in_team_ids = is_array($not_in_team_ids) ? $not_in_team_ids : explode(',', $not_in_team_ids);

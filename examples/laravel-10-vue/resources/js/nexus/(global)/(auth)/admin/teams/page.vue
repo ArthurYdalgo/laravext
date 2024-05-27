@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive, ref, inject } from 'vue';
 import Pagination from '@/components/Pagination.vue';
 import PrimaryButton from '@/components/PrimaryButton.vue'
 import { debounce } from 'lodash';
@@ -8,6 +8,9 @@ import Header from '@/components/Header.vue';
 import Link from '@/components/Link.vue';
 import SecondaryButton from '@/components/SecondaryButton.vue';
 import PageContent from '@/components/PageContent.vue';
+import Fa from '@/components/Fa.vue';
+import CircleNumber from '@/components/CircleNumber.vue';
+const swal = inject('$swal')
 
 const pagination = reactive({
     data: [],
