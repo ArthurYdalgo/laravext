@@ -9,6 +9,10 @@
 
 Welcome to the Laravext repo!
 
+## Documentation
+
+The documentation is available at [laravext.dev](https://laravext.dev). It's a work in progress, and I'm trying to make it as complete as possible in a way that makes it as useful and friendly like the Laravel docs. If you find any errors, or have any suggestions, feel free to open an issue or a PR.
+
 ## What is it Laravext?
 
 Laravext is a set of tools aimed to assist the development of [Laravel](https://laravel.com/) applications with [React](https://react.dev/) or [Vue](https://vuejs.org/). It's name is (just in case you didn't get it) a mix of Laravel and [Next.js](https://nextjs.org/), although not affiliated or endorsed by any of them. I tried to fit in something that also sounded like "Vue" or "[Inertia.js](https://inertiajs.com/)" in the name, but "Laravext" sounded the better, of all the options I thought of. Not that creative, I know. Sue me (just kidding, don't).
@@ -180,3 +184,7 @@ This is my first "big" project aimed to be used by the community, and it's just 
 PRs are welcome, but I may ignore them at my disclosure.
 
 But hey, this is open-source, so you have my blessing (not that you need it anyway) to fork it and to do whatever the hell you want with it.
+
+### Side note
+
+The domain [laravext.com](https://laravext.com) is just a redirect to [laravext.dev](https://laravext.dev)
