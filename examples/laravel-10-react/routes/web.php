@@ -52,9 +52,7 @@ Route::laravext();
 //  * will contain the defined route group attributes, such as middleware
 //  * and name prefix, but the prefix will be ignored, unlike a common route group.
 //  */
-// Route::laravext('dashboard', [
-//     'inspiring_quote' => 'You are the creator of your own destiny.',
-// ], route_group_attributes: [
+// Route::laravext('dashboard', route_group_attributes: [
 //     // 'prefix' => 'dashboard', // the prefix key is unset internally, to avoid conflicts with the laravext router
 //     'middleware' => [
 //         // 'auth',

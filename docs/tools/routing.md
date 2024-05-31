@@ -34,9 +34,7 @@ use Illuminate\Support\Facades\Route;
 // You can still use the default way of declaring routes before any complex route declaration
 Route::laravext();
 
-Route::laravext('dashboard', [
-    'inspiring_quote' => 'You are the creator of your own destiny.',
-], route_group_attributes: [
+Route::laravext('dashboard', route_group_attributes: [
 
     // 'prefix' => 'dashboard', // the prefix key is unset internally, to avoid conflicts with the laravext router
 
