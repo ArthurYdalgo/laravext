@@ -79,7 +79,13 @@ const handleUpdatePerPage = () => {
     paginateTo();
 };
 
-const onBlur = () => {
+const onBlur = (e) => {
+    if (e.target.value == currentPage.value) {
+        return;
+    }
+
+    currentPage.value = parseInt(e.target.value);
+
     if (currentPage.value > props.pagination.meta.last_page) {
         currentPage.value = props.pagination.meta.last_page;
     }
@@ -112,7 +118,7 @@ const onBlur = () => {
             <button @click="currentPage = props.pagination.meta.last_page; paginateTo()" :disabled="currentPage === props.pagination.meta.last_page" class="border border-gray-300 rounded px-3 py-2 cursor-pointer">>></button>
             <span v-if="!hidePageSelector && !hidePageInput" class="text-black/50 py-2 dark:text-white/50 mx-4">|</span>
             <label v-if="!hidePageInput" for="current-page-input" class="mr-2">Current Page:</label>
-            <input v-if="!hidePageInput" id="current-page-input" type="number" v-model="currentPage" :max="props.pagination.meta.last_page" @blur="onBlur" class="border border-gray-300 w-24 rounded px-3 py-2" />
+            <input v-if="!hidePageInput" id="current-page-input" type="number" :value="currentPage" :max="props.pagination.meta.last_page" @blur="onBlur" class="border border-gray-300 w-24 rounded px-3 py-2 [&::-webkit-inner-spin-button]:appearance-none [appearance:textfield]" />
         </div>
     </div>
 </template>
