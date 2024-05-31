@@ -26,7 +26,7 @@ The parameters:
 - `route_group_attributes`: is used to define the attributes that will be passed to the route group, (such as `middleware`, `as`). In order to avoid conflicts with the automagically generate route segments, the `prefix` parameters that you'd usually use with a route group is not used
 - `root_view`: is used to define the root view that will be used to render the component. This will override the default root view [defined in the configuration file](/configuration.md?id=root-view). If nothing is set, the default root view will be used.
 
-Here's an example where any automagically generate route from this point forward (including the '/dashboard' route itself) will contain the defined props, and the defined route group attributes, such as middleware and name prefix, but the prefix will be ignored, unlike a common route group.
+Here's an example where any automagically generate route from this point forward (including the '/dashboard' route itself) will contain the defined route group attributes, such as middleware and name prefix, but the prefix will be ignored, unlike a common route group.
 
 ```php
 use Illuminate\Support\Facades\Route;

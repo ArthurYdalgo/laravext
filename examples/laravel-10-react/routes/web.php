@@ -49,7 +49,7 @@ Route::laravext();
 
 // /**
 //  * Any automagically generate route from this point forward (including the '/dashboard' route itself)
-//  * will contain the defined props, and the defined route group attributes, such as middleware
+//  * will contain the defined route group attributes, such as middleware
 //  * and name prefix, but the prefix will be ignored, unlike a common route group.
 //  */
 // Route::laravext('dashboard', [
