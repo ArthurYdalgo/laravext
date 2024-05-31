@@ -27,6 +27,12 @@ Route::view('/', 'sections.home')->name('home');
  */
 Route::nexus('contact-us', root_view: 'sections.contact-us')->name('contact-us');
 
+/**
+ * You can also server-side fetch data and pass it to the client side.
+ * 
+ * @see https://laravext.dev/#/tools/nexus-response?id=no-need-to-repeat-yourself
+ * @see https://laravext.dev/#/examples/page?id=page-with-server-side-fetching
+ */
 Route::get('our-teams', function () {
     $teams = Team::all();
 

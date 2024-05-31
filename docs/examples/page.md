@@ -78,7 +78,7 @@ onMounted(async () => {
 
 ## Page with Server Side Fetching
 
-This is a rather simple example on how to create a page that renders data that was server-side fetched, and sent as a prop to this page. This file is localed at `.resources/js/nexus/(global)/(guest)/our-teams/page.(jsx|tsx|js|ts|vue)`.
+This is a rather simple example on how to create a page that renders data that was server-side fetched, and sent as a prop to this page. This file is localed at `.resources/js/nexus/(global)/(guest)/our-teams/page.(jsx|tsx|js|ts|vue)`. This example also includes how you could do it in your `web.php` file. For the sake of simplicity, a closure is being used instead of using a controller, but organize your code as you see fit.
 
 <!-- tabs:start -->
 
@@ -123,6 +123,21 @@ const { teams } = nexusProps();
         </div>
     </div>
 </template>
+```
+
+#### **web.php**
+
+```php
+use App\Models\Team;
+use Illuminate\Support\Facades\Route;
+
+Route::laravext();
+
+Route::get('our-teams', function () {
+    $teams = Team::all();
+
+    return nexus(props: compact('teams'))->render();
+})->name('our-teams');
 ```
 
 <!-- tabs:end -->
