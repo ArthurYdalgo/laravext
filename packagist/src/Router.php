@@ -161,23 +161,24 @@ class Router
             $segments = self::generateRouteSegments($directory['relative_path']);
 
             $route_uri = $segments->implode('/');
-            $name = $router_route_name_is_enabled ? $segments->map(function ($segment) {
-                return str($segment)->remove(["{", "}", "?"]);
-            })->join('.') : null;
-
-            $server_skeleton = $directory['conventions']['server_skeleton'] ?? null;
-            $middleware = $directory['conventions']['middleware'] ?? null;
-            $layout = $directory['conventions']['layout'] ?? null;
-            $error = $directory['conventions']['error'] ?? null;
             
-            Cache::store('array')->put(
-                "laravext-uri:{$route_uri}-cache",
-                compact('server_skeleton', 'middleware', 'layout', 'error', 'page', 'uri', 'name', 'root_view')
-            );
-
             $uri = $uri ? self::trimStartingSlash($uri) : null;
-
+            
             if (!$uri || ($uri && str($route_uri)->startsWith($uri))) {
+                $name = $router_route_name_is_enabled ? $segments->map(function ($segment) {
+                    return str($segment)->remove(["{", "}", "?"]);
+                })->join('.') : null;
+    
+                $server_skeleton = $directory['conventions']['server_skeleton'] ?? null;
+                $middleware = $directory['conventions']['middleware'] ?? null;
+                $layout = $directory['conventions']['layout'] ?? null;
+                $error = $directory['conventions']['error'] ?? null;
+
+                Cache::store('array')->put(
+                    "laravext-uri:{$route_uri}-cache",
+                    compact('server_skeleton', 'middleware', 'layout', 'error', 'page', 'uri', 'name', 'root_view')
+                );
+                
                 $router->nexus(
                     $route_uri,
                     $page,

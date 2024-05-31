@@ -27,6 +27,12 @@ Route::view('/', 'sections.home')->name('home');
  */
 Route::nexus('contact-us', root_view: 'sections.contact-us')->name('contact-us');
 
+Route::get('our-teams', function () {
+    $teams = Team::all();
+
+    return nexus(props: compact('teams'))->render();
+})->name('our-teams');
+
 /**
  * You can also make it so that any child route of admin will require the user to be authenticated, and also
  * set a different root view file for the admin route group.
@@ -37,8 +43,3 @@ Route::laravext("admin",  route_group_attributes: [
     'middleware' => 'auth',
 ], root_view: 'sections.app');
 
-Route::get('admin/teams/{team}', function($team) {
-    return nexus(props: [
-        'team' => Team::find($team)
-    ])->render();
-})->name('admin.teams.team');

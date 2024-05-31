@@ -60,3 +60,22 @@ You can also use [file conventions](/concepts/file-conventions) for the view tha
 - `withServerSkeleton($server_skeleton)`
 
 ⚠️Once again, if you're using the withServerSkeleton, you must pass the html content of what you want to use as the server skeleton. Additionally if you're using a `@startNexus` and `@endNexus` in the blade that is being rendered (either the default one or a manually set) this will be ignored.⚠️
+
+## No need to repeat yourself
+
+Let's say that there's a  `Route::laravext()` in the beginning of your `web.php` route file and there is a page convention in a path that creates a `/our-teams` route, and you declared a `Route::get('our-teams')` route after that. You don't need to specify the path to the page parameter in the `nexus` method, because it knows which page convention was used that created that uri, so you can just send the `props: [...]`, like so: 
+
+```php
+use App\Models\Team;
+use Illuminate\Support\Facades\Route;
+
+Route::laravext();
+
+Route::get('our-teams', function () {
+    $teams = Team::all();
+
+    return nexus(props: compact('teams'))->render();
+})->name('our-teams');
+```
+
+Sure, you can specify the path to the page parameter if you want to, or if you want to use another file to be used as the page convention.
