@@ -1,12 +1,12 @@
 <script setup>
 import { sharedProps } from '@laravext/vue';
 
-if (!sharedProps().auth.user) {
+if (!sharedProps().auth?.user) {
   window.location.href = '/'
 }
 </script>
 <template>
-  <slot v-if="sharedProps().auth.user"></slot>
+  <slot v-if="sharedProps().auth?.user"></slot>
   <div v-else>
     <div class="flex justify-center items-center h-[75vh]">
       <div class="flex flex-col items-center">

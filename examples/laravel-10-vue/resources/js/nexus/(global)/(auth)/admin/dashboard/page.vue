@@ -9,7 +9,7 @@ import PageContent from '@/components/PageContent.vue';
     <Header>Dashboard</Header>
 
     <PageContent>
-        <div class="p-6 text-gray-900 dark:text-gray-100">You're logged in, {{ sharedProps().auth.user.first_name }}!
+        <div class="p-6 text-gray-900 dark:text-gray-100">You're logged in, {{ sharedProps().auth?.user.first_name }}!
         </div>
     </PageContent>
 </template>

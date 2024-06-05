@@ -8,6 +8,7 @@ import Link from '@/components/Link.vue';
 import PrimaryButton from '@/components/PrimaryButton.vue';
 import SecondaryButton from '@/components/SecondaryButton.vue';
 import PageContent from '@/components/PageContent.vue';
+import Loading from '@/components/Loading.vue';
 const swal = inject('$swal')
 const pagination = reactive({
     data: [],
@@ -91,9 +92,7 @@ onMounted(async () => {
     <Header>Companies</Header>
 
     <PageContent>
-        <div v-if="pagination.loading" class="absolute inset-0 flex items-center justify-center">
-            <div class="loader"></div>
-        </div>
+        <Loading v-if="pagination.loading"  />
 
         <div class="flex items-center justify-between mb-4">
             <div class="flex items-center">

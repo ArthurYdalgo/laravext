@@ -10,6 +10,7 @@ import SecondaryButton from '@/components/SecondaryButton.vue';
 import PageContent from '@/components/PageContent.vue';
 import Fa from '@/components/Fa.vue';
 import CircleNumber from '@/components/CircleNumber.vue';
+import Loading from '@/components/Loading.vue';
 const swal = inject('$swal')
 
 const pagination = reactive({
@@ -94,9 +95,7 @@ onMounted(async () => {
     <Header>Teams</Header>
 
     <PageContent>
-        <div v-if="pagination.loading" class="absolute inset-0 flex items-center justify-center">
-            <div class="loader"></div>
-        </div>
+        <Loading v-if="pagination.loading"  />
 
         <div class="flex items-center justify-between mb-4">
             <div class="flex items-center">

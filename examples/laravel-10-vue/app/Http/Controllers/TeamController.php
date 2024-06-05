@@ -30,7 +30,7 @@ class TeamController extends Controller
 
     public function show(Team $team)
     {
-        $team->loadCount(['developers']);
+        $team->load(['developers']);
         
         return $team;
     }
