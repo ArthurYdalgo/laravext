@@ -9,6 +9,7 @@ import PrimaryButton from '@/components/PrimaryButton.vue';
 import SecondaryButton from '@/components/SecondaryButton.vue';
 import PageContent from '@/components/PageContent.vue';
 import Loading from '@/components/Loading.vue';
+import { routeParams } from '@laravext/vue';
 const swal = inject('$swal')
 
 const pagination = reactive({
@@ -32,9 +33,12 @@ const paginateTo = ({ page, perPage }) => {
 
 const fetchResources = () => {
     pagination.loading = true;
-
-    axios.get('/api/projects', {
+    
+    axios.get(`/api/projects`, {
         params: {
+            filter: {
+                team_id: routeParams().team,
+            },
             page: pagination.page,
             per_page: pagination.per_page,
             search: filters.search,
@@ -121,10 +125,6 @@ onMounted(async () => {
                     </th>
                     <th
                         class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                        Team
-                    </th>
-                    <th
-                        class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                         Company
                     </th>
                     <th
@@ -144,11 +144,6 @@ onMounted(async () => {
                     <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
                         <div class="text-sm leading-5 font-medium text-gray-900">
                             {{ resource.name }}
-                        </div>
-                    </td>
-                    <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
-                        <div class="text-sm leading-5 font-medium text-gray-900">
-                            {{ resource.team.name }}
                         </div>
                     </td>
                     <td class="border-t border-l px-6 py-4 whitespace-no-wrap">

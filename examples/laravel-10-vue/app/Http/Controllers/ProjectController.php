@@ -6,6 +6,7 @@ use App\Models\Project;
 use App\Http\Requests\Project\StoreRequest;
 use App\Http\Requests\Project\UpdateRequest;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class ProjectController extends Controller
 {
@@ -17,7 +18,10 @@ class ProjectController extends Controller
     public function index()
     {
         $search = request()->query('search');
-        $projects = Project::query()
+        $projects = QueryBuilder::for(Project::query())
+            ->allowedFilters([
+                'team_id'
+            ])
             ->when($search, function ($query, $search) {
                 $query->where('name', 'like', "%$search%");
             })
