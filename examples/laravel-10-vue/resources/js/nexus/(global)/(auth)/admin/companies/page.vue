@@ -150,7 +150,7 @@ onMounted(async () => {
                         <Link :href="`/admin/companies/${resource.id}/edit`">
                         <SecondaryButton>Edit</SecondaryButton>
                         </Link>
-                        <DangerButton @click="destroyResource(resource.id)" class="text-red-600 hover:text-red-900">
+                        <DangerButton @click="destroyResource(resource.id)" class="hover:text-red-900">
                             Delete</DangerButton>
                     </td>
                 </tr>

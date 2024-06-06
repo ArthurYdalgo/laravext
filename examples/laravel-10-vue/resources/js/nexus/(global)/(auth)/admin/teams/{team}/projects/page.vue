@@ -33,7 +33,7 @@ const paginateTo = ({ page, perPage }) => {
 
 const fetchResources = () => {
     pagination.loading = true;
-    
+
     axios.get(`/api/projects`, {
         params: {
             filter: {
@@ -95,11 +95,13 @@ onMounted(async () => {
 </script>
 <template>
     <Header>
-        Projects
+        <Link :href="`/admin/teams/${routeParams().team}`" classes="text-blue-600">
+            {{ $t('Return to ') }} {{ $t('Team') }} #{{ routeParams().team }}
+        </Link> / {{ $t('Projects') }}
     </Header>
 
     <PageContent>
-        <Loading v-if="pagination.loading"  />
+        <Loading v-if="pagination.loading" />
 
         <div class="flex items-center justify-between mb-4">
             <div class="flex items-center">
@@ -159,7 +161,7 @@ onMounted(async () => {
                         <Link :href="`/admin/projects/${resource.id}/edit`">
                         <SecondaryButton>Edit</SecondaryButton>
                         </Link>
-                        <DangerButton @click="destroyResource(resource.id)" class="text-red-600 hover:text-red-900">
+                        <DangerButton @click="destroyResource(resource.id)" class="hover:text-red-900">
                             Delete</DangerButton>
                     </td>
                 </tr>
