@@ -10,7 +10,7 @@ import axios from 'axios';
 import { reactive, onMounted, inject } from 'vue';
 const swal = inject('$swal')
 
-const team = reactive({
+const company = reactive({
     data: {
     },
     loading: true,
@@ -31,58 +31,52 @@ const destroyResource = (id) => {
     })
         .then((result) => {
             if (result.isConfirmed) {
-                axios.delete(`/api/teams/${id}`)
+                axios.delete(`/api/companies/${id}`)
                     .then(() => {
-                        swal('Deleted!', 'The team has been deleted.', 'success').then(() => {
-                            window.location.href = '/admin/teams';
+                        swal('Deleted!', 'The company has been deleted.', 'success').then(() => {
+                            window.location.href = '/admin/companies';
                         });
                     })
                     .catch(error => {
                         console.error(error);
-                        swal('Error!', 'An error occurred while deleting the team.', 'error');
+                        swal('Error!', 'An error occurred while deleting the company.', 'error');
                     });
             }
         });
 }
 
 onMounted(() => {
-    team.loading = true;
+    company.loading = true;
 
-    axios.get(`/api/teams/${routeParams().team}`)
+    axios.get(`/api/companies/${routeParams().company}`)
         .then(response => {
-            team.data = {
+            company.data = {
                 id: response.data.id,
                 name: response.data.name,
-                developers: response.data.developers,
+                email: response.data.email,
             };
 
-            team.loading = false;
+            company.loading = false;
         });
 });
 
 </script>
 <template>
-    <Header>{{ team.loading ? $t('Loading...') : `#${team.data.id} - ${team.data.name}` }}</Header>
+    <Header>{{ company.loading ? $t('Loading...') : `#${company.data.id} - ${company.data.name}` }}</Header>
     <div class="mt-3 mx-4 flex justify-end space-x-2">
-        <Link :href="`/admin/teams/${routeParams().team}/edit`">
+        <Link :href="`/admin/companies/${routeParams().company}/edit`">
             <PrimaryButton>{{ $t('Edit') }}</PrimaryButton>
         </Link>
 
-        <DangerButton @click="destroyResource(routeParams().team)" class="hover:text-red-900">Delete</DangerButton>
+        <DangerButton @click="destroyResource(routeParams().company)" class="hover:text-red-900">Delete</DangerButton>
     </div>
-    <Loading v-if="team.loading" />
+    <Loading v-if="company.loading" />
     <PageContent v-else>
-        <span class="text-lg font-bold">Name: </span>{{ team.data.name }}
+        <span class="text-lg font-bold">Name: </span>{{ company.data.name }}
         <br>
-        <span class="text-lg font-bold">{{ $t('Developers') }}:</span>
-        <ul>
-            <li v-for="developer in team.data.developers" :key="developer.id">
-                - {{ $t('Name: ') }} {{ developer.name }}. {{ $t('Email: ') }} {{ developer.email }}. {{ $t('Role: ') }}
-                {{ developer.role }}
-            </li>
-        </ul>
+        <span class="text-lg font-bold">Email: </span>{{ company.data.email }}
         <br>
-        <Link :href="`/admin/teams/${routeParams().team}/projects`" class="text-blue-600 text-xl font-bold">{{ $t('Click to view') }} {{ $t('projects of Team') }} #{{
-            routeParams().team }}</Link>
+        <Link :href="`/admin/companies/${routeParams().company}/projects`" class="text-blue-600 text-xl font-bold">{{ $t('Click to view') }} {{ $t('projects of Company') }} #{{
+            routeParams().company }}</Link>
     </PageContent>
 </template>

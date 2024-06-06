@@ -9,7 +9,9 @@ import PrimaryButton from '@/components/PrimaryButton.vue';
 import SecondaryButton from '@/components/SecondaryButton.vue';
 import PageContent from '@/components/PageContent.vue';
 import Loading from '@/components/Loading.vue';
+import { routeParams } from '@laravext/vue';
 const swal = inject('$swal')
+
 const pagination = reactive({
     data: [],
     meta: {},
@@ -32,8 +34,11 @@ const paginateTo = ({ page, perPage }) => {
 const fetchResources = () => {
     pagination.loading = true;
 
-    axios.get('/api/companies', {
+    axios.get(`/api/projects`, {
         params: {
+            filter: {
+                company_id: routeParams().company,
+            },
             page: pagination.page,
             per_page: pagination.per_page,
             search: filters.search,
@@ -64,14 +69,14 @@ const destroyResource = (id) => {
     })
         .then((result) => {
             if (result.isConfirmed) {
-                axios.delete(`/api/companies/${id}`)
+                axios.delete(`/api/projects/${id}`)
                     .then(() => {
                         fetchResources();
-                        swal('Deleted!', 'The company has been deleted.', 'success');
+                        swal('Deleted!', 'The project has been deleted.', 'success');
                     })
                     .catch(error => {
                         console.error(error);
-                        swal('Error!', 'An error occurred while deleting the company.', 'error');
+                        swal('Error!', 'An error occurred while deleting the project.', 'error');
                     });
             }
         });
@@ -89,10 +94,14 @@ onMounted(async () => {
 
 </script>
 <template>
-    <Header>Companies</Header>
+    <Header>
+        <Link :href="`/admin/companies/${routeParams().company}`" classes="text-blue-600">
+            {{ $t('Return to ') }} {{ $t('Company') }} #{{ routeParams().company }}
+        </Link> / {{ $t('Projects') }}
+    </Header>
 
     <PageContent>
-        <Loading v-if="pagination.loading"  />
+        <Loading v-if="pagination.loading" />
 
         <div class="flex items-center justify-between mb-4">
             <div class="flex items-center">
@@ -107,31 +116,29 @@ onMounted(async () => {
 
         <table :class="{ 'opacity-50': pagination.loading }" class="min-w-full divide-y divide-gray-200 border my-4">
             <thead>
-                <th
-                    class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                    ID
-                </th>
-                <th
-                    class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                    Name
-                </th>
-                <th
-                    class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                    Email
-                </th>
-                <th
-                    class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                    Website
-                </th>
-                <th
-                    class="border-l w-96 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                    Actions
-                </th>
+                <tr>
+                    <th
+                        class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                        ID
+                    </th>
+                    <th
+                        class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                        Name
+                    </th>
+                    <th
+                        class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                        Team
+                    </th>
+                    <th
+                        class="border-l w-96 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                        Actions
+                    </th>
+                </tr>
             </thead>
             <tbody>
                 <tr class="odd:bg-gray-100 odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 hover:bg-gray-200 hover:dark:bg-gray-700"
                     v-for="resource in pagination.data" :key="resource.id">
-                    <td class="border-t border-l px-6 py-4 whitespace-no-wrap text-sm text-gray-900 w-28">
+                    <td class="border-t px-6 py-4 whitespace-no-wrap text-sm text-gray-900 w-28">
                         <div class="text-sm leading-5 font-medium text-gray-900">
                             {{ resource.id }}
                         </div>
@@ -142,24 +149,16 @@ onMounted(async () => {
                         </div>
                     </td>
                     <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
-                        <div class="text-sm leading-5 text-gray-900">
-                            {{ resource.email }}
-                        </div>
-                    </td>
-                    <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
-                        <div class="text-sm leading-5 text-gray-900">
-                            <Link v-if="resource.website" class="text-blue-600" :href="resource.website" >
-                            {{ resource.website }}
-                            </Link>
-                            <span v-else>--</span>
+                        <div class="text-sm leading-5 font-medium text-gray-900">
+                            {{ resource.team.name }}
                         </div>
                     </td>
                     <td
                         class="border-t border-l px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium space-x-2">
-                        <Link :href="`/admin/companies/${resource.id}`">
+                        <Link :href="`/admin/projects/${resource.id}`">
                         <PrimaryButton>Show</PrimaryButton>
                         </Link>
-                        <Link :href="`/admin/companies/${resource.id}/edit`">
+                        <Link :href="`/admin/projects/${resource.id}/edit`">
                         <SecondaryButton>Edit</SecondaryButton>
                         </Link>
                         <DangerButton @click="destroyResource(resource.id)" class="hover:text-red-900">

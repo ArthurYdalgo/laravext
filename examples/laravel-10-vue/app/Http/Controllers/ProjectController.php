@@ -20,7 +20,8 @@ class ProjectController extends Controller
         $search = request()->query('search');
         $projects = QueryBuilder::for(Project::query())
             ->allowedFilters([
-                'team_id'
+                'team_id',
+                'company_id',
             ])
             ->when($search, function ($query, $search) {
                 $query->where('name', 'like', "%$search%");

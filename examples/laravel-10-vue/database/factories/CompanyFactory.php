@@ -19,6 +19,7 @@ class CompanyFactory extends Factory
         return [
             'name' => $this->faker->company,
             'email' => $this->faker->unique()->safeEmail,
+            'website' => $this->faker->optional(0.75)->url,
         ];
     }
 }
