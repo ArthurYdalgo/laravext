@@ -123,6 +123,10 @@ onMounted(async () => {
                         Email
                     </th>
                     <th
+                        class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                        Team
+                    </th>
+                    <th
                         class="border-l w-96 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                         Actions
                     </th>
@@ -144,6 +148,14 @@ onMounted(async () => {
                     <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
                         <div class="text-sm leading-5 text-gray-900">
                             {{ resource.email }}
+                        </div>
+                    </td>
+                    <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
+                        <div class="text-sm leading-5 text-gray-900">
+                            <Link v-if="resource.team" class="text-blue-600" :href="`/admin/teams/${resource.id}`">
+                            {{ resource.team?.name }}
+                            </Link>
+                            <span v-else>--</span>
                         </div>
                     </td>
                     <td

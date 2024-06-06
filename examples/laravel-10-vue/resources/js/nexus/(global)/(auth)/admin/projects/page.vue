@@ -95,7 +95,7 @@ onMounted(async () => {
     </Header>
 
     <PageContent>
-        <Loading v-if="pagination.loading"  />
+        <Loading v-if="pagination.loading" />
 
         <div class="flex items-center justify-between mb-4">
             <div class="flex items-center">
@@ -148,12 +148,24 @@ onMounted(async () => {
                     </td>
                     <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
                         <div class="text-sm leading-5 font-medium text-gray-900">
-                            {{ resource.team.name }}
+                            <div class="text-sm leading-5 text-gray-900">
+                                <Link v-if="resource.team" class="text-blue-600"
+                                    :href="`/admin/teams/${resource.team?.id}`">
+                                {{ resource.team?.name }}
+                                </Link>
+                                <span v-else>--</span>
+                            </div>
                         </div>
                     </td>
                     <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
                         <div class="text-sm leading-5 font-medium text-gray-900">
-                            {{ resource.company.name }}
+                            <div class="text-sm leading-5 text-gray-900">
+                                <Link v-if="resource.team" class="text-blue-600"
+                                    :href="`/admin/companies/${resource.company?.id}`">
+                                {{ resource.company?.name }}
+                                </Link>
+                                <span v-else>--</span>
+                            </div>
                         </div>
                     </td>
                     <td

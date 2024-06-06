@@ -26,6 +26,7 @@ class DeveloperController extends Controller
             ->when($prioritize_developers_in_team, function ($query) use ($prioritize_developers_in_team) {
                 $query->orderByRaw("team_id = {$prioritize_developers_in_team} desc, id asc");
             })
+            ->with(['team'])
             ->paginate(request()->query('per_page', 10))
             ->appends(request()->query());
 

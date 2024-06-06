@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Create a default user, if not exists
-        $default_email = 'default@email.com';
+        $default_email = 'developer@email.com';
 
         if(User::where('email', $default_email)->doesntExist()){
             User::factory()->create([
@@ -36,14 +36,14 @@ class DatabaseSeeder extends Seeder
 
         $projects = Project::whereNull('team_id')->get();
 
-        if(Team::where("name", "Mamonas Assassinas")->doesntExist()){
+        if(Team::where("name", "Mamonas Assassinas 🇧🇷")->doesntExist()){
             Team::factory()->create([
                 /**
                 * In memory of one of the best brazilian 🇧🇷 rock bands
                 * 
                 * @see https://en.wikipedia.org/wiki/Mamonas_Assassinas
                 */
-                'name' => 'Mamonas Assassinas'
+                'name' => 'Mamonas Assassinas 🇧🇷'
             ]);
         }
 
