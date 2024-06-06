@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
 
         Company::factory(5)->hasProjects(3)->create();
 
-        $projects = Project::all();
+        $projects = Project::whereNull('team_id')->get();
 
         if(Team::where("name", "Mamonas Assassinas")->doesntExist()){
             Team::factory()->create([
@@ -49,7 +49,7 @@ class DatabaseSeeder extends Seeder
 
         Team::factory(10)->create();
 
-        $teams = Team::all();
+        $teams = Team::doesntHave('developers')->get();
 
         foreach ($teams as $team) {
             Developer::factory()->create([
