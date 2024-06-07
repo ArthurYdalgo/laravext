@@ -23,6 +23,8 @@ class UpdateRequest extends FormRequest
     {
         return [
             'name' => 'required|string|min:5|max:255',
+            'developer_ids' => 'array',
+            'developer_ids.*' => 'exists:developers,id',
         ];
     }
 }

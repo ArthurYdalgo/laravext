@@ -94,6 +94,12 @@ onMounted(async () => {
 <template>
     <Header>Teams</Header>
 
+    <div class="mt-3 mx-4 flex justify-end space-x-2">
+        <Link routeName="admin.teams.create">
+        <PrimaryButton>Create</PrimaryButton>
+        </Link>
+    </div>
+
     <PageContent>
         <Loading v-if="pagination.loading"  />
 
@@ -103,13 +109,7 @@ onMounted(async () => {
                 <input type="text" id="search" v-model="filters.search" placeholder="Search"
                     class="border border-gray-300 rounded px-3 py-2" @input="debouncedFetchResources" />
             </div>
-            <div class="flex items-center">
-                <Link routeName="admin.teams.create">
-                <PrimaryButton>Create</PrimaryButton>
-                </Link>
-            </div>
         </div>
-
 
         <table :class="{ 'opacity-50': pagination.loading }" class="min-w-full divide-y divide-gray-200 border my-4">
             <thead>

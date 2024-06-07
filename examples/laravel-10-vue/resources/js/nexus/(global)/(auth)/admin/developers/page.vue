@@ -39,6 +39,7 @@ const fetchResources = () => {
             page: pagination.page,
             per_page: pagination.per_page,
             search: filters.search,
+            include: 'team'
         },
     })
         .then(response => {

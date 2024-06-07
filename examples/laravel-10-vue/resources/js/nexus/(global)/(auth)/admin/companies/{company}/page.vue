@@ -54,6 +54,7 @@ onMounted(() => {
                 id: response.data.id,
                 name: response.data.name,
                 email: response.data.email,
+                website: response.data.website,
             };
 
             company.loading = false;
@@ -75,6 +76,9 @@ onMounted(() => {
         <span class="text-lg font-bold">Name: </span>{{ company.data.name }}
         <br>
         <span class="text-lg font-bold">Email: </span>{{ company.data.email }}
+        <br>
+        <span class="text-lg font-bold">Website: </span><Link v-if="company.data.website" :href="company.data.website" class="text-blue-600">{{ company.data.website }}</Link>
+        <span v-else class="text-gray-400">{{ $t('No website') }}</span>
         <br>
         <Link :href="`/admin/companies/${routeParams().company}/projects`" class="text-blue-600 text-xl font-bold">{{ $t('Click to view') }} {{ $t('projects of Company') }} #{{
             routeParams().company }}</Link>

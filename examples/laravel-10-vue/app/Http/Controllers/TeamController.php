@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Team;
 use App\Http\Requests\Team\StoreRequest;
 use App\Http\Requests\Team\UpdateRequest;
+use App\Models\Developer;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class TeamController extends Controller
@@ -37,7 +38,15 @@ class TeamController extends Controller
 
     public function update(UpdateRequest $request, Team $team)
     {
-        $team->update($request->validated());
+        $data = $request->validated(['name']);
+
+        $team->update($data);
+
+        $developer_ids = $request->validated(['developer_ids']);
+
+        $team->developers()->update(['team_id' => null]);
+
+        Developer::whereIn('id', $developer_ids)->update(['team_id' => $team->id]);
 
         return $team;
     }

@@ -6,27 +6,46 @@ use App\Models\Developer;
 use App\Http\Requests\Developer\StoreRequest;
 use App\Http\Requests\Developer\UpdateRequest;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\AllowedSort;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class DeveloperController extends Controller
 {
     public function index()
     {
         $search = request()->query('search');
-        $filter = request()->query('filter');
-        $prioritize_developers_in_team = request()->query('prioritize_developers_in_team');
-        $not_in_team_ids = $filter['not_in_team_id'] ?? null;
-        $in_team_ids = $filter['in_team_id'] ?? null;
-        $doesnt_have_a_team = $filter['doesnt_have_a_team'] ?? null;
 
-        $developers = Developer::query()
+        $developers = QueryBuilder::for(Developer::class)
             ->when($search, function ($query, $search) {
                 $query->where('name', 'like', "%$search%")
                     ->orWhere('email', 'like', "%$search%");
             })
-            ->when($prioritize_developers_in_team, function ($query) use ($prioritize_developers_in_team) {
-                $query->orderByRaw("team_id = {$prioritize_developers_in_team} desc, id asc");
-            })
-            ->with(['team'])
+            ->allowedFilters([
+                AllowedFilter::callback('team_ids', function($query, $team_ids) {
+                    $team_ids = is_array($team_ids) ? $team_ids : explode(',', $team_ids);
+                    $query->whereIn('team_id', $team_ids);
+                }),
+                AllowedFilter::callback('not_team_ids', function($query, $team_ids) {
+                    $team_ids = is_array($team_ids) ? $team_ids : explode(',', $team_ids);
+                    $query->whereNotIn('team_id', $team_ids);
+                }),
+                AllowedFilter::callback('doesnt_have_a_team', function($query, $doesnt_have_a_team) {
+                    if(is_null($doesnt_have_a_team)){
+                        return $query;
+                    }
+
+                    if($doesnt_have_a_team){
+                        return $query->whereNull('team_id');
+                    }
+                    
+                    return $query->whereNotNull('team_id');
+                }),
+                AllowedFilter::callback('prioritize_developers_in_team', function($query, $team_id) {
+                    $query->orderByRaw("team_id = {$team_id} desc, id asc");
+                }),
+            ])
+            ->allowedIncludes(['team'])
             ->paginate(request()->query('per_page', 10))
             ->appends(request()->query());
 
