@@ -168,9 +168,7 @@ onMounted(async () => {
                     <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
                         <div class="text-sm leading-5 font-medium text-gray-900">
                             <div class="text-sm leading-5 text-gray-900">
-                                <Link v-if="resource.team" class="text-blue-600"
-                                    :href="`/admin/companies/${resource.company?.id}`">
-                                {{ resource.company?.name }}
+                                <Link v-if="resource.company" class="text-blue-600" :href="`/admin/companies/${resource.company?.id}`"> {{ resource.company?.name }}
                                 </Link>
                                 <span v-else>--</span>
                             </div>
