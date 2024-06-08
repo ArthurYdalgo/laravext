@@ -23,7 +23,6 @@ class StoreRequest extends FormRequest
     {
         return [
             'username' => 'required|string|max:255|unique:developers,username',
-            'team_id' => 'required|integer|exists:teams,id',
             'name' => 'required|string|min:5|max:255',
             'email' => 'required|email|max:255|unique:developers,email',
             'role' => 'required|string|max:255',

@@ -150,7 +150,32 @@
     "Administrator users can perform any action.": "O administrador pode realizar qualquer ação.",
     "Editor users have the ability to read, create, and update.": "O editor pode ler, criar e atualizar",
     "Remove": "Remover",
+    
+    "Per Page": "Por Página",
+    "Page": "Página",
+    "Current Page": "Página Atual",
+    "Search": "Buscar",
+    "Edit": "Editar",
+    "Loading...": "Carregando...",
 
+    "Create a company": "Criar uma empresa",
+    "Edit company": "Editar empresa",
+
+    "Create a team": "Criar um time",
+    "Edit team": "Editar time",
+
+    "Create a developer": "Criar um desenvolvedor",
+    "Edit developer": "Editar desenvolvedor",
+
+    "Show": "Mostrar",
+
+    "Actions": "Ações",
+
+    "cool_nickname": "apelido_daora",
+
+    "Add developer to team": "Adicionar desenvolvedor ao time",
+    "Type to search for a developer by email or name": "Digite para buscar um desenvolvedor por e-mail ou nome",
+    
     "Companies": "Empresas",
     "Company": "Empresa",
     "Developers": "Desenvolvedores",
@@ -159,5 +184,4 @@
     "Project": "Projeto",
     "Teams": "Times",
     "Team": "Time"
-
   }

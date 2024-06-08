@@ -96,16 +96,16 @@ const onBlur = (e) => {
 <template>
     <div class="flex items-center justify-between">
         <div class="flex items-center">
-            <label v-if="!hideTotal" for="per-page-selector" class="mr-2">Total: {{ props.pagination.meta.total }}</label>
+            <label v-if="!hideTotal" for="per-page-selector" class="mr-2">{{$t('Total')}}: {{ props.pagination.meta.total }}</label>
             <span v-if="!hidePerPageSelector && !hideTotal" class="text-black/50 py-2 dark:text-white/50 mx-4">|</span>
-            <label v-if="!hidePerPageSelector" for="per-page-selector" class="mr-2">Per Page:</label>
+            <label v-if="!hidePerPageSelector" for="per-page-selector" class="mr-2">{{$t('Per Page')}}:</label>
             <select v-if="!hidePerPageSelector" id="per-page-selector"  v-model="perPage" @change="handleUpdatePerPage" class="border border-gray-300 rounded px-3 py-2 pr-8">
                 <option v-for="option in perPageOptions" :key="option" :value="option">{{ option }}</option>
             </select>
             
         </div>
         <div v-if="!hidePageSelector" class="flex items-center">
-            <label for="page-selector" class="mr-2">Page:</label>
+            <label for="page-selector" class="mr-2">{{$t('Page')}}:</label>
             <button @click="currentPage = 1; paginateTo()" :disabled="currentPage === 1" class="border border-gray-300 rounded px-3 py-2 cursor-pointer"><<</button>
             <button @click="currentPage--; paginateTo()" :disabled="currentPage === 1" class="border border-gray-300 rounded px-3 py-2 mr-3 cursor-pointer"><</button>
             <ul class="flex list-none border border-gray-300 rounded overflow-hidden">
@@ -117,7 +117,7 @@ const onBlur = (e) => {
             <button @click="currentPage++; paginateTo()" :disabled="currentPage === props.pagination.meta.last_page" class="border border-gray-300 rounded px-3 py-2 ml-3 cursor-pointer">></button>
             <button @click="currentPage = props.pagination.meta.last_page; paginateTo()" :disabled="currentPage === props.pagination.meta.last_page" class="border border-gray-300 rounded px-3 py-2 cursor-pointer">>></button>
             <span v-if="!hidePageSelector && !hidePageInput" class="text-black/50 py-2 dark:text-white/50 mx-4">|</span>
-            <label v-if="!hidePageInput" for="current-page-input" class="mr-2">Current Page:</label>
+            <label v-if="!hidePageInput" for="current-page-input" class="mr-2">{{$t('Current Page')}}:</label>
             <input v-if="!hidePageInput" id="current-page-input" type="number" :value="currentPage" :max="props.pagination.meta.last_page" @blur="onBlur" class="border border-gray-300 w-24 rounded px-3 py-2 [&::-webkit-inner-spin-button]:appearance-none [appearance:textfield]" />
         </div>
     </div>

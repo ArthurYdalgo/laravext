@@ -85,10 +85,10 @@ const destroyResource = (id) => {
 
 </script>
 <template>
-    <Header>{{ form.loading ? $t('Loading...') : `Edit company #${routeParams().company} - ${form.data.name}` }}</Header>
+    <Header>{{ form.loading ? $t('Loading...') : `${$t('Edit company')} #${routeParams().company} - ${form.data.name}` }}</Header>
     <div class="mt-3 mx-4 flex justify-end space-x-2">
 
-        <DangerButton @click="destroyResource(routeParams().company)" class="hover:text-red-900">Delete</DangerButton>
+        <DangerButton @click="destroyResource(routeParams().company)" class="hover:text-red-900">{{ $t('Delete') }}</DangerButton>
     </div>
     <Loading v-if="form.loading" />
     <PageContent v-else>

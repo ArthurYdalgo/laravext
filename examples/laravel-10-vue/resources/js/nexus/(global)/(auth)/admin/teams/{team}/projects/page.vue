@@ -106,7 +106,7 @@ onMounted(async () => {
         <div class="flex items-center justify-between mb-4">
             <div class="flex items-center">
 
-                <input type="text" id="search" v-model="filters.search" placeholder="Search"
+                <input type="text" id="search" v-model="filters.search" :placeholder="$t('Search')"
                     class="border border-gray-300 rounded px-3 py-2" @input="debouncedFetchResources" />
             </div>
             <div class="flex items-center">
@@ -123,15 +123,15 @@ onMounted(async () => {
                     </th>
                     <th
                         class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                        Name
+                        {{ $t('Name') }}
                     </th>
                     <th
                         class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                        Company
+                        {{ $t('Company') }}
                     </th>
                     <th
                         class="border-l w-96 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                        Actions
+                        {{$t('Actions')}}
                     </th>
                 </tr>
             </thead>
@@ -156,13 +156,13 @@ onMounted(async () => {
                     <td
                         class="border-t border-l px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium space-x-2">
                         <Link :href="`/admin/projects/${resource.id}`">
-                        <PrimaryButton>Show</PrimaryButton>
+                        <PrimaryButton>{{$t('Show')}}</PrimaryButton>
                         </Link>
                         <Link :href="`/admin/projects/${resource.id}/edit`">
-                        <SecondaryButton>Edit</SecondaryButton>
+                        <SecondaryButton>{{ $t('Edit') }}</SecondaryButton>
                         </Link>
                         <DangerButton @click="destroyResource(resource.id)" class="hover:text-red-900">
-                            Delete</DangerButton>
+                            {{$t('Delete')}}</DangerButton>
                     </td>
                 </tr>
             </tbody>

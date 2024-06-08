@@ -70,7 +70,7 @@ onMounted(() => {
             <PrimaryButton>{{ $t('Edit') }}</PrimaryButton>
         </Link>
 
-        <DangerButton @click="destroyResource(routeParams().company)" class="hover:text-red-900">Delete</DangerButton>
+        <DangerButton @click="destroyResource(routeParams().company)" class="hover:text-red-900">{{ $t('Delete') }}</DangerButton>
     </div>
     <Loading v-if="company.loading" />
     <PageContent v-else>

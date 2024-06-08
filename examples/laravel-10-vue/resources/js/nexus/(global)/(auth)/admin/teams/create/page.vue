@@ -27,7 +27,7 @@ const createResource = () => {
 
 </script>
 <template>
-    <Header>Create a team</Header>
+    <Header>{{$t('Create a team')}}</Header>
     <PageContent>
         <FormKit :submit-label="$t('Save')" @submit="createResource" type="form" >
             <FormKit validation-visibility="live" type="text" name="name" validation="length:2,200" required id="name"

@@ -68,6 +68,10 @@ Route::group([
 ], function () {
     Route::laravext('admin', root_view: 'sections.app');
 
+    Route::get('admin/developers/create', fn() => nexus(props: [
+        'developer_roles' => DeveloperRole::toArray(true),
+    ])->render())->name('admin.developers.create');
+    
     Route::get('admin/developers/{developer}/edit', function (Developer $developer) {
         $developer->load('team');
 
@@ -75,4 +79,6 @@ Route::group([
 
         return nexus(props: compact('developer_roles', 'developer'))->render();
     })->name('admin.developers.developer.edit');
+
+
 });

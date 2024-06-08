@@ -143,13 +143,14 @@ const debouncedSearchDevelopers = debounce(() => {
 
 </script>
 <template>
-    <Header>{{ form.loading ? $t('Loading...') : `Edit team #${routeParams().team} - ${form.data.name}` }}</Header>
+    <Header>{{ form.loading ? $t('Loading...') : `${$t('Edit team')} #${routeParams().team} - ${form.data.name}` }}</Header>
     <div class="mt-3 mx-4 flex justify-end space-x-2">
         <Link :href="`/admin/teams/${routeParams().team}`">
         <PrimaryButton>{{ $t('Show') }}</PrimaryButton>
         </Link>
 
-        <DangerButton @click="destroyResource(routeParams().team)" class="hover:text-red-900">Delete</DangerButton>
+        <DangerButton @click="destroyResource(routeParams().team)" class="hover:text-red-900">{{ $t('Delete') }}
+        </DangerButton>
     </div>
     <Loading v-if="form.loading" />
     <PageContent v-else>
@@ -165,39 +166,41 @@ const debouncedSearchDevelopers = debounce(() => {
                 <div class="bg-white rounded-lg shadow p-4"
                     v-for="developer in form.data.developers.sort((a, b) => a.name.localeCompare(b.name))"
                     :key="developer.id">
-                    <div class="font-bold flex justify-between"><span>{{ developer.name }}</span>
+                    <div class="font-bold flex justify-between"><span>@{{ developer.username }}</span>
                         <Fa class="cursor-pointer" @click="handleRemoveDeveloperFromTeam(developer)" icon="fa-trash"
                             color="red" />
                     </div>
                     <div class="border-b-2 border-gray-200 my-2"></div>
-                    <div>Role: {{ $t(developer.role_label) }}</div>
-                    <div>{{ $t('Email: ') }} {{ privacy.active ? '***@***' : developer.email }}</div>
+                    <div class="text-sm">{{$t('Name')}}: {{ $t(developer.name) }}</div>
+                    <div class="text-sm">{{$t('Role')}}: {{ $t(developer.role_label) }}</div>
+                    <div class="text-sm">{{ $t('Email: ') }} {{ privacy.active ? '***@***' : developer.email }}</div>
                 </div>
             </div>
         </FormKit>
         <Modal :show="addDeveloperToTeamModal.visible" :closeable="true" @close="closeAddDeveloperToTeamModal"
             maxWidth="w-[75vw]">
-            <PageContent class="min-h-[50vh]">
+            <div class="min-h-[50vh] p-6 shadow-none border-none">
                 <h2 class="text-xl font-bold mb-2">{{ $t('Add developer to team') }}</h2>
                 <TextInput class="w-full" v-model="addDeveloperToTeamModal.search" @input="debouncedSearchDevelopers"
                     :placeholder="$t('Type to search for a developer by email or name')" />
                 <div>
                     <Loading v-if="addDeveloperToTeamModal.loading" />
                     <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-4 p-4">
-                        <div class="bg-white rounded-lg shadow p-4"
+                        <div class="bg-white shadow rounded-lg p-4"
                             v-for="developer in addDeveloperToTeamModal.developers.sort((a, b) => a.name.localeCompare(b.name))"
                             :key="developer.id">
-                            <div class="font-bold flex justify-between">{{ developer.name }}<PrimaryButton
+                            <div class="font-bold flex justify-between">@{{ developer.username }}<PrimaryButton
                                     @click="form.data.developers.push(developer); fetchDevelopers();" type="button">{{
-                                    $t('Add') }}</PrimaryButton>
+                                        $t('Add') }}</PrimaryButton>
                             </div>
                             <div class="border-b-2 border-gray-200 my-2"></div>
-                            <div>Role: {{ $t(developer.role_label) }}</div>
-                            <div>{{ $t('Email: ') }} {{ privacy.active ? '***@***' : developer.email }}</div>
+                            <div class="text-sm">{{$t('Name')}}: {{ $t(developer.name) }}</div>
+                            <div class="text-sm">{{$t('Role')}}: {{ $t(developer.role_label) }}</div>
+                            <div class="text-sm">{{ $t('Email: ') }} {{ privacy.active ? '***@***' : developer.email }}</div>
                         </div>
                     </div>
                 </div>
-            </PageContent>
+            </div>
         </Modal>
     </PageContent>
 </template>

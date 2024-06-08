@@ -25,11 +25,12 @@ const form = reactive({
 
 const developerRoles = nexusProps().developer_roles;
 
-// // Update team information
+// Update team information
 const updateResource = () => {
     form.errors = {};
 
     const data = {
+        username: form.data.username,
         name: form.data.name,
         email: form.data.email,
         role: form.data.role,
@@ -76,16 +77,19 @@ const destroyResource = (id) => {
 
 </script>
 <template>
-    <Header>{{ `Edit developer #${nexusProps().developer.id} - ${nexusProps().developer.name}` }}</Header>
+    <Header>{{ `${$t('Edit developer')} #${nexusProps().developer.id} - ${nexusProps().developer.name}` }}</Header>
     <div class="mt-3 mx-4 flex justify-end space-x-2">
-        <DangerButton @click="destroyResource(nexusProps().developer.id)" class="hover:text-red-900">Delete</DangerButton>
+        <DangerButton @click="destroyResource(nexusProps().developer.id)" class="hover:text-red-900">{{ $t('Delete') }}</DangerButton>
     </div>
     <PageContent >
         <FormKit :submit-label="$t('Save')" @submit="updateResource" type="form">
             <div class="flex justify-start space-x-4">
                 <FormKit validation-visibility="live" type="text" name="name" validation="length:2,200" required id="name"
                     :label="$t('Name')" :placeholder="`“${$t('The Beatles')}”`" v-model="form.data.name" />
-    
+                
+                <FormKit validation-visibility="live" type="text" name="username" required id="username"
+                    :label="$t('Username')" :placeholder="$t('cool_nickname')" v-model="form.data.username" />
+
                 <FormKit validation-visibility="live" type="text" name="email" validation="email" required id="email"
                     :label="$t('Email')" :placeholder="`“${$t('Type the developer email')}”`" v-model="form.data.email" />
     

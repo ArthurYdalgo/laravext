@@ -69,7 +69,7 @@ onMounted(() => {
         <PrimaryButton>{{ $t('Edit') }}</PrimaryButton>
         </Link>
 
-        <DangerButton @click="destroyResource(routeParams().team)" class="hover:text-red-900">Delete</DangerButton>
+        <DangerButton @click="destroyResource(routeParams().team)" class="hover:text-red-900">{{ $t('Delete') }}</DangerButton>
     </div>
     <Loading v-if="team.loading" />
     <PageContent v-else>
@@ -81,10 +81,11 @@ onMounted(() => {
         <span class="text-lg font-bold">{{ $t('Developers') }}:</span>
         <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
             <div class="bg-white rounded-lg shadow p-4" v-for="developer in team.data.developers.sort((a, b) => a.name.localeCompare(b.name))" :key="developer.id">
-                <div class="font-bold">{{ developer.name }}</div>
+                <div class="font-bold">@{{ developer.username }}</div>
                 <div class="border-b-2 border-gray-200 my-2"></div>
-                <div>Role: {{ $t(developer.role_label) }}</div>
-                <div>{{ $t('Email: ') }} {{ privacy.active ? '***@***' : developer.email }}</div>
+                <div class="text-sm">Name: {{ $t(developer.name) }}</div>
+                <div class="text-sm">Role: {{ $t(developer.role_label) }}</div>
+                <div class="text-sm">{{ $t('Email: ') }} {{ privacy.active ? '***@***' : developer.email }}</div>
             </div>
         </div>
 

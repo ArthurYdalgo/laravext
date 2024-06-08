@@ -93,11 +93,11 @@ onMounted(async () => {
 
 </script>
 <template>
-    <Header>Developers</Header>
+    <Header>{{$t('Developers')}}</Header>
 
     <div class="mt-3 mx-4 flex justify-end space-x-2">
         <Link routeName="admin.developers.create">
-        <PrimaryButton>Create</PrimaryButton>
+        <PrimaryButton>{{ $t('Create') }}</PrimaryButton>
         </Link>
     </div>
 
@@ -107,7 +107,7 @@ onMounted(async () => {
         <div class="flex items-center justify-between mb-4">
             <div class="flex items-center">
 
-                <input type="text" id="search" v-model="filters.search" placeholder="Search"
+                <input type="text" id="search" v-model="filters.search" :placeholder="$t('Search')"
                     class="border border-gray-300 rounded px-3 py-2" @input="debouncedFetchResources" />
             </div>
             <div class="flex items-center">
@@ -124,23 +124,27 @@ onMounted(async () => {
                     </th>
                     <th
                         class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                        Name
+                        {{$t('Username')}}
                     </th>
                     <th
                         class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                        Role
+                        {{$t('Name')}}
                     </th>
                     <th
                         class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                        Email
+                        {{$t('Role')}}
                     </th>
                     <th
                         class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                        Team
+                        {{$t('Email')}}
+                    </th>
+                    <th
+                        class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                        {{$t('Team')}}
                     </th>
                     <th
                         class="border-l w-96 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                        Actions
+                        {{$t('Actions')}}
                     </th>
                 </tr>
             </thead>
@@ -150,6 +154,11 @@ onMounted(async () => {
                     <td class="border-t px-6 py-4 whitespace-no-wrap text-sm text-gray-900 w-28">
                         <div class="text-sm leading-5 font-medium text-gray-900">
                             {{ resource.id }}
+                        </div>
+                    </td>
+                    <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
+                        <div class="text-sm leading-5 font-medium text-gray-900">
+                            @{{ resource.username }}
                         </div>
                     </td>
                     <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
@@ -178,10 +187,10 @@ onMounted(async () => {
                     <td
                         class="border-t border-l px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium space-x-2">
                         <Link :href="`/admin/developers/${resource.id}/edit`">
-                        <SecondaryButton>Edit</SecondaryButton>
+                        <SecondaryButton>{{ $t('Edit') }}</SecondaryButton>
                         </Link>
                         <DangerButton @click="destroyResource(resource.id)" class="hover:text-red-900">
-                            Delete</DangerButton>
+                            {{$t('Delete')}}</DangerButton>
 
 
                     </td>
