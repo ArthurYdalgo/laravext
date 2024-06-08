@@ -8,7 +8,7 @@ const props = defineProps({
     },
     maxWidth: {
         type: String,
-        default: '2xl',
+        default: '',
     },
     closeable: {
         type: Boolean,
@@ -48,15 +48,6 @@ onUnmounted(() => {
     document.body.style.overflow = null;
 });
 
-const maxWidthClass = computed(() => {
-    return {
-        sm: 'sm:max-w-sm',
-        md: 'sm:max-w-md',
-        lg: 'sm:max-w-lg',
-        xl: 'sm:max-w-xl',
-        '2xl': 'sm:max-w-2xl',
-    }[props.maxWidth];
-});
 </script>
 
 <template>
@@ -86,8 +77,7 @@ const maxWidthClass = computed(() => {
                 >
                     <div
                         v-show="show"
-                        class="mb-6 bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto"
-                        :class="maxWidthClass"
+                        :class="`mb-2 bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-xl transform transition-all sm:mx-auto ${props.maxWidth}`"
                     >
                         <slot v-if="show" />
                     </div>

@@ -78,9 +78,9 @@ const fetchDevelopers = () => {
 
     axios.get('/api/developers', {
         params: {
-            per_page: 8,
+            per_page: 9,
             search: addDeveloperToTeamModal.search,
-            filter: { 
+            filter: {
                 not_team_ids: [routeParams().team].join(','),
                 not_ids: form.data.developers.map(developer => developer.id).join(','),
             },
@@ -96,7 +96,7 @@ const fetchDevelopers = () => {
         });
 };
 
-const debouncedSerchDevelopers = debounce(() => {
+const debouncedSearchDevelopers = debounce(() => {
 
     if (addDeveloperToTeamModal.search.length == 0) {
         addDeveloperToTeamModal.developers = [];
@@ -134,22 +134,25 @@ const debouncedSerchDevelopers = debounce(() => {
                 </div>
             </div>
         </FormKit>
-        <Modal :show="addDeveloperToTeamModal.visible" :closeable="true" @close="closeAddDeveloperToTeamModal">
+        <Modal :show="addDeveloperToTeamModal.visible" :closeable="true" @close="closeAddDeveloperToTeamModal"
+            maxWidth="w-[75vw]">
             <PageContent class="min-h-[50vh]">
                 <h2 class="text-xl font-bold mb-2">{{ $t('Add developer to team') }}</h2>
-                <TextInput class="w-full" v-model="addDeveloperToTeamModal.search" @input="debouncedSerchDevelopers"
+                <TextInput class="w-full" v-model="addDeveloperToTeamModal.search" @input="debouncedSearchDevelopers"
                     :placeholder="$t('Type to search for a developer by email or name')" />
                 <div>
                     <Loading v-if="addDeveloperToTeamModal.loading" />
-                    <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4 p-4">
+                    <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-4 p-4">
                         <div class="bg-white rounded-lg shadow p-4"
-                            v-for="developer in addDeveloperToTeamModal.developers" :key="developer.id">
-                            <div class="font-bold">{{ developer.name }}</div>
+                            v-for="developer in addDeveloperToTeamModal.developers.sort((a, b) => a.name.localeCompare(b.name))"
+                            :key="developer.id">
+                            <div class="font-bold flex justify-between">{{ developer.name }}<PrimaryButton
+                                    @click="form.data.developers.push(developer); fetchDevelopers();" type="button">{{
+                                    $t('Add') }}</PrimaryButton>
+                            </div>
                             <div class="border-b-2 border-gray-200 my-2"></div>
                             <div>Role: {{ $t(developer.role_label) }}</div>
                             <div>{{ $t('Email: ') }} {{ privacy.active ? '***@***' : developer.email }}</div>
-                            <PrimaryButton @click="form.data.developers.push(developer); fetchDevelopers();"
-                                type="button">{{ $t('Add') }}</PrimaryButton>
                         </div>
                     </div>
                 </div>

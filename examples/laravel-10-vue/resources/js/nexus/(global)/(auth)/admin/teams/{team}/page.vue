@@ -80,7 +80,7 @@ onMounted(() => {
         <br>
         <span class="text-lg font-bold">{{ $t('Developers') }}:</span>
         <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
-            <div class="bg-white rounded-lg shadow p-4" v-for="developer in team.data.developers" :key="developer.id">
+            <div class="bg-white rounded-lg shadow p-4" v-for="developer in team.data.developers.sort((a, b) => a.name.localeCompare(b.name))" :key="developer.id">
                 <div class="font-bold">{{ developer.name }}</div>
                 <div class="border-b-2 border-gray-200 my-2"></div>
                 <div>Role: {{ $t(developer.role_label) }}</div>
