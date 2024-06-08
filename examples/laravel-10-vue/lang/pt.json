@@ -149,5 +149,17 @@
     "Remove this person from the team.": "Remova esta pessoa do time.",
     "Administrator users can perform any action.": "O administrador pode realizar qualquer ação.",
     "Editor users have the ability to read, create, and update.": "O editor pode ler, criar e atualizar",
-    "Remove": "Remover"
+    "Remove": "Remover",
+
+    "Companies": "Empresas",
+    "Company": "Empresa",
+    "Developers": "Desenvolvedores",
+    "Developer": "Desenvolvedor",
+    "Projects": "Projetos",
+    "Project": "Projeto",
+    "Teams": "Times",
+    "Team": "Time"
+
+
+
   }

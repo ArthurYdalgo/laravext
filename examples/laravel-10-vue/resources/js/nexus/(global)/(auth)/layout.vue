@@ -68,16 +68,16 @@ const showingNavigationDropdown = ref(false);
                                     Dashboard
                                 </NavLink>
                                 <NavLink routeName="admin.teams">
-                                    Teams
+                                    {{ $t('Teams') }}
                                 </NavLink>
                                 <NavLink routeName="admin.developers">
-                                    Developers
+                                    {{ $t('Developers') }}
                                 </NavLink>
                                 <NavLink routeName="admin.projects">
-                                    Projects
+                                    {{ $t('Projects') }}
                                 </NavLink>
                                 <NavLink routeName="admin.companies">
-                                    Companies
+                                    {{ $t('Companies') }}
                                 </NavLink>
                             </div>
                         </div>
@@ -140,7 +140,7 @@ const showingNavigationDropdown = ref(false);
 
                                     <template #content>
                                         <DropdownButton @click="logout">
-                                            Log Out
+                                            {{$t('Log Out')}}
                                         </DropdownButton>
                                     </template>
                                 </Dropdown>
@@ -149,12 +149,42 @@ const showingNavigationDropdown = ref(false);
 
                         <!-- Hamburger -->
                         <div class="-me-2 flex items-center sm:hidden">
-                            <div class="cursor-pointer mr-4">
+                            <div class="cursor-pointer px-3">
                                 <Fa @click="handleTogglePrivacy" :icon="privacy.active ? 'fa-eye-slash' : 'fa-eye'" class=" text-gray-400 dark:text-gray-500"  />
                             </div>
+                            
+                            <Dropdown align="right" width="24">
+                                <template #trigger>
+                                    <span class="inline-flex rounded-md">
+                                        <button
+                                            type="button"
+                                            class="inline-flex items-center px-3 py-2 border border-transparent"
+                                        >
+                                            <img :src="$i18n.locale == 'en' ? '/images/flags/us.svg' : '/images/flags/br.svg'" class="w-[20px]"/>
+                                        </button>
+                                    </span>
+                                </template>
+
+                                <template #content>
+                                    <DropdownButton @click="$i18n.locale = 'en';handleLocaleChange('en')">
+                                        <span class="flex items
+                                        -center space-x-2">
+                                        <img src="/images/flags/us.svg" class="w-[30px]"/> <span>EN</span>
+                                    </span>
+                                    </DropdownButton>
+                                    <DropdownButton @click="$i18n.locale = 'pt';handleLocaleChange('pt')">
+                                        <span class="flex items
+                                        -center space-x-2">
+                                        <img src="/images/flags/br.svg" class="w-[30px]"/> <span>PT</span>
+                                        </span>
+                                    </DropdownButton>
+                                </template>
+                            </Dropdown>
+
+
                             <button
                                 @click="showingNavigationDropdown = !showingNavigationDropdown"
-                                class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out"
+                                class="inline-flex items-center justify-center p-3 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out"
                             >
                                 <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                                     <path
@@ -193,16 +223,16 @@ const showingNavigationDropdown = ref(false);
                             Dashboard
                         </ResponsiveNavLink>
                         <ResponsiveNavLink routeName='admin.teams'>
-                            Teams
+                            {{ $t('Teams') }}
                         </ResponsiveNavLink>
                         <ResponsiveNavLink routeName='admin.developers'>
-                            Developers
+                            {{ $t('Developers') }}
                         </ResponsiveNavLink>
                         <ResponsiveNavLink routeName='admin.projects'>
-                            Projects
+                            {{ $t('Projects') }}
                         </ResponsiveNavLink>
                         <ResponsiveNavLink routeName='admin.companies'>
-                            Companies
+                            {{ $t('Companies') }}
                         </ResponsiveNavLink>
                     </div>
 
@@ -217,7 +247,7 @@ const showingNavigationDropdown = ref(false);
 
                         <div class="mt-3 space-y-1">
                             <ResponsiveNavLink @click="logout">
-                                Log Out
+                                {{$t('Log Out')}}
                             </ResponsiveNavLink>
                         </div>
                     </div>
