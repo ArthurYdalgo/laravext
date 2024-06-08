@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
         
         $users = User::factory(20)->create();
 
-        Company::factory(5)->hasProjects(3)->create();
+        Company::factory(10)->hasProjects(3)->create();
 
         $projects = Project::whereNull('team_id')->get();
 
@@ -48,7 +48,7 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        Team::factory(10)->create();
+        Team::factory(20)->create();
 
         $teams = Team::doesntHave('developers')->get();
 

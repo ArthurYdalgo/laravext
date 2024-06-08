@@ -3,8 +3,6 @@
     @startNexus
     <div class="flex justify-center align-middle min-h-[70vh]  mt-6">
         <div>
-
-
             <div class="flex justify-center    mt-6">
                 Contact Us at our email
 
@@ -29,8 +27,6 @@
                 </a>
             </div>
         </div>
-        
-
     </div>
     @endNexus
 @endsection

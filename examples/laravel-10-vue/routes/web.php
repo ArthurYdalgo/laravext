@@ -59,7 +59,7 @@ Route::get('our-teams', function () {
 // })->middleware('auth')->name('admin.developers.developer.edit');
 
 /**
- * However, because in this project I'm also using other router that are "downstream" the 'admin' route, I'm going to use the 
+ * However, because in this project I'm also using other routes that are subroutes of the 'admin' route, I'm going to use the 
  * Route::group() method to wrap the 'admin' route group and keep the middleware on both the Route::laravext(), 
  * and the Route::get() method.
  */
