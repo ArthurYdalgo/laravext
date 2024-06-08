@@ -108,8 +108,6 @@ const showingNavigationDropdown = ref(false);
                                     </template>
 
                                     <template #content>
-                                        
-                                        <DropdownLink routeName='profile'> Profile </DropdownLink>
                                         <DropdownButton @click="logout">
                                             Log Out
                                         </DropdownButton>
@@ -160,6 +158,18 @@ const showingNavigationDropdown = ref(false);
                         <ResponsiveNavLink routeName='admin.dashboard'>
                             Dashboard
                         </ResponsiveNavLink>
+                        <ResponsiveNavLink routeName='admin.teams'>
+                            Teams
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink routeName='admin.developers'>
+                            Developers
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink routeName='admin.projects'>
+                            Projects
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink routeName='admin.companies'>
+                            Companies
+                        </ResponsiveNavLink>
                     </div>
 
                     <!-- Responsive Settings Options -->
@@ -172,8 +182,7 @@ const showingNavigationDropdown = ref(false);
                         </div>
 
                         <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink > Profile </ResponsiveNavLink>
-                            <ResponsiveNavLink  method="post" as="button">
+                            <ResponsiveNavLink @click="logout">
                                 Log Out
                             </ResponsiveNavLink>
                         </div>
