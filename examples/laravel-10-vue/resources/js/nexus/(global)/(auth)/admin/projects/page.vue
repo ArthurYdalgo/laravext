@@ -91,7 +91,7 @@ onMounted(async () => {
 </script>
 <template>
     <Header>
-        Projects
+        {{$t('Projects')}}
     </Header>
 
     <div class="mt-3 mx-4 flex justify-end space-x-2">

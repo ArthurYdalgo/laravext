@@ -92,7 +92,7 @@ onMounted(async () => {
 
 </script>
 <template>
-    <Header>Teams</Header>
+    <Header> {{ $t('Teams') }}</Header>
 
     <div class="mt-3 mx-4 flex justify-end space-x-2">
         <Link routeName="admin.teams.create">
