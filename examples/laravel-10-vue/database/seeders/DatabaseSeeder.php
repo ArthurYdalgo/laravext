@@ -12,6 +12,7 @@ use App\Models\Project;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Lottery;
 
 class DatabaseSeeder extends Seeder
 {
@@ -100,6 +101,16 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        ContactRequest::factory(20)->create();
+        $contact_requests = ContactRequest::factory(20)->create();
+
+        foreach ($contact_requests as $contact_request) {
+            if(Lottery::odds(0.7)->choose()){
+                $contact_request->update([
+                    'replier_id' => $users->random()->id,
+                    'reply' => fake()->text(random_int(200,500)),
+                    'replied_at' => now()
+                ]);
+            }
+        }
     }
 }

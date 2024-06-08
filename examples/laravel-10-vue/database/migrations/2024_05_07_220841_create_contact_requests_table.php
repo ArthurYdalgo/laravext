@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,10 +15,13 @@ return new class extends Migration
         Schema::create('contact_requests', function (Blueprint $table) {
             $table->id();
 
+            $table->foreignIdFor(User::class, 'replier_id')->nullable()->constrained('users')->nullOnDelete();
             $table->string('name');
             $table->string('email');
             $table->text('message');
 
+            $table->text('reply')->nullable();
+            $table->dateTime('replied_at')->nullable();
             $table->timestamps();
         });
     }
