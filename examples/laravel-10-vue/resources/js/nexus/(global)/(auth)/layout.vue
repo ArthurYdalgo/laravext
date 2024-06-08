@@ -11,10 +11,22 @@ import axios from 'axios';
 import { sharedProps } from '@laravext/vue';
 import { privacy } from '@/composables/usePrivacy'
 import Fa from '@/components/Fa.vue';
+import { useI18n } from 'vue-i18n';
+const { locale: i18nLocale } = useI18n();
 
 const {user} = sharedProps().auth;
-
 const initialState = sharedProps().auth?.user?.privacy;
+
+const locales = {
+    en: {
+        locale: 'en',
+        flag: '/images/flags/us.svg',
+    },
+    pt: {
+        locale: 'pt',
+        flag: '/images/flags/br.svg',
+    },
+}
 
 if(initialState !== undefined) {
     privacy.setActive(initialState)
@@ -31,6 +43,8 @@ const handleTogglePrivacy = () => {
 }
 
 const handleLocaleChange = async (locale) => {
+    i18nLocale.value = locale;
+
     await axios.put('/api/auth/user', {
         locale
     });
@@ -94,21 +108,16 @@ const showingNavigationDropdown = ref(false);
                                             type="button"
                                             class="inline-flex items-center px-2 py-2 border border-transparent"
                                         >
-                                            <img :src="$i18n.locale == 'en' ? '/images/flags/us.svg' : '/images/flags/br.svg'" class="w-[20px]"/>
+                                            <img :src="locales[$i18n.locale].flag" class="w-[20px]"/>
                                         </button>
                                     </span>
                                 </template>
 
                                 <template #content>
-                                    <DropdownButton @click="$i18n.locale = 'en';handleLocaleChange('en')">
+                                    <DropdownButton v-for="locale in Object.values(locales)" @click="handleLocaleChange(locale.locale)">
                                         <span class="flex items-center space-x-2">
-                                        <img src="/images/flags/us.svg" class="w-[30px]"/> <span>EN</span>
+                                        <img :src="locale.flag" class="w-[30px]"/> <span>{{ locale.locale.toUpperCase() }}</span>
                                     </span>
-                                    </DropdownButton>
-                                    <DropdownButton @click="$i18n.locale = 'pt';handleLocaleChange('pt')">
-                                        <span class="flex items-center space-x-2">
-                                        <img src="/images/flags/br.svg" class="w-[30px]"/> <span>PT</span>
-                                        </span>
                                     </DropdownButton>
                                 </template>
                             </Dropdown>

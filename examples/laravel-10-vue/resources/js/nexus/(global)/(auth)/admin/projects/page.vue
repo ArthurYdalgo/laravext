@@ -94,6 +94,12 @@ onMounted(async () => {
         Projects
     </Header>
 
+    <div class="mt-3 mx-4 flex justify-end space-x-2">
+        <Link routeName="admin.projects.create">
+        <PrimaryButton>Create</PrimaryButton>
+        </Link>
+    </div>
+
     <PageContent>
         <Loading v-if="pagination.loading" />
 
