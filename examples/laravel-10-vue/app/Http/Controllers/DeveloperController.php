@@ -70,6 +70,8 @@ class DeveloperController extends Controller
 
     public function show(Developer $developer)
     {
+        $developer->load(['team']);
+        
         return $developer;
     }
 

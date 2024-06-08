@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\DeveloperRole;
 use App\Models\Team;
 use Illuminate\Support\Facades\Route;
 
@@ -48,4 +49,10 @@ Route::get('our-teams', function () {
 Route::laravext("admin",  route_group_attributes: [
     'middleware' => 'auth',
 ], root_view: 'sections.app');
+
+Route::get('admin/developers/{developer}/edit', function () {
+    $developer_roles = DeveloperRole::toArray(true);
+
+    return nexus(props: compact('developer_roles'))->render();
+})->name('admin.developers.developer.edit');
 

@@ -157,9 +157,6 @@ onMounted(async () => {
                     </td>
                     <td
                         class="border-t border-l px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium space-x-2">
-                        <Link :href="`/admin/companies/${resource.id}`">
-                        <PrimaryButton>Show</PrimaryButton>
-                        </Link>
                         <Link :href="`/admin/companies/${resource.id}/edit`">
                         <SecondaryButton>Edit</SecondaryButton>
                         </Link>

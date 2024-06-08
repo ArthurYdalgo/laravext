@@ -122,6 +122,10 @@ onMounted(async () => {
                     </th>
                     <th
                         class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                        Role
+                    </th>
+                    <th
+                        class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                         Email
                     </th>
                     <th
@@ -148,13 +152,18 @@ onMounted(async () => {
                         </div>
                     </td>
                     <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
+                        <div class="text-sm leading-5 font-medium text-gray-900">
+                            {{ $t(resource.role_label) }}
+                        </div>
+                    </td>
+                    <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
                         <div class="text-sm leading-5 text-gray-900">
                             {{ privacy.active ? '***@***' : resource.email }}
                         </div>
                     </td>
                     <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
                         <div class="text-sm leading-5 text-gray-900">
-                            <Link v-if="resource.team" class="text-blue-600" :href="`/admin/teams/${resource.id}`">
+                            <Link v-if="resource.team" class="text-blue-600" :href="`/admin/teams/${resource.team?.id}`">
                             {{ resource.team?.name }}
                             </Link>
                             <span v-else>--</span>
@@ -162,9 +171,6 @@ onMounted(async () => {
                     </td>
                     <td
                         class="border-t border-l px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium space-x-2">
-                        <Link :href="`/admin/developers/${resource.id}`">
-                        <PrimaryButton>Show</PrimaryButton>
-                        </Link>
                         <Link :href="`/admin/developers/${resource.id}/edit`">
                         <SecondaryButton>Edit</SecondaryButton>
                         </Link>
