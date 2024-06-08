@@ -4,14 +4,40 @@ import PrimaryButton from '@/components/PrimaryButton.vue';
 import TextArea from '@/components/TextArea.vue';
 import TextInput from '@/components/TextInput.vue';
 import { Head } from '@laravext/vue'
-import { reactive } from 'vue'
+import { reactive, inject } from 'vue'
+import axios from 'axios'
+const swal = inject('$swal')
 
 let form = reactive({
+    name: '',
     email: '',
     message: '',
-    response: null,
+    subject: '',
     processing: false,
 });
+
+const submit = async () => {
+    form.processing = true;
+
+    try {
+        axios.post('/api/contact-requests', {
+            name: form.name,
+            email: form.email,
+            message: form.message,
+            subject: form.subject,
+        }).then(() => {
+            swal('Message Sent!', 'We will get back to you soon.', 'success');
+            form.processing = false;
+        }).catch(() => {
+            swal('Error!', 'An error occurred while sending the message.', 'error');
+            form.processing = false;
+        });
+        
+    } catch (error) {
+        swal('Error!', 'An error occurred while sending the message.', 'error');
+        form.processing = false;
+    }
+};
 
 </script>
 
@@ -56,25 +82,32 @@ let form = reactive({
                     <div class="mt-4">
                         <InputLabel for="name" value="Name" />
 
-                        <TextInput id="name" type="text" class="mt-1 block w-full" v-model="form.name" required
-                            autofocus autocomplete="username" />
+                        <TextInput max="200" id="name" type="text" class="mt-1 block w-full" v-model="form.name" required
+                            autofocus />
 
                         <InputError class="mt-2" :message="form.response?.errors?.name" />
                     </div>
                     <div class="mt-4">
                         <InputLabel for="email" value="Email" />
 
-                        <TextInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" required
+                        <TextInput max="200" id="email" type="email" class="mt-1 block w-full" v-model="form.email" required
                             autofocus autocomplete="username" />
 
                         <InputError class="mt-2" :message="form.response?.errors?.email" />
                     </div>
+                    <div class="mt-4">
+                        <InputLabel for="subject" value="Subject" />
 
+                        <TextInput max="200" id="subject" type="text" class="mt-1 block w-full" v-model="form.subject" required
+                            autofocus />
+
+                        <InputError class="mt-2" :message="form.response?.errors?.subject" />
+                    </div>
 
                     <div class="mt-4">
                         <InputLabel for="message" value="Message" />
 
-                        <TextArea id="message" type="text" class="mt-1 block w-full max-h-40" v-model="form.message"
+                        <TextArea max="5000" id="message" type="text" class="mt-1 block w-full max-h-40" v-model="form.message"
                             required autocomplete="current-message" />
 
                         <InputError class="mt-2" :message="form.response?.errors?.password" />

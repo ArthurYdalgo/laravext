@@ -108,7 +108,8 @@ class DatabaseSeeder extends Seeder
                 $contact_request->update([
                     'replier_id' => $users->random()->id,
                     'reply' => fake()->text(random_int(200,500)),
-                    'replied_at' => now()
+                    'replied_at' => now(),
+                    'delivered_at' => Lottery::odds(0.5)->choose() ? now() : null
                 ]);
             }
         }

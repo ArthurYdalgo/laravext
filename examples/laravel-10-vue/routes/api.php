@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\ContactRequestController;
 use App\Http\Controllers\CurrentUserController;
 use App\Http\Controllers\DeveloperController;
 use App\Http\Controllers\ProjectCommentController;
@@ -18,10 +19,13 @@ Route::group([
     Route::post('logout', [CurrentUserController::class, 'logout'])->middleware('auth');
 });
 
+Route::post('contact-requests', [ContactRequestController::class, 'store']);
+
 Route::group([
     'middleware' => 'auth'
 ], function(){
     
+    Route::apiResource('contact-requests', ContactRequestController::class)->only(['index', 'destroy', 'reply']);
     Route::apiResource('teams', TeamController::class)->withoutMiddleware('auth');
     Route::apiResource('teams.developers', TeamDeveloperController::class)->only(['store', 'index']);
     Route::put('teams/{team}/developers', [TeamDeveloperController::class, 'update'])->name('teams.developers.update');

@@ -19,7 +19,8 @@ class ContactRequestFactory extends Factory
         return [
             'name' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,
-            'message' => $this->faker->sentence,
+            'subject' => $this->faker->sentence,
+            'message' => $this->faker->sentence(20),
         ];
     }
 }

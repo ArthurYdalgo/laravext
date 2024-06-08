@@ -172,15 +172,20 @@
 
     "Add": "Adicionar",
 
+    "Contact Requests": "Solicitações de Contato",
+    "Contact Request": "Solicitação de Contato",
+
     "An error occurred while deleting the project.": "Ocorreu um erro ao deletar o projeto.",
     "An error occurred while deleting the company.": "Ocorreu um erro ao deletar a empresa.",
     "An error occurred while deleting the team.": "Ocorreu um erro ao deletar o time.",
     "An error occurred while deleting the developer.": "Ocorreu um erro ao deletar o desenvolvedor.",
+    "An error occurred while deleting the contact request.": "Ocorreu um erro ao deletar o pedido de contato.",
 
     "An error occurred while updating the project.": "Ocorreu um erro ao atualizar o projeto.",
     "An error occurred while updating the company.": "Ocorreu um erro ao atualizar a empresa.",
     "An error occurred while updating the team.": "Ocorreu um erro ao atualizar o time.",
     "An error occurred while updating the developer.": "Ocorreu um erro ao atualizar o desenvolvedor.",
+    "An error occurred while updating the contact request.": "Ocorreu um erro ao atualizar o pedido de contato.",
 
     "The company has been updated.": "A empresa foi atualizada.",
     "The team has been updated.": "O time foi atualizado.",
@@ -191,6 +196,7 @@
     "The team has been deleted.": "O time foi deletado.",
     "The developer has been deleted.": "O desenvolvedor foi deletado.",
     "The project has been deleted.": "O projeto foi deletado.",
+    "The contact request has been deleted.": "O pedido de contato foi deletado.",
 
     "Create a company": "Criar uma empresa",
     "Edit company": "Editar empresa",
@@ -212,6 +218,13 @@
     "Add developer to team": "Adicionar desenvolvedor ao time",
     "Type to search for a developer by email or name": "Digite para buscar um desenvolvedor por e-mail ou nome",
     
+    "Created At": "Criado em",
+    "Replied At": "Respondido em",
+
+    "Delivered": "Entregue",
+    "On delivery queue": "Na fila de entrega",
+
+    "Subject": "Assunto",
     "Companies": "Empresas",
     "Company": "Empresa",
     "Developers": "Desenvolvedores",

@@ -18,7 +18,7 @@ class DeveloperFactory extends Factory
     {
         $name = $this->faker->name;
         return [
-            'username' => fake()->userName(),
+            'username' => fake()->userName() . $this->faker->randomNumber(3),
             'name' => $name,
             'email' => $this->faker->unique()->safeEmail,
             'role' => $this->faker->randomElement(['backend', 'designer', 'frontend', 'fullstack', 'qa', 'devops']),

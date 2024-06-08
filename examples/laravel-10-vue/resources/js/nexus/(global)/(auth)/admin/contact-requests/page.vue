@@ -9,8 +9,11 @@ import PrimaryButton from '@/components/PrimaryButton.vue';
 import SecondaryButton from '@/components/SecondaryButton.vue';
 import PageContent from '@/components/PageContent.vue';
 import Loading from '@/components/Loading.vue';
+import { privacy } from '@/composables/usePrivacy';
 import { useI18n } from 'vue-i18n';
-import MomentDate from '@/components/MomentDate.vue';
+import MomentDateTime from '@/components/MomentDateTime.vue';
+import Fa from '@/components/Fa.vue';
+import Tooltip from '@/components/Tooltip.vue';
 const { t } = useI18n();
 const swal = inject('$swal')
 
@@ -36,7 +39,7 @@ const paginateTo = ({ page, perPage }) => {
 const fetchResources = () => {
     pagination.loading = true;
 
-    axios.get('/api/projects', {
+    axios.get('/api/contact-requests', {
         params: {
             page: pagination.page,
             per_page: pagination.per_page,
@@ -56,7 +59,7 @@ const fetchResources = () => {
 
 const destroyResource = (id) => {
     swal({
-        Title: t('Are you sure?'),
+        title: t('Are you sure?'),
         icon: 'warning',
         confirmButtonText: t('Yes, delete it!'),
         cancelButtonText: t('No, cancel!'),
@@ -68,14 +71,14 @@ const destroyResource = (id) => {
     })
         .then((result) => {
             if (result.isConfirmed) {
-                axios.delete(`/api/projects/${id}`)
+                axios.delete(`/api/contact-requests/${id}`)
                     .then(() => {
                         fetchResources();
-                        swal(t('Record deleted!'), t('The project has been deleted.'), 'success');
+                        swal(t('Record deleted!'), t('The contact request has been deleted.'), 'success');
                     })
                     .catch(error => {
                         console.error(error);
-                        swal(t('Error!'), t('An error occurred while deleting the project.'), 'error');
+                        swal(t('Error!'), t('An error occurred while deleting the contact request.'), 'error');
                     });
             }
         });
@@ -93,18 +96,10 @@ onMounted(async () => {
 
 </script>
 <template>
-    <Header>
-        {{$t('Projects')}}
-    </Header>
-
-    <div class="mt-3 mx-4 flex justify-end space-x-2">
-        <Link routeName="admin.projects.create">
-        <PrimaryButton>{{ $t('Criar') }}</PrimaryButton>
-        </Link>
-    </div>
-
+    <Header>{{$t('Contact Requests')}}</Header>
+    
     <PageContent>
-        <Loading v-if="pagination.loading" />
+        <Loading v-if="pagination.loading"  />
 
         <div class="flex items-center justify-between mb-4">
             <div class="flex items-center">
@@ -119,37 +114,39 @@ onMounted(async () => {
 
         <table :class="{ 'opacity-50': pagination.loading }" class="min-w-full divide-y divide-gray-200 border my-4">
             <thead>
-                <tr>
-                    <th
-                        class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                        ID
-                    </th>
-                    <th
-                        class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                        {{ $t('Name') }}
-                    </th>
-                    <th
-                        class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                        {{ $t('Team') }}
-                    </th>
-                    <th
-                        class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                        {{ $t('Company') }}
-                    </th>
-                    <th
-                        class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                        {{ $t('Created At') }}
-                    </th>
-                    <th
-                        class="border-l w-96 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                        {{$t('Actions')}}
-                    </th>
-                </tr>
+                <th
+                    class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                    ID
+                </th>
+                <th
+                    class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                    {{$t('Name')}}
+                </th>
+                <th
+                    class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                    Email
+                </th>
+                <th
+                    class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                    {{$t('Subject')}}
+                </th>
+                <th
+                    class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                    {{$t('Created At')}}
+                </th>
+                <th
+                    class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                    {{$t('Replied At')}}
+                </th>
+                <th
+                    class="border-l w-96 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                    {{$t('Actions')}}
+                </th>
             </thead>
             <tbody>
                 <tr class="odd:bg-gray-100 odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 hover:bg-gray-200 hover:dark:bg-gray-700"
                     v-for="resource in pagination.data" :key="resource.id">
-                    <td class="border-t px-6 py-4 whitespace-no-wrap text-sm text-gray-900 w-28">
+                    <td class="border-t border-l px-6 py-4 whitespace-no-wrap text-sm text-gray-900 w-28">
                         <div class="text-sm leading-5 font-medium text-gray-900">
                             {{ resource.id }}
                         </div>
@@ -160,37 +157,33 @@ onMounted(async () => {
                         </div>
                     </td>
                     <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
-                        <div class="text-sm leading-5 font-medium text-gray-900">
-                            <div class="text-sm leading-5 text-gray-900">
-                                <Link v-if="resource.team" class="text-blue-600"
-                                    :href="`/admin/teams/${resource.team?.id}`">
-                                {{ resource.team?.name }}
-                                </Link>
-                                <span v-else>--</span>
-                            </div>
+                        <div class="text-sm leading-5 text-gray-900">
+                            {{ privacy.active ? '***@***' : resource.email }}
                         </div>
                     </td>
                     <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
-                        <div class="text-sm leading-5 font-medium text-gray-900">
-                            <div class="text-sm leading-5 text-gray-900">
-                                <Link v-if="resource.company" class="text-blue-600" :href="`/admin/companies/${resource.company?.id}`"> {{ resource.company?.name }}
-                                </Link>
-                                <span v-else>--</span>
-                            </div>
+                        <div class="text-sm leading-5 text-gray-900">
+                            {{ resource.subject }}
                         </div>
                     </td>
                     <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
-                        <div class="text-sm leading-5 font-medium text-gray-900">
-                            <MomentDate :date="resource.created_at" />
+                        <div class="text-sm leading-5 text-gray-900">
+                            <MomentDateTime :dateTime="resource.created_at" />
                         </div>
+                    </td>
+                    
+                    <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
+                        <Tooltip :condition="resource.replied_at" :text="resource.delivered_at ? t('Delivered') : t('On delivery queue')">
+                            <div class="flex text-sm leading-5" :class="{'cursor-pointer': resource.replied_at, 'text-gray-900' : !resource.replied_at, 'text-green-600' : (resource.replied_at && resource.delivered_at), 'text-orange-600' : (resource.replied_at && !resource.delivered_at)}">
+                                <MomentDateTime :dateTime="resource.replied_at" /> 
+                                <Fa icon="check-circle" v-if="resource.replied_at" class="ml-2" />
+                            </div>
+                        </Tooltip>
                     </td>
                     <td
                         class="border-t border-l px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium space-x-2">
-                        <Link :href="`/admin/projects/${resource.id}`">
-                        <PrimaryButton>{{$t('Show')}}</PrimaryButton>
-                        </Link>
-                        <Link :href="`/admin/projects/${resource.id}/edit`">
-                        <SecondaryButton>{{ $t('Edit') }}</SecondaryButton>
+                        <Link :href="`/admin/companies/${resource.id}`">
+                        <PrimaryButton>{{ $t('Show') }}</PrimaryButton>
                         </Link>
                         <DangerButton @click="destroyResource(resource.id)" class="hover:text-red-900">
                             {{$t('Delete')}}</DangerButton>

@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ContactRequest\ReplyRequest;
 use App\Http\Requests\ContactRequest\StoreRequest;
+use App\Mail\ContactRequestReply;
 use App\Models\ContactRequest;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Mail;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class ContactRequestController extends Controller
 {
@@ -13,7 +18,12 @@ class ContactRequestController extends Controller
      */
     public function index()
     {
-        //
+        $contact_requests = QueryBuilder::for(ContactRequest::class)
+            ->latest()
+            ->paginate(request()->query('per_page', 10))
+            ->appends(request()->query());
+
+        return JsonResource::collection($contact_requests);
     }
 
     /**
@@ -21,15 +31,7 @@ class ContactRequestController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(ContactRequest $contactRequest)
-    {
-        //
+        return ContactRequest::create($request->validated());
     }
 
     /**
@@ -37,6 +39,28 @@ class ContactRequestController extends Controller
      */
     public function destroy(ContactRequest $contactRequest)
     {
-        //
+        $contactRequest->delete();
+
+        return response()->noContent();
+    }
+
+    /**
+     * Reply to the contact request.
+     */
+    public function reply(ReplyRequest $request, ContactRequest $contactRequest)
+    {
+        $contactRequest->update([
+            'reply' => $request->validated('reply'),
+            'replier_id' => auth()->id(),
+            'replied_at' => now(),
+        ]);
+
+        dispatch(function () use ($contactRequest) {
+            Mail::to($contactRequest->email)->send(new ContactRequestReply($contactRequest));
+
+            $contactRequest->update(['delivered_at' => now()]);
+        });
+
+        return $contactRequest;
     }
 }

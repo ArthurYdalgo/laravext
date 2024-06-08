@@ -92,6 +92,9 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink routeName="admin.companies">
                                     {{ $t('Companies') }}
                                 </NavLink>
+                                <NavLink routeName="admin.contact-requests">
+                                    {{ $t('Contact Requests') }}
+                                </NavLink>
                             </div>
                         </div>
 
@@ -222,6 +225,9 @@ const showingNavigationDropdown = ref(false);
                         </ResponsiveNavLink>
                         <ResponsiveNavLink routeName='admin.companies'>
                             {{ $t('Companies') }}
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink routeName='admin.contact-requests'>
+                            {{ $t('Contact Requests') }}
                         </ResponsiveNavLink>
                     </div>
 

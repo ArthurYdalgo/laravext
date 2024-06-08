@@ -14,9 +14,9 @@ class CompanyController extends Controller
     {
         $search = request()->query('search');
 
-    $companies = Company::query()
+        $companies = Company::query()
             ->when($search, function ($query, $search) {
-                $query->where(function($query) use ($search){
+                $query->where(function ($query) use ($search) {
                     $query->where('name', 'like', "%$search%")
                         ->orWhere('email', 'like', "%$search%");
                 });

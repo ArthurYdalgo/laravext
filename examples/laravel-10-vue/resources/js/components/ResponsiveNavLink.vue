@@ -1,5 +1,6 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
+import Link from '@/components/Link.vue';
 
 const {routeName, href, active} = defineProps({
     routeName: {
@@ -25,7 +26,7 @@ const classes = computed(() =>
 </script>
 
 <template>
-    <a :href="href" :class="classes">
+    <Link :routeName="routeName" :href="href" :class="classes">
         <slot />
-    </a>
+    </Link>
 </template>

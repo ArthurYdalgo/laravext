@@ -18,10 +18,14 @@ return new class extends Migration
             $table->foreignIdFor(User::class, 'replier_id')->nullable()->constrained('users')->nullOnDelete();
             $table->string('name');
             $table->string('email');
+            $table->string("subject");
             $table->text('message');
 
             $table->text('reply')->nullable();
+
+            $table->dateTime('delivered_at')->nullable();
             $table->dateTime('replied_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
