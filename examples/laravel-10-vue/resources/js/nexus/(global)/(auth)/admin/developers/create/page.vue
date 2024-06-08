@@ -33,12 +33,12 @@ const createResource = () => {
 
     return axios.post(`/api/developers`, data)
         .then(() => {
-            swal('Updated!', 'The developer has been created.', 'success').then(() => {
+            swal(t('Record updated!'), 'The developer has been created.', 'success').then(() => {
                 window.location.href = route('admin.developers');
             });
         })
         .catch(() => {
-            swal('Error!', 'An error occurred while creating the developer.', 'error');
+            swal(t('Error!'), 'An error occurred while creating the developer.', 'error');
         });
 };
 

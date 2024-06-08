@@ -9,6 +9,8 @@ import { privacy } from '@/composables/usePrivacy';
 import { routeParams } from '@laravext/vue';
 import axios from 'axios';
 import { reactive, onMounted, inject } from 'vue';
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 const swal = inject('$swal')
 
 const team = reactive({
@@ -20,10 +22,10 @@ const team = reactive({
 
 const destroyResource = (id) => {
     swal({
-        title: 'Are you sure?',
+        Title: t('Are you sure?'),
         icon: 'warning',
-        confirmButtonText: 'Yes, delete it!',
-        cancelButtonText: 'No, cancel!',
+        confirmButtonText: t('Yes, delete it!'),
+        cancelButtonText: t('No, cancel!'),
         confirmButtonColor: '#d33',
         cancelButtonColor: '#3085d6',
         showCancelButton: true,
@@ -34,13 +36,13 @@ const destroyResource = (id) => {
             if (result.isConfirmed) {
                 axios.delete(`/api/teams/${id}`)
                     .then(() => {
-                        swal('Deleted!', 'The team has been deleted.', 'success').then(() => {
+                        swal(t('Record deleted!'), t('The team has been deleted.'), 'success').then(() => {
                             window.location.href = '/admin/teams';
                         });
                     })
                     .catch(error => {
                         console.error(error);
-                        swal('Error!', 'An error occurred while deleting the team.', 'error');
+                        swal(t('Error!'), t('An error occurred while deleting the team.'), 'error');
                     });
             }
         });

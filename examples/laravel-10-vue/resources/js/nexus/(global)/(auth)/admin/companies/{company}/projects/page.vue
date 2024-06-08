@@ -10,6 +10,8 @@ import SecondaryButton from '@/components/SecondaryButton.vue';
 import PageContent from '@/components/PageContent.vue';
 import Loading from '@/components/Loading.vue';
 import { routeParams } from '@laravext/vue';
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 const swal = inject('$swal')
 
 const pagination = reactive({
@@ -57,10 +59,10 @@ const fetchResources = () => {
 
 const destroyResource = (id) => {
     swal({
-        title: 'Are you sure?',
+        Title: t('Are you sure?'),
         icon: 'warning',
-        confirmButtonText: 'Yes, delete it!',
-        cancelButtonText: 'No, cancel!',
+        confirmButtonText: t('Yes, delete it!'),
+        cancelButtonText: t('No, cancel!'),
         confirmButtonColor: '#d33',
         cancelButtonColor: '#3085d6',
         showCancelButton: true,
@@ -72,11 +74,11 @@ const destroyResource = (id) => {
                 axios.delete(`/api/projects/${id}`)
                     .then(() => {
                         fetchResources();
-                        swal('Deleted!', 'The project has been deleted.', 'success');
+                        swal(t('Record deleted!'), t('The project has been deleted.'), 'success');
                     })
                     .catch(error => {
                         console.error(error);
-                        swal('Error!', 'An error occurred while deleting the project.', 'error');
+                        swal(t('Error!'), t('An error occurred while deleting the project.'), 'error');
                     });
             }
         });

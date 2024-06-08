@@ -9,6 +9,8 @@ import { privacy } from '@/composables/usePrivacy';
 import { routeParams } from '@laravext/vue';
 import axios from 'axios';
 import { reactive, onMounted, inject } from 'vue';
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 const swal = inject('$swal')
 
 const company = reactive({
@@ -20,10 +22,10 @@ const company = reactive({
 
 const destroyResource = (id) => {
     swal({
-        title: 'Are you sure?',
+        Title: t('Are you sure?'),
         icon: 'warning',
-        confirmButtonText: 'Yes, delete it!',
-        cancelButtonText: 'No, cancel!',
+        confirmButtonText: t('Yes, delete it!'),
+        cancelButtonText: t('No, cancel!'),
         confirmButtonColor: '#d33',
         cancelButtonColor: '#3085d6',
         showCancelButton: true,
@@ -34,13 +36,13 @@ const destroyResource = (id) => {
             if (result.isConfirmed) {
                 axios.delete(`/api/companies/${id}`)
                     .then(() => {
-                        swal('Deleted!', 'The company has been deleted.', 'success').then(() => {
+                        swal(t('Record deleted!'), t('The company has been deleted.'), 'success').then(() => {
                             window.location.href = '/admin/companies';
                         });
                     })
                     .catch(error => {
                         console.error(error);
-                        swal('Error!', 'An error occurred while deleting the company.', 'error');
+                        swal(t('Error!'), t('An error occurred while deleting the company.'), 'error');
                     });
             }
         });

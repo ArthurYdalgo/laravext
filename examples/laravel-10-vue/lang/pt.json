@@ -161,6 +161,37 @@
     "Return to": "Retornar para",
     "Click to view projects of Company": "Clique para ver os projetos da Empresa",
 
+    "Are you sure?": "Você tem certeza?",
+    "Yes, delete it!": "Sim, deletar!",
+    "No, cancel!": "Não, cancelar!",
+    "Deleted!": "Deletado!",
+    "Record deleted!": "Registro deletado!",
+    "Updated!" : "Atualizado!",
+    "Record updated!": "Registro atualizado!",
+    "Error!": "Erro!",
+
+    "Add": "Adicionar",
+
+    "An error occurred while deleting the project.": "Ocorreu um erro ao deletar o projeto.",
+    "An error occurred while deleting the company.": "Ocorreu um erro ao deletar a empresa.",
+    "An error occurred while deleting the team.": "Ocorreu um erro ao deletar o time.",
+    "An error occurred while deleting the developer.": "Ocorreu um erro ao deletar o desenvolvedor.",
+
+    "An error occurred while updating the project.": "Ocorreu um erro ao atualizar o projeto.",
+    "An error occurred while updating the company.": "Ocorreu um erro ao atualizar a empresa.",
+    "An error occurred while updating the team.": "Ocorreu um erro ao atualizar o time.",
+    "An error occurred while updating the developer.": "Ocorreu um erro ao atualizar o desenvolvedor.",
+
+    "The company has been updated.": "A empresa foi atualizada.",
+    "The team has been updated.": "O time foi atualizado.",
+    "The developer has been updated.": "O desenvolvedor foi atualizado.",
+    "The project has been updated.": "O projeto foi atualizado.",
+
+    "The company has been deleted.": "A empresa foi deletada.",
+    "The team has been deleted.": "O time foi deletado.",
+    "The developer has been deleted.": "O desenvolvedor foi deletado.",
+    "The project has been deleted.": "O projeto foi deletado.",
+
     "Create a company": "Criar uma empresa",
     "Edit company": "Editar empresa",
 
