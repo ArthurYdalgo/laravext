@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref , onMounted} from 'vue';
 import ApplicationLogo from '@/components/ApplicationLogo.vue';
 import Dropdown from '@/components/Dropdown.vue';
 import DropdownLink from '@/components/DropdownLink.vue';
@@ -8,7 +8,7 @@ import NavLink from '@/components/NavLink.vue';
 import Link from '@/components/Link.vue';
 import ResponsiveNavLink from '@/components/ResponsiveNavLink.vue';
 import axios from 'axios';
-import { nexusProps, sharedProps } from '@laravext/vue';
+import { sharedProps } from '@laravext/vue';
 import { privacy } from '@/composables/usePrivacy'
 import Fa from '@/components/Fa.vue';
 
@@ -29,6 +29,12 @@ const handleTogglePrivacy = () => {
         privacy: !state
     });
 }
+
+const handleLocaleChange = async (locale) => {
+    await axios.put('/api/auth/user', {
+        locale
+    });
+};
 
 const logout = async () => {
     await axios.post('/api/auth/logout');
@@ -78,16 +84,41 @@ const showingNavigationDropdown = ref(false);
 
                         <div class="hidden sm:flex sm:items-center sm:ms-6">
                             <!-- Settings Dropdown -->
-                             <div class="cursor-pointer">
+                             <div class="cursor-pointer px-4">
                                 <Fa @click="handleTogglePrivacy" :icon="privacy.active ? 'fa-eye-slash' : 'fa-eye'" class=" text-gray-400 dark:text-gray-500"  />
                             </div>
-                            <div class="ms-3 relative">
+                            <Dropdown align="right" width="24">
+                                <template #trigger>
+                                    <span class="inline-flex rounded-md">
+                                        <button
+                                            type="button"
+                                            class="inline-flex items-center px-2 py-2 border border-transparent"
+                                        >
+                                            <img :src="$i18n.locale == 'en' ? '/images/flags/us.svg' : '/images/flags/br.svg'" class="w-[20px]"/>
+                                        </button>
+                                    </span>
+                                </template>
+
+                                <template #content>
+                                    <DropdownButton @click="$i18n.locale = 'en';handleLocaleChange('en')">
+                                        <span class="flex items-center space-x-2">
+                                        <img src="/images/flags/us.svg" class="w-[30px]"/> <span>EN</span>
+                                    </span>
+                                    </DropdownButton>
+                                    <DropdownButton @click="$i18n.locale = 'pt';handleLocaleChange('pt')">
+                                        <span class="flex items-center space-x-2">
+                                        <img src="/images/flags/br.svg" class="w-[30px]"/> <span>PT</span>
+                                        </span>
+                                    </DropdownButton>
+                                </template>
+                            </Dropdown>
+                            <div class="ms-2 relative">
                                 <Dropdown align="right" width="48">
                                     <template #trigger>
                                         <span class="inline-flex rounded-md">
                                             <button
                                                 type="button"
-                                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150"
+                                                class="inline-flex items-center px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150"
                                             >
                                                 {{ user.name }}
 
@@ -118,6 +149,9 @@ const showingNavigationDropdown = ref(false);
 
                         <!-- Hamburger -->
                         <div class="-me-2 flex items-center sm:hidden">
+                            <div class="cursor-pointer mr-4">
+                                <Fa @click="handleTogglePrivacy" :icon="privacy.active ? 'fa-eye-slash' : 'fa-eye'" class=" text-gray-400 dark:text-gray-500"  />
+                            </div>
                             <button
                                 @click="showingNavigationDropdown = !showingNavigationDropdown"
                                 class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out"
