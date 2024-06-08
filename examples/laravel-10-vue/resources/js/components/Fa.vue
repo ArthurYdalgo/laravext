@@ -2,11 +2,11 @@
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faPlus, faTrash, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import { faPlus, faTrash, faEye, faEyeSlash, faCaretDown } from '@fortawesome/free-solid-svg-icons'
 // import { fas } from '@fortawesome/free-solid-svg-icons'
 
 // Add all solid icons to the library so they can be used
-library.add(faPlus, faTrash, faEye, faEyeSlash)
+library.add(faPlus, faTrash, faEye, faEyeSlash, faCaretDown )
 
 // In case you want to add all icons from the solid style, which is not recommended
 // library.add(fas)

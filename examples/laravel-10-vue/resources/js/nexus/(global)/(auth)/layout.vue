@@ -1,5 +1,5 @@
 <script setup>
-import { ref , onMounted} from 'vue';
+import { ref, onMounted } from 'vue';
 import ApplicationLogo from '@/components/ApplicationLogo.vue';
 import Dropdown from '@/components/Dropdown.vue';
 import DropdownLink from '@/components/DropdownLink.vue';
@@ -14,7 +14,7 @@ import Fa from '@/components/Fa.vue';
 import { useI18n } from 'vue-i18n';
 const { locale: i18nLocale } = useI18n();
 
-const {user} = sharedProps().auth;
+const { user } = sharedProps().auth;
 const initialState = sharedProps().auth?.user?.privacy;
 
 const locales = {
@@ -28,7 +28,7 @@ const locales = {
     },
 }
 
-if(initialState !== undefined) {
+if (initialState !== undefined) {
     privacy.setActive(initialState)
 }
 
@@ -69,11 +69,10 @@ const showingNavigationDropdown = ref(false);
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
                                 <Link routeName='admin.dashboard'>
-                                    <ApplicationLogo
-                                        class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200"
-                                    />
+                                <ApplicationLogo
+                                    class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                                 </Link>
-                                
+
                             </div>
 
                             <!-- Navigation Links -->
@@ -98,26 +97,34 @@ const showingNavigationDropdown = ref(false);
 
                         <div class="hidden sm:flex sm:items-center sm:ms-6">
                             <!-- Settings Dropdown -->
-                             <div class="cursor-pointer px-4">
-                                <Fa @click="handleTogglePrivacy" :icon="privacy.active ? 'fa-eye-slash' : 'fa-eye'" class=" text-gray-400 dark:text-gray-500"  />
+                            <div class="cursor-pointer px-4" @click="handleTogglePrivacy">
+                                <Fa :icon="privacy.active ? 'fa-eye-slash' : 'fa-eye'"
+                                    class=" text-gray-400 dark:text-gray-500" />
                             </div>
                             <Dropdown align="right" width="24">
                                 <template #trigger>
                                     <span class="inline-flex rounded-md">
-                                        <button
-                                            type="button"
-                                            class="inline-flex items-center px-2 py-2 border border-transparent"
-                                        >
-                                            <img :src="locales[$i18n.locale].flag" class="w-[20px]"/>
+                                        <button type="button"
+                                            class="inline-flex items-center px-2 py-2 border border-transparent">
+                                            <img :src="locales[$i18n.locale].flag" class="w-[20px]" />
+                                            <!-- <Fa icon="fa-caret-down" class="ml-2" size="sm" /> -->
+                                            <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd"
+                                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
                                         </button>
                                     </span>
                                 </template>
 
                                 <template #content>
-                                    <DropdownButton v-for="locale in Object.values(locales)" @click="handleLocaleChange(locale.locale)">
+                                    <DropdownButton v-for="locale in Object.values(locales)"
+                                        @click="handleLocaleChange(locale.locale)">
                                         <span class="flex items-center space-x-2">
-                                        <img :src="locale.flag" class="w-[30px]"/> <span>{{ locale.locale.toUpperCase() }}</span>
-                                    </span>
+                                            <img :src="locale.flag" class="w-[30px]" /> <span>{{
+                                                locale.locale.toUpperCase() }}</span>
+                                        </span>
                                     </DropdownButton>
                                 </template>
                             </Dropdown>
@@ -125,23 +132,15 @@ const showingNavigationDropdown = ref(false);
                                 <Dropdown align="right" width="48">
                                     <template #trigger>
                                         <span class="inline-flex rounded-md">
-                                            <button
-                                                type="button"
-                                                class="inline-flex items-center px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150"
-                                            >
+                                            <button type="button"
+                                                class="inline-flex items-center px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
                                                 {{ user.name }}
 
-                                                <svg
-                                                    class="ms-2 -me-0.5 h-4 w-4"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                >
-                                                    <path
-                                                        fill-rule="evenodd"
+                                                <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd"
                                                         d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                        clip-rule="evenodd"
-                                                    />
+                                                        clip-rule="evenodd" />
                                                 </svg>
                                             </button>
                                         </span>
@@ -149,7 +148,7 @@ const showingNavigationDropdown = ref(false);
 
                                     <template #content>
                                         <DropdownButton @click="logout">
-                                            {{$t('Log Out')}}
+                                            {{ $t('Log Out') }}
                                         </DropdownButton>
                                     </template>
                                 </Dropdown>
@@ -159,63 +158,46 @@ const showingNavigationDropdown = ref(false);
                         <!-- Hamburger -->
                         <div class="-me-2 flex items-center sm:hidden">
                             <div class="cursor-pointer px-3">
-                                <Fa @click="handleTogglePrivacy" :icon="privacy.active ? 'fa-eye-slash' : 'fa-eye'" class=" text-gray-400 dark:text-gray-500"  />
+                                <Fa @click="handleTogglePrivacy" :icon="privacy.active ? 'fa-eye-slash' : 'fa-eye'"
+                                    class=" text-gray-400 dark:text-gray-500" />
                             </div>
-                            
+
                             <Dropdown align="right" width="24">
                                 <template #trigger>
                                     <span class="inline-flex rounded-md">
-                                        <button
-                                            type="button"
-                                            class="inline-flex items-center px-3 py-2 border border-transparent"
-                                        >
-                                            <img :src="$i18n.locale == 'en' ? '/images/flags/us.svg' : '/images/flags/br.svg'" class="w-[20px]"/>
+                                        <button type="button"
+                                            class="inline-flex items-center px-2 py-2 border border-transparent">
+                                            <img :src="locales[$i18n.locale].flag" class="w-[20px]" />
+                                            <Fa icon="fa-caret-down" class="ml-2" size="sm" />
                                         </button>
                                     </span>
                                 </template>
 
                                 <template #content>
-                                    <DropdownButton @click="$i18n.locale = 'en';handleLocaleChange('en')">
-                                        <span class="flex items
-                                        -center space-x-2">
-                                        <img src="/images/flags/us.svg" class="w-[30px]"/> <span>EN</span>
-                                    </span>
-                                    </DropdownButton>
-                                    <DropdownButton @click="$i18n.locale = 'pt';handleLocaleChange('pt')">
-                                        <span class="flex items
-                                        -center space-x-2">
-                                        <img src="/images/flags/br.svg" class="w-[30px]"/> <span>PT</span>
+                                    <DropdownButton v-for="locale in Object.values(locales)"
+                                        @click="handleLocaleChange(locale.locale)">
+                                        <span class="flex items-center space-x-2">
+                                            <img :src="locale.flag" class="w-[30px]" /> <span>{{
+                                                locale.locale.toUpperCase() }}</span>
                                         </span>
                                     </DropdownButton>
                                 </template>
                             </Dropdown>
 
 
-                            <button
-                                @click="showingNavigationDropdown = !showingNavigationDropdown"
-                                class="inline-flex items-center justify-center p-3 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out"
-                            >
+                            <button @click="showingNavigationDropdown = !showingNavigationDropdown"
+                                class="inline-flex items-center justify-center p-3 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out">
                                 <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                                    <path
-                                        :class="{
-                                            hidden: showingNavigationDropdown,
-                                            'inline-flex': !showingNavigationDropdown,
-                                        }"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M4 6h16M4 12h16M4 18h16"
-                                    />
-                                    <path
-                                        :class="{
-                                            hidden: !showingNavigationDropdown,
-                                            'inline-flex': showingNavigationDropdown,
-                                        }"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
+                                    <path :class="{
+                                        hidden: showingNavigationDropdown,
+                                        'inline-flex': !showingNavigationDropdown,
+                                    }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 6h16M4 12h16M4 18h16" />
+                                    <path :class="{
+                                        hidden: !showingNavigationDropdown,
+                                        'inline-flex': showingNavigationDropdown,
+                                    }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12" />
                                 </svg>
                             </button>
                         </div>
@@ -223,10 +205,8 @@ const showingNavigationDropdown = ref(false);
                 </div>
 
                 <!-- Responsive Navigation Menu -->
-                <div
-                    :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }"
-                    class="sm:hidden"
-                >
+                <div :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }"
+                    class="sm:hidden">
                     <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink routeName='admin.dashboard'>
                             Dashboard
@@ -249,14 +229,14 @@ const showingNavigationDropdown = ref(false);
                     <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
                         <div class="px-4">
                             <div class="font-medium text-base text-gray-800 dark:text-gray-200">
-                                {{user.name }}
+                                {{ user.name }}
                             </div>
-                            <div class="font-medium text-sm text-gray-500">{{user.email }}</div>
+                            <div class="font-medium text-sm text-gray-500">{{ user.email }}</div>
                         </div>
 
                         <div class="mt-3 space-y-1">
                             <ResponsiveNavLink @click="logout">
-                                {{$t('Log Out')}}
+                                {{ $t('Log Out') }}
                             </ResponsiveNavLink>
                         </div>
                     </div>
