@@ -47,7 +47,7 @@ const updateResource = () => {
 
 </script>
 <template>
-    <Header>Create a team</Header>
+    <Header>{{ form.loading ? $t('Loading...') : `Edit team #${routeParams().team} - ${form.data.name}` }}</Header>
     <Loading v-if="form.loading" />
     <PageContent v-else>
         <FormKit :submit-label="$t('Save')" @submit="updateResource" type="form" >

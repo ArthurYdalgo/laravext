@@ -10,6 +10,7 @@ import Link from '@/components/Link.vue';
 import SecondaryButton from '@/components/SecondaryButton.vue';
 import PageContent from '@/components/PageContent.vue';
 import Loading from '@/components/Loading.vue';
+import { privacy } from '@/composables/usePrivacy';
 const swal = inject('$swal')
 
 const pagination = reactive({
@@ -148,7 +149,7 @@ onMounted(async () => {
                     </td>
                     <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
                         <div class="text-sm leading-5 text-gray-900">
-                            {{ resource.email }}
+                            {{ privacy.active ? '***@***' : resource.email }}
                         </div>
                     </td>
                     <td class="border-t border-l px-6 py-4 whitespace-no-wrap">

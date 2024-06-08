@@ -8,9 +8,27 @@ import NavLink from '@/components/NavLink.vue';
 import Link from '@/components/Link.vue';
 import ResponsiveNavLink from '@/components/ResponsiveNavLink.vue';
 import axios from 'axios';
-import { sharedProps } from '@laravext/vue';
+import { nexusProps, sharedProps } from '@laravext/vue';
+import { privacy } from '@/composables/usePrivacy'
+import Fa from '@/components/Fa.vue';
 
 const {user} = sharedProps().auth;
+
+const initialState = sharedProps().auth?.user?.privacy;
+
+if(initialState !== undefined) {
+    privacy.setActive(initialState)
+}
+
+const handleTogglePrivacy = () => {
+    let state = privacy.active;
+
+    privacy.toggle();
+
+    axios.put('/api/auth/user', {
+        privacy: !state
+    });
+}
 
 const logout = async () => {
     await axios.post('/api/auth/logout');
@@ -60,6 +78,9 @@ const showingNavigationDropdown = ref(false);
 
                         <div class="hidden sm:flex sm:items-center sm:ms-6">
                             <!-- Settings Dropdown -->
+                             <div class="cursor-pointer">
+                                <Fa @click="handleTogglePrivacy" :icon="privacy.active ? 'fas fa-eye-slash' : 'fas fa-eye'" class=" text-gray-400 dark:text-gray-500"  />
+                            </div>
                             <div class="ms-3 relative">
                                 <Dropdown align="right" width="48">
                                     <template #trigger>
@@ -87,6 +108,7 @@ const showingNavigationDropdown = ref(false);
                                     </template>
 
                                     <template #content>
+                                        
                                         <DropdownLink routeName='profile'> Profile </DropdownLink>
                                         <DropdownButton @click="logout">
                                             Log Out

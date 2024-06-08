@@ -5,6 +5,7 @@ import Link from '@/components/Link.vue';
 import Loading from '@/components/Loading.vue';
 import PageContent from '@/components/PageContent.vue';
 import PrimaryButton from '@/components/PrimaryButton.vue';
+import { privacy } from '@/composables/usePrivacy';
 import { routeParams } from '@laravext/vue';
 import axios from 'axios';
 import { reactive, onMounted, inject } from 'vue';
@@ -72,6 +73,9 @@ onMounted(() => {
     </div>
     <Loading v-if="team.loading" />
     <PageContent v-else>
+        <Link :href="`/admin/teams/${routeParams().team}/projects`" class="text-blue-600 text-xl font-bold">{{ $t('Click to view') }} {{ $t('projects of Team') }} #{{
+            routeParams().team }}</Link>
+        <br>
         <span class="text-lg font-bold">Name: </span>{{ team.data.name }}
         <br>
         <span class="text-lg font-bold">{{ $t('Developers') }}:</span>
@@ -80,11 +84,9 @@ onMounted(() => {
                 <div class="font-bold">{{ developer.name }}</div>
                 <div class="border-b-2 border-gray-200 my-2"></div>
                 <div>Role: {{ $t(developer.role_label) }}</div>
-                <div>{{ $t('Email: ') }} {{ developer.email }}</div>
+                <div>{{ $t('Email: ') }} {{ privacy.active ? '***@***' : developer.email }}</div>
             </div>
         </div>
-        <br>
-        <Link :href="`/admin/teams/${routeParams().team}/projects`" class="text-blue-600 text-xl font-bold">{{ $t('Click to view') }} {{ $t('projects of Team') }} #{{
-            routeParams().team }}</Link>
+
     </PageContent>
 </template>

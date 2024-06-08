@@ -5,6 +5,7 @@ import Link from '@/components/Link.vue';
 import Loading from '@/components/Loading.vue';
 import PageContent from '@/components/PageContent.vue';
 import PrimaryButton from '@/components/PrimaryButton.vue';
+import { privacy } from '@/composables/usePrivacy';
 import { routeParams } from '@laravext/vue';
 import axios from 'axios';
 import { reactive, onMounted, inject } from 'vue';
@@ -73,14 +74,14 @@ onMounted(() => {
     </div>
     <Loading v-if="company.loading" />
     <PageContent v-else>
+        <Link :href="`/admin/companies/${routeParams().company}/projects`" class="text-blue-600 text-xl font-bold">{{ $t('Click to view') }} {{ $t('projects of Company') }} #{{
+            routeParams().company }}</Link>
+        <br>
         <span class="text-lg font-bold">Name: </span>{{ company.data.name }}
         <br>
-        <span class="text-lg font-bold">Email: </span>{{ company.data.email }}
+        <span class="text-lg font-bold">Email: </span>{{ privacy.active ? '***@***' : company.data.email }}
         <br>
         <span class="text-lg font-bold">Website: </span><Link v-if="company.data.website" :href="company.data.website" class="text-blue-600">{{ company.data.website }}</Link>
         <span v-else class="text-gray-400">{{ $t('No website') }}</span>
-        <br>
-        <Link :href="`/admin/companies/${routeParams().company}/projects`" class="text-blue-600 text-xl font-bold">{{ $t('Click to view') }} {{ $t('projects of Company') }} #{{
-            routeParams().company }}</Link>
     </PageContent>
 </template>
