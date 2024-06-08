@@ -5,15 +5,18 @@ import Loading from '@/components/Loading.vue';
 import Modal from '@/components/Modal.vue';
 import PageContent from '@/components/PageContent.vue';
 import PrimaryButton from '@/components/PrimaryButton.vue';
-import SecondaryButton from '@/components/SecondaryButton.vue';
 import TextInput from '@/components/TextInput.vue';
 import { privacy } from '@/composables/usePrivacy';
 import { debounce } from 'lodash';
 import { routeParams } from '@laravext/vue';
 import axios from 'axios';
 import { reactive, onMounted, inject } from 'vue';
+import DangerButton from '@/components/DangerButton.vue';
+import Link from '@/components/Link.vue';
+
 const swal = inject('$swal')
 
+// Reactive form state
 const form = reactive({
     data: {
         name: '',
@@ -23,24 +26,25 @@ const form = reactive({
     loading: true,
 });
 
+// Fetch team data on component mount
 onMounted(() => {
     form.loading = true;
-
     axios.get(`/api/teams/${routeParams().team}`)
         .then(response => {
-            form.data = {
-                name: response.data.name,
-                developers: response.data.developers
-            };
-
+            form.data = response.data;
+            form.loading = false;
+        })
+        .catch(() => {
+            swal('Error!', 'Failed to load team data.', 'error');
             form.loading = false;
         });
 });
 
+// Update team information
 const updateResource = () => {
     form.errors = {};
 
-    let data = {
+    const data = {
         name: form.data.name,
         developer_ids: form.data.developers.map(developer => developer.id),
     };
@@ -51,15 +55,17 @@ const updateResource = () => {
                 window.location.href = route('admin.teams.team', { team: routeParams().team });
             });
         })
-        .catch(error => {
+        .catch(() => {
             swal('Error!', 'An error occurred while updating the team.', 'error');
         });
 };
 
+// Remove a developer from the team
 const handleRemoveDeveloperFromTeam = (developer) => {
     form.data.developers = form.data.developers.filter(d => d.id !== developer.id);
 };
 
+// Modal state for adding a developer to the team
 const addDeveloperToTeamModal = reactive({
     visible: false,
     loading: false,
@@ -67,12 +73,14 @@ const addDeveloperToTeamModal = reactive({
     developers: []
 });
 
+// Close the add developer modal and reset its state
 const closeAddDeveloperToTeamModal = () => {
     addDeveloperToTeamModal.visible = false;
     addDeveloperToTeamModal.search = '';
     addDeveloperToTeamModal.developers = [];
 };
 
+// Fetch developers not already in the team
 const fetchDevelopers = () => {
     addDeveloperToTeamModal.loading = true;
 
@@ -96,20 +104,53 @@ const fetchDevelopers = () => {
         });
 };
 
-const debouncedSearchDevelopers = debounce(() => {
+const destroyResource = (id) => {
+    swal({
+        title: 'Are you sure?',
+        icon: 'warning',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, cancel!',
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        showCancelButton: true,
+        showCloseButton: true,
 
+    })
+        .then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(`/api/teams/${id}`)
+                    .then(() => {
+                        swal('Deleted!', 'The team has been deleted.', 'success').then(() => {
+                            window.location.href = '/admin/teams';
+                        });
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        swal('Error!', 'An error occurred while deleting the team.', 'error');
+                    });
+            }
+        });
+}
+
+// Debounce search to limit API requests
+const debouncedSearchDevelopers = debounce(() => {
     if (addDeveloperToTeamModal.search.length == 0) {
         addDeveloperToTeamModal.developers = [];
-
         return;
     }
-
     fetchDevelopers();
 }, 1000);
 
 </script>
 <template>
     <Header>{{ form.loading ? $t('Loading...') : `Edit team #${routeParams().team} - ${form.data.name}` }}</Header>
+    <div class="mt-3 mx-4 flex justify-end space-x-2">
+        <Link :href="`/admin/teams/${routeParams().team}`">
+        <PrimaryButton>{{ $t('Show') }}</PrimaryButton>
+        </Link>
+
+        <DangerButton @click="destroyResource(routeParams().team)" class="hover:text-red-900">Delete</DangerButton>
+    </div>
     <Loading v-if="form.loading" />
     <PageContent v-else>
         <FormKit :submit-label="$t('Save')" @submit="updateResource" type="form">
