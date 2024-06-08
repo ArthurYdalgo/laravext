@@ -16,8 +16,10 @@ class CompanyController extends Controller
 
     $companies = Company::query()
             ->when($search, function ($query, $search) {
-                $query->where('name', 'like', "%$search%")
-                    ->orWhere('email', 'like', "%$search%");
+                $query->where(function($query) use ($search){
+                    $query->where('name', 'like', "%$search%")
+                        ->orWhere('email', 'like', "%$search%");
+                });
             })
             ->withCount(['projects'])
             ->paginate(request()->query('per_page', 10))

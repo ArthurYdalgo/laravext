@@ -18,30 +18,40 @@ class DeveloperController extends Controller
 
         $developers = QueryBuilder::for(Developer::class)
             ->when($search, function ($query, $search) {
-                $query->where('name', 'like', "%$search%")
-                    ->orWhere('email', 'like', "%$search%");
+                $query->where(function ($query) use ($search) {
+                    $query->where('name', 'like', "%$search%")
+                        ->orWhere('email', 'like', "%$search%");
+                });
             })
             ->allowedFilters([
-                AllowedFilter::callback('team_ids', function($query, $team_ids) {
+                AllowedFilter::callback('team_ids', function ($query, $team_ids) {
                     $team_ids = is_array($team_ids) ? $team_ids : explode(',', $team_ids);
-                    $query->whereIn('team_id', $team_ids);
+                    return $query->whereIn('team_id', $team_ids);
                 }),
-                AllowedFilter::callback('not_team_ids', function($query, $team_ids) {
+                AllowedFilter::callback('not_team_ids', function ($query, $team_ids) {
                     $team_ids = is_array($team_ids) ? $team_ids : explode(',', $team_ids);
-                    $query->whereNotIn('team_id', $team_ids);
+
+
+                    return $query->where(function ($query) use($team_ids) {
+                        $query->whereNotIn('team_id', $team_ids)->orWhereNull('team_id');
+                    });
                 }),
-                AllowedFilter::callback('doesnt_have_a_team', function($query, $doesnt_have_a_team) {
-                    if(is_null($doesnt_have_a_team)){
+                AllowedFilter::callback('doesnt_have_a_team', function ($query, $doesnt_have_a_team) {
+                    if (is_null($doesnt_have_a_team)) {
                         return $query;
                     }
 
-                    if($doesnt_have_a_team){
+                    if ($doesnt_have_a_team) {
                         return $query->whereNull('team_id');
                     }
-                    
+
                     return $query->whereNotNull('team_id');
                 }),
-                AllowedFilter::callback('prioritize_developers_in_team', function($query, $team_id) {
+                AllowedFilter::callback('not_ids', function ($query, $ids) {
+                    $ids = is_array($ids) ? $ids : explode(',', $ids);
+                    return $query->whereNotIn('id', $ids);
+                }),
+                AllowedFilter::callback('prioritize_developers_in_team', function ($query, $team_id) {
                     $query->orderByRaw("team_id = {$team_id} desc, id asc");
                 }),
             ])

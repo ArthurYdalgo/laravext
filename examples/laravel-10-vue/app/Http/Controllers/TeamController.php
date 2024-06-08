@@ -38,7 +38,7 @@ class TeamController extends Controller
 
     public function update(UpdateRequest $request, Team $team)
     {
-        $data = $request->validated(['name']);
+        $data = (array)$request->validated(['name']);
 
         $team->update($data);
 
