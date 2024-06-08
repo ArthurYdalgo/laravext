@@ -5,6 +5,8 @@ Table users {
   id integer [primary key]
   name integer 
   privacy boolean
+  theme varchar
+  locale varchar
   created_at timestamp
   updated_at timestamp
 }
@@ -56,9 +58,14 @@ Table comments {
 
 Table contact_requests {
   id integer [primary key]
+  replier_id integer
   name varchar
   email varchar
   message text
+  reply text
+  replied_at text
+  created_at timestamp
+  updated_at timestamp
 }
 
 Ref: "companies"."id" < "projects"."company_id"
@@ -70,3 +77,5 @@ Ref: "teams"."id" < "projects"."team_id"
 Ref: "projects"."id" < "comments"."project_id"
 
 Ref: "users"."id" < "comments"."user_id"
+
+Ref: "users"."id" < "contact_requests"."replier_id"
