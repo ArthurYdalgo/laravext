@@ -46,37 +46,37 @@ const updateResource = () => {
         });
 };
 
-// const destroyResource = (id) => {
-//     swal({
-//         title: 'Are you sure?',
-//         icon: 'warning',
-//         confirmButtonText: 'Yes, delete it!',
-//         cancelButtonText: 'No, cancel!',
-//         confirmButtonColor: '#d33',
-//         cancelButtonColor: '#3085d6',
-//         showCancelButton: true,
-//         showCloseButton: true,
+const destroyResource = (id) => {
+    swal({
+        title: 'Are you sure?',
+        icon: 'warning',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, cancel!',
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        showCancelButton: true,
+        showCloseButton: true,
 
-//     })
-//         .then((result) => {
-//             if (result.isConfirmed) {
-//                 axios.delete(`/api/developers/${id}`)
-//                     .then(() => {
-//                         swal('Deleted!', 'The developer has been deleted.', 'success').then(() => {
-//                             window.location.href = '/admin/developers';
-//                         });
-//                     })
-//                     .catch(error => {
-//                         console.error(error);
-//                         swal('Error!', 'An error occurred while deleting the developer.', 'error');
-//                     });
-//             }
-//         });
-// }
+    })
+        .then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(`/api/developers/${id}`)
+                    .then(() => {
+                        swal('Deleted!', 'The developer has been deleted.', 'success').then(() => {
+                            window.location.href = '/admin/developers';
+                        });
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        swal('Error!', 'An error occurred while deleting the developer.', 'error');
+                    });
+            }
+        });
+}
 
 </script>
 <template>
-    <Header>{{ `Edit developer #${nexusProps().developer.name}` }}</Header>
+    <Header>{{ `Edit developer #${nexusProps().developer.id} - ${nexusProps().developer.name}` }}</Header>
     <div class="mt-3 mx-4 flex justify-end space-x-2">
         <DangerButton @click="destroyResource(nexusProps().developer.id)" class="hover:text-red-900">Delete</DangerButton>
     </div>

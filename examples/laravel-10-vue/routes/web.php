@@ -56,7 +56,7 @@ Route::get('our-teams', function () {
 //     $developer->load('team');
 //     $developer_roles = DeveloperRole::toArray(true);
 //     return nexus(props: compact('developer_roles', 'developer'))->render();
-// })->name('admin.developers.developer.edit');
+// })->middleware('auth')->name('admin.developers.developer.edit');
 
 /**
  * However, because in this project I'm also using other router that are "downstream" the 'admin' route, I'm going to use the 
