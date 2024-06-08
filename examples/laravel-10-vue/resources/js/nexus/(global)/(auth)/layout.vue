@@ -79,7 +79,7 @@ const showingNavigationDropdown = ref(false);
                         <div class="hidden sm:flex sm:items-center sm:ms-6">
                             <!-- Settings Dropdown -->
                              <div class="cursor-pointer">
-                                <Fa @click="handleTogglePrivacy" :icon="privacy.active ? 'fas fa-eye-slash' : 'fas fa-eye'" class=" text-gray-400 dark:text-gray-500"  />
+                                <Fa @click="handleTogglePrivacy" :icon="privacy.active ? 'fa-eye-slash' : 'fa-eye'" class=" text-gray-400 dark:text-gray-500"  />
                             </div>
                             <div class="ms-3 relative">
                                 <Dropdown align="right" width="48">
