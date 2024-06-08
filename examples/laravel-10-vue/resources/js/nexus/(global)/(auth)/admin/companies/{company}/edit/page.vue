@@ -1,18 +1,11 @@
 <script setup>
-import Fa from '@/components/Fa.vue';
 import Header from '@/components/Header.vue';
 import Loading from '@/components/Loading.vue';
-import Modal from '@/components/Modal.vue';
 import PageContent from '@/components/PageContent.vue';
-import PrimaryButton from '@/components/PrimaryButton.vue';
-import TextInput from '@/components/TextInput.vue';
-import { privacy } from '@/composables/usePrivacy';
-import { debounce } from 'lodash';
-import { nexusProps, routeParams } from '@laravext/vue';
+import { routeParams } from '@laravext/vue';
 import axios from 'axios';
 import { reactive, onMounted, inject } from 'vue';
 import DangerButton from '@/components/DangerButton.vue';
-import Link from '@/components/Link.vue';
 
 const swal = inject('$swal')
 
@@ -21,25 +14,22 @@ const form = reactive({
     data: {
         name: '',
         email: '',
-        role: '',
-        team: null,
+        website: '',
     },
     errors: [],
     loading: true,
 });
 
-const developerRoles = nexusProps().developer_roles;
-
-// Fetch developer data on component mount
+// Fetch company data on component mount
 onMounted(() => {
     form.loading = true;
-    axios.get(`/api/developers/${routeParams().developer}`)
+    axios.get(`/api/companies/${routeParams().company}`)
         .then(response => {
             form.data = response.data;
             form.loading = false;
         })
         .catch(() => {
-            swal('Error!', 'Failed to load developer data.', 'error');
+            swal('Error!', 'Failed to load company data.', 'error');
             form.loading = false;
         });
 });
@@ -51,13 +41,13 @@ const updateResource = () => {
     const data = {
         name: form.data.name,
         email: form.data.email,
-        role: form.data.role,
+        website: form.data.website,
     };
 
-    return axios.put(`/api/developers/${routeParams().developer}`, data)
+    return axios.put(`/api/companies/${routeParams().company}`, data)
         .then(() => {
             swal('Updated!', 'The developer has been updated.', 'success').then(() => {
-                window.location.href = route('admin.developers');
+                window.location.href = route('admin.companies');
             });
         })
         .catch(() => {
@@ -79,15 +69,15 @@ const destroyResource = (id) => {
     })
         .then((result) => {
             if (result.isConfirmed) {
-                axios.delete(`/api/developers/${id}`)
+                axios.delete(`/api/companies/${id}`)
                     .then(() => {
-                        swal('Deleted!', 'The developer has been deleted.', 'success').then(() => {
-                            window.location.href = '/admin/developers';
+                        swal('Deleted!', 'The company has been deleted.', 'success').then(() => {
+                            window.location.href = '/admin/companies';
                         });
                     })
                     .catch(error => {
                         console.error(error);
-                        swal('Error!', 'An error occurred while deleting the developer.', 'error');
+                        swal('Error!', 'An error occurred while deleting the company.', 'error');
                     });
             }
         });
@@ -95,9 +85,10 @@ const destroyResource = (id) => {
 
 </script>
 <template>
-    <Header>{{ form.loading ? $t('Loading...') : `Edit developer #${routeParams().developer} - ${form.data.name}` }}</Header>
+    <Header>{{ form.loading ? $t('Loading...') : `Edit company #${routeParams().company} - ${form.data.name}` }}</Header>
     <div class="mt-3 mx-4 flex justify-end space-x-2">
-        <DangerButton @click="destroyResource(routeParams().developer)" class="hover:text-red-900">Delete</DangerButton>
+
+        <DangerButton @click="destroyResource(routeParams().company)" class="hover:text-red-900">Delete</DangerButton>
     </div>
     <Loading v-if="form.loading" />
     <PageContent v-else>
@@ -106,12 +97,11 @@ const destroyResource = (id) => {
                 <FormKit validation-visibility="live" type="text" name="name" validation="length:2,200" required id="name"
                     :label="$t('Name')" :placeholder="`“${$t('The Beatles')}”`" v-model="form.data.name" />
     
-                <FormKit validation-visibility="live" type="text" name="email" validation="email" required id="email"
-                    :label="$t('Email')" :placeholder="`“${$t('Type the developer email')}”`" v-model="form.data.email" />
-    
-                <FormKit type="select" name="role" required id="role" :label="$t('Role')" v-model="form.data.role" :options="developerRoles" />
+                <FormKit validation-visibility="live" type="email" name="email" validation="email" required id="email"
+                    :label="$t('Email')" :placeholder="`“${$t('cool-email@email.com')}”`" v-model="form.data.email" />
 
-                <FormKit disabled type="text" name="team" required id="team" :label="$t('Team')" :value="form.data.team?.name ?? '--'" />
+                    <FormKit validation-visibility="live" type="text" name="website" validation="url" required id="website"
+                    :label="$t('Website')" :placeholder="`“${$t('cool-website.com')}”`" v-model="form.data.website" />
 
             </div>
         </FormKit>

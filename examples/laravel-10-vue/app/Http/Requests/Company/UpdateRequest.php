@@ -24,6 +24,7 @@ class UpdateRequest extends FormRequest
         return [
             'name' => 'sometimes|string|min:5|max:255',
             'email' => 'sometimes|email|max:255',
+            'website' => 'sometimes|url|max:255',
         ];
     }
 }
