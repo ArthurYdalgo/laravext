@@ -15,6 +15,7 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 const {user} = sharedProps().auth;
 
 const i18n = createI18n({
+    legacy: false,
     locale: user?.locale || 'en',
     fallbackLocale: 'en',
     messages: {
