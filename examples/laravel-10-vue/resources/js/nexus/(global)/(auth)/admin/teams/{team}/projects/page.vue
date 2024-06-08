@@ -96,7 +96,7 @@ onMounted(async () => {
 <template>
     <Header>
         <Link :href="`/admin/teams/${routeParams().team}`" classes="text-blue-600">
-            {{ $t('Return to ') }} {{ $t('Team') }} #{{ routeParams().team }}
+            {{ $t('Return to') }} {{ $t('Team') }} #{{ routeParams().team }}
         </Link> / {{ $t('Projects') }}
     </Header>
 
@@ -150,7 +150,8 @@ onMounted(async () => {
                     </td>
                     <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
                         <div class="text-sm leading-5 font-medium text-gray-900">
-                            {{ resource.company.name }}
+                            <Link class="text-blue-600" v-if="resource.company" :href="`/admin/companies/${resource.company?.id}`"> {{ resource.company.name }}</Link>
+                            <span v-else>--</span>
                         </div>
                     </td>
                     <td

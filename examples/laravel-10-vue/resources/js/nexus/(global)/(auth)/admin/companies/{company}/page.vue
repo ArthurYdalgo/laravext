@@ -74,10 +74,10 @@ onMounted(() => {
     </div>
     <Loading v-if="company.loading" />
     <PageContent v-else>
-        <Link :href="`/admin/companies/${routeParams().company}/projects`" class="text-blue-600 text-xl font-bold">{{ $t('Click to view') }} {{ $t('projects of Company') }} #{{
+        <Link :href="`/admin/companies/${routeParams().company}/projects`" class="text-blue-600 text-xl font-bold">{{ $t('Click to view projects of Company') }} #{{
             routeParams().company }}</Link>
         <br>
-        <span class="text-lg font-bold">Name: </span>{{ company.data.name }}
+        <span class="text-lg font-bold">{{$t('Name')}}: </span>{{ company.data.name }}
         <br>
         <span class="text-lg font-bold">Email: </span>{{ privacy.active ? '***@***' : company.data.email }}
         <br>

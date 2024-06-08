@@ -73,19 +73,19 @@ onMounted(() => {
     </div>
     <Loading v-if="team.loading" />
     <PageContent v-else>
-        <Link :href="`/admin/teams/${routeParams().team}/projects`" class="text-blue-600 text-xl font-bold">{{ $t('Click to view') }} {{ $t('projects of Team') }} #{{
+        <Link :href="`/admin/teams/${routeParams().team}/projects`" class="text-blue-600 text-xl font-bold">{{ $t('Click to view projects of Team') }} #{{
             routeParams().team }}</Link>
         <br>
-        <span class="text-lg font-bold">Name: </span>{{ team.data.name }}
+        <span class="text-lg font-bold">{{$t('Name')}}: </span>{{ team.data.name }}
         <br>
         <span class="text-lg font-bold">{{ $t('Developers') }}:</span>
         <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
             <div class="bg-white rounded-lg shadow p-4" v-for="developer in team.data.developers.sort((a, b) => a.name.localeCompare(b.name))" :key="developer.id">
                 <div class="font-bold">@{{ developer.username }}</div>
                 <div class="border-b-2 border-gray-200 my-2"></div>
-                <div class="text-sm">Name: {{ $t(developer.name) }}</div>
-                <div class="text-sm">Role: {{ $t(developer.role_label) }}</div>
-                <div class="text-sm">{{ $t('Email: ') }} {{ privacy.active ? '***@***' : developer.email }}</div>
+                <div class="text-sm">{{$t('Name')}}: {{ $t(developer.name) }}</div>
+                <div class="text-sm">{{$t('Role')}}: {{ $t(developer.role_label) }}</div>
+                <div class="text-sm">Email: {{ privacy.active ? '***@***' : developer.email }}</div>
             </div>
         </div>
 
