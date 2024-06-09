@@ -1,6 +1,8 @@
 import './bootstrap';
 import '../css/app.css';
-import { createLaravextApp, resolveComponent, sharedProps, visit } from "@laravext/vue"
+import { createLaravextApp, sharedProps } from "@laravext/vue"
+import { resolveComponent } from '@laravext/vue/tools';
+
 import VueCookies from 'vue-cookies'
 
 import { createI18n } from 'vue-i18n'
@@ -21,8 +23,6 @@ const i18n = createI18n({
     }
 })
 
-// visit(window.location.href);
-
 document.addEventListener('DOMContentLoaded', function () {
     createLaravextApp({
         nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
@@ -41,7 +41,10 @@ document.addEventListener('DOMContentLoaded', function () {
             { plugin: i18n },
             { plugin: VueSweetalert2 },
             { plugin: fkPluging, options: fkDefaultConfig (fkConfig) },
-        ]
+        ],
+        progress: {
+            color: '#FF0000',
+        }
     })
 }, false);
 

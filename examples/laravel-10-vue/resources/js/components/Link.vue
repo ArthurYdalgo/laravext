@@ -1,5 +1,5 @@
 <script setup>
-import { visit } from '@laravext/vue';
+import { visit } from '@laravext/vue/router';
 
 const props = defineProps({
     routeName: {
