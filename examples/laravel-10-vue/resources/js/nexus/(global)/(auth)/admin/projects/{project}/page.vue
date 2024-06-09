@@ -8,10 +8,11 @@ import PageContent from '@/components/PageContent.vue';
 import PrimaryButton from '@/components/PrimaryButton.vue';
 import TextArea from '@/components/TextArea.vue';
 import { privacy } from '@/composables/usePrivacy';
-import { routeParams } from '@laravext/vue';
+import { routeParams, sharedProps } from '@laravext/vue';
 import axios from 'axios';
 import { reactive, onMounted, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
+const { user } = sharedProps().auth;
 const { t } = useI18n();
 const swal = inject('$swal')
 
@@ -49,7 +50,7 @@ const projectComments = reactive({
     meta: {},
     loading: true,
     page: 1,
-    per_page: 5
+    per_page: 15
 });
 
 const loadMore = () => {
@@ -152,20 +153,21 @@ onMounted(() => {
         <div class="mt-3 mx-4 flex justify-end">
             <div>
                 <TextArea v-model="form.data.content" :errors="form.errors.content" class="lg:w-[30rem] max-h-[300px]"
-                    placeholder="Write a comment..." />
+                    :placeholder="$t('Write a comment...')" />
                 <br>
                 <div class="flex justify-end">
-                    <PrimaryButton @click="createComment" :disabled="form.loading">{{ $t('Comment') }}</PrimaryButton>
+                    <PrimaryButton @click="createComment" :disabled="form.loading">{{ $t('Submit') }}</PrimaryButton>
                 </div>
             </div>
         </div>
         <br>
-        <div class="w-[50%]">
-            <div v-for="comment in projectComments.data" :key="comment.id"
-                class="bg-white shadow-md rounded-lg p-4 my-4">
-                <div>
+
+        <div class="flex flex-col">
+            <div v-for="comment in projectComments.data" :key="comment.id" class="w-3/4 my-4"
+                :class="{ 'ml-auto': comment.user_id === user.id, 'mr-auto': comment.user_id !== user.id }">
+                <div class="bg-white shadow-md rounded-lg p-4">
                     <div class="flex justify-between">
-                        <Link :href="`/admin/users/${comment.user_id}`">{{ comment.user.name }}</Link>
+                        <Link class="text-blue-600" :href="`mailto:${comment.user.email}`">{{ comment.user.name }} <span class="text-xs text-gray-400" v-if="comment.user_id == user.id">({{ $t('You') }})</span></Link>
                         <MomentDateTime :date="comment.created_at" />
                     </div>
                     <div class="border-b-2 border-gray-200 my-2"></div>
@@ -173,6 +175,7 @@ onMounted(() => {
                 </div>
             </div>
         </div>
+
         <div class="flex justify-center mt-4">
             <PrimaryButton :disabled="projectComments.loading"
                 v-if="projectComments.loading || (!projectComments.loading && projectComments.meta.current_page < projectComments.meta.last_page)"
