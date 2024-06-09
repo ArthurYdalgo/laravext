@@ -48,5 +48,11 @@ return [
      * set a version manually, you can do it here. This will be used to check if the client and server versions match,
      * and force a reload if they don't at the next page visit.
      */
-    // 'version' => '1.0.0'
+    // 'version' => '1.0.0',
+
+    /**
+     * In case you want to force a page visit, you can set this to true. This will force the client to reload the page for every visit.
+     * This is only affected if you're using the visit helper in the client.
+     */
+    'force_page_visit' => env('VEXT_FORCE_PAGE_VISIT', false),
 ];

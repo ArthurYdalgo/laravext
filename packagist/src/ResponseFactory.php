@@ -159,13 +159,13 @@ class ResponseFactory
 
         View::share('laravext_page_data', $laravext_page_data);
         $request = request();
-
-        if (!$request->header('X-Laravext')) {
+        
+        if (!$request->header('X-Laravext') || config('laravext.force_page_visit')) {
             return view($root_view);
         }
-
-        $request_laravext_version = $request->header('X-Laravext-Version');
+            
         $request_laravext_root_view = $request->header('X-Laravext-Root-View');
+        $request_laravext_version = $request->header('X-Laravext-Version');
 
         $headers = [
             'X-Laravext' => true,
