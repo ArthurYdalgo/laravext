@@ -111,9 +111,8 @@ const showingNavigationDropdown = ref(false);
                                 <template #trigger>
                                     <span class="inline-flex rounded-md">
                                         <button type="button"
-                                            class="inline-flex items-center px-2 py-2 border border-transparent">
+                                            class="inline-flex items-center px-2 py-2 border border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
                                             <img :src="locales[$i18n.locale].flag" class="w-[20px]" />
-                                            <!-- <Fa icon="fa-caret-down" class="ml-2" size="sm" /> -->
                                             <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 20 20" fill="currentColor">
                                                 <path fill-rule="evenodd"
