@@ -17,7 +17,7 @@ class ResponseFactory
 
     // Page Conventions
     public $middleware, $layout, $error, $page, $server_skeleton;
-    
+
     public function __construct()
     {
         $this->props = [];
@@ -25,29 +25,30 @@ class ResponseFactory
         $this->query_params = request()?->query();
         $this->route_params = request()?->route()?->parameters();
         $this->route_name = request()?->route()?->getName();
-
     }
 
-    public static function getUriCache($uri = null){
+    public static function getUriCache($uri = null)
+    {
         $uri = $uri ?? request()?->route()?->uri();
 
-        if(!$uri){
+        if (!$uri) {
             return null;
         }
 
         return Cache::store('array')->get("laravext-uri:{$uri}-cache");
     }
 
-    public static function clearUriCache($uri = null){
+    public static function clearUriCache($uri = null)
+    {
         $uri = $uri ?? request()?->route()?->uri();
 
-        if(!$uri){
+        if (!$uri) {
             return null;
         }
 
         return Cache::store('array')->forget("laravext-uri:{$uri}-cache");
     }
-    
+
     public function nexus($page = null, $props = [])
     {
         $this->page = $page;
@@ -159,7 +160,7 @@ class ResponseFactory
         View::share('laravext_page_data', $laravext_page_data);
         $request = request();
 
-        if(!$request->header('X-Laravext')){
+        if (!$request->header('X-Laravext')) {
             return view($root_view);
         }
 
@@ -170,9 +171,12 @@ class ResponseFactory
             'X-Laravext' => true,
             'X-Laravext-Version' => $laravext_page_data['version'],
             'X-Laravext-Root-View' => $root_view,
+            'Cache-Control' => 'no-cache, no-store, must-revalidate',
+            'Pragma' => 'no-cache',
+            'Expires' => '0',
         ];
 
-        if($request_laravext_version != $laravext_page_data['version'] || $request_laravext_root_view != $root_view){
+        if ($request_laravext_version != $laravext_page_data['version'] || $request_laravext_root_view != $root_view) {
             return response()->json([
                 'action' => 'redirect',
                 'url' => $request->fullUrl(),
@@ -182,7 +186,7 @@ class ResponseFactory
         $path = $request->path();
         $query_params = $laravext_page_data['query_params'];
 
-        if($query_params){
+        if ($query_params) {
             $path .= '?' . http_build_query($query_params);
         }
 
