@@ -14,7 +14,7 @@ Well, yes... Moving on.
 
 ### What is it not?
 
-It's not a server-side renderer of any React/Vue component, as it'd require some kind of javascript engine for it, and I wanted simplicity. It's not an (out-of-the-box) SPA like Inertia, as for every new page you want to load, a new visit will be made... that being said, nothing stops you from using a traditional react router insde the `@nexus` directive (explained later), although I think that would look a bit peculiar, and would defeat the purpose of having the automatic file-based router. But hey, you do you.
+It's not a server-side renderer of any React/Vue component, as it'd require some kind of javascript engine for it, and I wanted simplicity.
 
 ### In case you want to help me...
 
@@ -58,7 +58,6 @@ My take is that you might be interested in using Laravext if you fall into one o
 I'll try to be as less biased as possible, but you might not be interested in using Laravext if you fall into one or more of the following categories:
 
 - you have a simple static page that Next.js could handle just fine
-- you have the need for you app to be an SPA, with no page visits after the first one
 - you don't like the idea of having a file-based routing system
 - you don't want to risk using a new package that may not be as stable as you'd like, or runs the risk of being abandoned
 - you want to keep your frontend and backend in separate projects
