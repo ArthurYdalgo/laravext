@@ -12,6 +12,7 @@ import { sharedProps } from '@laravext/vue';
 import { privacy } from '@/composables/usePrivacy'
 import Fa from '@/components/Fa.vue';
 import { useI18n } from 'vue-i18n';
+import Tooltip from '@/components/Tooltip.vue';
 const { locale: i18nLocale } = useI18n();
 
 const { user } = sharedProps().auth;
@@ -100,10 +101,12 @@ const showingNavigationDropdown = ref(false);
 
                         <div class="hidden sm:flex sm:items-center sm:ms-6">
                             <!-- Settings Dropdown -->
-                            <div class="cursor-pointer px-4" @click="handleTogglePrivacy">
+                            <Tooltip :text="privacy.active ? $t('Click to disable privacy filter') : $t('Click to enable privacy filter')">
+                            <div class="cursor-pointer px-4 mt-1" @click="handleTogglePrivacy">
                                 <Fa :icon="privacy.active ? 'fa-eye-slash' : 'fa-eye'"
                                     class=" text-gray-400 dark:text-gray-500" />
-                            </div>
+                                </div>
+                            </Tooltip>
                             <Dropdown align="right" width="24">
                                 <template #trigger>
                                     <span class="inline-flex rounded-md">

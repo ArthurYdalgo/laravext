@@ -14,6 +14,7 @@ import { reactive, onMounted, inject } from 'vue';
 import DangerButton from '@/components/DangerButton.vue';
 import Link from '@/components/Link.vue';
 import { useI18n } from 'vue-i18n';
+import Tooltip from '@/components/Tooltip.vue';
 const { t } = useI18n();
 const swal = inject('$swal')
 
@@ -168,8 +169,9 @@ const debouncedSearchDevelopers = debounce(() => {
                     v-for="developer in form.data.developers.sort((a, b) => a.name.localeCompare(b.name))"
                     :key="developer.id">
                     <div class="font-bold flex justify-between"><span>@{{ developer.username }}</span>
+                        <Tooltip :text="$t('Click to remove the developer from the team')">
                         <Fa class="cursor-pointer" @click="handleRemoveDeveloperFromTeam(developer)" icon="fa-trash"
-                            color="red" />
+                            color="red" /></Tooltip>
                     </div>
                     <div class="border-b-2 border-gray-200 my-2"></div>
                     <div class="text-sm">{{$t('Name')}}: {{ $t(developer.name) }}</div>

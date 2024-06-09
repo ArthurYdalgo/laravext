@@ -1,6 +1,8 @@
 <?php
 
 use App\Enums\DeveloperRole;
+use App\Mail\ContactRequestReply;
+use App\Models\ContactRequest;
 use App\Models\Developer;
 use App\Models\Team;
 use Illuminate\Support\Facades\Route;
