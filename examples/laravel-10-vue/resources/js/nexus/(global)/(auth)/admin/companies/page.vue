@@ -96,7 +96,7 @@ onMounted(async () => {
 
     <div class="mt-3 mx-4 flex justify-end space-x-2">
         <Link routeName="admin.companies.create">
-        <PrimaryButton>{{ $t('Criar') }}</PrimaryButton>
+        <PrimaryButton>{{ $t('Create') }}</PrimaryButton>
         </Link>
     </div>
 

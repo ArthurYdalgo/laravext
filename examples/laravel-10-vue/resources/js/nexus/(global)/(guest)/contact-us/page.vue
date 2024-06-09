@@ -9,34 +9,36 @@ import axios from 'axios'
 const swal = inject('$swal')
 
 let form = reactive({
-    name: '',
-    email: '',
-    message: '',
-    subject: '',
-    processing: false,
+    data: {
+        name: '',
+        email: '',
+        message: '',
+        subject: '',
+    },
+    errors: [],
+    loading: true,
 });
 
 const submit = async () => {
-    form.processing = true;
+    form.errors = {}
 
-    try {
-        axios.post('/api/contact-requests', {
-            name: form.name,
-            email: form.email,
-            message: form.message,
-            subject: form.subject,
-        }).then(() => {
-            swal('Message Sent!', 'We will get back to you soon.', 'success');
-            form.processing = false;
-        }).catch(() => {
-            swal('Error!', 'An error occurred while sending the message.', 'error');
-            form.processing = false;
-        });
-        
-    } catch (error) {
-        swal('Error!', 'An error occurred while sending the message.', 'error');
-        form.processing = false;
+    const data = {
+        name: form.data.name,
+        email: form.data.email,
+        message: form.data.message,
+        subject: form.data.subject,
     }
+
+    return axios.post(`/api/contact-requests`, data)
+        .then(() => {
+            swal('Message Sent!', 'We will get back to you soon.', 'success').then(() => {
+                window.location.href = route('contact');
+            });
+        })
+        .catch(() => {
+            swal('Error!', 'An error occurred while sending the message.', 'error');
+        });
+
 };
 
 </script>
@@ -45,10 +47,8 @@ const submit = async () => {
 
     <Head title="Contact" />
     <div class=" min-h-[70vh] flex justify-center mt-6">
-        <div>
-
-
-            <div class="flex justify-center    mt-6">
+        <div class="flex flex-col justify-center">
+            <div class="flex justify-center mt-6">
                 Contact Us at our email
 
                 <a href="mailto:fake@email.com"
@@ -71,57 +71,34 @@ const submit = async () => {
                     Instagram
                 </a>
             </div>
-            <br>
 
-            <div class="flex justify-center mt-6">
+            <div class="mt-6 w-full flex justify-center items-center">
+                <FormKit :actions="false" submit-label="Send" @submit="submit" type="form">
+                    <div class="flex flex-col items-center">
+                        <h3 class="mt-6 font-extrabold text-gray-900 dark:text-white">Or submit a message below, we'll
+                            get back to you:</h3>
 
+                        <FormKit validation-visibility="live" type="text" name="name" validation="length:2,200" required
+                            id="name" outer-class="w-full" :label="$t('Name')" placeholder="Your beautiful name here"
+                            v-model="form.data.name" />
 
-                <form @submit.prevent="submit" class="w-96 ">
-                    <h3 class="mt-6 justify-center font-extrabold text-gray-900 dark:text-white text-center">Or
-                        submit a message below, we'll get back to you:</h3>
-                    <div class="mt-4">
-                        <InputLabel for="name" value="Name" />
+                        <FormKit validation-visibility="live" type="email" name="email" validation="email" required
+                            id="email" outer-class="w-full" :label="$t('Email')" placeholder="Your email here"
+                            v-model="form.data.email" />
 
-                        <TextInput max="200" id="name" type="text" class="mt-1 block w-full" v-model="form.name" required
-                            autofocus />
+                        <FormKit validation-visibility="live" type="text" name="subject" validation="length:2,200"
+                            required outer-class="w-full" id="subject" :label="$t('Subject')"
+                            placeholder="Your subject here" v-model="form.data.subject" />
 
-                        <InputError class="mt-2" :message="form.response?.errors?.name" />
+                        <FormKit validation-visibility="live" type="textarea" name="message" validation="length:2,5000"
+                            required outer-class="w-full" id="message" :label="$t('Message')"
+                            input-class="w-full max-h-[300px]" placeholder="Your message here"
+                            v-model="form.data.message" />
+                        
+                        <FormKit type="submit" class="mt-6" />
+                        
                     </div>
-                    <div class="mt-4">
-                        <InputLabel for="email" value="Email" />
-
-                        <TextInput max="200" id="email" type="email" class="mt-1 block w-full" v-model="form.email" required
-                            autofocus autocomplete="username" />
-
-                        <InputError class="mt-2" :message="form.response?.errors?.email" />
-                    </div>
-                    <div class="mt-4">
-                        <InputLabel for="subject" value="Subject" />
-
-                        <TextInput max="200" id="subject" type="text" class="mt-1 block w-full" v-model="form.subject" required
-                            autofocus />
-
-                        <InputError class="mt-2" :message="form.response?.errors?.subject" />
-                    </div>
-
-                    <div class="mt-4">
-                        <InputLabel for="message" value="Message" />
-
-                        <TextArea max="5000" id="message" type="text" class="mt-1 block w-full max-h-40" v-model="form.message"
-                            required autocomplete="current-message" />
-
-                        <InputError class="mt-2" :message="form.response?.errors?.password" />
-                    </div>
-
-                    <div class="flex items-center justify-end mt-4">
-
-                        <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }"
-                            :disabled="form.processing">
-                            Send
-                        </PrimaryButton>
-                    </div>
-                </form>
-
+                </FormKit>
             </div>
         </div>
     </div>

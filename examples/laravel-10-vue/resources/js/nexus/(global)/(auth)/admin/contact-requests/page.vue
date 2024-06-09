@@ -14,6 +14,8 @@ import { useI18n } from 'vue-i18n';
 import MomentDateTime from '@/components/MomentDateTime.vue';
 import Fa from '@/components/Fa.vue';
 import Tooltip from '@/components/Tooltip.vue';
+import Modal from '@/components/Modal.vue';
+import { FormKit } from '@formkit/vue';
 const { t } = useI18n();
 const swal = inject('$swal')
 
@@ -28,6 +30,28 @@ const pagination = reactive({
 const filters = reactive({
     search: '',
 });
+
+const replyContactRequestModal = reactive({
+    visible: false,
+    data: {},
+})
+
+const replyContactRequest = () => {
+
+    return axios.put(`/api/contact-requests/${replyContactRequestModal.data.id}/reply`, {
+        reply: replyContactRequestModal.data.reply,
+    })
+        .then(() => {
+            swal(t('Replied!'), t('The contact request has been replied.'), 'success').then(() => {
+                fetchResources();
+                replyContactRequestModal.visible = false;
+                replyContactRequestModal.data = {};
+            });
+        })
+        .catch(() => {
+            swal(t('Error!'), t('An error occurred while replying to the contact request.'), 'error');
+        });
+};
 
 const paginateTo = ({ page, perPage }) => {
     pagination.page = page;
@@ -96,10 +120,10 @@ onMounted(async () => {
 
 </script>
 <template>
-    <Header>{{$t('Contact Requests')}}</Header>
-    
+    <Header>{{ $t('Contact Requests') }}</Header>
+
     <PageContent>
-        <Loading v-if="pagination.loading"  />
+        <Loading v-if="pagination.loading" />
 
         <div class="flex items-center justify-between mb-4">
             <div class="flex items-center">
@@ -120,7 +144,7 @@ onMounted(async () => {
                 </th>
                 <th
                     class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                    {{$t('Name')}}
+                    {{ $t('Name') }}
                 </th>
                 <th
                     class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
@@ -128,19 +152,19 @@ onMounted(async () => {
                 </th>
                 <th
                     class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                    {{$t('Subject')}}
+                    {{ $t('Subject') }}
                 </th>
                 <th
                     class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                    {{$t('Created At')}}
+                    {{ $t('Created At') }}
                 </th>
                 <th
                     class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                    {{$t('Replied At')}}
+                    {{ $t('Replied At') }}
                 </th>
                 <th
                     class="border-l w-96 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                    {{$t('Actions')}}
+                    {{ $t('Actions') }}
                 </th>
             </thead>
             <tbody>
@@ -171,22 +195,24 @@ onMounted(async () => {
                             <MomentDateTime :dateTime="resource.created_at" />
                         </div>
                     </td>
-                    
+
                     <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
-                        <Tooltip :condition="resource.replied_at" :text="resource.delivered_at ? t('Delivered') : t('On delivery queue')">
-                            <div class="flex text-sm leading-5" :class="{'cursor-pointer': resource.replied_at, 'text-gray-900' : !resource.replied_at, 'text-green-600' : (resource.replied_at && resource.delivered_at), 'text-orange-600' : (resource.replied_at && !resource.delivered_at)}">
-                                <MomentDateTime :dateTime="resource.replied_at" /> 
-                                <Fa icon="check-circle" v-if="resource.replied_at" class="ml-2" />
+                        <Tooltip :condition="resource.replied_at"
+                            :text="(resource.delivered_at ? t('Delivered') : t('On delivery queue')) + ` - ${$t('Replied by')}: ${resource.replier?.name}`">
+                            <div class="flex text-sm leading-5"
+                                :class="{ 'cursor-pointer': resource.replied_at, 'text-gray-900': !resource.replied_at, 'text-green-600': (resource.replied_at && resource.delivered_at), 'text-orange-600': (resource.replied_at && !resource.delivered_at) }">
+                                <MomentDateTime :dateTime="resource.replied_at" />
+                                <Fa :icon="resource.delivered_at ? 'check-circle' : 'clock'" v-if="resource.replied_at" class="ml-2 mt-1" />
                             </div>
                         </Tooltip>
                     </td>
                     <td
                         class="border-t border-l px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium space-x-2">
-                        <Link :href="`/admin/companies/${resource.id}`">
-                        <PrimaryButton>{{ $t('Show') }}</PrimaryButton>
-                        </Link>
+                        <PrimaryButton
+                            @click="replyContactRequestModal.visible = true; replyContactRequestModal.data = resource">
+                            {{ resource.replied_at ? $t('Show') : $t('Reply') }}</PrimaryButton>
                         <DangerButton @click="destroyResource(resource.id)" class="hover:text-red-900">
-                            {{$t('Delete')}}</DangerButton>
+                            {{ $t('Delete') }}</DangerButton>
                     </td>
                 </tr>
             </tbody>
@@ -194,5 +220,39 @@ onMounted(async () => {
 
         <Pagination v-if="!pagination.loading" @paginate-to="paginateTo" :pagination="pagination ?? {}" />
     </PageContent>
+    <Modal :show="replyContactRequestModal.visible" :closeable="true" @close="replyContactRequestModal.visible = false; replyContactRequestModal.data = {}"
+        maxWidth="w-[500px]">
+        <div class="p-6 flex flex-col justify-center">
+            <h2 class="text-xl font-bold mb-2">{{ replyContactRequestModal.data.replied_at ? $t("Contact request's response") : $t('Reply to contact request') }}</h2>
+            <FormKit :actions="false" @submit="replyContactRequest" type="form">
+                <div class="flex flex-col items-center">
+                    <FormKit validation-visibility="live" type="text" name="name" required id="name" :label="$t('Name')"
+                        placeholder="Your beautiful name here" v-model="replyContactRequestModal.data.name"
+                        outer-class="w-full max-w-[500px]" disabled />
+
+                    <FormKit validation-visibility="live" type="email" name="email" required id="email"
+                        :label="$t('Email')" placeholder="Your email here" v-model="replyContactRequestModal.data.email"
+                        outer-class="w-full max-w-[500px]" disabled />
+
+                    <FormKit validation-visibility="live" type="text" name="subject" required id="subject"
+                        outer-class="w-full max-w-[500px]" :label="$t('Subject')" placeholder="Your subject here"
+                        v-model="replyContactRequestModal.data.subject" disabled />
+
+                    <FormKit validation-visibility="live" type="textarea" name="message" required id="message"
+                        :label="$t('Message')" input-class="max-h-[300px] min-h-[100px]"
+                        outer-class="w-full max-w-[500px]" placeholder="Your message here"
+                        v-model="replyContactRequestModal.data.message" disabled />
+
+                    <FormKit validation-visibility="live" type="textarea" name="reply" validation="length:2,5000"
+                        required id="reply" :label="$t('Response')" input-class="max-h-[300px] min-h-[100px]"
+                        outer-class="w-full max-w-[500px]" :placeholder="$t('Your response here')"
+                        v-model="replyContactRequestModal.data.reply" :disabled="replyContactRequestModal.data.replied_at" />
+
+
+                    <FormKit type="submit" v-if="!replyContactRequestModal.data.replied_at" class="mt-6">{{ $t('Save') }}</FormKit>
+                </div>
+            </FormKit>
+        </div>
+    </Modal>
 </template>
 <style scoped></style>

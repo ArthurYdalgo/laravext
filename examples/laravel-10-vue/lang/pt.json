@@ -204,6 +204,18 @@
     "Create a team": "Criar um time",
     "Edit team": "Editar time",
 
+    "Reply": "Responder",
+    "Response": "Resposta",
+    "Your response here": "Sua resposta aqui",
+    "Contact request's response": "Resposta do pedido de contato",
+    "Reply to contact request": "Responder ao pedido de contato",
+    "Replied by": "Respondido por",
+
+    "Click to remove the developer from the team": "Clique para remover o desenvolvedor do time",
+
+    "Click to enable privacy filter": "Clique para habilitar o filtro de privacidade",
+    "Click to disable privacy filter": "Clique para desabilitar o filtro de privacidade",
+
     "Create a developer": "Criar um desenvolvedor",
     "Edit developer": "Editar desenvolvedor",
 

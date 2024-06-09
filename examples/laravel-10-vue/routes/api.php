@@ -25,7 +25,9 @@ Route::group([
     'middleware' => 'auth'
 ], function(){
     
-    Route::apiResource('contact-requests', ContactRequestController::class)->only(['index', 'destroy', 'reply']);
+    Route::apiResource('contact-requests', ContactRequestController::class)->only(['index', 'destroy']);
+    Route::put('contact-requests/{contactRequest}/reply', [ContactRequestController::class, 'reply'])->name('contact-requests.reply');
+    
     Route::apiResource('teams', TeamController::class)->withoutMiddleware('auth');
     Route::apiResource('teams.developers', TeamDeveloperController::class)->only(['store', 'index']);
     Route::put('teams/{team}/developers', [TeamDeveloperController::class, 'update'])->name('teams.developers.update');

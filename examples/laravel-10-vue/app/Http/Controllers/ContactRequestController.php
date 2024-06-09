@@ -19,7 +19,9 @@ class ContactRequestController extends Controller
     public function index()
     {
         $contact_requests = QueryBuilder::for(ContactRequest::class)
-            ->latest()
+            // The ones that have not been replied to or delivered should be at the top
+            ->orderByRaw('replied_at is null desc, delivered_at is null desc, delivered_at desc, replied_at desc, id desc')
+            ->with(['replier'])
             ->paginate(request()->query('per_page', 10))
             ->appends(request()->query());
 
