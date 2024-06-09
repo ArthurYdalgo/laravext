@@ -46,33 +46,33 @@ const submit = async () => {
 <template>
 
     <Head title="Contact" />
-    <div class=" min-h-[70vh] flex justify-center mt-6">
+    <div class="flex justify-center mt-6">
+        Contact Us at our email
+
+        <a href="mailto:fake@email.com"
+            class="text-blue-500 hover:text-blue-600 transition duration-300 ease-in-out mx-2">
+            fake@email.com
+        </a>
+        <span>|</span>
+        <a href="https://twitter.com" target="_blank"
+            class="text-blue-500 hover:text-blue-600 transition duration-300 ease-in-out mx-2">
+            Twitter
+        </a>
+        <span>|</span>
+        <a href="https://facebook.com" target="_blank"
+            class="text-blue-500 hover:text-blue-600 transition duration-300 ease-in-out mx-2">
+            Facebook
+        </a>
+        <span>|</span>
+        <a href="https://instagram.com" target="_blank"
+            class="text-blue-500 hover:text-blue-600 transition duration-300 ease-in-out mx-2">
+            Instagram
+        </a>
+    </div>
+    <div class=" min-h-[50vh] flex justify-center">
         <div class="flex flex-col justify-center">
-            <div class="flex justify-center mt-6">
-                Contact Us at our email
 
-                <a href="mailto:fake@email.com"
-                    class="text-blue-500 hover:text-blue-600 transition duration-300 ease-in-out mx-2">
-                    fake@email.com
-                </a>
-                <span>|</span>
-                <a href="https://twitter.com" target="_blank"
-                    class="text-blue-500 hover:text-blue-600 transition duration-300 ease-in-out mx-2">
-                    Twitter
-                </a>
-                <span>|</span>
-                <a href="https://facebook.com" target="_blank"
-                    class="text-blue-500 hover:text-blue-600 transition duration-300 ease-in-out mx-2">
-                    Facebook
-                </a>
-                <span>|</span>
-                <a href="https://instagram.com" target="_blank"
-                    class="text-blue-500 hover:text-blue-600 transition duration-300 ease-in-out mx-2">
-                    Instagram
-                </a>
-            </div>
-
-            <div class="mt-6 w-full flex justify-center items-center">
+            <div class="w-full flex justify-center items-center">
                 <FormKit :actions="false" submit-label="Send" @submit="submit" type="form">
                     <div class="flex flex-col items-center">
                         <h3 class="mt-6 font-extrabold text-gray-900 dark:text-white">Or submit a message below, we'll
