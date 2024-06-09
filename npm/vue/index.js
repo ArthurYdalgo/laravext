@@ -1,5 +1,4 @@
 import { createApp, defineComponent, h } from 'vue';
-import axios from 'axios';
 
 export const laravext = () => {
     return window.__laravext;
@@ -71,42 +70,48 @@ export const Head = defineComponent({
 });
 
 export function visit(url) {
-    axios.get(url, {
+    console.debug(`Visiting page at ${url}`);
+    fetch(url, {
         headers: {
-            'Accept': 'text/html, application/xhtml+xml',
-            'X-Requested-With': 'XMLHttpRequest',
-            'Cache-Control': 'no-cache, no-store, must-revalidate', // Prevent caching
-            'Pragma': 'no-cache', // For older HTTP/1.0 servers
-            'Expires': '0', // Proxies
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0',
             'X-Laravext': true,
             'X-Laravext-Version': version(),
             'X-Laravext-Root-View': laravextPageData().root_view,
         },
-    }).then((response) => {
+    }).then(async (response) => {
         if (!response.headers.get('X-Laravext')) {
+            console.debug('Laravext header not found in response. Redirecting');
             window.location.href = url;
             return;
         }
 
-        let data = response.data;
-        if (data.action == 'redirect' || !history.pushState) {
-            window.location.href = data.url;
-            return;
-        }
-
-        window.__laravext.page_data = data.laravext_page_data;
-
-        try {
-            render();
-            history.pushState({}, null, url);
-        } catch (error) {
-            console.error('Error updating page data:', error);
-            window.location.href = url;
-        }
+        return response.json();
     })
+        .then((data) => {
+            console.debug(`Loading page at ${url}`, data);
+
+            if (data.action == 'redirect' || !history.pushState) {
+                console.log(`Redirecting to ${data.url}`, data);
+                window.location.href = data.url;
+                return;
+            }
+
+            window.__laravext.page_data = data.laravext_page_data;
+
+            try {
+                render();
+                history.pushState({}, null, url);
+            } catch (error) {
+                console.error('Error updating page data:', error);
+                window.location.href = url;
+            }
+
+        });
 }
 
-window.addEventListener("popstate", function(event) {
+window.addEventListener("popstate", function (event) {
     // Update the content based on the state object
     this.window.location.href = event.target.location.href;
 });
