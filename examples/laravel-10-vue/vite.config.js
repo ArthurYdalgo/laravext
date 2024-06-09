@@ -37,7 +37,6 @@ export default function ({ mode }) {
                                 'moment',
                                 'lodash',
                                 'vue-cookies',
-                                'sweetalert2',
                                 'ziggy-js',
                                 '@formkit/vue',
                                 '@formkit/pro',
@@ -45,7 +44,8 @@ export default function ({ mode }) {
                                 'axios',
                                 'floating-vue',
                                 '@fortawesome/vue-fontawesome',
-                                '@fortawesome/free-solid-svg-icons'
+                                '@fortawesome/free-solid-svg-icons',
+                                'nprogress'
                             ];
                             const chunk = modules.find(module => id.includes(module));
                             return chunk ? `vendor-${chunk}` : 'vendor-others';

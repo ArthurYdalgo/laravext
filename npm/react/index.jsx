@@ -4,8 +4,16 @@ export const laravext = () => {
     return window.__laravext;
 }
 
+export const laravextPageData = () => {
+    return laravext().page_data;
+}
+
+export const version = () => {
+    return laravextPageData().version;
+}
+
 export const nexus = () => {
-    return laravext().nexus;
+    return laravextPageData().nexus;
 }
 
 export const nexusProps = () => {
@@ -13,19 +21,19 @@ export const nexusProps = () => {
 }
 
 export const sharedProps = () => {
-    return laravext().shared_props;
+    return laravextPageData().shared_props;
 }
 
 export const routeParams = () => {
-    return laravext().route_params;
+    return laravextPageData().route_params;
 }
 
 export const routeName = () => {
-    return laravext().route_name;
+    return laravextPageData().route_name;
 }
 
 export const queryParams = () => {
-    return laravext().query_params;
+    return laravextPageData().query_params;
 }
 
 export async function resolveComponent(path, pages) {
@@ -37,18 +45,6 @@ export async function resolveComponent(path, pages) {
     return typeof page === 'function' ? page() : page;
 }
 
-export function findNexus() {
-    const nexusSection = document.querySelectorAll('section[section-type="laravext-nexus-section"]');
-
-    return nexusSection;
-}
-
-export function findStrands() {
-    const strands = document.querySelectorAll('section[section-type="laravext-strand-section"]');
-
-    return strands;
-}
-
 export function Head({ title }) {
     if(title){
         document.title = title;
@@ -56,6 +52,24 @@ export function Head({ title }) {
 
     return null;
 }
+
+// export function createLaravextApp({ nexusResolver, strandsResolver, uses = [], conventions = [
+//     'error',
+//     'loading',
+//     'layout',
+//     'middleware',
+// ], progress = {}}) {
+//     window.__laravext.app = {
+//         nexusResolver,
+//         strandsResolver,
+//         uses,
+//         conventions,
+//     }
+
+//     setupProgress( progress );
+
+//     render();
+// }
 
 export function createLaravextApp({ nexusResolver, strandsResolver, conventions = [
     'error',
