@@ -1,7 +1,6 @@
 import './bootstrap';
 import '../css/app.css';
 import { createLaravextApp, resolveComponent, sharedProps } from "@laravext/vue"
-
 import VueCookies from 'vue-cookies'
 
 import { createI18n } from 'vue-i18n'

@@ -22,11 +22,11 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => 'sometimes|string|max:255|unique:developers,username,' . $this->route('developer')->id,
-            'team_id' => 'sometimes|integer|exists:teams,id',
-            'name' => 'sometimes|string|min:5|max:255',
-            'email' => 'sometimes|email|max:255|unique:developers,email,' . $this->route('developer')->id,
-            'role' => 'sometimes|string|max:255',
+            'username' => 'nullable|string|max:255|unique:developers,username,' . $this->route('developer')->id,
+            'team_id' => 'nullable|integer|exists:teams,id',
+            'name' => 'nullable|string|min:5|max:255',
+            'email' => 'nullable|email|max:255|unique:developers,email,' . $this->route('developer')->id,
+            'role' => 'nullable|string|max:255',
         ];
     }
 }

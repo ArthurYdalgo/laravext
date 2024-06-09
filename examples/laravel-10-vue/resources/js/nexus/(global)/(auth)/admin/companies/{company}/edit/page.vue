@@ -7,6 +7,8 @@ import axios from 'axios';
 import { reactive, onMounted, inject } from 'vue';
 import DangerButton from '@/components/DangerButton.vue';
 import { useI18n } from 'vue-i18n';
+import PrimaryButton from '@/components/PrimaryButton.vue';
+import Link from '@/components/Link.vue';
 const { t } = useI18n();
 
 const swal = inject('$swal')
@@ -59,7 +61,7 @@ const updateResource = () => {
 
 const destroyResource = (id) => {
     swal({
-        Title: t('Are you sure?'),
+        title: t('Are you sure?'),
         icon: 'warning',
         confirmButtonText: t('Yes, delete it!'),
         cancelButtonText: t('No, cancel!'),
@@ -89,7 +91,9 @@ const destroyResource = (id) => {
 <template>
     <Header>{{ form.loading ? $t('Loading...') : `${$t('Edit company')} #${routeParams().company} - ${form.data.name}` }}</Header>
     <div class="mt-3 mx-4 flex justify-end space-x-2">
-
+        <Link :href="`/admin/companies/${routeParams().company}`">
+            <PrimaryButton>{{ $t('Show') }}</PrimaryButton>
+        </Link>
         <DangerButton @click="destroyResource(routeParams().company)" class="hover:text-red-900">{{ $t('Delete') }}</DangerButton>
     </div>
     <Loading v-if="form.loading" />

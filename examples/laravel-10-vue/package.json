@@ -7,6 +7,7 @@
     },
     "dependencies": {
         "@formkit/icons": "^1.6.3",
+        "@formkit/pro": "^0.126.9",
         "@formkit/vue": "^1.6.3",
         "@fortawesome/fontawesome-svg-core": "^6.5.2",
         "@fortawesome/free-brands-svg-icons": "^6.5.2",

@@ -36,6 +36,7 @@ const updateResource = () => {
         name: form.data.name,
         email: form.data.email,
         role: form.data.role,
+        team_id: form.data.team_id === undefined ? null : form.data.team_id,
     };
 
     return axios.put(`/api/developers/${routeParams().developer.id}`, data)
@@ -49,9 +50,45 @@ const updateResource = () => {
         });
 };
 
+const loadTeam = (id, cachedOption) => {
+    console.log({ id, cachedOption });
+
+    if (cachedOption) {
+        return cachedOption;
+    }
+
+    if(form.data.team) {
+        return {
+            value: form.data.team.id,
+            label: form.data.team.name,
+        }
+    }
+}
+
+const searchTeams = async ({ search, page, hasNextPage }) => {
+    if (!search) {
+        return []
+    };
+
+    const res = await axios.get(`/api/teams`, {
+        params: {
+            search
+        }
+    });
+
+    if (res.data) {
+        return res.data.data.map(team => ({
+            value: team.id,
+            label: team.name,
+        }));
+    }
+    // If the request fails, we return an empty array.
+    return []
+};
+
 const destroyResource = (id) => {
     swal({
-        Title: t('Are you sure?'),
+        title: t('Are you sure?'),
         icon: 'warning',
         confirmButtonText: t('Yes, delete it!'),
         cancelButtonText: t('No, cancel!'),
@@ -81,23 +118,27 @@ const destroyResource = (id) => {
 <template>
     <Header>{{ `${$t('Edit developer')} #${nexusProps().developer.id} - ${nexusProps().developer.name}` }}</Header>
     <div class="mt-3 mx-4 flex justify-end space-x-2">
-        <DangerButton @click="destroyResource(nexusProps().developer.id)" class="hover:text-red-900">{{ $t('Delete') }}</DangerButton>
+        <DangerButton @click="destroyResource(nexusProps().developer.id)" class="hover:text-red-900">{{ $t('Delete') }}
+        </DangerButton>
     </div>
-    <PageContent >
+    <PageContent>
         <FormKit :submit-label="$t('Save')" @submit="updateResource" type="form">
             <div class="flex justify-start space-x-4">
-                <FormKit validation-visibility="live" type="text" name="name" validation="length:2,200" required id="name"
-                    :label="$t('Name')" :placeholder="`“${$t('The Beatles')}”`" v-model="form.data.name" />
-                
+                <FormKit validation-visibility="live" type="text" name="name" validation="length:2,200" required
+                    id="name" :label="$t('Name')" :placeholder="`“${$t('The Beatles')}”`" v-model="form.data.name" />
+
                 <FormKit validation-visibility="live" type="text" name="username" required id="username"
                     :label="$t('Username')" :placeholder="$t('cool_nickname')" v-model="form.data.username" />
 
                 <FormKit validation-visibility="live" type="text" name="email" validation="email" required id="email"
-                    :label="$t('Email')" :placeholder="`“${$t('Type the developer email')}”`" v-model="form.data.email" />
-    
-                <FormKit type="select" name="role" required id="role" :label="$t('Role')" v-model="form.data.role" :options="developerRoles" />
+                    :label="$t('Email')" :placeholder="`“${$t('Type the developer email')}”`"
+                    v-model="form.data.email" />
 
-                <FormKit disabled type="text" name="team" required id="team" :label="$t('Team')" :value="form.data.team?.name ?? '--'" />
+                <FormKit type="select" name="role" required id="role" :label="$t('Role')" v-model="form.data.role"
+                    :options="developerRoles" />
+
+                <FormKit type="autocomplete" selection-removable :option-loader="loadTeam" name="team_id" :label="$t('Team')" v-model="form.data.team_id"
+                    :placeholder="$t('Search for a team')" :options="searchTeams" popover />
 
             </div>
         </FormKit>

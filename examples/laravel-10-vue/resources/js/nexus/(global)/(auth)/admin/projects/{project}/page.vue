@@ -13,7 +13,7 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 const swal = inject('$swal')
 
-const company = reactive({
+const project = reactive({
     data: {
     },
     loading: true,
@@ -34,56 +34,51 @@ const destroyResource = (id) => {
     })
         .then((result) => {
             if (result.isConfirmed) {
-                axios.delete(`/api/companies/${id}`)
+                axios.delete(`/api/projects/${id}`)
                     .then(() => {
-                        swal(t('Record deleted!'), t('The company has been deleted.'), 'success').then(() => {
-                            window.location.href = '/admin/companies';
+                        swal(t('Record deleted!'), t('The projects has been deleted.'), 'success').then(() => {
+                            window.location.href = '/admin/projects';
                         });
                     })
                     .catch(error => {
                         console.error(error);
-                        swal(t('Error!'), t('An error occurred while deleting the company.'), 'error');
+                        swal(t('Error!'), t('An error occurred while deleting the project.'), 'error');
                     });
             }
         });
 }
 
 onMounted(() => {
-    company.loading = true;
+    project.loading = true;
 
-    axios.get(`/api/companies/${routeParams().company}`)
+    axios.get(`/api/projects/${routeParams().project}`)
         .then(response => {
-            company.data = {
+            project.data = {
                 id: response.data.id,
                 name: response.data.name,
-                email: response.data.email,
-                website: response.data.website,
             };
 
-            company.loading = false;
+            project.loading = false;
         });
 });
 
 </script>
 <template>
-    <Header>{{ company.loading ? $t('Loading...') : `#${company.data.id} - ${company.data.name}` }}</Header>
+    <Header>{{ project.loading ? $t('Loading...') : `#${project.data.id} - ${project.data.name}` }}</Header>
     <div class="mt-3 mx-4 flex justify-end space-x-2">
-        <Link :href="`/admin/companies/${routeParams().company}/edit`">
+        <Link :href="`/admin/projects/${routeParams().project}/edit`">
             <PrimaryButton>{{ $t('Edit') }}</PrimaryButton>
         </Link>
 
-        <DangerButton @click="destroyResource(routeParams().company)" class="hover:text-red-900">{{ $t('Delete') }}</DangerButton>
+        <DangerButton @click="destroyResource(routeParams().project)" class="hover:text-red-900">{{ $t('Delete') }}</DangerButton>
     </div>
-    <Loading v-if="company.loading" />
+    <Loading v-if="project.loading" />
     <PageContent v-else>
-        <Link :href="`/admin/companies/${routeParams().company}/projects`" class="text-blue-600 text-xl font-bold">{{ $t('Click to view projects of Company') }} #{{
-            routeParams().company }}</Link>
+        <span class="text-lg font-bold">{{$t('Name')}}: </span>{{ project.data.name }}
         <br>
-        <span class="text-lg font-bold">{{$t('Name')}}: </span>{{ company.data.name }}
+        <span class="text-lg font-bold">Email: </span>{{ privacy.active ? '***@***' : project.data.email }}
         <br>
-        <span class="text-lg font-bold">Email: </span>{{ privacy.active ? '***@***' : company.data.email }}
-        <br>
-        <span class="text-lg font-bold">Website: </span><Link v-if="company.data.website" :href="company.data.website" class="text-blue-600">{{ company.data.website }}</Link>
+        <span class="text-lg font-bold">Website: </span><Link v-if="project.data.website" :href="project.data.website" class="text-blue-600">{{ project.data.website }}</Link>
         <span v-else class="text-gray-400">{{ $t('No website') }}</span>
     </PageContent>
 </template>

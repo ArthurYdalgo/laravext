@@ -108,7 +108,7 @@ const fetchDevelopers = () => {
 
 const destroyResource = (id) => {
     swal({
-        Title: t('Are you sure?'),
+        title: t('Are you sure?'),
         icon: 'warning',
         confirmButtonText: t('Yes, delete it!'),
         cancelButtonText: t('No, cancel!'),
