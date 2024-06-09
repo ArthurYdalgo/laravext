@@ -241,6 +241,10 @@ class Router
      */
     public static function version()
     {
+        if(config('laravext.version')){
+            return config('laravext.version');
+        }
+
         if (config('app.asset_url')) {
             return md5(config('app.asset_url'));
         }

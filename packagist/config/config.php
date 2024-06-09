@@ -42,4 +42,11 @@ return [
      * By default, these are the file extensions that will be used to search for the nexus files. Change it to your liking.
      */
     'file_extensions' => ['jsx', 'tsx', 'js', 'ts', 'vue'],
+
+    /**
+     * The router automatically generates a version based on the build files or the assets' url, but in case you want to
+     * set a version manually, you can do it here. This will be used to check if the client and server versions match,
+     * and force a reload if they don't at the next page visit.
+     */
+    // 'version' => '1.0.0'
 ];
