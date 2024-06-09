@@ -3,8 +3,8 @@ import MomentDateTime from './MomentDateTime.vue';
 
 const props = defineProps({
     date: { type: String, required: true },
-    format: { type: String, default: 'DD/MM/YYYY' },
-    fallback: { type: String, default: '--/--/----' },
+    format: { type: String, default: 'DD/MMM/YYYY' },
+    fallback: { type: String, default: '--/---/----' },
     style: { type: String, required: false },
     className: { type: String, required: false },
 });

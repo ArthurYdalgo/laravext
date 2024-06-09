@@ -4,8 +4,8 @@ import moment from "moment";
 const props = defineProps({
     dateTime: { type: String, required: false },
     date: { type: String, required: false },
-    format: { type: String, default: 'DD/MM/YYYY HH:mm' },
-    fallback: { type: String, default: '--/--/---- --:--' },
+    format: { type: String, default: 'DD/MMM/YYYY HH:mm' },
+    fallback: { type: String, default: '--/---/---- --:--' },
     style: { type: String, required: false },
     className: { type: String, required: false },
 });
