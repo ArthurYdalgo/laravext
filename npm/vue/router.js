@@ -1,9 +1,11 @@
-import { render } from './tools';
+import { isEnvProduction, render } from './tools';
 import { version, laravextPageData } from './index';
 
 export function visit(url) {
-    console.debug(`Visiting page at ${url}`);
-
+    if(!isEnvProduction()){
+        console.debug(`Visiting page at ${url}`);
+    }
+    
     const startEvent = new CustomEvent('laravext:start');
     document.dispatchEvent(startEvent);
 
@@ -18,7 +20,9 @@ export function visit(url) {
         },
     }).then(async (response) => {
         if (!response.headers.get('X-Laravext')) {
-            console.debug('Laravext header not found in response. Redirecting');
+            if(!isEnvProduction()){
+                console.debug('Laravext header not found in response. Redirecting');
+            }
             window.location.href = url;
             return;
         }
@@ -26,7 +30,9 @@ export function visit(url) {
         return response.json();
     })
         .then((data) => {
-            console.debug(`Loading page at ${url}`, data);
+            if(!isEnvProduction()){
+                console.debug(`Loading page at ${url}`, data);
+            }
 
             if (data.action == 'redirect' || !history.pushState) {
                 console.log(`Redirecting to ${data.url}`, data);

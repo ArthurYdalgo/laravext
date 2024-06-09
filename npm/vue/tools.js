@@ -20,10 +20,12 @@ export async function resolveComponent(path, pages) {
     return typeof page === 'function' ? page() : page;
 }
 
+export function isEnvProduction(){
+    return !['development', 'local'].includes(import.meta.env.VITE_APP_ENV ?? 'production');
+}
+
 export function render() {
     const laravextPageData = laravext().page_data;
-    const env = import.meta.env.VITE_APP_ENV ?? 'production';
-    const isEnvProduction = !['development', 'local'].includes(env);
 
     let nexusResolver = window.__laravext.app.nexusResolver;
     let strandsResolver = window.__laravext.app.strandsResolver;
@@ -36,7 +38,7 @@ export function render() {
         nexusTags.forEach((nexusElement) => {
             if (nexusComponentPath) {
                 nexusResolver(nexusComponentPath).then(async (NexusComponent) => {
-                    if (!isEnvProduction) {
+                    if (!isEnvProduction()) {
                         console.debug(`Loading page at ${nexusComponentPath}`);
                         console.debug(`Page at ${nexusComponentPath} loaded successfully`);
                     }
@@ -54,11 +56,11 @@ export function render() {
                     for (let i = 0; i < conventions.length; i++) {
                         if (laravextPageData?.nexus?.[conventions[i]]) {
                             try {
-                                if (!isEnvProduction) {
+                                if (!isEnvProduction()) {
                                     console.debug(`Loading convention ${conventions[i]} at ${laravextPageData?.nexus?.[conventions[i]]}`)
                                 };
                                 let conventionComponent = (await nexusResolver(laravextPageData?.nexus?.[conventions[i]])).default;
-                                if (!isEnvProduction) {
+                                if (!isEnvProduction()) {
                                     console.debug(`Convention ${conventions[i]} at ${laravextPageData?.nexus?.[conventions[i]]} loaded successfully`);
                                 }
 
