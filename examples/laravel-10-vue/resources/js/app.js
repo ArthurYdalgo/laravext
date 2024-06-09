@@ -1,6 +1,6 @@
 import './bootstrap';
 import '../css/app.css';
-import { createLaravextApp, resolveComponent, sharedProps } from "@laravext/vue"
+import { createLaravextApp, resolveComponent, sharedProps, visit } from "@laravext/vue"
 import VueCookies from 'vue-cookies'
 
 import { createI18n } from 'vue-i18n'
@@ -20,6 +20,8 @@ const i18n = createI18n({
         pt
     }
 })
+
+// visit(window.location.href);
 
 document.addEventListener('DOMContentLoaded', function () {
     createLaravextApp({

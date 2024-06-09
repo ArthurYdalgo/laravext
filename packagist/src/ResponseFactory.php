@@ -129,7 +129,7 @@ class ResponseFactory
         return $this;
     }
 
-    public function pageData()
+    public function page_data()
     {
         $uri_cache = $this->getUriCache();
 
@@ -142,23 +142,54 @@ class ResponseFactory
                 'layout' => $this->layout ?? $uri_cache['layout'] ?? null,
                 'error' => $this->error ?? $uri_cache['error'] ?? null,
             ],
+            'root_view' => $this->root_view ?? $uri_cache['root_view'] ?? config('laravext.root_view'),
             'shared_props' => $this->shared_props,
             'route_params' => $this->route_params,
             'query_params' => $this->query_params,
             'route_name' => $this->route_name,
+            'version' => Router::version(),
         ];
     }
 
     public function render()
     {
-        $uri_cache = $this->getUriCache();
-        
-        $this->root_view ??= $uri_cache['root_view'] ?? config('laravext.root_view');
+        $laravext_page_data = $this->page_data();
+        $root_view = $laravext_page_data['root_view'];
 
-        $laravext = $this->pageData();
+        View::share('laravext_page_data', $laravext_page_data);
+        $request = request();
 
-        View::share('laravext', $laravext);
+        if(!$request->header('X-Laravext')){
+            return view($root_view);
+        }
 
-        return view($this->root_view);
+        $request_laravext_version = $request->header('X-Laravext-Version');
+        $request_laravext_root_view = $request->header('X-Laravext-Root-View');
+
+        $headers = [
+            'X-Laravext' => true,
+            'X-Laravext-Version' => $laravext_page_data['version'],
+            'X-Laravext-Root-View' => $root_view,
+        ];
+
+        if($request_laravext_version != $laravext_page_data['version'] || $request_laravext_root_view != $root_view){
+            return response()->json([
+                'action' => 'redirect',
+                'url' => $request->fullUrl(),
+            ], headers: $headers);
+        }
+
+        $path = $request->path();
+        $query_params = $laravext_page_data['query_params'];
+
+        if($query_params){
+            $path .= '?' . http_build_query($query_params);
+        }
+
+        return response()->json([
+            'action' => 'render',
+            'laravext_page_data' => $laravext_page_data,
+            'path' => $path,
+        ], headers: $headers);
     }
 }

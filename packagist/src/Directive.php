@@ -15,7 +15,9 @@ class Directive
     public static function laravextScripts($expression = '')
     {
         return '<script id="laravext-scripts">
-            window.__laravext = {!! json_encode(isset($laravext) ? $laravext : []) !!}
+            window.__laravext = {
+                page_data: {!! json_encode(isset($laravext_page_data) ? $laravext_page_data : []) !!}
+            };
         </script>';
     }
 

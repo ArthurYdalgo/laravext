@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static \Laravext\ResponseFactory withRouteParams(array $route_params)
  * @method static \Laravext\ResponseFactory withServerSkeleton(string $server_skeleton)
  * @method static \Laravext\ResponseFactory share(string|array|\Illuminate\Contracts\Support\Arrayable $key, mixed $value = null)
- * @method static array pageData()
+ * @method static array page_data()
  *
  * @see \Laravext\ResponseFactory
  */

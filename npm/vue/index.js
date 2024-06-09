@@ -4,8 +4,16 @@ export const laravext = () => {
     return window.__laravext;
 }
 
+export const laravextPageData = () => {
+    return laravext().page_data;
+}
+
+export const version = () => {
+    return laravextPageData().version;
+}
+
 export const nexus = () => {
-    return laravext().nexus;
+    return laravextPageData().nexus;
 }
 
 export const nexusProps = () => {
@@ -13,19 +21,19 @@ export const nexusProps = () => {
 }
 
 export const sharedProps = () => {
-    return laravext().shared_props;
+    return laravextPageData().shared_props;
 }
 
 export const routeParams = () => {
-    return laravext().route_params;
+    return laravextPageData().route_params;
 }
 
 export const routeName = () => {
-    return laravext().route_name;
+    return laravextPageData().route_name;
 }
 
 export const queryParams = () => {
-    return laravext().query_params;
+    return laravextPageData().query_params;
 }
 
 export async function resolveComponent(path, pages) {
@@ -52,7 +60,7 @@ export const Head = defineComponent({
         title: String
     },
     mounted() {
-        if(this.title){
+        if (this.title) {
             document.title = this.title;
         }
     },
@@ -61,18 +69,70 @@ export const Head = defineComponent({
     }
 });
 
-export function createLaravextApp({ nexusResolver, strandsResolver, uses = [], conventions = [
-    'error',
-    'loading',
-    'layout',
-    'middleware',
-] }) {
-    const laravext = window.__laravext;
+export function visit(url) {
+    const req = new XMLHttpRequest();
+    req.open("GET", url);
+
+    req.onload = () => {
+        
+        let content = req.responseText;
+        console.log({content});
+      };
+
+      req.send(null);
+    fetch(url, {
+        headers: {
+            'Accept': 'Accept: text/html, application/xhtml+xml',
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-Laravext': true,
+            'X-Laravext-Version': version(),
+            'X-Laravext-Root-View': laravextPageData().root_view,
+        },
+    }).then(async (response) => {
+        if (!response.headers.get('X-Laravext')) {
+            window.location.href = url;
+            return;
+        }
+
+        return response.json();
+    })
+        .then((data) => {
+
+            if (data.action == 'redirect' || !history.pushState) {
+                window.location.href = data.url;
+                return;
+            }
+
+            window.__laravext.page_data = data.laravext_page_data;
+
+            try {
+                render();
+                history.pushState({}, null, url);
+            } catch (error) {
+                console.error('Error updating page data:', error);
+                window.location.href = url;
+            }
+
+        });
+}
+
+window.addEventListener("popstate", function(event) {
+    // Update the content based on the state object
+    this.window.location.href = event.target.location.href;
+});
+
+export function render() {
+    const laravextPageData = laravext().page_data;
     const env = import.meta.env.VITE_APP_ENV ?? 'production';
     const isEnvProduction = !['development', 'local'].includes(env);
 
+    let nexusResolver = window.__laravext.app.nexusResolver;
+    let strandsResolver = window.__laravext.app.strandsResolver;
+    let uses = window.__laravext.app.uses;
+    let conventions = window.__laravext.app.conventions;
+
     if (nexusResolver) {
-        const nexusComponentPath = laravext?.nexus?.page?.replaceAll('\\', '/');
+        const nexusComponentPath = laravextPageData?.nexus?.page?.replaceAll('\\', '/');
         const nexusTags = findNexus();
         nexusTags.forEach((nexusElement) => {
             if (nexusComponentPath) {
@@ -84,34 +144,34 @@ export function createLaravextApp({ nexusResolver, strandsResolver, uses = [], c
 
                     let pageComponent = NexusComponent.default
 
-                    let renderer = () => h(pageComponent, { laravext }, {
+                    let renderer = () => h(pageComponent, { laravext: laravextPageData }, {
                         props: () => ({
-                            laravext
+                            laravext: laravextPageData
                         }),
                     });
 
                     conventions = conventions.filter(convention => convention !== 'page');
 
                     for (let i = 0; i < conventions.length; i++) {
-                        if (laravext?.nexus?.[conventions[i]]) {
+                        if (laravextPageData?.nexus?.[conventions[i]]) {
                             try {
                                 if (!isEnvProduction) {
-                                    console.debug(`Loading convention ${conventions[i]} at ${laravext?.nexus?.[conventions[i]]}`)
+                                    console.debug(`Loading convention ${conventions[i]} at ${laravextPageData?.nexus?.[conventions[i]]}`)
                                 };
-                                let conventionComponent = (await nexusResolver(laravext?.nexus?.[conventions[i]])).default;
+                                let conventionComponent = (await nexusResolver(laravextPageData?.nexus?.[conventions[i]])).default;
                                 if (!isEnvProduction) {
-                                    console.debug(`Convention ${conventions[i]} at ${laravext?.nexus?.[conventions[i]]} loaded successfully`);
+                                    console.debug(`Convention ${conventions[i]} at ${laravextPageData?.nexus?.[conventions[i]]} loaded successfully`);
                                 }
 
                                 const previousRenderer = renderer;
-                                renderer = () => h(conventionComponent, { laravext }, {
+                                renderer = () => h(conventionComponent, { laravext: laravextPageData }, {
                                     default: () => previousRenderer(),
                                     props: () => ({
-                                        laravext
+                                        laravext: laravextPageData
                                     })
                                 });
                             } catch (error) {
-                                console.error(`Error loading convention ${conventions[i]} at ${laravext?.nexus?.[conventions[i]]}:`, error);
+                                console.error(`Error loading convention ${conventions[i]} at ${laravextPageData?.nexus?.[conventions[i]]}:`, error);
                             }
                         }
                     }
@@ -128,7 +188,13 @@ export function createLaravextApp({ nexusResolver, strandsResolver, uses = [], c
                         app.use(uses[i].plugin, uses[i].options ?? {});
                     }
 
+                    if (laravext().app.vue) {
+                        laravext().app.vue.unmount();
+                    }
+
                     app.mount(nexusElement);
+
+                    window.__laravext.app.vue = app;
                 }).catch((error) => {
                     console.error(`Error loading page at ${nexusComponentPath}:`, error);
                     throw error;
@@ -153,4 +219,20 @@ export function createLaravextApp({ nexusResolver, strandsResolver, uses = [], c
             }
         });
     }
+}
+
+export function createLaravextApp({ nexusResolver, strandsResolver, uses = [], conventions = [
+    'error',
+    'loading',
+    'layout',
+    'middleware',
+] }) {
+    window.__laravext.app = {
+        nexusResolver,
+        strandsResolver,
+        uses,
+        conventions,
+    }
+
+    render();
 }
