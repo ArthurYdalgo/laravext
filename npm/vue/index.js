@@ -78,8 +78,8 @@ export function createLaravextApp({ nexusResolver, strandsResolver, uses = [], c
             if (nexusComponentPath) {
                 nexusResolver(nexusComponentPath).then(async (NexusComponent) => {
                     if (!isEnvProduction) {
-                        console.log(`Loading page at ${nexusComponentPath}`);
-                        console.log(`Page at ${nexusComponentPath} loaded successfully`);
+                        console.debug(`Loading page at ${nexusComponentPath}`);
+                        console.debug(`Page at ${nexusComponentPath} loaded successfully`);
                     }
 
                     let pageComponent = NexusComponent.default
@@ -96,11 +96,11 @@ export function createLaravextApp({ nexusResolver, strandsResolver, uses = [], c
                         if (laravext?.nexus?.[conventions[i]]) {
                             try {
                                 if (!isEnvProduction) {
-                                    console.log(`Loading convention ${conventions[i]} at ${laravext?.nexus?.[conventions[i]]}`)
+                                    console.debug(`Loading convention ${conventions[i]} at ${laravext?.nexus?.[conventions[i]]}`)
                                 };
                                 let conventionComponent = (await nexusResolver(laravext?.nexus?.[conventions[i]])).default;
                                 if (!isEnvProduction) {
-                                    console.log(`Convention ${conventions[i]} at ${laravext?.nexus?.[conventions[i]]} loaded successfully`);
+                                    console.debug(`Convention ${conventions[i]} at ${laravext?.nexus?.[conventions[i]]} loaded successfully`);
                                 }
 
                                 const previousRenderer = renderer;

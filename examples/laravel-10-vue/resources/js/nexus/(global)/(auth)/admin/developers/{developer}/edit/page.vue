@@ -51,7 +51,7 @@ const updateResource = () => {
 };
 
 const loadTeam = (id, cachedOption) => {
-    console.log({ id, cachedOption });
+    
 
     if (cachedOption) {
         return cachedOption;

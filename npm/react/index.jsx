@@ -73,11 +73,11 @@ export function createLaravextApp({ nexusResolver, strandsResolver, conventions 
             if (nexusComponentPath) {
                 nexusResolver(nexusComponentPath).then(async (NexusModule) => {
                     if (!isEnvProduction) {
-                        console.log(`Loading page at ${nexusComponentPath}`);
+                        console.debug(`Loading page at ${nexusComponentPath}`);
                     }
                     let nexus = <NexusModule.default laravext={laravext} />
                     if (!isEnvProduction) {
-                        console.log(`Page at ${nexusComponentPath} loaded successfully`, {
+                        console.debug(`Page at ${nexusComponentPath} loaded successfully`, {
                             NexusModule
                         });
                     }
@@ -88,11 +88,11 @@ export function createLaravextApp({ nexusResolver, strandsResolver, conventions 
                         if (laravext?.nexus?.[conventions[i]]) {
                             try {
                                 if (!isEnvProduction) {
-                                    console.log(`Loading convention ${conventions[i]} at ${laravext?.nexus?.[conventions[i]]}`)
+                                    console.debug(`Loading convention ${conventions[i]} at ${laravext?.nexus?.[conventions[i]]}`)
                                 };
                                 let Convention = await nexusResolver(laravext?.nexus?.[conventions[i]]);
                                 if (!isEnvProduction) {
-                                    console.log(`Convention ${conventions[i]} at ${laravext?.nexus?.[conventions[i]]} loaded successfully`, {
+                                    console.debug(`Convention ${conventions[i]} at ${laravext?.nexus?.[conventions[i]]} loaded successfully`, {
                                         Convention
                                     });
                                 }
@@ -122,7 +122,7 @@ export function createLaravextApp({ nexusResolver, strandsResolver, conventions 
             if (strandComponentPath) {
                 strandsResolver(strandComponentPath).then((StrandModule) => {
                     // pass strand data to component
-                    console.log(strandData);
+                    console.debug(strandData);
                     createRoot(strandElement).render(<StrandModule.default laravext={{ ...laravext }} {...strandData} />);
                 })
                     .catch((error) => {

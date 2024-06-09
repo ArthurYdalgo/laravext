@@ -16,7 +16,9 @@ class ProjectCommentController extends Controller
         $comments = $project->comments()
             ->with(['user'])
             ->withTrashed()
-            ->latest()->paginate();
+            ->latest('id')
+            ->paginate(request()->query('per_page', 10))
+            ->appends(request()->query());
 
         return CommentResource::collection($comments);
     }
@@ -27,6 +29,8 @@ class ProjectCommentController extends Controller
         $data['user_id'] = auth()->id();
 
         $comment = $project->comments()->create($data);
+
+        $comment->load(['user']);
 
         return new CommentResource($comment);
     }

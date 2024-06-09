@@ -54,6 +54,7 @@ const updateResource = () => {
         name: form.data.name,
         team_id: form.data.team_id === undefined ? null : form.data.team_id,
         company_id: form.data.company_id === undefined ? null : form.data.company_id,
+        description: form.data.description,
     };
 
     return axios.put(`/api/projects/${routeParams().project}`, data)
@@ -89,7 +90,7 @@ const searchTeams = async ({ search, page, hasNextPage }) => {
 };
 
 const loadTeam = (id, cachedOption) => {
-    console.log({ id, cachedOption });
+    
 
     if (cachedOption) {
         return cachedOption;
@@ -125,7 +126,7 @@ const searchCompanies = async ({ search, page, hasNextPage }) => {
 };
 
 const loadCompany = (id, cachedOption) => {
-    console.log({ id, cachedOption });
+    
 
     if (cachedOption) {
         return cachedOption;
@@ -148,7 +149,7 @@ const loadCompany = (id, cachedOption) => {
             <PrimaryButton>{{ $t('Show') }}</PrimaryButton>
         </Link>
         <DangerButton @click="destroyResource(routeParams().project)" class="hover:text-red-900">{{ $t('Delete') }}</DangerButton>
-    </div>
+    </div>  
     <PageContent>
         <FormKit :submit-label="$t('Save')" @submit="updateResource" type="form">
             <div class="flex justify-start space-x-4">
