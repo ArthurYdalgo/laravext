@@ -12,7 +12,8 @@ import { plugin as fkPluging, defaultConfig as fkDefaultConfig } from '@formkit/
 import VueSweetalert2 from 'vue-sweetalert2';
 import fkConfig from './../../formkit.theme.js'
 import 'sweetalert2/dist/sweetalert2.min.css';
-const {user} = sharedProps().auth;
+
+const user = sharedProps()?.auth?.user;
 
 const i18n = createI18n({
     legacy: false,
