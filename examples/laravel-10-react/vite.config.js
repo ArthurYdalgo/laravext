@@ -30,7 +30,6 @@ export default function ({ mode }) {
                                 'sweetalert2',
                                 'ziggy-js',
                                 'axios',
-                                '@fortawesome/vue-fontawesome',
                                 '@fortawesome/free-solid-svg-icons',
                                 'nprogress'
                             ];
