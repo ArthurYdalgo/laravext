@@ -18,7 +18,7 @@
   ],
   "require": {
     "php": "^8.2",
-    "illuminate/support": "^10"
+    "illuminate/support": ">=10"
   },
   "require-dev": {
     "phpunit/phpunit": "^9.0"
@@ -29,7 +29,7 @@
     },
     "files": [
       "./helpers.php"
-  ]
+    ]
   },
   "autoload-dev": {
     "psr-4": {
@@ -41,7 +41,13 @@
     "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
   },
   "config": {
-    "sort-packages": true
+    "optimize-autoloader": true,
+    "preferred-install": "dist",
+    "sort-packages": true,
+    "allow-plugins": {
+      "pestphp/pest-plugin": true,
+      "php-http/discovery": true
+    }
   },
   "extra": {
     "laravel": {

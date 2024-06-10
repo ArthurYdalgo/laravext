@@ -6,11 +6,11 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "inertiajs/inertia-laravel": "^1.0",
-        "laravel/breeze": "^2.0",
+        "arthurydalgo/laravext": "dev-main",
         "laravel/framework": "^11.9",
         "laravel/sanctum": "^4.0",
-        "laravel/tinker": "^2.9",
+        "laravel/tinker": "^2.8",
+        "spatie/laravel-query-builder": "^6.0",
         "tightenco/ziggy": "^2.0"
     },
     "require-dev": {
@@ -50,6 +50,15 @@
             "@php artisan migrate --graceful --ansi"
         ]
     },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../packagist",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
     "extra": {
         "laravel": {
             "dont-discover": []
