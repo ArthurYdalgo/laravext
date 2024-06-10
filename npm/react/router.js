@@ -2,6 +2,14 @@ import { isEnvProduction, render } from './tools';
 import { version, laravextPageData } from './index';
 
 export function visit(url) {
+    if(!history?.pushState){
+        if(!isEnvProduction()){
+            console.debug('History API not supported. Redirecting');
+        }
+        window.location.href = url;
+        return;
+    }
+
     if(!isEnvProduction()){
         console.debug(`Visiting page at ${url}`);
     }
@@ -34,7 +42,7 @@ export function visit(url) {
                 console.debug(`Loading page at ${url}`, data);
             }
 
-            if (data.action == 'redirect' || !history.pushState) {
+            if (data.action == 'redirect') {
                 console.log(`Redirecting to ${data.url}`, data);
                 window.location.href = data.url;
                 return;
@@ -53,4 +61,4 @@ export function visit(url) {
             const finishEvent = new CustomEvent('laravext:finish', { detail: { visit: { completed: true } } });
             document.dispatchEvent(finishEvent);
         });
-}
+}                                                                                                                                                                                                                                                                                                                                   
