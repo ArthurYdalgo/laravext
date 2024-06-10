@@ -1,5 +1,5 @@
 
-This documentation assumes that you have some experience with PHP, Laravel and Javascript, and also that you already have a development environment that meets the requirements to run a Laravel project using Vite as your bundler.
+This documentation assumes that you have some experience with PHP, Laravel and Javascript, and also that you already have a development environment that meets the requirements to run a Laravel project using Vite as your bundler, and PHP 8.2 or higher.
 
 ## Disclaimer
 

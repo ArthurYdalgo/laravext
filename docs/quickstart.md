@@ -1,6 +1,6 @@
 # Quickstart <!-- {docsify-ignore} -->
 
-This tutorial assumes that you already have a Laravel project up and running, and that you use the vite bundler. These instructions are based on the [examples provided in the laravext repository](https://github.com/ArthurYdalgo/laravext/tree/main/examples).
+This tutorial assumes that you already have a Laravel project up and running with PHP 8.2, and that you use the vite bundler. These instructions are based on the [examples provided in the laravext repository](https://github.com/ArthurYdalgo/laravext/tree/main/examples).
 
 ## Composer
 
