@@ -17,6 +17,7 @@ class User extends Authenticatable
         'email',
         'password',
         'privacy',
+        'locale'
     ];
 
     protected $hidden = [
@@ -27,14 +28,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'privacy' => 'boolean',
+        'privacy' => 'boolean'
     ];
 
     protected $appends = [
         'first_name',
         'last_name',
     ];
-
+    
     public function getFirstNameAttribute(): string
     {
         return explode(' ', $this->name)[0];
@@ -45,5 +46,10 @@ class User extends Authenticatable
         $names = explode(' ', $this->name);
 
         return end($names);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 }

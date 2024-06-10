@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\Book;
+use App\Models\Team;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
@@ -21,6 +21,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Route::model('book', Book::class);
+        // Route::model('team', Team::class);
     }
 }

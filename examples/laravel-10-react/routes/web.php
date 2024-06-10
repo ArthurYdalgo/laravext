@@ -1,104 +1,86 @@
 <?php
 
-use App\Models\Book;
+use App\Enums\DeveloperRole;
+use App\Mail\ContactRequestReply;
+use App\Models\ContactRequest;
+use App\Models\Developer;
+use App\Models\Team;
 use Illuminate\Support\Facades\Route;
-use Laravext\Laravext;
-
-Route::redirect('/', 'books');
-
-Route::get("/login-as/{user}", function($user){
-    auth()->loginUsingId($user);
-    return redirect()->to('');
-});
-
 
 /**
  * This will automagically generate all the file based routes of your application.
- * It creates a route group that you can send parameters/props to.
+ * It creates a route group that you can send parameters to.
  * 
- * @see https://laravext.dev/#/tools/routing for more detailed examples
+ * @see https://laravext.dev/#/tools/routing?id=routelaravext for more detailed examples
  */
 Route::laravext();
 
 /**
- * The example below shows how you can use laravext in a traditional way, server-side fetching any data, and then
- * rendering a nexus (or a view) with the fetched data. This is useful for SEO purposes, as the data will be
- * available in the HTML response.
+ * Nothing stops you from creating your own custom routes, like this one.
+ * 
+ * @see https://laravel.com/docs/11.x/routing#view-routes for more details
  */
-// Route::get('books/{slug}', function($slug){
-//     // $book = Book::where('slug', $slug)->with('author')->firstOrFail();
-//     $books = Book::with('author')->get();
-//     $book = $books->random();
-
-//     // Using the Laravext facade, or nexus helper function, you can render a view with the defined props
-//     // return Laravext::nexus(props: compact('book'))->rootView('books.display')->render();
-//     return nexus(props: compact('book'))->rootView('books.display')->render();
-
-//     // Althogh you may consider this quite verbose, because it could simply be done like the example below, calling a view directly.
-//     // But remember to use the $book variable in the view, as the $laravext variable will not be available
-//     // return view('books.display', compact('book')); 
-
-//     // You could also define a component that will be used as nexus, with the book as a prop, and this makes
-//     // the book details be client-side rendered, although the book was already fetched server-side.
-//     // ...
-//     // Although I couldn't find a good use case for this, it's an example of how you can use the nexus blade directive
-//     // to do some additional reactive stuff along with strands, and with the server-side rendered data for SEO purposes.
-//     // return nexus('page.jsx', compact('book'))->render();
-
-// })->name('books.slug');
-
-// /**
-//  * Any automagically generate route from this point forward (including the '/dashboard' route itself)
-//  * will contain the defined route group attributes, such as middleware
-//  * and name prefix, but the prefix will be ignored, unlike a common route group.
-//  */
-// Route::laravext('dashboard', route_group_attributes: [
-//     // 'prefix' => 'dashboard', // the prefix key is unset internally, to avoid conflicts with the laravext router
-//     'middleware' => [
-//         // 'auth',
-//         // 'verified'
-//     ],
-
-//     'as' => 'admin.'
-// ]);
-
-// /**
-//  * You may also use the nexus() route method to define a route with the defined props and route attributes, such as middlewares
-//  * 
-//  * These routes' properties, such as which component will be rendered, route conventions, route name, etc, will be retained
-//  * from previously automagically generated routes.
-//  * 
-//  * @see https://laravext.dev/#/tools/routing for more detailed examples
-//  */
-// Route::nexus('dashboard/settings')->middleware([
-//     // 'auth'
-// ])->withoutMiddleware([
-//     // 'exampleMiddlewareToBeRemoved'
-// ]);
+Route::view('/', 'sections.home')->name('home');
 
 /**
- * You can also define a custom component to be rendered in the nexus route. This will override the default component created
- * by the laravext router. This will only override the component. Route conventions, route names, etc will be retained...
+ * Let's say that you need this route to use this specific view file for SEO reason, because it contains contact information,
+ * so you can set the root_view parameter to the view file you want to use. You could set a different 
+ * page file, but by default it'll use any file it has already found for that route.
+ * 
+ * @see https://laravext.dev/#/tools/routing?id=routenexus for more detailed examples
  */
-// Route::nexus('dashboard/settings', '(app)/dashboard/page.jsx')->middleware([
-//     // 'auth'
-// ])->withoutMiddleware([
-//     // 'exampleMiddlewareToBeRemoved'
-// ])->name('admin.dashboard.settings');
-
-// Route::nexus('dashboard/settings', layout: '(app)/layout.jsx')->middleware([
-//     // 'auth'
-// ])->withoutMiddleware([
-//     // 'exampleMiddlewareToBeRemoved'
-// ])->name('admin.dashboard.settings');
+Route::nexus('contact-us', root_view: 'sections.contact-us')->name('contact-us');
 
 /**
- * Unless you set the merge_with_existing_route to false, which will use a clean slate to define the route, and will not
- * retain any previously defined route properties, such as the component, route name, conventions, etc.
- * In this case, you need to define the component location.
+ * You can also server-side fetch data and pass it to the client side.
+ * 
+ * @see https://laravext.dev/#/tools/nexus-response?id=no-need-to-repeat-yourself
+ * @see https://laravext.dev/#/examples/page?id=page-with-server-side-fetching
  */
-// Route::nexus('dashboard/settings', '(app)/dashboard/page.jsx', merge_with_existing_route: false)->middleware([
-//     // 'auth'
-// ])->withoutMiddleware([
-//     // 'exampleMiddlewareToBeRemoved'
-// ])->name('admin.dashboard.settings');
+Route::get('our-teams', function () {
+    $teams = Team::all();
+
+    return nexus(props: compact('teams'))->render();
+})->name('our-teams');
+
+/**
+ * You could also make it so that any child route of admin will require the user to be authenticated, and also
+ * set a different root view file for the admin route group.
+ * 
+ * @see https://laravext.dev/#/tools/routing?id=routelaravext for more detailed examples
+ * 
+ */
+// Route::laravext("admin",  route_group_attributes: [
+//     'middleware' => 'auth',
+// ], root_view: 'sections.app');
+
+// Route::get('admin/developers/{developer}/edit', function (Developer $developer) {
+//     $developer->load('team');
+//     $developer_roles = DeveloperRole::toArray(true);
+//     return nexus(props: compact('developer_roles', 'developer'))->render();
+// })->middleware('auth')->name('admin.developers.developer.edit');
+
+/**
+ * However, because in this project I'm also using other routes that are subroutes of the 'admin' route, I'm going to use the 
+ * Route::group() method to wrap the 'admin' route group and keep the middleware on both the Route::laravext(), 
+ * and the Route::get() method.
+ */
+Route::group([
+    'middleware' => 'auth',
+], function () {
+    Route::laravext('admin', root_view: 'sections.app');
+
+    Route::get('admin/developers/create', fn() => nexus(props: [
+        'developer_roles' => DeveloperRole::toArray(true),
+    ])->render())->name('admin.developers.create');
+    
+    Route::get('admin/developers/{developer}/edit', function (Developer $developer) {
+        $developer->load('team');
+
+        $developer_roles = DeveloperRole::toArray(true);
+
+        return nexus(props: compact('developer_roles', 'developer'))->render();
+    })->name('admin.developers.developer.edit');
+
+
+});
