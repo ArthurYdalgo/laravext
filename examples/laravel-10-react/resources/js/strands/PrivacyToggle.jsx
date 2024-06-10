@@ -4,8 +4,6 @@ import { useEffect } from 'react'
 
 export default ({ laravext, initialState }) => {
     const { active, setActive, toggle } = usePrivacy();
-
-    console.log({laravext})
     
     useEffect(() => {
         if(initialState !== undefined){
@@ -17,7 +15,7 @@ export default ({ laravext, initialState }) => {
         // This is done like this because the active wouldn't always be updated immediately
         let currentState = active;
         toggle();
-        axios.put('/api/auth/user/privacy', { privacy: !currentState })
+        axios.put('/api/auth/user', { privacy: !currentState })
     }
 
     return (
