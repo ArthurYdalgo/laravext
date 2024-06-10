@@ -39,3 +39,11 @@ By default this is set to `64`. This is used to generate the a random id for eac
 ## File extensions (file_extensions) <!-- {docsify-ignore} -->
 
 By default this is set to `['jsx', 'tsx', 'js', 'ts', 'vue']`. This is used to determine the file extensions that the Laravext router will look for when generating the routes and searching for [file conventions](/concepts/file-conventions). In case you want to add more file extensions, you can add them to this array. You can remove this config altogether, as the default ones are also internally set in case somebody removes it from the configuration file.
+
+## Version (version) <!-- {docsify-ignore} -->
+
+By default Laravext generates a version based on either the `config('app.asset_url')`, a `mix-manifest.json` file, or a `build/manifest.json` file. If you want to set a custom version, you can set it here. This is used in the cache key for the routing tree. If the version changes, the user's browser is refreshed to get the new version of the application. You probably don't need to change this, but it's here in case you want to. This config is commented in the published config file.
+
+## Force Page Visit (force_page_visit) <!-- {docsify-ignore} -->
+
+By default Laravext behaves an SPA, when possible, so for each link there is no page reload, unless the route is set to use a different view file than the one that was previously loaded, or if the version changed (see the `version` config). If you want to force a page visit on each link click, you can set this to `true`. This will only take effect if you're using the `visit` helper function in the client side.

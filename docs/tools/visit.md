@@ -1,0 +1,5 @@
+# The visit(url) function
+
+Much like [Inertia.js' Protocol](https://inertiajs.com/the-protocol), you can use the `visit(url)` function to navigate to a new page that uses Laravext. This creates a smooth SPA experience, as it doesn't reload the page. If the version of the application changes between visits, or if the view set for that route is different from the one that was previously loaded, an usual page visit will happen.
+
+<sup>⚠️Important note⚠️: it's not recomendable to use the `visit(url)` function to navigate to a page that doesn't use Laravext. This is due to the function first checking if the page is a Laravext page, and if it's not, it'll do a redirect. As a side effect this will cause a double page visit (the first when the function makes a get request, then the actual redirect), which could degrade the user experience, so you should use a standard anchor tag (`<a href="...">`) instead.</sub>

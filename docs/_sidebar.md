@@ -14,6 +14,7 @@
     - [Nexus Response](tools/nexus-response.md)
     - [Shared Props](tools/shared-props.md)
     - [Head Component](tools/head-component.md)
+    - [The `visit(url)` function](tools/visit.md)
 - [Examples](examples.md)
     - [Page](examples/page.md)
     - [Middleware](examples/middleware.md)
