@@ -6,7 +6,7 @@ import Link from '@/components/Link';
 import PrimaryButton from '@/components/PrimaryButton';
 import TextInput from '@/components/TextInput';
 
-const LoginPage = () => {
+export default () => {
     const [form, setForm] = useState({
         email: '',
         password: '',
@@ -89,5 +89,3 @@ const LoginPage = () => {
         </div>
     );
 };
-
-export default LoginPage;
