@@ -6,42 +6,50 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'email',
         'password',
+        'privacy',
+        'locale'
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'privacy' => 'boolean'
+    ];
+
+    protected $appends = [
+        'first_name',
+        'last_name',
+    ];
+    
+    public function getFirstNameAttribute(): string
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return explode(' ', $this->name)[0];
+    }
+
+    public function getLastNameAttribute(): string
+    {
+        $names = explode(' ', $this->name);
+
+        return end($names);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 }

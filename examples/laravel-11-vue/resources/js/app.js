@@ -1,23 +1,49 @@
 import './bootstrap';
 import '../css/app.css';
+import { createLaravextApp, resolveComponent, sharedProps } from "@laravext/vue"
+import VueCookies from 'vue-cookies'
 
-import { createApp, h } from 'vue';
-import { createInertiaApp } from '@inertiajs/vue3';
-import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import { createI18n } from 'vue-i18n'
+import pt from './../../lang/pt.json'
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
+import { plugin as fkPluging, defaultConfig as fkDefaultConfig } from '@formkit/vue'
+import VueSweetalert2 from 'vue-sweetalert2';
+import fkConfig from './../../formkit.theme.js'
+import 'sweetalert2/dist/sweetalert2.min.css';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+const user = sharedProps()?.auth?.user;
 
-createInertiaApp({
-    title: (title) => `${title} - ${appName}`,
-    resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
-    setup({ el, App, props, plugin }) {
-        return createApp({ render: () => h(App, props) })
-            .use(plugin)
-            .use(ZiggyVue)
-            .mount(el);
-    },
-    progress: {
-        color: '#4B5563',
-    },
-});
+const i18n = createI18n({
+    legacy: false,
+    locale: user?.locale || 'en',
+    fallbackLocale: 'en',
+    messages: {
+        pt
+    }
+})
+
+document.addEventListener('DOMContentLoaded', function () {
+    createLaravextApp({
+        nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
+        strandsResolver: (name) => resolveComponent(`./strands/${name}.vue`, import.meta.glob('./strands/**/*.vue')),
+
+        /**
+         * You can use the `uses` key to add additional plugins to the Vue app.
+         */
+        uses: [
+            /** @see https://www.npmjs.com/package/vue-cookies for original example */
+            { plugin: VueCookies, options: { expires: '7d' } },
+
+            { plugin: ZiggyVue },
+
+            /** @see https://vue-i18n.intlify.dev/guide/essentials/started.html for original example */
+            { plugin: i18n },
+            { plugin: VueSweetalert2 },
+            { plugin: fkPluging, options: fkDefaultConfig (fkConfig) },
+        ]
+    })
+}, false);
+
+
+
+
