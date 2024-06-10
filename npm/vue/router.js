@@ -52,6 +52,8 @@ export function visit(url) {
 
             try {
                 render();
+
+                /** @todo fix it, as the pages are not always returnable */
                 history.pushState({}, null, url);
             } catch (error) {
                 console.error('Error updating page data:', error);

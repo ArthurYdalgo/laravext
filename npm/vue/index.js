@@ -59,7 +59,6 @@ window.addEventListener("popstate", function (event) {
 
 export function createLaravextApp({ nexusResolver, strandsResolver, uses = [], conventions = [
     'error',
-    'loading',
     'layout',
     'middleware',
 ], progress = {}}) {
