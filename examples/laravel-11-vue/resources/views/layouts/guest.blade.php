@@ -67,7 +67,7 @@
         </div>
 
         <footer class="py-6 text-center text-sm text-black dark:text-white/70">
-            <span>Powered by <a href="https://laravel.com" class="text-blue-500" target="_blank">Laravel</a> and <a
+            <span>Powered by <a href="https://laravel.com" class="text-blue-500" target="_blank">Laravel {{ Illuminate\Foundation\Application::VERSION}} </a> and <a
                     href="https://laravext.dev" class="text-blue-500" target="_blank">Laravext</a></span>
             <br>
             <span>Made with <span class="text-red-600 text-xs">❤</span> and <span class="text-blue-600">🥤</span></span>
