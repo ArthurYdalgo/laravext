@@ -538,7 +538,7 @@
 									"header": [
 										{
 											"key": "Host",
-											"value": "laravel-10-vue.test"
+											"value": "laravel-11-vue.test"
 										},
 										{
 											"key": "Date",
@@ -681,7 +681,7 @@
 									"header": [
 										{
 											"key": "Host",
-											"value": "laravel-10-vue.test"
+											"value": "laravel-11-vue.test"
 										},
 										{
 											"key": "Date",
@@ -984,7 +984,7 @@
 									"header": [
 										{
 											"key": "Host",
-											"value": "laravel-10-vue.test"
+											"value": "laravel-11-vue.test"
 										},
 										{
 											"key": "Date",
@@ -1028,7 +1028,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"data\": [\n        {\n            \"id\": 40,\n            \"team_id\": 1,\n            \"username\": \"dante_mcdermott\",\n            \"name\": \"Dante McDermott\",\n            \"email\": \"epaucek@example.org\",\n            \"role\": \"qa\",\n            \"deleted_at\": null,\n            \"created_at\": \"2024-05-03T02:12:14.000000Z\",\n            \"updated_at\": \"2024-05-03T03:20:37.000000Z\"\n        },\n        {\n            \"id\": 1,\n            \"team_id\": 1,\n            \"username\": \"amaya_blick\",\n            \"name\": \"Amaya Blick\",\n            \"email\": \"ariane.hintz@example.org\",\n            \"role\": \"backend\",\n            \"deleted_at\": null,\n            \"created_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"updated_at\": \"2024-05-03T03:20:37.000000Z\"\n        },\n        {\n            \"id\": 4,\n            \"team_id\": 1,\n            \"username\": \"mr._greyson_green_i\",\n            \"name\": \"Mr. Greyson Green I\",\n            \"email\": \"fsauer@example.org\",\n            \"role\": \"qa\",\n            \"deleted_at\": null,\n            \"created_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"updated_at\": \"2024-05-03T03:20:37.000000Z\"\n        },\n        {\n            \"id\": 10,\n            \"team_id\": 1,\n            \"username\": \"miss_violette_hegmann_md\",\n            \"name\": \"Miss Violette Hegmann MD\",\n            \"email\": \"hills.elmore@example.org\",\n            \"role\": \"qa\",\n            \"deleted_at\": null,\n            \"created_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"updated_at\": \"2024-05-03T03:20:15.000000Z\"\n        }\n    ],\n    \"links\": {\n        \"first\": \"http://laravel-10-vue.test/api/teams/1/developers?page=1\",\n        \"last\": \"http://laravel-10-vue.test/api/teams/1/developers?page=1\",\n        \"prev\": null,\n        \"next\": null\n    },\n    \"meta\": {\n        \"current_page\": 1,\n        \"from\": 1,\n        \"last_page\": 1,\n        \"links\": [\n            {\n                \"url\": null,\n                \"label\": \"&laquo; Previous\",\n                \"active\": false\n            },\n            {\n                \"url\": \"http://laravel-10-vue.test/api/teams/1/developers?page=1\",\n                \"label\": \"1\",\n                \"active\": true\n            },\n            {\n                \"url\": null,\n                \"label\": \"Next &raquo;\",\n                \"active\": false\n            }\n        ],\n        \"path\": \"http://laravel-10-vue.test/api/teams/1/developers\",\n        \"per_page\": 15,\n        \"to\": 4,\n        \"total\": 4\n    }\n}"
+									"body": "{\n    \"data\": [\n        {\n            \"id\": 40,\n            \"team_id\": 1,\n            \"username\": \"dante_mcdermott\",\n            \"name\": \"Dante McDermott\",\n            \"email\": \"epaucek@example.org\",\n            \"role\": \"qa\",\n            \"deleted_at\": null,\n            \"created_at\": \"2024-05-03T02:12:14.000000Z\",\n            \"updated_at\": \"2024-05-03T03:20:37.000000Z\"\n        },\n        {\n            \"id\": 1,\n            \"team_id\": 1,\n            \"username\": \"amaya_blick\",\n            \"name\": \"Amaya Blick\",\n            \"email\": \"ariane.hintz@example.org\",\n            \"role\": \"backend\",\n            \"deleted_at\": null,\n            \"created_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"updated_at\": \"2024-05-03T03:20:37.000000Z\"\n        },\n        {\n            \"id\": 4,\n            \"team_id\": 1,\n            \"username\": \"mr._greyson_green_i\",\n            \"name\": \"Mr. Greyson Green I\",\n            \"email\": \"fsauer@example.org\",\n            \"role\": \"qa\",\n            \"deleted_at\": null,\n            \"created_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"updated_at\": \"2024-05-03T03:20:37.000000Z\"\n        },\n        {\n            \"id\": 10,\n            \"team_id\": 1,\n            \"username\": \"miss_violette_hegmann_md\",\n            \"name\": \"Miss Violette Hegmann MD\",\n            \"email\": \"hills.elmore@example.org\",\n            \"role\": \"qa\",\n            \"deleted_at\": null,\n            \"created_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"updated_at\": \"2024-05-03T03:20:15.000000Z\"\n        }\n    ],\n    \"links\": {\n        \"first\": \"http://laravel-11-vue.test/api/teams/1/developers?page=1\",\n        \"last\": \"http://laravel-11-vue.test/api/teams/1/developers?page=1\",\n        \"prev\": null,\n        \"next\": null\n    },\n    \"meta\": {\n        \"current_page\": 1,\n        \"from\": 1,\n        \"last_page\": 1,\n        \"links\": [\n            {\n                \"url\": null,\n                \"label\": \"&laquo; Previous\",\n                \"active\": false\n            },\n            {\n                \"url\": \"http://laravel-11-vue.test/api/teams/1/developers?page=1\",\n                \"label\": \"1\",\n                \"active\": true\n            },\n            {\n                \"url\": null,\n                \"label\": \"Next &raquo;\",\n                \"active\": false\n            }\n        ],\n        \"path\": \"http://laravel-11-vue.test/api/teams/1/developers\",\n        \"per_page\": 15,\n        \"to\": 4,\n        \"total\": 4\n    }\n}"
 								}
 							]
 						},
@@ -1117,7 +1117,7 @@
 									"header": [
 										{
 											"key": "Host",
-											"value": "laravel-10-vue.test"
+											"value": "laravel-11-vue.test"
 										},
 										{
 											"key": "Date",
@@ -1246,7 +1246,7 @@
 									"header": [
 										{
 											"key": "Host",
-											"value": "laravel-10-vue.test"
+											"value": "laravel-11-vue.test"
 										},
 										{
 											"key": "Date",
@@ -1375,7 +1375,7 @@
 									"header": [
 										{
 											"key": "Host",
-											"value": "laravel-10-vue.test"
+											"value": "laravel-11-vue.test"
 										},
 										{
 											"key": "Date",
@@ -1472,7 +1472,7 @@
 							"header": [
 								{
 									"key": "Host",
-									"value": "laravel-10-vue.test"
+									"value": "laravel-11-vue.test"
 								},
 								{
 									"key": "Date",
@@ -1516,7 +1516,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"Gryffindor\",\n            \"deleted_at\": null,\n            \"created_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"updated_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"developers_count\": 3\n        },\n        {\n            \"id\": 2,\n            \"name\": \"A-Team\",\n            \"deleted_at\": null,\n            \"created_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"updated_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"developers_count\": 5\n        },\n        {\n            \"id\": 3,\n            \"name\": \"Team Rocket\",\n            \"deleted_at\": null,\n            \"created_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"updated_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"developers_count\": 6\n        },\n        {\n            \"id\": 4,\n            \"name\": \"The Incredibles\",\n            \"deleted_at\": null,\n            \"created_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"updated_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"developers_count\": 6\n        },\n        {\n            \"id\": 5,\n            \"name\": \"Avengers\",\n            \"deleted_at\": null,\n            \"created_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"updated_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"developers_count\": 6\n        },\n        {\n            \"id\": 6,\n            \"name\": \"Jedi Order\",\n            \"deleted_at\": null,\n            \"created_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"updated_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"developers_count\": 6\n        },\n        {\n            \"id\": 7,\n            \"name\": \"The Seven Samurai\",\n            \"deleted_at\": null,\n            \"created_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"updated_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"developers_count\": 5\n        },\n        {\n            \"id\": 8,\n            \"name\": \"Ravenclaw\",\n            \"deleted_at\": null,\n            \"created_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"updated_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"developers_count\": 6\n        },\n        {\n            \"id\": 9,\n            \"name\": \"Slytherin\",\n            \"deleted_at\": null,\n            \"created_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"updated_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"developers_count\": 6\n        },\n        {\n            \"id\": 10,\n            \"name\": \"Fantastic Four\",\n            \"deleted_at\": null,\n            \"created_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"updated_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"developers_count\": 6\n        }\n    ],\n    \"links\": {\n        \"first\": \"http://laravel-10-vue.test/api/teams?page=1\",\n        \"last\": \"http://laravel-10-vue.test/api/teams?page=1\",\n        \"prev\": null,\n        \"next\": null\n    },\n    \"meta\": {\n        \"current_page\": 1,\n        \"from\": 1,\n        \"last_page\": 1,\n        \"links\": [\n            {\n                \"url\": null,\n                \"label\": \"&laquo; Previous\",\n                \"active\": false\n            },\n            {\n                \"url\": \"http://laravel-10-vue.test/api/teams?page=1\",\n                \"label\": \"1\",\n                \"active\": true\n            },\n            {\n                \"url\": null,\n                \"label\": \"Next &raquo;\",\n                \"active\": false\n            }\n        ],\n        \"path\": \"http://laravel-10-vue.test/api/teams\",\n        \"per_page\": 15,\n        \"to\": 10,\n        \"total\": 10\n    }\n}"
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"Gryffindor\",\n            \"deleted_at\": null,\n            \"created_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"updated_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"developers_count\": 3\n        },\n        {\n            \"id\": 2,\n            \"name\": \"A-Team\",\n            \"deleted_at\": null,\n            \"created_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"updated_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"developers_count\": 5\n        },\n        {\n            \"id\": 3,\n            \"name\": \"Team Rocket\",\n            \"deleted_at\": null,\n            \"created_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"updated_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"developers_count\": 6\n        },\n        {\n            \"id\": 4,\n            \"name\": \"The Incredibles\",\n            \"deleted_at\": null,\n            \"created_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"updated_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"developers_count\": 6\n        },\n        {\n            \"id\": 5,\n            \"name\": \"Avengers\",\n            \"deleted_at\": null,\n            \"created_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"updated_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"developers_count\": 6\n        },\n        {\n            \"id\": 6,\n            \"name\": \"Jedi Order\",\n            \"deleted_at\": null,\n            \"created_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"updated_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"developers_count\": 6\n        },\n        {\n            \"id\": 7,\n            \"name\": \"The Seven Samurai\",\n            \"deleted_at\": null,\n            \"created_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"updated_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"developers_count\": 5\n        },\n        {\n            \"id\": 8,\n            \"name\": \"Ravenclaw\",\n            \"deleted_at\": null,\n            \"created_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"updated_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"developers_count\": 6\n        },\n        {\n            \"id\": 9,\n            \"name\": \"Slytherin\",\n            \"deleted_at\": null,\n            \"created_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"updated_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"developers_count\": 6\n        },\n        {\n            \"id\": 10,\n            \"name\": \"Fantastic Four\",\n            \"deleted_at\": null,\n            \"created_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"updated_at\": \"2024-05-03T02:12:13.000000Z\",\n            \"developers_count\": 6\n        }\n    ],\n    \"links\": {\n        \"first\": \"http://laravel-11-vue.test/api/teams?page=1\",\n        \"last\": \"http://laravel-11-vue.test/api/teams?page=1\",\n        \"prev\": null,\n        \"next\": null\n    },\n    \"meta\": {\n        \"current_page\": 1,\n        \"from\": 1,\n        \"last_page\": 1,\n        \"links\": [\n            {\n                \"url\": null,\n                \"label\": \"&laquo; Previous\",\n                \"active\": false\n            },\n            {\n                \"url\": \"http://laravel-11-vue.test/api/teams?page=1\",\n                \"label\": \"1\",\n                \"active\": true\n            },\n            {\n                \"url\": null,\n                \"label\": \"Next &raquo;\",\n                \"active\": false\n            }\n        ],\n        \"path\": \"http://laravel-11-vue.test/api/teams\",\n        \"per_page\": 15,\n        \"to\": 10,\n        \"total\": 10\n    }\n}"
 						}
 					]
 				},
@@ -1585,7 +1585,7 @@
 							"header": [
 								{
 									"key": "Host",
-									"value": "laravel-10-vue.test"
+									"value": "laravel-11-vue.test"
 								},
 								{
 									"key": "Date",
@@ -1702,7 +1702,7 @@
 							"header": [
 								{
 									"key": "Host",
-									"value": "laravel-10-vue.test"
+									"value": "laravel-11-vue.test"
 								},
 								{
 									"key": "Date",

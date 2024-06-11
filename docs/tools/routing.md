@@ -49,7 +49,7 @@ Route::laravext('dashboard', route_group_attributes: [
 
 As mentioned before, in the [Quickstart](/quickstart.md) section, this is technically optional, as there're other ways to generate your routes in a more granular way, but it's entirely up to you on how you want to use it. (Although I think that if you are using Laravext and came all the way here, you probably want to use it).
 
-<sup>⚠️Important note⚠️: as exemplified in [examples/laravel-10-vue/routes/web.php #L55](https://github.com/ArthurYdalgo/laravext/blob/main/examples/laravel-10-vue/routes/web.php#L55), if you redeclare any other route that would be a subroute of '/dashboard', like '/dashboard/teams/1/edit', any middleware or other attributes set in the route_group_attributes will not be used in this new route declaration. So if any important middleware is needed, you'll have to redeclare it in the new route declaration, or create a `Route::group([...], function() {...})` that would contain both routes so you don't have to redeclare that middleware.</sub>
+<sup>⚠️Important note⚠️: as exemplified in [examples/laravel-11-vue/routes/web.php #L55](https://github.com/ArthurYdalgo/laravext/blob/main/examples/laravel-11-vue/routes/web.php#L55), if you redeclare any other route that would be a subroute of '/dashboard', like '/dashboard/teams/1/edit', any middleware or other attributes set in the route_group_attributes will not be used in this new route declaration. So if any important middleware is needed, you'll have to redeclare it in the new route declaration, or create a `Route::group([...], function() {...})` that would contain both routes so you don't have to redeclare that middleware.</sub>
 
 ## Route::nexus(...)
 
