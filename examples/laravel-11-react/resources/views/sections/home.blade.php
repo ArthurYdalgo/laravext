@@ -3,17 +3,17 @@
     <main class="mt-6">
         <div class="grid gap-6 lg:grid-cols-2 lg:gap-8">
 
-            <a href="https://github.com/ArthurYdalgo/laravext/tree/main/examples/laravel-11-vue" target="_blank"
+            <a href="https://github.com/ArthurYdalgo/laravext/tree/main/examples/laravel-11-react" target="_blank"
                 class="flex items-start gap-4 rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-black/20 focus:outline-none focus-visible:ring-[#FF2D20] lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]">
                 <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16">
-                    <img src="/images/logos/Vue.js.png" class="w-[75%]" alt="">
+                    <img src="/images/logos/react.png" class="w-[100%]" alt="">
                 </div>
 
                 <div class="pt-3 sm:pt-5">
-                    <h2 class="text-xl font-semibold text-black dark:text-white">Laravext Example - Vue.js</h2>
+                    <h2 class="text-xl font-semibold text-black dark:text-white">Laravext Example - React</h2>
 
                     <p class="mt-4 text-sm/relaxed">
-                        This is the example of how to use Laravext with Vue.js in a Laravel 11 project (although in the "traditional" directory structure from Laravel 10). There're some pages
+                        This is the example of how to use Laravext with React in a Laravel 10 project. There're some pages
                         in the navbar above that you can check. They're meerly examples of how you could use Laravext in
                         your project and do not actually represent "Our Team" (as in Laravext's team) or "Our Projects" (as
                         in Laravext's projects).

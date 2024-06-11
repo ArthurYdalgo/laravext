@@ -69,7 +69,7 @@ The examples are meant to help you understand how to use these tools, and are no
 
 ## The Example Project(s)
 
-Some code or file structures in this documentation might (or not) be derived from the [laravext examples available at GitHub](https://github.com/ArthurYdalgo/laravext/tree/main/examples), and it'll be either the [laravel-10-react](https://github.com/ArthurYdalgo/laravext/tree/main/examples/laravel-10-react), [laravel-10-vue](https://github.com/ArthurYdalgo/laravext/tree/main/examples/laravel-10-vue), [laravel-11-react](https://github.com/ArthurYdalgo/laravext/tree/main/examples/laravel-11-react) or [laravel-11-vue](https://github.com/ArthurYdalgo/laravext/tree/main/examples/laravel-11-vue). The example projects at the version 11 of Laravel use the "old" directory structure from the version 10, not the new one.
+Some code or file structures in this documentation might (or not) be derived from the [laravext examples available at GitHub](https://github.com/ArthurYdalgo/laravext/tree/main/examples), and it'll be either the [laravel-11-react](https://github.com/ArthurYdalgo/laravext/tree/main/examples/laravel-11-react) or [laravel-11-vue](https://github.com/ArthurYdalgo/laravext/tree/main/examples/laravel-11-vue). The example projects use the "old" directory structure from Laravel 10, not the new one.
 
 It's a basic developer team manager, where teams have developers and projects, and these projects belong to companies (needless to say that this does not reflect how a real world application of this kind would be designed). 
 

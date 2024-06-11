@@ -41,5 +41,5 @@ return [
     /**
      * By default, these are the file extensions that will be used to search for the nexus files. Change it to your liking.
      */
-    'file_extensions' => ['vue'],
+    'file_extensions' => ['jsx'],
 ];
