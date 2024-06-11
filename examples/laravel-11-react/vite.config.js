@@ -30,6 +30,8 @@ export default function ({ mode }) {
                                 'sweetalert2',
                                 'ziggy-js',
                                 'axios',
+                                'react-i18next',
+                                'zustand',
                                 '@fortawesome/free-solid-svg-icons'
                             ];
                             const chunk = modules.find(module => id.includes(module));
