@@ -3,7 +3,6 @@ import PageContent from '@/components/PageContent';
 import { sharedProps } from '@laravext/react'
 
 export default () => {
-    
     return (
         <>
             <Header>Dashboard</Header>

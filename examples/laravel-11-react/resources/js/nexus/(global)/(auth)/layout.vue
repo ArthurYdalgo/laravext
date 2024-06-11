@@ -1,8 +1,7 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import ApplicationLogo from '@/components/ApplicationLogo.vue';
 import Dropdown from '@/components/Dropdown.vue';
-import DropdownLink from '@/components/DropdownLink.vue';
 import DropdownButton from '@/components/DropdownButton.vue';
 import NavLink from '@/components/NavLink.vue';
 import Link from '@/components/Link.vue';
