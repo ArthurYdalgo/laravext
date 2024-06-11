@@ -26,14 +26,14 @@
                             class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
                             Home
                         </a>
-                        {{-- <a href={{ route('our-projects') }}
+                        <a href={{ route('our-projects') }}
                             class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
                             Our Projects
                         </a>
                         <a href={{ route('our-teams') }}
                             class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
                             Our Teams
-                        </a> --}}
+                        </a>
                         <a href={{ route('contact-us') }}
                             class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
                             Contact
@@ -42,17 +42,17 @@
                         <span class="text-black/50 py-2 dark:text-white/50">|</span>
 
                         @auth
-                            {{-- <a href={{ route('admin.dashboard') }}
+                            <a href={{ route('admin.dashboard') }}
                                 class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
                                 Dashboard
-                            </a> --}}
+                            </a>
                         @endauth
 
                         @guest
-                            {{-- <a href={{ route('login') }}
+                            <a href={{ route('login') }}
                                 class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
                                 Login
-                            </a> --}}
+                            </a>
 
                         @endguest
 
