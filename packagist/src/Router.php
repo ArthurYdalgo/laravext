@@ -207,9 +207,9 @@ class Router
     public static function laravextRouteGroup(&$router, $uri, $nexus_directory, $route_group_attributes = [], $root_view = null)
     {
         $router_cache_driver = config('laravext.router_cache_driver', 'file');
-        $router_cacher_is_enabled = config('laravext.router_cacher_is_enabled', true);
+        $router_cache_is_enabled = config('laravext.router_cache_is_enabled', true);
 
-        $nexus_directories = self::getNexusDirectories($nexus_directory, $router_cacher_is_enabled, $router_cache_driver);
+        $nexus_directories = self::getNexusDirectories($nexus_directory, $router_cache_is_enabled, $router_cache_driver);
 
         return $router->group($route_group_attributes, function () use ($uri, $router, $root_view, $nexus_directories) {
             self::laravextNexusRoutes($router, $nexus_directories, $uri, $root_view);
@@ -229,7 +229,7 @@ class Router
     {
         $version = self::version();
 
-        return str("laravext-router-routing-tree-{$nexus_directory}")->when($version, function ($key, $version) {
+        return str("laravext-router-routing-tree")->when($version, function ($key, $version) {
             return $key->append(":{$version}");
         })->toString();
     }
