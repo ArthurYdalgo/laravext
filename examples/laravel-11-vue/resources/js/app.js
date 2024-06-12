@@ -1,6 +1,7 @@
 import './bootstrap';
 import '../css/app.css';
-import { createLaravextApp, resolveComponent, sharedProps } from "@laravext/vue"
+import { createLaravextApp, sharedProps } from "@laravext/vue"
+
 import VueCookies from 'vue-cookies'
 
 import { createI18n } from 'vue-i18n'
@@ -10,6 +11,8 @@ import { plugin as fkPluging, defaultConfig as fkDefaultConfig } from '@formkit/
 import VueSweetalert2 from 'vue-sweetalert2';
 import fkConfig from './../../formkit.theme.js'
 import 'sweetalert2/dist/sweetalert2.min.css';
+import { resolveComponent } from '@laravext/vue/tools';
+import { color } from '@formkit/icons';
 
 const user = sharedProps()?.auth?.user;
 
@@ -40,7 +43,11 @@ document.addEventListener('DOMContentLoaded', function () {
             { plugin: i18n },
             { plugin: VueSweetalert2 },
             { plugin: fkPluging, options: fkDefaultConfig (fkConfig) },
-        ]
+        ],
+        progress: {
+            color: '#ff0000',
+        }
+
     })
 }, false);
 

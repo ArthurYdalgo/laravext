@@ -157,10 +157,10 @@ class ResponseFactory
         $laravext_page_data = $this->page_data();
         $root_view = $laravext_page_data['root_view'];
 
-        View::share('laravext_page_data', $laravext_page_data);
         $request = request();
         
         if (!$request->header('X-Laravext') || config('laravext.force_page_visit')) {
+            View::share('laravext_page_data', $laravext_page_data);
             return view($root_view);
         }
             
@@ -189,6 +189,8 @@ class ResponseFactory
         if ($query_params) {
             $path .= '?' . http_build_query($query_params);
         }
+
+        unset($laravext_page_data['server_skeleton']);
 
         return response()->json([
             'action' => 'render',

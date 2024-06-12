@@ -1,5 +1,11 @@
 import NProgress from 'nprogress'
 
+/**
+ * This is basically the same that Inertia.js uses, with some minor tweaks 
+ *
+ * @see: https://github.com/inertiajs/inertia/blob/master/packages/core/src/progress.ts
+ */
+
 let timeout = null;
 
 export const injectCSS = (color) => {

@@ -140,23 +140,23 @@ const Developers = () => {
                                     ID
                                 </th>
                                 <th
-                                    class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                    className="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                     {t('Username')}
                                 </th>
                                 <th
-                                    class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                    className="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                     {t('Name')}
                                 </th>
                                 <th
-                                    class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                    className="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                     {t('Role')}
                                 </th>
                                 <th
-                                    class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                    className="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                     {t('Email')}
                                 </th>
                                 <th
-                                    class="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                    className="border-l px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                     {t('Team')}
                                 </th>
                                 <th className="border-l w-96 px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
@@ -173,28 +173,28 @@ const Developers = () => {
                                     <td className="border-t px-6 py-4 whitespace-no-wrap text-sm text-gray-900 w-28">
                                         <div className="text-sm leading-5 font-medium text-gray-900">{resource.id}</div>
                                     </td>
-                                    <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
-                                        <div class="text-sm leading-5 font-medium text-gray-900">
+                                    <td className="border-t border-l px-6 py-4 whitespace-no-wrap">
+                                        <div className="text-sm leading-5 font-medium text-gray-900">
                                             @{ resource.username }
                                         </div>
                                     </td>
-                                    <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
-                                        <div class="text-sm leading-5 font-medium text-gray-900">
+                                    <td className="border-t border-l px-6 py-4 whitespace-no-wrap">
+                                        <div className="text-sm leading-5 font-medium text-gray-900">
                                             { resource.name }
                                         </div>
                                     </td>
-                                    <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
-                                        <div class="text-sm leading-5 font-medium text-gray-900">
+                                    <td className="border-t border-l px-6 py-4 whitespace-no-wrap">
+                                        <div className="text-sm leading-5 font-medium text-gray-900">
                                             { t(resource.role_label) }
                                         </div>
                                     </td>
-                                    <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
-                                        <div class="text-sm leading-5 text-gray-900">
+                                    <td className="border-t border-l px-6 py-4 whitespace-no-wrap">
+                                        <div className="text-sm leading-5 text-gray-900">
                                             { privacyIsActive ? '***@***' : resource.email }
                                         </div>
                                     </td>
-                                    <td class="border-t border-l px-6 py-4 whitespace-no-wrap">
-                                        <div class="text-sm leading-5 text-gray-900">
+                                    <td className="border-t border-l px-6 py-4 whitespace-no-wrap">
+                                        <div className="text-sm leading-5 text-gray-900">
                                             {resource.team && <Link className="text-blue-600" href={`/admin/teams/${resource.team?.id}`}>
                                             { resource.team?.name }
                                             </Link>}

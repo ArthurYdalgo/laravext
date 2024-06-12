@@ -1,17 +1,10 @@
-import { isEnvProduction, render } from './tools';
+import { render } from './tools';
 import { version, laravextPageData } from './index';
 
 export function visit(url) {
     if(!history?.pushState){
-        if(!isEnvProduction()){
-            console.debug('History API not supported. Redirecting');
-        }
         window.location.href = url;
         return;
-    }
-
-    if(!isEnvProduction()){
-        console.debug(`Visiting page at ${url}`);
     }
     
     const startEvent = new CustomEvent('laravext:start');
@@ -28,9 +21,6 @@ export function visit(url) {
         },
     }).then(async (response) => {
         if (!response.headers.get('X-Laravext')) {
-            if(!isEnvProduction()){
-                console.debug('Laravext header not found in response. Redirecting');
-            }
             window.location.href = url;
             return;
         }
@@ -38,12 +28,7 @@ export function visit(url) {
         return response.json();
     })
         .then((data) => {
-            if(!isEnvProduction()){
-                console.debug(`Loading page at ${url}`, data);
-            }
-
             if (data.action == 'redirect') {
-                console.log(`Redirecting to ${data.url}`, data);
                 window.location.href = data.url;
                 return;
             }
