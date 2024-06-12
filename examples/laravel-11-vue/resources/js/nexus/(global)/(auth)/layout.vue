@@ -16,7 +16,7 @@ import Tooltip from '@/components/Tooltip.vue';
 const { locale: i18nLocale } = useI18n();
 
 const { user } = sharedProps().auth;
-const initialState = sharedProps().auth?.user?.privacy;
+const privacyInitialState = sharedProps().auth?.user?.privacy;
 
 const locales = {
     en: {
@@ -29,8 +29,8 @@ const locales = {
     },
 }
 
-if (initialState !== undefined) {
-    privacy.setActive(initialState)
+if (privacyInitialState !== undefined) {
+    privacy.setActive(privacyInitialState)
 }
 
 const handleTogglePrivacy = () => {

@@ -30,11 +30,8 @@ class Router
      */
     public static function parseDirectory($directory_path, $root, $parent_conventions = [])
     {
-        $root = self::replaceReverseSlashes($root);
-        $directory_path = self::replaceReverseSlashes($directory_path);
-
-        $root = self::trimEndingSlash($root);
-        $directory_path = self::trimEndingSlash($directory_path);
+        $root = self::trimEndingSlash(self::replaceReverseSlashes($root));
+        $directory_path = self::trimEndingSlash(self::replaceReverseSlashes($directory_path));
 
         $name = str($directory_path)->replaceFirst($root, '')->explode('/')->last();
         $is_directory_a_group = preg_match('/\([\w]+\)$/', $name);
@@ -56,7 +53,7 @@ class Router
             'path' => $directory_path,
             'relative_path' => $relative_path,
             'conventions' => $conventions,
-            'is_group' => $is_directory_a_group,
+            'is_directory_a_group' => $is_directory_a_group,
             'children' => $children_directories,
         ];
     }
@@ -207,9 +204,9 @@ class Router
     public static function laravextRouteGroup(&$router, $uri, $nexus_directory, $route_group_attributes = [], $root_view = null)
     {
         $router_cache_driver = config('laravext.router_cache_driver', 'file');
-        $router_cacher_is_enabled = config('laravext.router_cacher_is_enabled', true);
+        $router_cache_is_enabled = config('laravext.router_cache_is_enabled', true);
 
-        $nexus_directories = self::getNexusDirectories($nexus_directory, $router_cacher_is_enabled, $router_cache_driver);
+        $nexus_directories = self::getNexusDirectories($nexus_directory, $router_cache_is_enabled, $router_cache_driver);
 
         return $router->group($route_group_attributes, function () use ($uri, $router, $root_view, $nexus_directories) {
             self::laravextNexusRoutes($router, $nexus_directories, $uri, $root_view);
@@ -229,7 +226,7 @@ class Router
     {
         $version = self::version();
 
-        return str("laravext-router-routing-tree-{$nexus_directory}")->when($version, function ($key, $version) {
+        return str("laravext-router-routing-tree")->when($version, function ($key, $version) {
             return $key->append(":{$version}");
         })->toString();
     }

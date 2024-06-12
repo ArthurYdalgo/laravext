@@ -31,7 +31,10 @@ export default function ({ mode }) {
                                 'ziggy-js',
                                 'axios',
                                 '@fortawesome/free-solid-svg-icons',
-                                'nprogress'
+                                'nprogress',
+                                'react-i18next',
+                                'zustand',
+                                '@fortawesome/free-solid-svg-icons'
                             ];
                             const chunk = modules.find(module => id.includes(module));
                             return chunk ? `vendor-${chunk}` : 'vendor-others';

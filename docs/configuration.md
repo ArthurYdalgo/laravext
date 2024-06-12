@@ -26,7 +26,7 @@ By default the route cache driver is set to `env('VEXT_ROUTER_CACHE_DRIVER', env
 
 ## Route cacher is enabled (route_cacher_is_enabled) <!-- {docsify-ignore} -->
 
-By default this is set to `env('VEXT_ROUTER_CACHER_IS_ENABLED', !in_array(env('APP_ENV'), ['local', 'testing']))`, so that the route cacher is enabled in production and disabled in local and testing environments. You can change this to `true` or `false` if you want to enable or disable the route cacher, although it's recommended to keep it enabled in production for performance reasons.
+By default this is set to `env('VEXT_ROUTER_CACHE_IS_ENABLED', !in_array(env('APP_ENV'), ['local', 'testing']))`, so that the route cacher is enabled in production and disabled in local and testing environments. You can change this to `true` or `false` if you want to enable or disable the route cacher, although it's recommended to keep it enabled in production for performance reasons.
 
 ## Router route naming is enabled (router_route_naming_is_enabled) <!-- {docsify-ignore} -->
 
