@@ -6,10 +6,10 @@ import PageContent from '@/components/PageContent.vue';
 
 </script>
 <template>
-    <Header>Dashboard</Header>
+    <Header>Dashboard (Vue)</Header>
 
     <PageContent>
-        <div class="p-6 text-gray-900 dark:text-gray-100">{{$t("You're logged in")}}, {{ sharedProps().auth?.user.first_name }}! (Vue)
+        <div class="p-6 text-gray-900 dark:text-gray-100">{{$t("You're logged in")}}, {{ sharedProps().auth?.user.first_name }}!
         </div>
     </PageContent>
 </template>

@@ -102,7 +102,7 @@ const Teams = () => {
             <Header>{t('Teams')}</Header>
 
             <div className="mt-3 mx-4 flex justify-end space-x-2">
-                <Link to="/admin/teams/create">
+                <Link href="/admin/teams/create">
                     <PrimaryButton>{t('Create')}</PrimaryButton>
                 </Link>
             </div>
@@ -156,10 +156,10 @@ const Teams = () => {
                                         <div className="text-sm leading-5 text-gray-900">{resource.name}</div>
                                     </td>
                                     <td className="border-t border-l px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium space-x-2">
-                                        <Link to={`/admin/teams/${resource.id}`}>
+                                        <Link href={`/admin/teams/${resource.id}`}>
                                             <PrimaryButton>{t('Show')}</PrimaryButton>
                                         </Link>
-                                        <Link to={`/admin/teams/${resource.id}/edit`}>
+                                        <Link href={`/admin/teams/${resource.id}/edit`}>
                                             <SecondaryButton>{t('Edit')}</SecondaryButton>
                                         </Link>
                                         <DangerButton onClick={() => destroyResource(resource.id)} className="hover:text-red-900">
