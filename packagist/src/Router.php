@@ -30,11 +30,8 @@ class Router
      */
     public static function parseDirectory($directory_path, $root, $parent_conventions = [])
     {
-        $root = self::replaceReverseSlashes($root);
-        $directory_path = self::replaceReverseSlashes($directory_path);
-
-        $root = self::trimEndingSlash($root);
-        $directory_path = self::trimEndingSlash($directory_path);
+        $root = self::trimEndingSlash(self::replaceReverseSlashes($root));
+        $directory_path = self::trimEndingSlash(self::replaceReverseSlashes($directory_path));
 
         $name = str($directory_path)->replaceFirst($root, '')->explode('/')->last();
         $is_directory_a_group = preg_match('/\([\w]+\)$/', $name);
@@ -56,7 +53,7 @@ class Router
             'path' => $directory_path,
             'relative_path' => $relative_path,
             'conventions' => $conventions,
-            'is_group' => $is_directory_a_group,
+            'is_directory_a_group' => $is_directory_a_group,
             'children' => $children_directories,
         ];
     }
