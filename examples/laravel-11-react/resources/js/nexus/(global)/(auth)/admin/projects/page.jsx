@@ -187,6 +187,9 @@ const Teams = () => {
                                         </div>
                                     </td>
                                     <td className="border-t border-l px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium space-x-2">
+                                    <Link href={`/admin/projects/${resource.id}`}>
+                                            <PrimaryButton>{t('Show')}</PrimaryButton>
+                                        </Link>
                                         <Link href={`/admin/projects/${resource.id}/edit`}>
                                             <SecondaryButton>{t('Edit')}</SecondaryButton>
                                         </Link>
