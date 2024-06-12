@@ -95,7 +95,7 @@ export default ({ children }) => {
                                         <Fa icon={usePrivacy().active ? 'fa-eye-slash' : 'fa-eye'} className="text-gray-400 dark:text-gray-500" />
                                     </div>
                                 </Tooltip>
-                                <Dropdown align="right" width="24">
+                                <Dropdown>
                                     <Dropdown.Trigger>
                                         <span className="inline-flex rounded-md">
                                             <button type="button" className="inline-flex items-center px-2 py-2 border border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
@@ -107,7 +107,7 @@ export default ({ children }) => {
                                         </span>
                                     </Dropdown.Trigger>
 
-                                    <Dropdown.Content>
+                                    <Dropdown.Content width="24" align='right'>
                                         {Object.values(locales).map(locale => (
                                             <DropdownButton key={locale.locale} onClick={() => handleLocaleChange(locale.locale)}>
                                                 <span className="flex items-center space-x-2">
@@ -119,7 +119,7 @@ export default ({ children }) => {
                                     </Dropdown.Content>
                                 </Dropdown>
                                 <div className="ms-2 relative">
-                                    <Dropdown align="right" width="48">
+                                    <Dropdown >
                                         <Dropdown.Trigger>
                                             <span className="inline-flex rounded-md">
                                                 <button type="button" className="inline-flex items-center px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
@@ -131,7 +131,7 @@ export default ({ children }) => {
                                             </span>
                                         </Dropdown.Trigger>
 
-                                        <Dropdown.Content>
+                                        <Dropdown.Content align="right" width="48">
                                             <DropdownButton onClick={logout}>
                                                 {t('Log Out')}
                                             </DropdownButton>

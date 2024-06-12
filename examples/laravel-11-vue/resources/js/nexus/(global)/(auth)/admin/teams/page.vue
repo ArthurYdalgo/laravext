@@ -8,8 +8,6 @@ import Header from '@/components/Header.vue';
 import Link from '@/components/Link.vue';
 import SecondaryButton from '@/components/SecondaryButton.vue';
 import PageContent from '@/components/PageContent.vue';
-import Fa from '@/components/Fa.vue';
-import CircleNumber from '@/components/CircleNumber.vue';
 import Loading from '@/components/Loading.vue';
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n();

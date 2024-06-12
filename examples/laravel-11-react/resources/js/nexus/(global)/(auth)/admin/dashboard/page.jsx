@@ -13,7 +13,7 @@ export default () => {
 
             <PageContent>
                 <div className="p-6 text-gray-900 dark:text-gray-100">
-                    {t("You're logged in")}, {sharedProps().auth?.user?.first_name}
+                    {t("You're logged in")}, {sharedProps().auth?.user?.first_name}! (React)
                 </div>
             </PageContent>
         </>
