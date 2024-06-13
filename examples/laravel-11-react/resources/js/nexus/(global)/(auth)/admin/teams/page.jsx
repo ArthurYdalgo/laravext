@@ -79,7 +79,7 @@ const Teams = () => {
     };
 
     const debouncedFetchResources = debounce(() => {
-        pagination.page = 1;
+        setPagination(previousState => ({ ...previousState , page: 1 }));
     
         fetchResources();
     }, 1000);
@@ -120,7 +120,6 @@ const Teams = () => {
                                 value={filters.search}
                                 onChange={(e) => {
                                     setFilters({ ...filters, search: e.target.value });
-                                    console.log({event: e.target.value})
                                     debouncedFetchResources();
                                 }}
                                 placeholder={t('Search')}

@@ -3,8 +3,8 @@ import NProgress from 'nprogress'
 let timeout = null;
 
 export const injectCSS = (color) => {
-    const element = document.createElement('style')
-    element.textContent = `
+  const element = document.createElement('style')
+  element.textContent = `
       #nprogress {
         pointer-events: none;
       }
@@ -76,50 +76,59 @@ export const injectCSS = (color) => {
         100% { transform: rotate(360deg); }
       }
     `
-    document.head.appendChild(element)
+  document.head.appendChild(element)
 }
 
-
-export const start = (delay) => {
-    timeout = setTimeout(() => NProgress.start(), delay)
+export const startProgress = () => {
+  const startEvent = new CustomEvent('laravext:start');
+  document.dispatchEvent(startEvent);
 }
 
-export const progress = (event) => {
-    if (NProgress.isStarted() && event.detail.progress?.percentage) {
-        NProgress.set(Math.max(NProgress.status, (event.detail.progress.percentage / 100) * 0.9))
-    }
+export const endProgress = () => {
+  const finishEvent = new CustomEvent('laravext:finish');
+  document.dispatchEvent(finishEvent);
 }
 
-export const finish = (event) => {
-    clearTimeout(timeout)
-    if (!NProgress.isStarted()) {
-        return
-    } else if (event.detail.visit.completed) {
-        NProgress.done()
-    } else if (event.detail.visit.interrupted) {
-        NProgress.set(0)
-    } else if (event.detail.visit.cancelled) {
-        NProgress.done()
-        NProgress.remove()
-    }
+export const moveProgress = (percentage) => {
+  const progressEvent = new CustomEvent('laravext:progress', { detail: { progress: { percentage } } });
+  document.dispatchEvent(progressEvent);
+}
+
+const start = (delay) => {
+  timeout = setTimeout(() => NProgress.start(), delay)
+}
+
+const progress = (event) => {
+  if (NProgress.isStarted() && event.detail.progress?.percentage) {
+    NProgress.set(Math.max(NProgress.status, (event.detail.progress.percentage / 100) * 0.9))
+  }
+}
+
+const finish = (event) => {
+  clearTimeout(timeout)
+  if (!NProgress.isStarted()) {
+    return
+  }
+
+  NProgress.done()
 }
 
 export const addEventListeners = (delay) => {
-    document.addEventListener('laravext:start', start.bind(null, delay))
-    document.addEventListener('laravext:progress', progress)
-    document.addEventListener('laravext:finish', finish)
+  document.addEventListener('laravext:start', start.bind(null, delay))
+  document.addEventListener('laravext:progress', progress)
+  document.addEventListener('laravext:finish', finish)
 }
 
 export const setupProgress = ({
-    delay = 250,
-    color = '#29d',
-    includeCSS = true,
-    showSpinner = false,
+  delay = 0,
+  color = '#29d',
+  includeCSS = true,
+  showSpinner = false,
 }) => {
-    console.log('Setting up progress', { delay, color, includeCSS, showSpinner })
-    addEventListeners(delay)
-    NProgress.configure({ showSpinner })
-    if (includeCSS) {
-        injectCSS(color)
-    }
+  console.log('Setting up progress', { delay, color, includeCSS, showSpinner })
+  addEventListeners(delay)
+  NProgress.configure({ showSpinner })
+  if (includeCSS) {
+    injectCSS(color)
+  }
 }

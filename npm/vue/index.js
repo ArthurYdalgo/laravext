@@ -57,7 +57,7 @@ window.addEventListener("popstate", function (event) {
     visit(window.location.href);
 });
 
-export function createLaravextApp({ nexusResolver, strandsResolver, uses = [], conventions = [
+export function createLaravextApp({ nexusResolver, strandsResolver, uses = () => [], conventions = [
     'error',
     'layout',
     'middleware',

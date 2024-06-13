@@ -1,5 +1,6 @@
 import { isEnvProduction, render } from './tools';
 import { version, laravextPageData } from './index';
+import { endProgress, startProgress } from './progress';
 
 export function visit(url) {
     if(!history?.pushState){
@@ -14,8 +15,7 @@ export function visit(url) {
         console.debug(`Visiting page at ${url}`);
     }
     
-    const startEvent = new CustomEvent('laravext:start');
-    document.dispatchEvent(startEvent);
+    startProgress();
 
     fetch(url, {
         headers: {
@@ -60,7 +60,6 @@ export function visit(url) {
                 window.location.href = url;
             }
 
-            const finishEvent = new CustomEvent('laravext:finish', { detail: { visit: { completed: true } } });
-            document.dispatchEvent(finishEvent);
+            endProgress();
         });
 }

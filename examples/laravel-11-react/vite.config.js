@@ -13,7 +13,7 @@ export default function ({ mode }) {
             laravel({
                 input: [
                     'resources/css/app.css',
-                    'resources/js/app.js',
+                    'resources/js/app.jsx',
                 ],
                 refresh: [...refreshPaths, "resources/js/**", "app/**"],
             }),

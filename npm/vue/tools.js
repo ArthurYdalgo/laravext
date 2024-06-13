@@ -24,12 +24,13 @@ export function isEnvProduction(){
     return !['development', 'local'].includes(import.meta.env.VITE_APP_ENV ?? 'production');
 }
 
+
 export function render() {
     const laravextPageData = laravext().page_data;
 
     let nexusResolver = window.__laravext.app.nexusResolver;
     let strandsResolver = window.__laravext.app.strandsResolver;
-    let uses = window.__laravext.app.uses;
+    let uses = window.__laravext.app.uses();
     let conventions = window.__laravext.app.conventions;
 
     if (nexusResolver) {
@@ -84,15 +85,14 @@ export function render() {
                     });
 
                     const app = createApp(rootComponent);
-
+                    
+                    laravext().app.vue?.unmount();
+                    
                     for (let i = 0; i < uses.length; i++) {
+                        console.log(uses[i])
                         app.use(uses[i].plugin, uses[i].options ?? {});
                     }
-
-                    if (laravext().app.vue) {
-                        laravext().app.vue.unmount();
-                    }
-
+                    
                     app.mount(nexusElement);
 
                     window.__laravext.app.vue = app;

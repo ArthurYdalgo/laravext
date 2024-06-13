@@ -148,7 +148,9 @@ Assuming you have a `./resources/views/layouts/app.blade.php` file, where a sect
         </div>
         @laravextScripts  <!-- This will create a __laravext context variable -->> 
         @viteReactRefresh <!-- In case you're using React -->
-        @vite(['resources/js/app.js'])
+
+        @vite(['resources/js/app.jsx']) <!-- In case you're using React -->
+        @vite(['resources/js/app.js']) <!-- In case you're using Vue -->
     </body>
 </html>
 ```

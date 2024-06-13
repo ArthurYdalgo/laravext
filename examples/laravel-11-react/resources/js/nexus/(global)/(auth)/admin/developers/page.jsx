@@ -83,7 +83,7 @@ const Developers = () => {
     };
 
     const debouncedFetchResources = debounce(() => {
-        pagination.page = 1;
+        setPagination(previousState => ({ ...previousState , page: 1 }));
 
         fetchResources();
     }, 1000);

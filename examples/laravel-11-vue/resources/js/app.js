@@ -14,36 +14,33 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 import { resolveComponent } from '@laravext/vue/tools';
 import { color } from '@formkit/icons';
 
-const user = sharedProps()?.auth?.user;
-
-const i18n = createI18n({
-    legacy: false,
-    locale: user?.locale || 'en',
-    fallbackLocale: 'en',
-    messages: {
-        pt
-    }
-})
 
 document.addEventListener('DOMContentLoaded', function () {
     createLaravextApp({
         nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
         strandsResolver: (name) => resolveComponent(`./strands/${name}.vue`, import.meta.glob('./strands/**/*.vue')),
+        uses: () => {
+            const i18n = createI18n({
+                legacy: false,
+                locale: sharedProps()?.auth?.user?.locale || 'en',
+                fallbackLocale: 'en',
+                messages: {
+                    pt
+                }
+            })
 
-        /**
-         * You can use the `uses` key to add additional plugins to the Vue app.
-         */
-        uses: [
-            /** @see https://www.npmjs.com/package/vue-cookies for original example */
-            { plugin: VueCookies, options: { expires: '7d' } },
-
-            { plugin: ZiggyVue },
-
-            /** @see https://vue-i18n.intlify.dev/guide/essentials/started.html for original example */
-            { plugin: i18n },
-            { plugin: VueSweetalert2 },
-            { plugin: fkPluging, options: fkDefaultConfig (fkConfig) },
-        ],
+            return [
+                { plugin: VueCookies, options: { expires: '7d' } },
+    
+                { plugin: ZiggyVue },
+    
+                /** @see https://vue-i18n.intlify.dev/guide/essentials/started.html for original example */
+                { plugin: i18n },
+                { plugin: VueSweetalert2 },
+                { plugin: fkPluging, options: fkDefaultConfig (fkConfig) },
+            ]
+            
+        },
         progress: {
             color: '#ff0000',
         }
