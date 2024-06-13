@@ -5,9 +5,23 @@
   <img width="150" src="https://github.com/ArthurYdalgo/laravext/blob/main/docs/images/logo/laravext.png?raw=true"/></a>
 </p>
 
+<p align="center">
+<a href="https://packagist.org/packages/arthurydalgo/laravext"><img src="https://img.shields.io/packagist/dt/arthurydalgo/laravext" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/arthurydalgo/laravext"><img src="https://img.shields.io/packagist/v/arthurydalgo/laravext" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/arthurydalgo/laravext"><img src="https://img.shields.io/packagist/l/arthurydalgo/laravext" alt="License"></a>
+
+</p>
+
 # Laravext
 
 Welcome to the Laravext repo!
+
+Here are some useful links:
+- [Documentation](https://laravext.dev)
+- [YouTube](https://www.youtube.com/@laravext)
+- [Packagist](https://packagist.org/packages/arthurydalgo/laravext)
+- [NPM @laravext/vue](https://www.npmjs.com/package/@laravext/vue)
+- [NPM @laravext/react](https://www.npmjs.com/package/@laravext/react)
 
 ## Documentation
 

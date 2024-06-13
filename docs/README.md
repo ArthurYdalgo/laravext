@@ -165,7 +165,7 @@ This section is just so I don't get my ass sued by anyone.
 
 ## Final Thoughts
 
-This is my first "big" project aimed to be used by the community, and it's just a side project. This repo may contain flaws/bad choices (but who doesn't), or code that may cringe the hell out of you. Use it if you like, ignore it if you hate it.
+This is my first "big" project aimed to be used by the community, and it may contain flaws/bad choices (but who doesn't), or code that may cringe the hell out of you. Use it if you like, ignore it if you hate it.
 
 PRs are welcome, but I may ignore them at my disclosure.
 
