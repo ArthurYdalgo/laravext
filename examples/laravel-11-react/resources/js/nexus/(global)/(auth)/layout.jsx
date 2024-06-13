@@ -45,8 +45,6 @@ export default ({ children }) => {
     };
 
     const handleLocaleChange = (locale) => {
-
-        console.log(locale)
         i18n.changeLanguage(locale);
 
         axios.put('/api/auth/user', {

@@ -64,7 +64,7 @@ Your tool choice matters much less than your skill at using the tool to accompli
 ## Who is it for?
 
 My take is that you might be interested in using Laravext if you fall into one or more of the following categories:
-- you want to have a file-based routing system like Next.js (because you don't want to use react router or vue router)
+- you want to have a file-based routing system like Next.js (because you don't want to use react/vue router, or declare them all in your `web.php` file)
 - you don't want to set up a separate project for your frontend (like Next.js or Nuxt.js)
 - you want some kind of flexibility to sometimes have a partially server-side rendered page for SEO purposes (and don't want to use Inertia.js)
 - you don't like the way Next.js handles their caching strategy
@@ -80,7 +80,7 @@ I'll try to be as less biased as possible, but you might not be interested in us
 - you want to keep your frontend and backend in separate projects
 - you didn't like it (to each their own)
 
-Remember, this is just my opinion, and you should use whatever makes you more productive and pays your bills, and there're plenty of tools available for you to use, such as the aforementioned Next.js, Inertia.js, Nuxt.js, TALL stack, Blade Components with Folio, etc.
+Remember, this is just my opinion, and you should use whatever suits your needs the best, and there're plenty of tools available for you to use, such as the aforementioned Next.js, Inertia.js, Nuxt.js, TALL stack, Blade Components with Folio, etc.
 
 ## What does it do?
 

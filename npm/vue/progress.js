@@ -125,7 +125,6 @@ export const setupProgress = ({
   includeCSS = true,
   showSpinner = false,
 }) => {
-  console.log('Setting up progress', { delay, color, includeCSS, showSpinner })
   addEventListeners(delay)
   NProgress.configure({ showSpinner })
   if (includeCSS) {

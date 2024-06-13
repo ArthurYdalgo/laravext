@@ -42,15 +42,82 @@ npm install @laravext/vue
 
 This example also assumes that you have a `bootstrap.js` at `./resources/js` and an `app.css` in you `./resources/css` directory. You might or not have any need for those.
 
-Now, make sure that you have an `app.js` in your `./resources/js` directory, with the following:
+Now, make sure that you have an `app.(js|jsx|ts|tsx)` in your `./resources/js` directory, with the following:
 
-```javascript
+<!-- tabs:start -->
+
+#### **React**
+
+`app.jsx`:
+
+
+```jsx
+import { createLaravextApp, resolveComponent, sharedProps } from "@laravext/react"
 import './bootstrap';
 import '../css/app.css';
+import pt from './../../lang/pt.json'
 
-import { createLaravextApp, resolveComponent } from "@laravext/react"
-// or
-import { createLaravextApp, resolveComponent } from "@laravext/vue"
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+
+const user = sharedProps()?.auth?.user;
+
+// This is just for example purposes, using i18n is not a requirement
+i18n
+    .use(initReactI18next)
+    .init({
+        resources: {
+            pt: {
+                translation: pt
+            }
+        },
+        fallbackLng: "en",
+        interpolation: {
+            escapeValue: false
+        }
+    });
+
+i18n.changeLanguage(user?.locale || 'en')
+
+document.addEventListener('DOMContentLoaded', function () {
+    createLaravextApp({
+        // Remember to change this path if you've modified the default path in the ./config/laravext.php file
+        nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
+
+        // Remember to change this path if you're using another path to store your strands
+        strandsResolver: (name) => resolveComponent(`./strands/${name}.jsx`, import.meta.glob('./strands/**/*.jsx')),
+
+        // Like Inertia, there's a wrapper for the https://ricostacruz.com/nprogress library.
+        // You don't have to declare this, while using the createLaravextApp, but so
+        // you know, these are the default values:
+        progress: {
+            delay: 0, // How many miliseconds until the loading bar appears
+            color: '#29d', // The color of said bar
+            includeCSS: true, // Wether or not to use NProgress' default styling
+            showSpinner: false, // Wether or not to show the spinner
+        },
+
+        // or, if you don't want it at all:
+        progres: false,
+
+    })
+}, false);
+```
+
+#### **Vue**
+
+`app.js`:
+
+
+```js
+import './bootstrap';
+import '../css/app.css';
+import { createLaravextApp, resolveComponent, sharedProps } from "@laravext/vue"
+
+// Other imports for the Vue.js example
+import { createI18n } from 'vue-i18n'
+import pt from './../../lang/pt.json'
+import VueCookies from 'vue-cookies'
 
 document.addEventListener('DOMContentLoaded', function() {
     createLaravextApp({
@@ -58,10 +125,44 @@ document.addEventListener('DOMContentLoaded', function() {
         nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
 
         // Remember to change this path if you're using another path to store your strands
-        strandsResolver: (name) => resolveComponent(`./strands/${name}`, import.meta.glob('./strands/**/*'))
+        strandsResolver: (name) => resolveComponent(`./strands/${name}.vue`, import.meta.glob('./strands/**/*.vue')),
+
+        // If you're using Vue.js and you want to set the uses of your Vue app, you can do it here.
+        uses: () => {
+            const i18n = createI18n({
+                legacy: false,
+                locale: sharedProps()?.auth?.user?.locale || 'en',
+                fallbackLocale: 'en',
+                messages: {
+                    pt
+                }
+            })
+
+            return [
+                { plugin: VueCookies, options: { expires: '7d' } },
+                { plugin: i18n }
+            ]
+        }
+
+        // Like Inertia, there's a wrapper for the https://ricostacruz.com/nprogress library.
+        // You don't have to declare this, while using the createLaravextApp, but so
+        // you know, these are the default values:
+        progress: {
+            delay: 0, // How many miliseconds until the loading bar appears
+            color: '#29d', // The color of said bar
+            includeCSS: true, // Wether or not to use NProgress' default styling
+            showSpinner: false, // Wether or not to show the spinner
+        },
+
+        // or, if you don't want it at all:
+        progres: false,
     })
  }, false);
 ```
+
+<!-- tabs:end -->
+
+
 
 You can change the nexus and strands' locations if you want to. Make sure to change the nexus directory in the `./config/laravext.php` file. For more details on how the router works, check the [router section](/router).
 

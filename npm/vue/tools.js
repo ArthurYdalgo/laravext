@@ -88,9 +88,8 @@ export function render() {
                     
                     laravext().app.vue?.unmount();
                     
-                    for (let i = 0; i < uses.length; i++) {
-                        console.log(uses[i])
-                        app.use(uses[i].plugin, uses[i].options ?? {});
+                    for (let use of uses) {
+                        app.use(use.plugin, use.options ?? {});
                     }
                     
                     app.mount(nexusElement);

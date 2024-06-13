@@ -72,7 +72,9 @@ export function createLaravextApp({ nexusResolver, strandsResolver, conventions 
         conventions,
     }
 
-    setupProgress( progress );
+    if(progress){
+        setupProgress( progress );
+    }
     
     render();
 }
