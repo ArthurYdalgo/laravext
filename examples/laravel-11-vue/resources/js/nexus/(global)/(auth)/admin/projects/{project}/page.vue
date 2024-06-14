@@ -180,7 +180,7 @@ onMounted(() => {
             <PrimaryButton :disabled="projectComments.loading"
                 v-if="projectComments.loading || (!projectComments.loading && projectComments.meta.current_page < projectComments.meta.last_page)"
                 @click="loadMore">
-                <div class="mini-loader w-[10px] mr-2" v-if="projectComments.loading"></div> {{
+                <div class="tiny-loader w-[10px] mr-2" v-if="projectComments.loading"></div> {{
                     projectComments.loading ? $t('Loading') : $t('Load more') }}
             </PrimaryButton>
         </div>
