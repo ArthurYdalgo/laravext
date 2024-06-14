@@ -69,7 +69,13 @@ export function render() {
                         }
                     }
 
-                    createRoot(nexusElement).render(nexus);
+                    let root = window.__laravext.app?.react_root ?? createRoot(nexusElement);
+                    
+                    root.render(nexus);
+                    
+                    if(!window.__laravext.app?.react_root){
+                        window.__laravext.app.react_root = root;
+                    }
                 })
                     .catch((error) => {
                         console.error(`Error loading page at ${nexusComponentPath}:`, error);

@@ -49,8 +49,6 @@ const destroyResource = (id) => {
 }
 
 onMounted(() => {
-    company.loading = true;
-
     axios.get(`/api/companies/${routeParams().company}`)
         .then(response => {
             company.data = {
