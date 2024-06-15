@@ -80,13 +80,14 @@ export default () => {
   const updateResource = () => {
     setForm(prevState => ({ ...prevState, submitting: true }));
 
+    console.log(form.data);
     const data = {
       name: form.data.name,
-      email: form.data.email,
-      website: form.data.website,
-    };
+      developer_ids: form.data.developers.map(developer => developer.id),
+  };
+  console.log({data});
 
-    return axios.put(`/api/teams/${routeParams().company}`, data)
+    return axios.put(`/api/teams/${routeParams().team}`, data)
       .then(() => {
         setForm(prevState => ({ ...prevState, submitting: false }));
         Swal.fire(t('Record updated!'), t('The team has been updated.'), 'success').then(() => {
@@ -100,7 +101,7 @@ export default () => {
   };
 
   const [addDeveloperToTeamModal, setAddDeveloperToTeamModal, addDeveloperToTeamModalRef] = useStateRef({
-    visible: true,
+    visible: false,
     loading: false,
     search: '',
     developers: []
@@ -142,9 +143,9 @@ export default () => {
   const closeAddDeveloperToTeamModal = () => {
     setAddDeveloperToTeamModal({
       ...addDeveloperToTeamModal,
-      visible: false,
       search: '',
-      developers: []
+      developers: [],
+      visible: false,
     });
   };
 
@@ -166,7 +167,6 @@ export default () => {
               <Form.Input type="text" inputProps={{
                 value: form.data.name,
                 onChange: e => {
-                  console.log(e.target.value)
                   setForm(prevState => ({ ...prevState, data: { ...prevState.data, name: e.target.value } }))
                 }
               }} />
@@ -196,7 +196,7 @@ export default () => {
                 <div className="border-b-2 border-gray-200 my-2"></div>
                 <div className="text-sm">{t('Name')}: {t(developer.name)}</div>
                 <div className="text-sm">{t('Role')}: {t(developer.role_label)}</div>
-                {/* <div class="text-sm">{ t('Email: ') } { privacy.active ? '***@***' : developer.email }</div> */}
+                <div class="text-sm">{t('Email: ')} {privacyIsActive ? '***@***' : developer.email}</div>
 
 
               </div>
@@ -216,7 +216,6 @@ export default () => {
         <div className="min-h-[50vh] w-full p-6 shadow-none border-none">
           <h2 className="text-xl font-bold mb-2">{t('Add developer to team')}</h2>
           <TextInput className="w-full"
-            // v-model="addDeveloperToTeamModal.search" 
             value={addDeveloperToTeamModal.search}
             onChange={(e) => {
               setAddDeveloperToTeamModal(prevState => ({ ...prevState, search: e.target.value }));
@@ -243,26 +242,10 @@ export default () => {
                   <div className="border-b-2 border-gray-200 my-2"></div>
                   <div className="text-sm">{t('Name')}: {t(developer.name)}</div>
                   <div className="text-sm">{t('Role')}: {t(developer.role_label)}</div>
-                  {/* <div class="text-sm">{ t('Email: ') } { privacy.active ? '***@***' : developer.email }</div> */}
-
-
+                  <div class="text-sm">{t('Email: ')} {privacyIsActive ? '***@***' : developer.email}</div>
                 </div>
               ))}
-              {/* <div className="bg-white shadow rounded-lg p-4"
-                v-for="developer in addDeveloperToTeamModal.developers.sort((a, b) => a.name.localeCompare(b.name))"
-                            :key="developer.id">
-              <div className="font-bold flex justify-between">@{ developer.username }<PrimaryButton
-                                    @click="form.data.developers.push(developer); fetchDevelopers();" type="button">{
-                  t('Add')
-                }</PrimaryButton> */}
-              {/* </div> */}
-              {/* <div className="border-b-2 border-gray-200 my-2"></div> */}
-              {/* <div className="text-sm">{t('Name')}: {t(developer.name)}</div>
-              <div className="text-sm">{t('Role')}: {t(developer.role_label)}</div> */}
-              {/* <div className="text-sm">{ t('Email: ') } { privacy.active ? '***@***' : developer.email } */}
-              {/* </div> */}
             </div>
-            {/* </div> */}
           </div>
         </div >
       </Modal >
