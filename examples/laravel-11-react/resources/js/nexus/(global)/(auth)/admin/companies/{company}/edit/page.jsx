@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
 import useStateRef from 'react-usestateref';
 import usePrivacy from '@/hooks/usePrivacy';
 import FormSaveButton from '@/components/FormSaveButton';
+import Form from '@/components/Form';
 
 export default () => {
     const { t } = useTranslation();
@@ -75,7 +76,7 @@ export default () => {
             .then(() => {
                 setForm(prevState => ({ ...prevState, submitting: false }));
                 Swal.fire(t('Record updated!'), t('The company has been updated.'), 'success').then(() => {
-                    // window.location.href = route('admin.companies');
+                    window.location.href = route('admin.companies');
                 });
             })
             .catch(() => {
@@ -86,7 +87,7 @@ export default () => {
 
     return (
         <>
-            <Header>{form.loading ? t('Loading...') : `#${form.data.id} - ${form.data.name}`}</Header>
+            <Header>{ form.submitting ? t('Loading...') : `${t('Edit company')} #${routeParams().company} - ${form.data.name}` }</Header>
             <div className="mt-3 mx-4 flex justify-end space-x-2">
                 <Link href={`/admin/companies/${routeParams().company}`}>
                     <PrimaryButton>{t('Show')}</PrimaryButton>
@@ -95,15 +96,48 @@ export default () => {
             </div >
             {form.loading ? <Loading /> :
                 <PageContent>
-                    <FormSaveButton disabled={form.submitting} loading={form.submitting} onClick={() => {
-                        if(form.submitting){
-                            return;
-                        }
 
-                        updateResource();
+                    <Form>
+                        <Form.Field>
+                            <Form.Label>{t('Name')}</Form.Label>
+                            <Form.Input type="text" inputProps={{
+                                value: form.data.name,
+                                onChange: e => {
+                                    console.log(e.target.value)
+                                    setForm(prevState => ({ ...prevState, data: { ...prevState.data, name: e.target.value } }))
+                                }
+                            }} />
+                        </Form.Field>
 
+                        <Form.Field>
+                            <Form.Label>{t('Email')}</Form.Label>
+                            <Form.Input type="email"
+                                inputProps={{
+                                    value: form.data.email,
+                                    onChange: e => {
+                                        console.log(e.target.value)
+                                        setForm(prevState => ({ ...prevState, data: { ...prevState.data, email: e.target.value } }))
+                                    }
+                                }}
+                            />
+                        </Form.Field>
 
-                    }}>{t('Save')}</FormSaveButton>
+                        <Form.Field>
+                            <Form.Label>{t('Website')}</Form.Label>
+                            <Form.Input type="text" value={form.data.website} inputProps={
+                                {
+                                    value: form.data.website,
+                                    onChange: e => {
+                                        console.log(e.target.value)
+                                        setForm(prevState => ({ ...prevState, data: { ...prevState.data, website: e.target.value } }))
+                                    }
+                                }
+                            } />
+                        </Form.Field>
+                    </Form>
+
+                    <FormSaveButton disabled={form.submitting} loading={form.submitting} onClick={updateResource}>{t('Save')}</FormSaveButton>
+
                 </PageContent>
             }
         </>
