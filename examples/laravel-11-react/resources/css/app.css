@@ -39,7 +39,8 @@
 }
 
 html {
-  overflow-y:scroll;
+  overflow-y:scroll !important;
+  padding-right: 0px !important;
 }
 
 .swal2-shown {     

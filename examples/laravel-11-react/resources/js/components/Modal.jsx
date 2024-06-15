@@ -39,7 +39,7 @@ export default function Modal({ children, show = false, maxWidth = 'sm:max-w-2xl
                     leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                 >
                     <Dialog.Panel
-                        className={`mb-2 bg-white dark:bg-gray-800 rounded-lg shadow-xl transform transition-all sm:mx-auto ${maxWidth}`}
+                        className={`mb-2 bg-white dark:bg-gray-800 overflow-hidden rounded-lg shadow-xl transform transition-all sm:mx-auto ${maxWidth}`}
                     >
                         {children}
                     </Dialog.Panel>
