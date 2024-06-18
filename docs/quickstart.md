@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
         },
 
         // or, if you don't want it at all:
-        progres: false,
+        // progress: false,
 
     })
 }, false);
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
 
         // or, if you don't want it at all:
-        progres: false,
+        // progress: false,
     })
  }, false);
 ```
