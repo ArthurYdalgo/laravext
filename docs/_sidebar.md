@@ -2,7 +2,7 @@
 
 - [Laravext (BETA)](README.md)
 - [Before You Start](before-you-start.md)
-- [Quick Start](quickstart.md)
+- [Quick Start Installation](quickstart.md)
 - [Configuration](configuration.md)
 - Concepts
     - [Router](concepts/router.md)

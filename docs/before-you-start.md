@@ -69,9 +69,9 @@ The examples are meant to help you understand how to use these tools, and are no
 
 ## The Example Project(s)
 
-Some code or file structures in this documentation might (or not) be derived from the [laravext examples available at GitHub](https://github.com/ArthurYdalgo/laravext/tree/main/examples), and it'll be either the [laravel-11-react](https://github.com/ArthurYdalgo/laravext/tree/main/examples/laravel-11-react) or [laravel-11-vue](https://github.com/ArthurYdalgo/laravext/tree/main/examples/laravel-11-vue). The example projects use the "old" directory structure from Laravel 10, not the new one.
+Some code or file structures in this documentation might (or not) be derived from the [laravext examples available at GitHub](https://github.com/ArthurYdalgo/laravext/tree/main/examples), and it'll be either the [laravel-11-react](https://github.com/ArthurYdalgo/laravext/tree/main/examples/laravel-11-react) or [laravel-11-vue](https://github.com/ArthurYdalgo/laravext/tree/main/examples/laravel-11-vue). The Vue.js example is the only that all the admin pages are implemented, while the React example only has the dashboard, teams and companies pages. Why? Because I didn't feel like doing all the other pages again after building them in Vue.js because I knew you'd take longer, and I was feeling anxious to publish this package as soon as possible. The teams and companies pages will be enough to exemplify on how to use Laravext in React.
 
-It's a basic developer team manager, where teams have developers and projects, and these projects belong to companies (needless to say that this does not reflect how a real world application of this kind would be designed). 
+The example projects use the "old" directory structure from Laravel 10, not the new one, and they're a basic developer team manager, where teams have developers and projects, and these projects belong to companies (needless to say that this does not reflect how a real world application of this kind would be designed). 
 
 The Vue.js examples use the [FormKit](https://formkit.com/) package, and one of the components is an autocomplete which requires a key to work. You can get a free development-environment-only key at their website. Just put it in the `.env` file, at the `VITE_FORMKIT_KEY`.
 

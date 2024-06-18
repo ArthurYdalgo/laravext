@@ -33,6 +33,17 @@ class Router
         $root = self::trimEndingSlash(self::replaceReverseSlashes($root));
         $directory_path = self::trimEndingSlash(self::replaceReverseSlashes($directory_path));
 
+        if (!File::isDirectory($directory_path)) {
+            return [
+                'name' => null,
+                'path' => null,
+                'relative_path' => null,
+                'conventions' => [],
+                'is_directory_a_group' => false,
+                'children' => [],
+            ];
+        }
+
         $name = str($directory_path)->replaceFirst($root, '')->explode('/')->last();
         $is_directory_a_group = preg_match('/\([\w]+\)$/', $name);
 

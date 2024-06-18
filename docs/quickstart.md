@@ -1,4 +1,4 @@
-# Quickstart <!-- {docsify-ignore} -->
+# Quickstart Installation <!-- {docsify-ignore} -->
 
 This tutorial assumes that you already have a Laravel 10 project up and running with PHP 8.2, and that you use the vite bundler. These instructions are based on the [examples provided in the laravext repository](https://github.com/ArthurYdalgo/laravext/tree/main/examples).
 
@@ -15,6 +15,8 @@ you can also publish the config file to make changes such as default root view, 
 ```bash
 php artisan vendor:publish --tag=laravext-config
 ```
+
+By default, the `root_view` is set as `sections.app`, which means you should either have that view file, or change the config to fit your needs.
 
 on your `./routes/web.php`, insert the following to automagically generate your routes:
 
@@ -170,8 +172,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <!-- tabs:end -->
 
-
-
 You can change the nexus and strands' locations if you want to. Make sure to change the nexus directory in the `./config/laravext.php` file. For more details on how the router works, check the [router section](/router).
 
 ## Vite Configuration
@@ -272,5 +272,9 @@ then, assuming you have a `./resources/views/sections/app.blade.php` (or any oth
     @nexus
 @endsection
 ```
+
+## Nexus Directory
+
+By default, the nexus directory is set as `./resources/js/nexus`. So this is where you should start placing the files that will be used by [Laravext's Router](/router). You may change this in the `./config/laravext.php` file, assuming you've published the config file.
 
 You're now ready to start creating your project using the laravext router
