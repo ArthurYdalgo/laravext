@@ -34,7 +34,9 @@ class Directive
      */
     public static function nexus($expression = '')
     {   
-        $template = '<section section-type="laravext-nexus-section">{!! $laravext["nexus"]["server_skeleton"] ?? "" !!}</section>';
+        
+        $template = '<section section-type="laravext-nexus-section">{!! $laravext_page_data["nexus"]["server_skeleton"] ?? "" !!}</section>';
+        
         return $template;
     }
 
