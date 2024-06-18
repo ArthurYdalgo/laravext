@@ -32,12 +32,19 @@ Install the npm module:
 
 ```bash
 npm install @laravext/react
+
+# Additionally, you should have the following package installed, if you haven't already
+npm install @vitejs/plugin-react
 ```
+
 
 or
 
 ```bash
 npm install @laravext/vue
+
+# Additionally, you should have the following package installed, if you haven't already
+npm install @vitejs/plugin-vue
 ```
 
 This example also assumes that you have a `bootstrap.js` at `./resources/js` and an `app.css` in you `./resources/css` directory. You might or not have any need for those.
@@ -112,7 +119,8 @@ document.addEventListener('DOMContentLoaded', function () {
 ```js
 import './bootstrap';
 import '../css/app.css';
-import { createLaravextApp, resolveComponent, sharedProps } from "@laravext/vue"
+import { createLaravextApp, sharedProps } from "@laravext/vue"
+import { resolveComponent } from '@laravext/vue/tools';
 
 // Other imports for the Vue.js example
 import { createI18n } from 'vue-i18n'
@@ -142,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 { plugin: VueCookies, options: { expires: '7d' } },
                 { plugin: i18n }
             ]
-        }
+        },
 
         // Like Inertia, there's a wrapper for the https://ricostacruz.com/nprogress library.
         // You don't have to declare this, while using the createLaravextApp, but so
@@ -247,7 +255,7 @@ Assuming you have a `./resources/views/layouts/app.blade.php` file, where a sect
                 @yield('content')
             </div>
         </div>
-        @laravextScripts  <!-- This will create a __laravext context variable -->> 
+        @laravextScripts  <!-- This will create a __laravext context variable -->
         @viteReactRefresh <!-- In case you're using React -->
 
         @vite(['resources/js/app.jsx']) <!-- In case you're using React -->

@@ -31,15 +31,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
             return [
                 { plugin: VueCookies, options: { expires: '7d' } },
-    
+
                 { plugin: ZiggyVue },
-    
+
                 /** @see https://vue-i18n.intlify.dev/guide/essentials/started.html for original example */
                 { plugin: i18n },
                 { plugin: VueSweetalert2 },
-                { plugin: fkPluging, options: fkDefaultConfig (fkConfig) },
+                { plugin: fkPluging, options: fkDefaultConfig(fkConfig) },
             ]
-            
+
         },
         progress: {
             color: '#ff0000',

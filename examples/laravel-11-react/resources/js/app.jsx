@@ -1,4 +1,5 @@
-import { createLaravextApp, resolveComponent, sharedProps } from "@laravext/react"
+import { createLaravextApp, sharedProps } from "@laravext/react"
+import { resolveComponent } from "@laravext/react/tools"
 import './bootstrap';
 import '../css/app.css';
 import pt from './../../lang/pt.json'
