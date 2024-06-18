@@ -28,8 +28,10 @@ export function visit(url) {
         return response.json();
     })
         .then((data) => {
+            console.log(data);
+
             if (data.action == 'redirect') {
-                window.location.href = data.url;
+                // window.location.href = data.url;
                 return;
             }
 
@@ -40,7 +42,7 @@ export function visit(url) {
                 history.pushState({}, null, url);
             } catch (error) {
                 console.error('Error updating page data:', error);
-                window.location.href = url;
+                // window.location.href = url;
             }
 
             endProgress();

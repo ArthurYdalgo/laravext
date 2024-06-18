@@ -80,12 +80,11 @@ export default () => {
   const updateResource = () => {
     setForm(prevState => ({ ...prevState, submitting: true }));
 
-    console.log(form.data);
     const data = {
       name: form.data.name,
       developer_ids: form.data.developers.map(developer => developer.id),
-  };
-  console.log({data});
+    };
+
 
     return axios.put(`/api/teams/${routeParams().team}`, data)
       .then(() => {
@@ -151,7 +150,7 @@ export default () => {
 
   return (
     <>
-      <Header>{form.submitting ? t('Loading...') : `${t('Edit team')} #${routeParams().team} - ${form.data.name}`}</Header>
+      <Header>{form.loading ? t('Loading...') : `${t('Edit team')} #${routeParams().team} - ${form.data.name}`}</Header>
       <div className="mt-3 mx-4 flex justify-end space-x-2">
         <Link href={`/admin/companies/${routeParams().team}`}>
           <PrimaryButton>{t('Show')}</PrimaryButton>

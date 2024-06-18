@@ -177,6 +177,13 @@ class ResponseFactory
         ];
 
         if ($request_laravext_version != $laravext_page_data['version'] || $request_laravext_root_view != $root_view) {
+            info('Laravext: Redirecting to the same page with the latest version and root view.', [
+                'request_laravext_version' => $request_laravext_version,
+                'laravext_page_data_version' => $laravext_page_data['version'],
+                'request_laravext_root_view' => $request_laravext_root_view,
+                'laravext_page_data_root_view' => $root_view,
+            ]);
+
             return response()->json([
                 'action' => 'redirect',
                 'url' => $request->fullUrl(),
