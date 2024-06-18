@@ -30,54 +30,14 @@ export default () => {
       developers: [],
     },
     errors: [],
-    loading: true,
     submitting: false,
   });
-
-  useEffect(() => {
-    axios.get(`/api/teams/${routeParams().team}`)
-      .then(response => {
-        setForm(prevState => ({
-          ...prevState, data: response.data, loading: false
-        }));
-
-        console.log(formRef.current.data)
-      });
-  }, []);
-
-
-  const destroyResource = id => {
-    Swal.fire({
-      title: t('Are you sure?'),
-      icon: 'warning',
-      confirmButtonText: t('Yes, delete it!'),
-      cancelButtonText: t('No, cancel!'),
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      showCancelButton: true,
-      showCloseButton: true,
-    }).then(result => {
-      if (result.isConfirmed) {
-        axios
-          .delete(`/api/teams/${id}`)
-          .then(() => {
-            Swal.fire(t('Record deleted!'), t('The team has been deleted.'), 'success').then(() => {
-              window.location.href = '/admin/teams';
-            });
-          })
-          .catch(error => {
-            console.error(error);
-            Swal.fire(t('Error!'), t('An error occurred while deleting the team.'), 'error');
-          });
-      }
-    });
-  };
 
   const handleRemoveDeveloperFromTeam = (developer) => {
     setForm(prevState => ({ ...prevState, data: { ...prevState.data, developers: prevState.data.developers.filter(d => d.id !== developer.id) } }));
   };
 
-  const updateResource = () => {
+  const createResource = () => {
     setForm(prevState => ({ ...prevState, submitting: true }));
 
     const data = {
@@ -86,16 +46,16 @@ export default () => {
     };
 
 
-    return axios.put(`/api/teams/${routeParams().team}`, data)
+    return axios.post(`/api/teams`, data)
       .then(() => {
         setForm(prevState => ({ ...prevState, submitting: false }));
-        Swal.fire(t('Record updated!'), t('The team has been updated.'), 'success').then(() => {
+        Swal.fire(t('Record created!'), t('The team has been created.'), 'success').then(() => {
           window.location.href = route('admin.teams');
         });
       })
       .catch(() => {
         setForm(prevState => ({ ...prevState, submitting: false }));
-        Swal.fire(t('Error!'), t('An error occurred while updating the team.'), 'error');
+        Swal.fire(t('Error!'), t('An error occurred while creating the team.'), 'error');
       });
   };
 
@@ -150,62 +110,56 @@ export default () => {
 
   return (
     <>
-      <Header>{form.loading ? t('Loading...') : `${t('Edit team')} #${routeParams().team} - ${form.data.name}`}</Header>
-      <div className="mt-3 mx-4 flex justify-end space-x-2">
-        <Link href={`/admin/companies/${routeParams().team}`}>
-          <PrimaryButton>{t('Show')}</PrimaryButton>
-        </Link>
-        <DangerButton onClick={() => destroyResource(routeParams().team)} className="hover:text-red-900">{t('Delete')}</DangerButton >
-      </div >
-      {form.loading ? <Loading /> :
-        <PageContent>
+      <Header>{t('Create team')}</Header>
 
-          <Form>
-            <Form.Field>
-              <Form.Label>{t('Name')}</Form.Label>
-              <Form.Input type="text" inputProps={{
-                value: form.data.name,
-                onChange: e => {
-                  setForm(prevState => ({ ...prevState, data: { ...prevState.data, name: e.target.value } }))
-                }
-              }} />
-            </Form.Field>
+      <PageContent>
+
+        <Form>
+          <Form.Field>
+            <Form.Label>{t('Name')}</Form.Label>
+            <Form.Input type="text" inputProps={{
+              value: form.data.name,
+              onChange: e => {
+                setForm(prevState => ({ ...prevState, data: { ...prevState.data, name: e.target.value } }))
+              }
+            }} />
+          </Form.Field>
 
 
 
-          </Form>
-          <span className="text-lg font-bold">{t('Developers')}: <PrimaryButton
-            onClick={() => {
-              setAddDeveloperToTeamModal(prevState => ({ ...prevState, visible: true }));
-            }} className="bg-green-600" type="button">
-            <Fa icon="plus" /></PrimaryButton> </span>
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
-            {form.data.developers.sort((a, b) => a.name.localeCompare(b.name)).map(developer => (
+        </Form>
+        <span className="text-lg font-bold">{t('Developers')}: <PrimaryButton
+          onClick={() => {
+            setAddDeveloperToTeamModal(prevState => ({ ...prevState, visible: true }));
+          }} className="bg-green-600" type="button">
+          <Fa icon="plus" /></PrimaryButton> </span>
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+          {form.data.developers.sort((a, b) => a.name.localeCompare(b.name)).map(developer => (
 
-              <div className="bg-white shadow rounded-lg p-4"
-                key={developer.id}>
+            <div className="bg-white shadow rounded-lg p-4"
+              key={developer.id}>
 
-                <div className="font-bold flex justify-between"><span>@{developer.username}</span>
-                  <Tooltip text={t('Click to remove the developer from the team')}>
-                    <Fa className="cursor-pointer" onClick={() => handleRemoveDeveloperFromTeam(developer)} icon="fa-trash"
-                      color="red" />
-                  </Tooltip>
-                </div>
-
-                <div className="border-b-2 border-gray-200 my-2"></div>
-                <div className="text-sm">{t('Name')}: {t(developer.name)}</div>
-                <div className="text-sm">{t('Role')}: {t(developer.role_label)}</div>
-                <div className="text-sm">{t('Email: ')} {privacyIsActive ? '***@***' : developer.email}</div>
-
-
+              <div className="font-bold flex justify-between"><span>@{developer.username}</span>
+                <Tooltip text={t('Click to remove the developer from the team')}>
+                  <Fa className="cursor-pointer" onClick={() => handleRemoveDeveloperFromTeam(developer)} icon="fa-trash"
+                    color="red" />
+                </Tooltip>
               </div>
-            ))}
-          </div>
 
-          <FormSaveButton disabled={form.submitting} loading={form.submitting} onClick={updateResource}>{t('Save')}</FormSaveButton>
+              <div className="border-b-2 border-gray-200 my-2"></div>
+              <div className="text-sm">{t('Name')}: {t(developer.name)}</div>
+              <div className="text-sm">{t('Role')}: {t(developer.role_label)}</div>
+              <div className="text-sm">{t('Email: ')} {privacyIsActive ? '***@***' : developer.email}</div>
 
-        </PageContent >
-      }
+
+            </div>
+          ))}
+        </div>
+
+        <FormSaveButton disabled={form.submitting} loading={form.submitting} onClick={createResource}>{t('Save')}</FormSaveButton>
+
+      </PageContent >
+
       <Modal
         show={addDeveloperToTeamModal.visible}
         closeable={true}

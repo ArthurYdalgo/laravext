@@ -23,6 +23,8 @@ class StoreRequest extends FormRequest
     {
         return [
             'name' => 'required|string|min:2|max:255',
+            'developer_ids' => 'required|array',
+            'developer_ids.*' => 'required|integer|exists:developers,id',
         ];
     }
 }

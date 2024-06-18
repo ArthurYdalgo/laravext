@@ -26,7 +26,15 @@ class TeamController extends Controller
 
     public function store(StoreRequest $request)
     {
-        return Team::create($request->validated());
+        $data = collect($request->validated())->only(['name'])->toArray();
+
+        $team = Team::create($data);
+
+        $developer_ids = $request->validated(['developer_ids']);
+
+        Developer::whereIn('id', $developer_ids)->update(['team_id' => $team->id]);
+
+        return $team;
     }
 
     public function show(Team $team)

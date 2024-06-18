@@ -79,10 +79,7 @@ export default ({ children }) => {
                                 <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                     <NavLink routeName="admin.dashboard">Dashboard</NavLink>
                                     <NavLink routeName="admin.teams">{t('Teams')}</NavLink>
-                                    <NavLink routeName="admin.developers">{t('Developers')}</NavLink>
-                                    <NavLink routeName="admin.projects">{t('Projects')}</NavLink>
                                     <NavLink routeName="admin.companies">{t('Companies')}</NavLink>
-                                    <NavLink routeName="admin.contact-requests">{t('Contact Requests')}</NavLink>
                                 </div>
                             </div>
 
@@ -183,10 +180,7 @@ export default ({ children }) => {
                         <div className="pt-2 pb-3 space-y-1">
                             <ResponsiveNavLink routeName="admin.dashboard">Dashboard</ResponsiveNavLink>
                             <ResponsiveNavLink routeName="admin.teams">{t('Teams')}</ResponsiveNavLink>
-                            <ResponsiveNavLink routeName="admin.developers">{t('Developers')}</ResponsiveNavLink>
-                            <ResponsiveNavLink routeName="admin.projects">{t('Projects')}</ResponsiveNavLink>
                             <ResponsiveNavLink routeName="admin.companies">{t('Companies')}</ResponsiveNavLink>
-                            <ResponsiveNavLink routeName="admin.contact-requests">{t('Contact Requests')}</ResponsiveNavLink>
                         </div>
 
 
