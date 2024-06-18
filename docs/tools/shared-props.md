@@ -55,7 +55,7 @@ class Kernel extends HttpKernel
     // Rest of the Kernel.php
 }
 ```
-<sup>These instructions are for "old" Laravel project structure. If you're using Laravel 11 with the new structure, check the [official documentation on how to register a middleware using 11.x](https://laravel.com/docs/11.x/middleware#registering-middleware)</sup>
+<sup>These instructions are for "old" Laravel project structure. If you're using Laravel 11 with the new structure, check the [official documentation on how to register a middleware in the new way](https://laravel.com/docs/11.x/middleware#registering-middleware)</sup>
 
 After this, you can access this data through the [Laravext prop](/concepts/laravext-prop) in your pages.
 
