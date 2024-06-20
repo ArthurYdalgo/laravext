@@ -54,7 +54,7 @@ export function visit(url) {
                 render();
 
                 /** @todo fix it, as the pages are not always returnable */
-                history.pushState({}, null, url);
+                history.pushState({}, '', url);
             } catch (error) {
                 console.error('Error updating page data:', error);
                 window.location.href = url;

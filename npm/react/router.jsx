@@ -39,10 +39,10 @@ export function visit(url) {
 
             try {
                 render();
-                history.pushState({}, null, url);
+                history.pushState({}, '', url);
             } catch (error) {
                 console.error('Error updating page data:', error);
-                // window.location.href = url;
+                window.location.href = url;
             }
 
             endProgress();
