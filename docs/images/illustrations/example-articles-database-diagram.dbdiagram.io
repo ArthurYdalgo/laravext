@@ -3,6 +3,7 @@
 
 Table users {
   id integer [primary key]
+  username varchar
   name integer 
   privacy boolean
   theme varchar
@@ -38,11 +39,14 @@ Table reactions {
 Table articles {
   id integer [primary key]
   user_id integer
+  short_link_code varchar
+  slug varchar
   banner_url integer
   title varchar
   subtitle varchar
   content mediumtext
   language varchar
+  reading_time integer
   keywords json
   published_at timestamp
   deleted_at timestamp
@@ -99,6 +103,17 @@ Table reads {
   id integer
   article_id integer
   user_id integer
+  share_id integer
+  ip_address string
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table shares {
+  id integer
+  article_id integer
+  user_id integer
+  medium integer
   ip_address string
   created_at timestamp
   updated_at timestamp
