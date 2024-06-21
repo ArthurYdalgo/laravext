@@ -76,6 +76,7 @@ Table tags {
   id integer [primary key]
   user_id integer
   slug varchar
+  articles_count integer
   deleted_at timestamp
   created_at timestamp
   updated_at timestamp
