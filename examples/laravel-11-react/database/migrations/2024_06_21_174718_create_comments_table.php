@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Article;
+use App\Models\Comment;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -15,11 +17,14 @@ return new class extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Project::class)->nullable()->constrained()->nullOnDelete();
+            
+            $table->foreignIdFor(Comment::class)->nullable()->constrained()->nullOnDelete();
             $table->foreignIdFor(User::class)->nullable()->constrained()->nullOnDelete();
+            $table->foreignIdFor(Article::class)->nullable()->constrained()->nullOnDelete();
 
             $table->text('content');
 
+            $table->dateTime('approved_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

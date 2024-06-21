@@ -4,15 +4,10 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\Author;
-use App\Models\Company;
-use App\Models\ContactRequest;
-use App\Models\Developer;
-use App\Models\Project;
-use App\Models\Team;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Lottery;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,97 +16,28 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $admin_role = Role::findOrCreate('admin');
+        $write_role = Role::findOrCreate('writer');
+
         // Create a default user, if not exists
         $default_email = 'developer@email.com';
 
         if(User::where('email', $default_email)->doesntExist()){
-            User::factory()->create([
+            $developer = User::factory()->create([
                 'name' => 'Developer',
                 'email' => $default_email
             ]);
+
+            $developer->assignRole($admin_role);
         }
         
-        $users = User::factory(20)->create();
+        $writers = User::factory(10)->create();
 
-        Company::factory(10)->hasProjects(3)->create();
-
-        $projects = Project::whereNull('team_id')->get();
-
-        if(Team::where("name", "Mamonas Assassinas 🇧🇷")->doesntExist()){
-            Team::factory()->create([
-                /**
-                * In memory of one of the best brazilian 🇧🇷 rock bands
-                * 
-                * @see https://en.wikipedia.org/wiki/Mamonas_Assassinas
-                */
-                'name' => 'Mamonas Assassinas 🇧🇷'
-            ]);
+        foreach($writers as $writer){
+            $writer->assignRole($write_role);
         }
 
-        Team::factory(20)->create();
+        $readers = User::factory(20)->create();
 
-        $teams = Team::doesntHave('developers')->get();
-
-        foreach ($teams as $team) {
-            Developer::factory()->create([
-                'team_id' => $team->id,
-                'role' => 'backend'
-            ]);
-
-            Developer::factory()->create([
-                'team_id' => $team->id,
-                'role' => 'frontend'
-            ]);
-
-            Developer::factory()->create([
-                'team_id' => $team->id,
-                'role' => 'designer'
-            ]);
-
-            Developer::factory()->create([
-                'team_id' => $team->id,
-                'role' => 'qa'
-            ]);
-
-            Developer::factory()->create([
-                'team_id' => $team->id,
-                'role' => 'fullstack'
-            ]);
-
-            Developer::factory()->create([
-                'team_id' => $team->id,
-                'role' => 'devops'
-            ]);
-        }       
-        
-        foreach ($projects as $project) {
-            $project->update(['team_id' => $teams->random()->id]);
-
-            foreach($users->random(random_int(10,20)) as $user) {
-                $user->comments()->create([
-                    'content' => fake()->text(random_int(200,500)),
-                    'project_id' => $project->id
-                ]);
-            }
-
-            $user->comments()->create([
-                'content' => fake()->text(random_int(200,500)),
-                'project_id' => $project->id,
-                'deleted_at' => now()
-            ]);
-        }
-
-        $contact_requests = ContactRequest::factory(20)->create();
-
-        foreach ($contact_requests as $contact_request) {
-            if(Lottery::odds(0.7)->choose()){
-                $contact_request->update([
-                    'replier_id' => $users->random()->id,
-                    'reply' => fake()->text(random_int(200,500)),
-                    'replied_at' => now(),
-                    'delivered_at' => Lottery::odds(0.5)->choose() ? now() : null
-                ]);
-            }
-        }
     }
 }

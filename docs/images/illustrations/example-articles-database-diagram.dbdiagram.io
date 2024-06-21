@@ -7,6 +7,8 @@ Table users {
   privacy boolean
   theme varchar
   locale varchar
+  biography text
+  links json
   email_verified_at timestamp
   created_at timestamp
   updated_at timestamp
@@ -14,16 +16,19 @@ Table users {
 
 Table articles {
   id integer [primary key]
-  user_id integer 
-  team_id integer
-  name varchar
-  description text
+  user_id integer
+  title varchar
+  subtitle varchar
+  content MEDIUMTEXT
+  keywords json
+  published_at timestamp
   created_at timestamp
   updated_at timestamp
 }
 
 Table comments {
   id integer [primary key]
+  comment_id integer
   user_id integer
   article_id integer
   content text

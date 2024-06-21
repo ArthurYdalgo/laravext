@@ -11,6 +11,7 @@
         "laravel/framework": "^11",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.8",
+        "spatie/laravel-permission": "^6.7",
         "spatie/laravel-query-builder": "^6.0",
         "tightenco/ziggy": "^2.0"
     },
@@ -34,7 +35,10 @@
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
-        }
+        },
+        "files": [
+            "app/Helpers/Helpers.php"
+        ]
     },
     "scripts": {
         "post-autoload-dump": [

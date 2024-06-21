@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Requests\ContactRequest;
+namespace App\Http\Requests\Article;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ReplyRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -22,7 +22,7 @@ class ReplyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'reply' => 'required|string',
+            //
         ];
     }
 }
