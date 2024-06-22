@@ -78,11 +78,12 @@ The Vue.js examples use the [FormKit](https://formkit.com/) package, and one of 
 In order for you to have some basic comprehension of the project itself, here are the database structures:
 
 ### Articles Platform
-![image](/images/illustrations/example-articles-platform-database-diagram.png)
+![image](/images/illustrations/example-articles-database-diagram.png)
+<sup>Database diagram of the React example project. Designed on [dbdiagram.io](https://dbdiagram.io). The declaration used to create this illustration can be found in the [laravext repository](https://github.com/ArthurYdalgo/laravext/tree/main/docs/images/illustrations/example-articles-database-diagram.dbdiagram.io)</sub>
 
 ### Developer Team Manager
 ![image](/images/illustrations/example-developer-team-database-diagram.png)
 
-<sup>Database diagram of the example project. Designed on [dbdiagram.io](https://dbdiagram.io). The declaration used to create this illustration can be found in the [laravext repository](https://github.com/ArthurYdalgo/laravext/tree/main/docs/images/illustrations/example-developer-team-database-diagram.dbdiagram.io)</sub>
+<sup>Database diagram of the Vue.js example project. Designed on [dbdiagram.io](https://dbdiagram.io). The declaration used to create this illustration can be found in the [laravext repository](https://github.com/ArthurYdalgo/laravext/tree/main/docs/images/illustrations/example-developer-team-database-diagram.dbdiagram.io)</sub>
 
 
