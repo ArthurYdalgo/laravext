@@ -19,7 +19,7 @@ Route::laravext();
  * 
  * @see https://laravel.com/docs/11.x/routing#view-routes for more details
  */
-Route::view('/', 'sections.home')->name('home');
+Route::view('about-this-project', 'sections.about-this-project')->name('about-this-project');
 
 Route::get('{article:slug}', function (Article $article) {
     return view('sections.article', compact('article'));
