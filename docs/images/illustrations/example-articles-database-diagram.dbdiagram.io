@@ -36,6 +36,20 @@ Table reactions {
   updated_at timestamp
 }
 
+Table abuse_reports {
+  id integer [primary key]
+  reportable_id integer
+  reportable_type varchar
+  user_id integer
+  ip_address string
+  type string
+  message text
+  reply text
+  replied_at timestamp
+  created_at timestamp
+  updated_at timestamp
+}
+
 Table articles {
   id integer [primary key]
   user_id integer
@@ -156,3 +170,9 @@ Ref: "articles"."id" < "bookmarks"."article_id"
 Ref: "users"."id" < "bookmarks"."user_id"
 
 Ref: "users"."id" < "tags"."user_id"
+
+Ref: "users"."id" < "abuse_reports"."user_id"
+
+Ref: "users"."id" < "shares"."user_id"
+
+Ref: "articles"."id" < "shares"."article_id"
