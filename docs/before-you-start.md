@@ -69,14 +69,18 @@ The examples are meant to help you understand how to use these tools, and are no
 
 ## The Example Project(s)
 
-Some code or file structures in this documentation might (or not) be derived from the [laravext examples available at GitHub](https://github.com/ArthurYdalgo/laravext/tree/main/examples), and it'll be either the [laravel-11-react](https://github.com/ArthurYdalgo/laravext/tree/main/examples/laravel-11-react) or [laravel-11-vue](https://github.com/ArthurYdalgo/laravext/tree/main/examples/laravel-11-vue). The Vue.js example is the only that all the admin pages are implemented, while the React example only has the dashboard, teams and companies pages. Why? Because I didn't feel like doing all the other pages again after building them in Vue.js because I knew you'd take longer, and I was feeling anxious to publish this package as soon as possible. The teams and companies pages will be enough to exemplify on how to use Laravext in React.
+Some code or file structures in this documentation might (or not) be derived from the [laravext examples available at GitHub](https://github.com/ArthurYdalgo/laravext/tree/main/examples), and it'll be either the [laravel-11-react](https://github.com/ArthurYdalgo/laravext/tree/main/examples/laravel-11-react) or [laravel-11-vue](https://github.com/ArthurYdalgo/laravext/tree/main/examples/laravel-11-vue). The Vue.js example is a basic developer team manager, where teams have developers and projects, and these projects belong to companies (needless to say that this does not reflect how a real world application of this kind would be designed). The React example, on the other hand, is an articles platform, where users can create articles and comment on them, much like a [Dev.to](https://dev.to) clone.
 
-The example projects use the "old" directory structure from Laravel 10, not the new one, and they're a basic developer team manager, where teams have developers and projects, and these projects belong to companies (needless to say that this does not reflect how a real world application of this kind would be designed). 
+The example projects use the "old" directory structure from Laravel 10, not the new one. 
 
 The Vue.js examples use the [FormKit](https://formkit.com/) package, and one of the components is an autocomplete which requires a key to work. You can get a free development-environment-only key at their website. Just put it in the `.env` file, at the `VITE_FORMKIT_KEY`.
 
-In order for you to have some basic comprehension of the project itself, here's the database structure:
+In order for you to have some basic comprehension of the project itself, here are the database structures:
 
+### Articles Platform
+![image](/images/illustrations/example-articles-platform-database-diagram.png)
+
+### Developer Team Manager
 ![image](/images/illustrations/example-developer-team-database-diagram.png)
 
 <sup>Database diagram of the example project. Designed on [dbdiagram.io](https://dbdiagram.io). The declaration used to create this illustration can be found in the [laravext repository](https://github.com/ArthurYdalgo/laravext/tree/main/docs/images/illustrations/example-developer-team-database-diagram.dbdiagram.io)</sub>

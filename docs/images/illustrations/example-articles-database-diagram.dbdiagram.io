@@ -109,11 +109,9 @@ Table article_tag {
 }
 
 Table bookmarks {
-  id integer
   article_id integer
   user_id integer
   created_at timestamp
-  updated_at timestamp
 }
 
 Table reads {

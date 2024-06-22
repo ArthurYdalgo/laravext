@@ -12,13 +12,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tags', function (Blueprint $table) {
+        Schema::create('media', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class);
-            $table->string('slug')->index()->unique();
-            $table->unsignedBigInteger('articles_count')->default(0);
 
-            $table->softDeletes();
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
+            $table->string('disk')->index();
+            $table->string('path', 512)->nullable();
+            $table->string('url', 2048);
+
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tags');
+        Schema::dropIfExists('media');
     }
 };
