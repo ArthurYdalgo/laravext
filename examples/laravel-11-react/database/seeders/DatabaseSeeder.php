@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\AbuseReport;
 use App\Models\Article;
 use App\Models\Comment;
 use App\Models\Reaction;
@@ -78,15 +79,17 @@ class DatabaseSeeder extends Seeder
                 $media_to_attach = [];
 
                 for ($paragraphs_count = 0; $paragraphs_count < random_int(3, 5); $paragraphs_count++) {
-                    $sentence = fake()->sentence();
+                    $sentence = fake()->sentence(4);
 
                     $media = $writer->addMediaFromContent(generateTextedImage($sentence, 1080, 720, fake()->randomElement($light_colors), font_size: 35), 'media/articles');
 
                     $media_to_attach[] = $media->id;
 
-                    $paragraph = fake()->sentence(250) . "\n\n" . "![image]($media->url)" . "\n\n";
+                    $paragraph = fake()->sentence(250) . "\n\n" . "<br /><br /><p align='center'><img width='500' src='$media->url'/></p><br /><br />" . "\n\n";
 
-                    $content .= $paragraph;
+                    $header = fake()->sentence(5);
+
+                    $content .= "## {$header}\n\n{$paragraph}";
                 }
 
                 $article = Article::factory()->create([
@@ -167,18 +170,47 @@ class DatabaseSeeder extends Seeder
 
         $comments = Comment::all();
 
-        $random_comments = $comments->random(min($comments->count(), random_int(2, 5)));
+        $random_comments = $comments->random(min($comments->count(), random_int(5, intval($comments->count() / 2))));
 
-        line("Seeding Replies and Abuse Reports on Comments...");
+        line("Seeding Replies, Reactions and Abuse Reports on Comments...");
         foreach ($random_comments as $random_comment) {
             $reader = $readers->random();
 
-            // abuse report
+            // Reaction
+            if (Lottery::odds(1, 2)->choose()) {
+                $reaction = fake()->randomElement(Reaction::$available_reactions);
+
+                $reader->reactTo($random_comment, $reaction);
+            }
+
+            // Abuse report
             if (Lottery::odds(1, 30)->choose()) {
+                $abuse_report = AbuseReport::factory()->create([
+                    'user_id' => $reader->id,
+                    'reportable_id' => $random_comment->id,
+                    'reportable_type' => Comment::class,
+                ]);
+
+                if (Lottery::odds(1, 5)->choose()) {
+                    $abuse_report->update([
+                        'reply' => fake()->sentence,
+                        'replied_at' => now(),
+                    ]);
+                }
+            }
+
+            // Reply
+            if (Lottery::odds(1, 2)->choose()) {
+                Comment::factory()->create([
+                    'user_id' => $reader->id,
+                    'article_id' => $random_comment->article_id,
+                    'comment_id' => $random_comment->id,
+                    'approved_at' => Lottery::odds(8, 10)->choose() ? now() : null,
+                ]);
             }
         }
 
-        $random_writers = $writers->random(min($writers->count(), random_int(2, 5)));
+        $random_writers = $writers->random(min($writers->count(), random_int(5, intval($writers->count() / 2))));
 
         line("Seeding Abuse Reports on Writers...");
         foreach ($random_writers as $random_writer) {
@@ -186,6 +218,18 @@ class DatabaseSeeder extends Seeder
 
             // abuse report
             if (Lottery::odds(1, 50)->choose()) {
+                $abuse_report = AbuseReport::factory()->create([
+                    'user_id' => $reader->id,
+                    'reportable_id' => $random_writer->id,
+                    'reportable_type' => User::class,
+                ]);
+
+                if (Lottery::odds(1, 5)->choose()) {
+                    $abuse_report->update([
+                        'reply' => fake()->sentence,
+                        'replied_at' => now(),
+                    ]);
+                }
             }
         }
 

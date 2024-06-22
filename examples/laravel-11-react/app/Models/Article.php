@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use FastVolt\Helper\Markdown;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Parsedown;
 
 class Article extends Model
 {
@@ -28,6 +30,13 @@ class Article extends Model
         'keywords' => 'array'
     ];
 
+    // Getters and Setters
+    public function getHtmlAttribute()
+    {
+        return $this->toHtml();
+    }
+
+    // Relationships
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -70,5 +79,12 @@ class Article extends Model
     public function abuseReports()
     {
         return $this->morphMany(AbuseReport::class, 'reportable');
+    }
+
+    // Methods
+    public function toHtml(){
+        $parsedown = new Parsedown();
+
+        return $parsedown->text($this->content);
     }
 }
