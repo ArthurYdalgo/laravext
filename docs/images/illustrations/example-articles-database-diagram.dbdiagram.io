@@ -16,14 +16,17 @@ Table users {
   updated_at timestamp
 }
 
-Table followers {
-  id integer [primary key]
+Table follows {
   followee_id integer
   follower_id integer
   started_at timestamp
   ended_at timestamp
   created_at timestamp
   updated_at timestamp
+
+  indexes {
+    (followee_id, follower_id) [pk] // composite primary key
+  }
 }
 
 Table reactions {
@@ -149,9 +152,9 @@ Ref: "articles"."id" < "article_tag"."article_id"
 
 Ref: "tags"."id" < "article_tag"."tag_id"
 
-Ref: "users"."id" < "followers"."followee_id"
+Ref: "users"."id" < "follows"."followee_id"
 
-Ref: "users"."id" < "followers"."follower_id"
+Ref: "users"."id" < "follows"."follower_id"
 
 Ref: "users"."id" < "reactions"."user_id"
 
