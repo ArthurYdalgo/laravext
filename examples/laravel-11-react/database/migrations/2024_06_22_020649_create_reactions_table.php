@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('reactions', function (Blueprint $table) {
             $table->id();
 
-            $table->morphs('reactable');
+            $table->morphs('reactionable');
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
 
             $table->string('reaction')->index();

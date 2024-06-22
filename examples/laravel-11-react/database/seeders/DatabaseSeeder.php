@@ -6,6 +6,8 @@ namespace Database\Seeders;
 
 use App\Models\Article;
 use App\Models\Comment;
+use App\Models\Reaction;
+use App\Models\Share;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -51,11 +53,11 @@ class DatabaseSeeder extends Seeder
             [255, 192, 203],
         ];
 
-        $initial_readers_count = 20;
+        $initial_readers_count = 500;
         line("Creating {$initial_readers_count} readers...");
         $readers = User::factory($initial_readers_count)->create();
-        
-        $initial_writes_count = 5;
+
+        $initial_writes_count = 20;
         line("Creating {$initial_writes_count} writers and their articles...");
         $writers = User::factory($initial_writes_count)->create();
 
@@ -65,28 +67,28 @@ class DatabaseSeeder extends Seeder
             $writer->update([
                 'username' => str($writer->name)->slug()->toString(),
             ]);
- 
-            for ($articles_count = 0; $articles_count < random_int(3, 5); $articles_count++){
+
+            for ($articles_count = 0; $articles_count < random_int(3, 5); $articles_count++) {
                 $title = fake()->sentence();
-    
-                $banner = $writer->addMediaFromContent(generateTextedImage($title, 1000, 480, fake()->randomElement($light_colors), font_size: 45));
-    
+
+                $banner = $writer->addMediaFromContent(generateTextedImage($title, 1000, 480, fake()->randomElement($light_colors), font_size: 45), 'media/articles');
+
                 $content = "";
 
                 $media_to_attach = [];
-                
-                for($paragraphs_count = 0; $paragraphs_count < random_int(3, 5); $paragraphs_count++){
+
+                for ($paragraphs_count = 0; $paragraphs_count < random_int(3, 5); $paragraphs_count++) {
                     $sentence = fake()->sentence();
-    
-                    $media = $writer->addMediaFromContent(generateTextedImage($sentence, 1080, 720, fake()->randomElement($light_colors), font_size: 20));
+
+                    $media = $writer->addMediaFromContent(generateTextedImage($sentence, 1080, 720, fake()->randomElement($light_colors), font_size: 35), 'media/articles');
 
                     $media_to_attach[] = $media->id;
-    
+
                     $paragraph = fake()->sentence(250) . "\n\n" . "![image]($media->url)" . "\n\n";
-    
+
                     $content .= $paragraph;
                 }
-    
+
                 $article = Article::factory()->create([
                     'user_id' => $writer->id,
                     'slug' => str($title)->slug()->append(str()->random(5))->toString(),
@@ -96,7 +98,7 @@ class DatabaseSeeder extends Seeder
                 ]);
 
                 $article->media()->attach($media_to_attach);
-    
+
                 $article->tags()->attach(Tag::all()->random(5));
             }
         }
@@ -105,22 +107,60 @@ class DatabaseSeeder extends Seeder
 
         $random_articles = $articles->random(min($articles->count(), random_int(10, $articles->count())));
 
-        foreach($random_articles as $random_article){
-            $reader = $readers->random();
+        line("Seeding Interactions...");
+        foreach ($random_articles as $random_article) {
+            for ($interactions_count = 0; $interactions_count < random_int(5, 10); $interactions_count++) {
+                $reader = $readers->random();
 
-            // follow
+                // follow
+                if (Lottery::odds(1, 3)->choose()) {
+                    $reader->follow($random_article->user);
 
-            // booksmarks
+                    // unfollow
+                    if (Lottery::odds(1, 15)->choose()) {
+                        $reader->unfollow($random_article->user);
+                    }
+                }
 
-            // reactions
+                // booksmarks
+                if (Lottery::odds(3, 10)->choose()) {
+                    $reader->bookmark($random_article);
+                }
 
-            // comments
+                // reactions
+                if (Lottery::odds(8, 10)->choose()) {
+                    $reaction = fake()->randomElement(Reaction::$available_reactions);
 
-            // comments replies
+                    $reader->reactTo($random_article, $reaction);
+                }
 
-            // views
+                // comments
+                if (Lottery::odds(1, 2)->choose()) {
+                    Comment::factory()->create([
+                        'user_id' => $reader->id,
+                        'article_id' => $random_article->id,
+                        'approved_at' => Lottery::odds(8, 10)->choose() ? now() : null,
+                    ]);
+                }
 
-            // shares
+                // shares
+                $share = null;
+                if (Lottery::odds(3, 10)->choose()) {
+                    $share = $random_article->shares()->create([
+                        'user_id' => $random_article->user->id,
+                        'medium' => fake()->randomElement(Share::$available_mediums),
+                        'code' => str()->random(16),
+                        'ip_address' => fake()->ipv4,
+                    ]);
+                }
+
+                // reads
+                $random_article->reads()->create([
+                    'user_id' => $reader->id,
+                    'share_id' => $share?->id,
+                    'ip_address' => fake()->ipv4,
+                ]);
+            }
         }
 
         $random_articles = $articles->random(min($articles->count(), random_int(10, $articles->count())));
@@ -129,18 +169,24 @@ class DatabaseSeeder extends Seeder
 
         $random_comments = $comments->random(min($comments->count(), random_int(2, 5)));
 
-        foreach($random_comments as $random_comment){
+        line("Seeding Replies and Abuse Reports on Comments...");
+        foreach ($random_comments as $random_comment) {
             $reader = $readers->random();
 
             // abuse report
+            if (Lottery::odds(1, 30)->choose()) {
+            }
         }
 
         $random_writers = $writers->random(min($writers->count(), random_int(2, 5)));
 
-        foreach($random_writers as $random_writer){
+        line("Seeding Abuse Reports on Writers...");
+        foreach ($random_writers as $random_writer) {
             $reader = $readers->random();
 
             // abuse report
+            if (Lottery::odds(1, 50)->choose()) {
+            }
         }
 
         line("Seeding completed!");
