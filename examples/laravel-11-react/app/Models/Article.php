@@ -11,13 +11,22 @@ class Article extends Model
 
     protected $fillable = [
         'user_id',
+        'short_link_code',
+        'slug',
         'title',
+        'banner_url',
+        'subtitle',
         'content',
+        'language',
+        'reading_time',
+        'keywords',
         'published_at'
     ];
 
     protected $casts = [
-        'published_at' => 'datetime'
+        'published_at' => 'datetime',
+        'keywords' => 'array',
+        'reading_time' => 'integer'
     ];
 
     public function user()
@@ -33,5 +42,20 @@ class Article extends Model
     public function tags()
     {
         return $this->belongsToMany(Tag::class);
+    }
+
+    public function shares()
+    {
+        return $this->hasMany(Share::class);
+    }
+
+    public function media()
+    {
+        return $this->belongsToMany(Media::class);
+    }
+
+    public function reads()
+    {
+        return $this->hasMany(Read::class);
     }
 }

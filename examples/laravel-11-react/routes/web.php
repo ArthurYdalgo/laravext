@@ -18,7 +18,7 @@ Route::laravext();
  * 
  * @see https://laravel.com/docs/11.x/routing#view-routes for more details
  */
-Route::view('/', 'sections.home')->name('home');
+Route::view('about-this-project', 'sections.about-this-project')->name('about-this-project');
 
 /**
  * Let's say that you need this route to use this specific view file for SEO reason, because it contains contact information,

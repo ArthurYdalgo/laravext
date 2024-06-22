@@ -11,15 +11,24 @@ class Tag extends Model
 
     protected $fillable = [
         'slug',
-        'name'
+        'articles_count',
     ];
 
     protected $casts = [
-        'name' => 'array'
+        'articles_count' => 'integer',
     ];
 
     public function articles()
     {
         return $this->belongsToMany(Article::class);
+    }
+
+    public function updateArticlesCount()
+    {
+        $this->update([
+            'articles_count' => $this->articles()->count(),
+        ]);
+
+        return $this;
     }
 }

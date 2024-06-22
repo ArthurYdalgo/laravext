@@ -16,10 +16,15 @@ class User extends Authenticatable
 
     protected $fillable = [
         'name',
+        'username',
         'email',
+        'email_verified_at',
         'password',
+        'theme',
         'privacy',
-        'locale'
+        'locale',
+        'biography',
+        'links',
     ];
 
     protected $hidden = [
@@ -30,7 +35,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'privacy' => 'boolean'
+        'privacy' => 'boolean',
+        'links' => 'array',
     ];
 
     protected $appends = [

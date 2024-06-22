@@ -19,22 +19,10 @@ Route::group([
     Route::post('logout', [CurrentUserController::class, 'logout'])->middleware('auth');
 });
 
-Route::post('contact-requests', [ContactRequestController::class, 'store']);
-
 Route::group([
     'middleware' => 'auth'
 ], function(){
     
-    Route::apiResource('contact-requests', ContactRequestController::class)->only(['index', 'destroy']);
-    Route::put('contact-requests/{contactRequest}/reply', [ContactRequestController::class, 'reply'])->name('contact-requests.reply');
     
-    Route::apiResource('teams', TeamController::class)->withoutMiddleware('auth');
-    Route::apiResource('teams.developers', TeamDeveloperController::class)->only(['store', 'index']);
-    Route::put('teams/{team}/developers', [TeamDeveloperController::class, 'update'])->name('teams.developers.update');
-    Route::delete('teams/{team}/developers', [TeamDeveloperController::class, 'destroy'])->name('teams.developers.destroy');
     
-    Route::apiResource('developers', DeveloperController::class);
-    Route::apiResource('companies', CompanyController::class);
-    Route::apiResource('projects', ProjectController::class)->withoutMiddleware('auth');
-    Route::apiResource('projects.comments', ProjectCommentController::class)->except(['show']);
 });
