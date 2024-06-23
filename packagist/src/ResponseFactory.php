@@ -4,6 +4,7 @@ namespace Laravext;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\View;
 
 class ResponseFactory
@@ -158,6 +159,8 @@ class ResponseFactory
         $root_view = $laravext_page_data['root_view'];
 
         $request = request();
+
+        info($request->header('X-Laravext'), [config('laravext.force_page_visit')]);
         
         if (!$request->header('X-Laravext') || config('laravext.force_page_visit')) {
             View::share('laravext_page_data', $laravext_page_data);
@@ -166,6 +169,15 @@ class ResponseFactory
 
             View::share($view_data);
 
+            $view = view($root_view);
+
+            info("fuck");
+
+            return Http::post("http://localhost:13714/render", [
+                'html' => $view->render(),
+            ])->body();
+
+            
             return view($root_view);
         }
             

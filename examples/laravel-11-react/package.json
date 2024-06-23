@@ -3,7 +3,7 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build && vite build --ssr"
     },
     "dependencies": {
         "@fortawesome/fontawesome-svg-core": "^6.5.2",
@@ -16,7 +16,10 @@
         "@vitejs/plugin-react": "^4.2.1",
         "autoprefixer": "^10.4.2",
         "axios": "^1.6.4",
+        "body-parser": "^1.20.2",
+        "express": "^4.19.2",
         "i18next": "^23.11.5",
+        "jsdom": "^24.1.0",
         "laravel-vite-plugin": "^1.0",
         "lodash": "^4.17.21",
         "moment": "^2.30.1",

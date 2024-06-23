@@ -23,22 +23,26 @@ Route::get('', function () {
 
     $server_skeleton = view('partials.articles', compact('articles'));
 
-    return nexus(props: [
-        'articles' => [
-            'data' => JsonResource::collection($articles),
-            'links' => $articles->links(),
-            'meta' => [
-                'current_page' => $articles->currentPage(),
-                'from' => $articles->firstItem(),
-                'last_page' => $articles->lastPage(),
-                'path' => $articles->path(),
-                'per_page' => $articles->perPage(),
-                'to' => $articles->lastItem(),
-                'total' => $articles->total()
-            ],
-        ]
+    return nexus(
+    //     props: [
+    //     'articles' => [
+    //         'data' => JsonResource::collection($articles),
+    //         'links' => $articles->links(),
+    //         'meta' => [
+    //             'current_page' => $articles->currentPage(),
+    //             'from' => $articles->firstItem(),
+    //             'last_page' => $articles->lastPage(),
+    //             'path' => $articles->path(),
+    //             'per_page' => $articles->perPage(),
+    //             'to' => $articles->lastItem(),
+    //             'total' => $articles->total()
+    //         ],
+    //     ]
 
-    ])->withServerSkeleton($server_skeleton)->render();
+    // ]
+    )
+    // ->withServerSkeleton($server_skeleton)
+    ->render();
 })->name('home');
 
 /**

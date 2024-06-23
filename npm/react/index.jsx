@@ -1,5 +1,5 @@
 import { setupProgress } from './progress';
-import { render } from './tools';
+import { clientRender, serverRender } from './tools';
 import { visit } from './router';
 
 export const laravext = () => {
@@ -46,11 +46,6 @@ export function Head({ title }) {
     return null;
 }
 
-window.addEventListener("popstate", function (event) {
-    visit(window.location.href);
-});
-
-
 export function createLaravextApp({ nexusResolver, strandsResolver, conventions = [
     'error',
     'layout',
@@ -67,5 +62,20 @@ export function createLaravextApp({ nexusResolver, strandsResolver, conventions 
         setupProgress( progress );
     }
     
-    render();
+    clientRender();
+}
+
+export async function createLaravextSsrApp({ nexusResolver, strandsResolver, conventions = [
+    'error',
+    'layout',
+    'middleware',
+] }) {
+
+    window.__laravext.app = {
+        nexusResolver,
+        strandsResolver,
+        conventions,
+    }
+    
+    return await serverRender();
 }

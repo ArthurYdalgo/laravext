@@ -4,9 +4,6 @@ import { endProgress, startProgress } from './progress';
 
 export function visit(url) {
     if(!history?.pushState){
-        if(!isEnvProduction()){
-            console.debug('History API not supported. Redirecting');
-        }
         window.location.href = url;
         return;
     }

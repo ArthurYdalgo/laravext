@@ -1,5 +1,5 @@
 export default () => {
     return (<div>
-        Main page eeeeeeeerfefe
+        <h1>Test {window.foo ?? 'fuck'}</h1>
     </div>)
 }

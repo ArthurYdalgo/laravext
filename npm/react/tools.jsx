@@ -1,5 +1,6 @@
 import { laravext } from "./index";
 import { createRoot } from 'react-dom/client';
+import { renderToStaticMarkup } from 'react-dom/server';
 
 export function findNexus() {
     const nexusSection = document.querySelectorAll('section[section-type="laravext-nexus-section"]');
@@ -20,11 +21,11 @@ export async function resolveComponent(path, pages) {
     return typeof page === 'function' ? page() : page;
 }
 
-export function isEnvProduction(){
+export function isEnvProduction() {
     return !['development', 'local'].includes(import.meta.env.VITE_APP_ENV ?? 'production');
 }
 
-export function render() {
+export function clientRender() {
     const laravextPageData = laravext().page_data;
 
     let nexusResolver = window.__laravext.app.nexusResolver;
@@ -70,10 +71,10 @@ export function render() {
                     }
 
                     let root = window.__laravext.app?.react_root ?? createRoot(nexusElement);
-                    
+
                     root.render(nexus);
-                    
-                    if(!window.__laravext.app?.react_root){
+
+                    if (!window.__laravext.app?.react_root) {
                         window.__laravext.app.react_root = root;
                     }
                 })
@@ -101,5 +102,83 @@ export function render() {
                     });
             }
         });
+    }
+}
+
+export async function serverRender() {
+    const laravextPageData = laravext().page_data;
+
+    let nexusResolver = window.__laravext.app.nexusResolver;
+    let strandsResolver = window.__laravext.app.strandsResolver;
+    let conventions = window.__laravext.app.conventions;
+
+
+    if (nexusResolver) {
+        const nexusComponentPath = laravextPageData?.nexus?.page?.replaceAll('\\', '/');
+        const nexus_tags = findNexus();
+        for (let i = 0; i < nexus_tags.length; i++) {
+            let nexusElement = nexus_tags[i];
+
+            if (nexusComponentPath) {
+                let NexusModule = await nexusResolver(nexusComponentPath)
+                if (!isEnvProduction()) {
+                    console.debug(`Loading page at ${nexusComponentPath}`);
+                }
+                let nexus = <NexusModule.default laravext={laravextPageData} />
+                if (!isEnvProduction()) {
+                    console.debug(`Page at ${nexusComponentPath} loaded successfully`, {
+                        NexusModule
+                    });
+                }
+
+                conventions = conventions.filter(convention => convention !== 'page');
+
+                for (let i = 0; i < conventions.length; i++) {
+                    if (laravextPageData?.nexus?.[conventions[i]]) {
+                        try {
+                            if (!isEnvProduction()) {
+                                console.debug(`Loading convention ${conventions[i]} at ${laravextPageData?.nexus?.[conventions[i]]}`)
+                            };
+                            let Convention = await nexusResolver(laravextPageData?.nexus?.[conventions[i]]);
+                            if (!isEnvProduction()) {
+                                console.debug(`Convention ${conventions[i]} at ${laravextPageData?.nexus?.[conventions[i]]} loaded successfully`, {
+                                    Convention
+                                });
+                            }
+
+                            nexus = <Convention.default laravext={laravextPageData}>{nexus}</Convention.default>;
+                        } catch (error) {
+                            console.error(`Error loading convention ${conventions[i]} at ${laravextPageData?.nexus?.[conventions[i]]}:`, error);
+                        }
+                    }
+                }
+
+                let staticMarkup = renderToStaticMarkup(nexus);
+
+                console.log(staticMarkup);
+
+                nexusElement.innerHTML = staticMarkup;
+
+                console.log(document.querySelectorAll('section[section-type="laravext-nexus-section"]')[0].innerHTML);
+
+
+            }
+        }
+    }
+
+    if (strandsResolver) {
+        const strands = findStrands();
+        for (let i = 0; i < strands.length; i++) {
+            let strandElement = strands[i];
+            const strandComponentPath = strandElement.getAttribute('strand-component');
+            const strandData = JSON.parse(strandElement.getAttribute('strand-data'));
+
+            if (strandComponentPath) {
+                let StrandModule = await strandsResolver(strandComponentPath)
+                // pass strand data to component
+                let staticMarkup = renderToStaticMarkup(<StrandModule.default laravext={{ ...laravextPageData }} {...strandData} />);
+                strandElement.innerHTML = staticMarkup;
+            }
+        }
     }
 }

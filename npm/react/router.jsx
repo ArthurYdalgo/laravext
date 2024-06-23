@@ -1,4 +1,4 @@
-import { render } from './tools';
+import { clientRender } from './tools';
 import { version, laravextPageData } from './index';
 import { endProgress, startProgress } from './progress';
 
