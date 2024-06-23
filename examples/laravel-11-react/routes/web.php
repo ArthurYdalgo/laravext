@@ -91,5 +91,5 @@ Route::get('s/{article:short_link_code}', function (Article $article) {
 Route::group([
     'middleware' => 'auth',
 ], function () {
-    Route::laravext('admin', root_view: 'sections.auth');
+    Route::laravext('admin', root_view: 'sections.editor');
 });
