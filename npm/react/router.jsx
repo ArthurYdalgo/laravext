@@ -31,7 +31,7 @@ export function visit(url) {
             console.log(data);
 
             if (data.action == 'redirect') {
-                // window.location.href = data.url;
+                window.location.href = data.url;
                 return;
             }
 
