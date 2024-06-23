@@ -103,7 +103,7 @@ class Article extends Model
 
         return $parsedown->text($this->content);
     }
-    
+
     public function toSearchableArray(): array
     {
         return [
@@ -112,7 +112,8 @@ class Article extends Model
             'subtitle' => $this->subtitle,
             'content' => $this->content,
             'keywords' => implode(',', $this->keywords),
-            'author' => $this->user->name,
+            'author_name' => $this->user->name,
+            'author_username' => $this->user->username,
             'tags' => $this->tags->pluck('slug')->implode(','),
         ];
     }
