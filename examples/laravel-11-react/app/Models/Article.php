@@ -5,10 +5,12 @@ namespace App\Models;
 use FastVolt\Helper\Markdown;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 use Parsedown;
 
 class Article extends Model
 {
+    use Searchable;
     use HasFactory;
 
     protected $fillable = [
@@ -30,10 +32,24 @@ class Article extends Model
         'keywords' => 'array'
     ];
 
+    protected $appends = [
+        'html'
+    ];
+
     // Getters and Setters
     public function getHtmlAttribute()
     {
         return $this->toHtml();
+    }
+
+    public function getUserHasBookmarkedAttribute()
+    {
+        return user() ? user()->hasBookmarked($this) : null;
+    }
+
+    public function getUserReactionsAttribute()
+    {
+        return user() ? user()->reactionsTo($this) : null;
     }
 
     // Relationships
@@ -86,5 +102,18 @@ class Article extends Model
         $parsedown = new Parsedown();
 
         return $parsedown->text($this->content);
+    }
+    
+    public function toSearchableArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'subtitle' => $this->subtitle,
+            'content' => $this->content,
+            'keywords' => implode(',', $this->keywords),
+            'author' => $this->user->name,
+            'tags' => $this->tags->pluck('slug')->implode(','),
+        ];
     }
 }

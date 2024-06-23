@@ -23,7 +23,7 @@ i18n
         }
     });
 
-i18n.changeLanguage(user?.locale || 'en')
+i18n.changeLanguage(user?.locale || (localStorage.getItem('locale') ?? 'en'))
 
 document.addEventListener('DOMContentLoaded', function () {
     createLaravextApp({
@@ -32,7 +32,6 @@ document.addEventListener('DOMContentLoaded', function () {
         progress: {
             color: '#ff0000CC',
         }
-
     })
 }, false);
 

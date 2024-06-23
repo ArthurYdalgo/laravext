@@ -146,6 +146,16 @@ class User extends Authenticatable
         ->delete();
     }
 
+    public function reactionsTo($reactionable)
+    {
+        return $reactionable->reactions()->where('user_id', $this->id)->pluck('reaction');
+    }
+
+    public function isFollowing($user)
+    {
+        return $this->following()->where('followee_id', $user->id)->exists();
+    }
+
     public function follow($user)
     {
         return $this->followingRelationship()->syncWithPivotValues($user, ['started_at' => now(), 'ended_at' => null]);
@@ -164,5 +174,10 @@ class User extends Authenticatable
     public function unbookmark($article)
     {
         return $this->bookmarkedArticles()->detach($article);
+    }
+
+    public function hasBookmarked($article)
+    {
+        return $this->bookmarkedArticles()->where('article_id', $article->id)->exists();
     }
 }

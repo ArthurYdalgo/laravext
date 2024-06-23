@@ -24,7 +24,6 @@ return new class extends Migration
 
             $table->text('content');
 
-            $table->dateTime('approved_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

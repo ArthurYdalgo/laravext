@@ -9,9 +9,12 @@
         "arthurydalgo/laravext": "dev-main",
         "erusev/parsedown": "^1.7",
         "guzzlehttp/guzzle": "^7.2",
+        "http-interop/http-factory-guzzle": "^1.2",
         "laravel/framework": "^11",
         "laravel/sanctum": "^4.0",
+        "laravel/scout": "^10.10",
         "laravel/tinker": "^2.8",
+        "meilisearch/meilisearch-php": "^1.8",
         "spatie/laravel-permission": "^6.7",
         "spatie/laravel-query-builder": "^6.0",
         "tightenco/ziggy": "^2.0"

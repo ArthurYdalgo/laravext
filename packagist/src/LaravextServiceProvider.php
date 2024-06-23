@@ -54,6 +54,8 @@ class LaravextServiceProvider extends ServiceProvider
             $blade->directive('startNexus', [Directive::class, 'startNexus']);
             $blade->directive('endNexus', [Directive::class, 'endNexus']);
             $blade->directive('strand', [Directive::class, 'strand']);
+            $blade->directive('startStrand', [Directive::class, 'startStrand']);
+            $blade->directive('endStrand', [Directive::class, 'endStrand']);
         });
     }
 

@@ -98,7 +98,7 @@ class Directive
         return $template;
     }
 
-    public function startStrand($expression = '')
+    public static function startStrand($expression = '')
     {
         $strand_id_length = config('laravext.strand_id_length', 64);
 
@@ -121,7 +121,7 @@ class Directive
         return $template;
     }
 
-    public function endStrand($expression = '')
+    public static function endStrand($expression = '')
     {
         return '</section>';
     }

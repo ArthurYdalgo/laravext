@@ -1,4 +1,4 @@
-@extends('layouts.guest')
+@extends('layouts.editor')
 @section('content')
     @nexus
 @endsection
