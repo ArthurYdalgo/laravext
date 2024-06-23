@@ -4,7 +4,7 @@ import {renderToStaticMarkup} from 'react-dom/server';
 import { createLaravextSsrApp } from '@laravext/react';
 import { resolveComponent } from "@laravext/react/tools"
 import test from './test'
-import {  } from 'react-dom/server';
+import { Ziggy } from './ziggy';
 
 const app = express();
 const port = 13714;
@@ -16,7 +16,7 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.post('/render', async (req, res) => {
     try {
         const {html} = req.body;
-        const dom = new JSDOM(html, { runScripts: "dangerously" });
+        const dom = new JSDOM(html, { runScripts: "dangerously", resources: "usable" });
         const window = dom.window
         const document = window.document;
         
@@ -32,10 +32,17 @@ app.post('/render', async (req, res) => {
 
         // targetSection.innerHTML = renderToStaticMarkup(component);
         console.log("here1");
+        console.log(Ziggy)
+        global.Ziggy = Ziggy;
+        window.Ziggy = Ziggy;
+
+
         await createLaravextSsrApp({
             nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
             strandsResolver: (name) => resolveComponent(`./strands/${name}.jsx`, import.meta.glob('./strands/**/*.jsx')),
         })
+
+        
 
         console.log("here2");
         // Get the updated HTML string

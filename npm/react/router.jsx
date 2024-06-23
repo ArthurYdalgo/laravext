@@ -38,7 +38,7 @@ export function visit(url) {
             window.__laravext.page_data = data.laravext_page_data;
 
             try {
-                render();
+                clientRender();
                 history.pushState({}, '', url);
             } catch (error) {
                 console.error('Error updating page data:', error);

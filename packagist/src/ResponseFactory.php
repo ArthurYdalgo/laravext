@@ -160,8 +160,6 @@ class ResponseFactory
 
         $request = request();
 
-        info($request->header('X-Laravext'), [config('laravext.force_page_visit')]);
-        
         if (!$request->header('X-Laravext') || config('laravext.force_page_visit')) {
             View::share('laravext_page_data', $laravext_page_data);
 
@@ -171,16 +169,19 @@ class ResponseFactory
 
             $view = view($root_view);
 
-            info("fuck");
+            $rendered_view = $view->render();
 
-            return Http::post("http://localhost:13714/render", [
-                'html' => $view->render(),
-            ])->body();
+            try {
+                return Http::post("http://localhost:13714/render", [
+                    'html' => $view->render(),
+                ])->body();
+            } catch (\Throwable $th) {
+                return $rendered_view;
+            }
 
-            
-            return view($root_view);
+            return $rendered_view;
         }
-            
+
         $request_laravext_root_view = $request->header('X-Laravext-Root-View');
         $request_laravext_version = $request->header('X-Laravext-Version');
 
