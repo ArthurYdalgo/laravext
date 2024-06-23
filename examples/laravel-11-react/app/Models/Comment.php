@@ -15,7 +15,6 @@ class Comment extends Model
         'article_id', 
         'user_id', 
         'content', 
-        'approved_at',
         'deleted_at', 
     ];
 
@@ -37,5 +36,10 @@ class Comment extends Model
     public function parent()
     {
         return $this->belongsTo(Comment::class, 'comment_id');
+    }
+
+    public function reactions()
+    {
+        return $this->morphMany(Reaction::class, 'reactionable');
     }
 }

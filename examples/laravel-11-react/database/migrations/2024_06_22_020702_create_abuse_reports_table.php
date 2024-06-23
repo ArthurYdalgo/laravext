@@ -17,7 +17,7 @@ return new class extends Migration
 
             $table->morphs('reportable');
             $table->foreignIdFor(User::class)->nullable()->constrained()->nullOnDelete();
-            $table->string('ip_address')->index();
+            $table->string('ip_address')->index()->nullable();
             $table->string('type')->index();
             $table->text('message');
             $table->text('reply')->nullable();

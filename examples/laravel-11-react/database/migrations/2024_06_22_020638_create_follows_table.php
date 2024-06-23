@@ -20,7 +20,7 @@ return new class extends Migration
             $table->dateTime('ended_at')->nullable();
 
             $table->dateTime('created_at')->useCurrent();
-            $table->dateTime('updated_at')->useCurrentOnUpdate();
+            $table->dateTime('updated_at')->useCurrent()->useCurrentOnUpdate();
 
             $table->primary(['follower_id', 'followee_id']);
 

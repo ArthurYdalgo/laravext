@@ -9,9 +9,19 @@ class Share extends Model
 {
     use HasFactory;
 
+    public static $available_mediums = [
+        'facebook',
+        'twitter',
+        'linkedin',
+        'whatsapp',
+        'email',
+        'link',
+    ];
+
     protected $fillable = [
-        'user_id',
         'article_id',
+        'user_id',
+        'code',
         'medium',
         'ip_address',
     ];

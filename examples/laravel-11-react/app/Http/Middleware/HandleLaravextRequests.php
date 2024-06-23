@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\AbuseReport;
+use App\Models\Reaction;
 use Closure;
 use Illuminate\Http\Request;
 use Laravext\Middleware;
@@ -18,11 +20,8 @@ class HandleLaravextRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
-            'motivation' => 'Laravext is a package that helps you to create a Laravel project with a lot of features already implemented.',
-            'date' => $now->format('Y-m-d'),
-            'time' => $now->format('H:i:s'),
-            'datetime' => $now->format('Y-m-d H:i:s'),
-            'unix' => $now->timestamp,
+            'available_reactions' => Reaction::$available_reactions,
+            'available_abuse_report_types' => AbuseReport::$available_types,
         ]);
 
     }

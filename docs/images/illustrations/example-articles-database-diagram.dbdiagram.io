@@ -31,8 +31,8 @@ Table follows {
 
 Table reactions {
   id integer [primary key]
-  reactable_id integer
-  reactable_type varchar
+  reactionable_id integer
+  reactionable_type varchar
   user_id integer
   reaction integer
   created_at timestamp

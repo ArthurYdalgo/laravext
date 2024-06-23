@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\AbuseReport;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,9 @@ class AbuseReportFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'ip_address' => $this->faker->ipv4,
+            'type' => $this->faker->randomElement(AbuseReport::$available_types),
+            'message' => $this->faker->sentence,
         ];
     }
 }

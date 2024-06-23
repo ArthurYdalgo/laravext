@@ -12,6 +12,7 @@ class Media extends Model
     protected $fillable = [
         'user_id',
         'path',
+        'hash',
         'disk',
         'url',
     ];

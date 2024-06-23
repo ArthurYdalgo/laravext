@@ -9,6 +9,15 @@ class AbuseReport extends Model
 {
     use HasFactory;
 
+    public static $available_types = [
+        'spam',
+        'hate_speech',
+        'virus',
+        'scam',
+        'inappropriate',
+        'immediate_danger',
+    ];
+    
     protected $fillable = [
         'abuse_reportable_id',
         'abuse_reportable_type',
@@ -33,4 +42,5 @@ class AbuseReport extends Model
     {
         return $this->morphTo();
     }
+
 }

@@ -182,6 +182,10 @@ class Router
                 $layout = $directory['conventions']['layout'] ?? null;
                 $error = $directory['conventions']['error'] ?? null;
 
+                if($route_uri == ''){
+                    $route_uri = '/'; 
+                }
+                
                 Cache::store('array')->put(
                     "laravext-uri:{$route_uri}-cache",
                     compact('server_skeleton', 'middleware', 'layout', 'error', 'page', 'uri', 'name', 'root_view')

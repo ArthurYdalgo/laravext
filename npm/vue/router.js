@@ -43,7 +43,6 @@ export function visit(url) {
             }
 
             if (data.action == 'redirect') {
-                console.log(`Redirecting to ${data.url}`, data);
                 window.location.href = data.url;
                 return;
             }

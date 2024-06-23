@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Article::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Share::class)->nullable()->constrained()->cascadeOnDelete();
-            $table->string('ip_address')->index();
+            $table->string('ip_address')->index()->nullable();
 
             $table->timestamps();
         });

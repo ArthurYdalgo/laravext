@@ -80,7 +80,6 @@ class Directive
         $strand_id_length = config('laravext.strand_id_length', 64);
 
         $component = '';
-        $props = [];
 
         if (!$expression) {
             return '';
@@ -96,7 +95,35 @@ class Directive
 
         $template = '<section id="' . $id . '" section-type="laravext-strand-section" strand-component="' . $component . '" strand-data=\'{!! json_encode('. $strand_data .')!!}\'></section>';
 
-        return $template    ;
+        return $template;
+    }
+
+    public static function startStrand($expression = '')
+    {
+        $strand_id_length = config('laravext.strand_id_length', 64);
+
+        $component = '';
+
+        if (!$expression) {
+            return '';
+        }
+
+        $args = explode(',', $expression);
+
+        eval('$component = ' . $args[0] . ';');
+
+        $strand_data = isset($args[1]) && $args[1] ? $args[1] : '[]';
+        
+        $id = str()->random($strand_id_length);
+
+        $template = '<section id="' . $id . '" section-type="laravext-strand-section" strand-component="' . $component . '" strand-data=\'{!! json_encode('. $strand_data .')!!}\'>';
+
+        return $template;
+    }
+
+    public static function endStrand($expression = '')
+    {
+        return '</section>';
     }
 
 }

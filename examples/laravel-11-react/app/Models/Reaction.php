@@ -9,15 +9,24 @@ class Reaction extends Model
 {
     use HasFactory;
 
+    public static $available_reactions = [
+        'sparkle-hear',
+        'unicorn',
+        'exploding-head',
+        'raised-hands',
+        'fire',
+    ];
+
     protected $fillable = [
-        'reactable_id',
-        'reactable_type',
         'user_id',
+        'reactionable_id',
+        'reactionable_type',
         'reaction',
     ];
 
-    public function reactable()
+    public function reactionable()
     {
         return $this->morphTo();
     }
+
 }

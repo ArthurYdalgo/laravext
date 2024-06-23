@@ -145,8 +145,7 @@
     "Role": "Função",
     "Administrator": "Administrador",
     "Member": "Membro",
-    "Remove from Team": "Remover do Time",
-    "Remove this person from the team.": "Remova esta pessoa do time.",
+    
     "Administrator users can perform any action.": "O administrador pode realizar qualquer ação.",
     "Editor users have the ability to read, create, and update.": "O editor pode ler, criar e atualizar",
     "Remove": "Remover",
@@ -158,8 +157,12 @@
     "Edit": "Editar",
     "Loading...": "Carregando...",
 
+    "Click to bookmark this article": "Clique para favoritar este artigo",
+    "Click to unbookmark this article": "Clique para desfavoritar este artigo",
+
+    "You must be logged in to bookmark articles": "Você precisa estar logado para favoritar artigos",
+
     "Return to": "Retornar para",
-    "Click to view projects of Company": "Clique para ver os projetos da Empresa",
 
     "Are you sure?": "Você tem certeza?",
     "Yes, delete it!": "Sim, deletar!",
@@ -172,47 +175,6 @@
 
     "Add": "Adicionar",
 
-    "Contact Requests": "Solicitações de Contato",
-    "Contact Request": "Solicitação de Contato",
-
-    "An error occurred while deleting the project.": "Ocorreu um erro ao deletar o projeto.",
-    "An error occurred while deleting the company.": "Ocorreu um erro ao deletar a empresa.",
-    "An error occurred while deleting the team.": "Ocorreu um erro ao deletar o time.",
-    "An error occurred while deleting the developer.": "Ocorreu um erro ao deletar o desenvolvedor.",
-    "An error occurred while deleting the contact request.": "Ocorreu um erro ao deletar o pedido de contato.",
-
-    "An error occurred while updating the project.": "Ocorreu um erro ao atualizar o projeto.",
-    "An error occurred while updating the company.": "Ocorreu um erro ao atualizar a empresa.",
-    "An error occurred while updating the team.": "Ocorreu um erro ao atualizar o time.",
-    "An error occurred while updating the developer.": "Ocorreu um erro ao atualizar o desenvolvedor.",
-    "An error occurred while updating the contact request.": "Ocorreu um erro ao atualizar o pedido de contato.",
-
-    "The company has been updated.": "A empresa foi atualizada.",
-    "The team has been updated.": "O time foi atualizado.",
-    "The developer has been updated.": "O desenvolvedor foi atualizado.",
-    "The project has been updated.": "O projeto foi atualizado.",
-
-    "The company has been deleted.": "A empresa foi deletada.",
-    "The team has been deleted.": "O time foi deletado.",
-    "The developer has been deleted.": "O desenvolvedor foi deletado.",
-    "The project has been deleted.": "O projeto foi deletado.",
-    "The contact request has been deleted.": "O pedido de contato foi deletado.",
-
-    "Create a company": "Criar uma empresa",
-    "Edit company": "Editar empresa",
-
-    "Create a project": "Criar um projeto",
-    "Edit project": "Editar projeto",
-
-    "Search for a company": "Buscar por uma empresa",
-    "Search for a team": "Buscar por um time",
-
-    "No website": "Sem site",
-
-    "A brief description of the project": "Uma breve descrição do projeto",
-
-    "Description": "Descrição",
-
     "Comments": "Comentários",
 
     "You": "Você",
@@ -221,48 +183,21 @@
     "Loading": "Carregando",
     "Load more": "Carregar mais",
 
-    "Create a team": "Criar um time",
-    "Edit team": "Editar time",
-
     "Reply": "Responder",
     "Response": "Resposta",
     "Your response here": "Sua resposta aqui",
-    "Contact request's response": "Resposta do pedido de contato",
-    "Reply to contact request": "Responder ao pedido de contato",
     "Replied by": "Respondido por",
-
-    "Click to remove the developer from the team": "Clique para remover o desenvolvedor do time",
 
     "Click to enable privacy filter": "Clique para habilitar o filtro de privacidade",
     "Click to disable privacy filter": "Clique para desabilitar o filtro de privacidade",
 
-    "Create a developer": "Criar um desenvolvedor",
-    "Edit developer": "Editar desenvolvedor",
-
     "Show": "Mostrar",
 
-    "Click to view projects of Team": "Clique para ver os projetos do Time",
 
     "Actions": "Ações",
 
     "cool_nickname": "apelido_daora",
 
-    "Add developer to team": "Adicionar desenvolvedor ao time",
-    "Type to search for a developer by email or name": "Digite para buscar um desenvolvedor por e-mail ou nome",
-    
     "Created At": "Criado em",
-    "Replied At": "Respondido em",
-
-    "Delivered": "Entregue",
-    "On delivery queue": "Na fila de entrega",
-
-    "Subject": "Assunto",
-    "Companies": "Empresas",
-    "Company": "Empresa",
-    "Developers": "Desenvolvedores",
-    "Developer": "Desenvolvedor",
-    "Projects": "Projetos",
-    "Project": "Projeto",
-    "Teams": "Times",
-    "Team": "Time"
+    "Replied At": "Respondido em"
   }

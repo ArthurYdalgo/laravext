@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('tags', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(User::class)->nullable();
             $table->string('slug')->index()->unique();
             $table->unsignedBigInteger('articles_count')->default(0);
 

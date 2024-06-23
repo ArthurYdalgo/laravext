@@ -5,7 +5,7 @@ return [
     /**
      * The root view where the @nexus directive is at.
      */
-    'root_view' => env('VEXT_ROOT_VIEW', 'sections.guest'),
+    'root_view' => env('VEXT_ROOT_VIEW', 'sections.reader'),
 
     /**
      * The directory where the nexus files are stored. This is used by the router to automagically
