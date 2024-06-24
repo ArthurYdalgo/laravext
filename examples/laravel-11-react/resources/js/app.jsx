@@ -6,6 +6,8 @@ import pt from './../../lang/pt.json'
 
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
+import { Ziggy } from '@/ziggy';
+globalThis.Ziggy = Ziggy;
 
 const user = sharedProps()?.auth?.user;
 

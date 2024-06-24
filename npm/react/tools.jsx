@@ -1,6 +1,6 @@
 import { laravext } from "./index";
 import { createRoot } from 'react-dom/client';
-import { renderToStaticMarkup } from 'react-dom/server';
+import { renderToString } from 'react-dom/server';
 
 export function findNexus() {
     const nexusSection = document.querySelectorAll('section[section-type="laravext-nexus-section"]');
@@ -131,11 +131,13 @@ export async function serverRender() {
                     });
                 }
 
+                console.log("nexus instantiated")
                 conventions = conventions.filter(convention => convention !== 'page');
 
                 for (let i = 0; i < conventions.length; i++) {
                     if (laravextPageData?.nexus?.[conventions[i]]) {
                         try {
+                            
                             if (!isEnvProduction()) {
                                 console.debug(`Loading convention ${conventions[i]} at ${laravextPageData?.nexus?.[conventions[i]]}`)
                             };
@@ -153,7 +155,7 @@ export async function serverRender() {
                     }
                 }
 
-                let staticMarkup = renderToStaticMarkup(nexus);
+                let staticMarkup = renderToString(nexus);
 
                 console.log(staticMarkup);
 

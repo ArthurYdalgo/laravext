@@ -6,6 +6,7 @@ import Link from '@/components/Link';
 import PrimaryButton from '@/components/PrimaryButton';
 import TextInput from '@/components/TextInput';
 
+
 export default () => {
     const [form, setForm] = useState({
         email: '',
@@ -14,6 +15,8 @@ export default () => {
         response: null,
         processing: false,
     });
+
+    
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
