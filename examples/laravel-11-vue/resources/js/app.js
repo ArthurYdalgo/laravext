@@ -20,9 +20,11 @@ document.addEventListener('DOMContentLoaded', function () {
         nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
         strandsResolver: (name) => resolveComponent(`./strands/${name}.vue`, import.meta.glob('./strands/**/*.vue')),
         uses: () => {
+            let locale = sharedProps()?.auth?.user?.locale ?? VueCookies.get('locale') ?? 'en';
+
             const i18n = createI18n({
                 legacy: false,
-                locale: sharedProps()?.auth?.user?.locale || 'en',
+                locale: locale,
                 fallbackLocale: 'en',
                 messages: {
                     pt

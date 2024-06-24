@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, inject } from 'vue';
 import ApplicationLogo from '@/components/ApplicationLogo.vue';
 import Dropdown from '@/components/Dropdown.vue';
 import DropdownLink from '@/components/DropdownLink.vue';
@@ -13,6 +13,8 @@ import { privacy } from '@/composables/usePrivacy'
 import Fa from '@/components/Fa.vue';
 import { useI18n } from 'vue-i18n';
 import Tooltip from '@/components/Tooltip.vue';
+import VueCookies from 'vue-cookies'
+
 const { locale: i18nLocale } = useI18n();
 
 const { user } = sharedProps().auth;
@@ -45,6 +47,8 @@ const handleTogglePrivacy = () => {
 
 const handleLocaleChange = async (locale) => {
     i18nLocale.value = locale;
+
+    VueCookies.set('locale', locale);
 
     await axios.put('/api/auth/user', {
         locale

@@ -50,7 +50,7 @@ const submit = async () => {
             <h3 class="mt-6 justify-center text-2xl font-extrabold text-gray-900 dark:text-white text-center">Login</h3>
 
             <div>
-                <InputLabel for="email" value="Email" />
+                <InputLabel for="email" :value="$t('Email')" />
 
                 <TextInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autofocus
                     autocomplete="username" />
@@ -59,7 +59,7 @@ const submit = async () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+                <InputLabel for="password" :value="$t('Password')" />
 
                 <TextInput id="password" type="password" class="mt-1 block w-full" v-model="form.password" required
                     autocomplete="current-password" />
@@ -70,14 +70,14 @@ const submit = async () => {
             <div class="block mt-4">
                 <label class="flex items-center">
                     <Checkbox name="remember" v-model:checked="form.remember" />
-                    <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">Remember me</span>
+                    <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{$t('Remember me')}}</span>
                 </label>
             </div>
 
             <div class="flex items-center justify-end mt-4">
 
                 <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Log in
+                    {{$t('Login')}}
                 </PrimaryButton>
             </div>
         </form>
