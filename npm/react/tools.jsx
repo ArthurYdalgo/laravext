@@ -1,6 +1,6 @@
 import { laravext } from "./index";
 import { createRoot } from 'react-dom/client';
-import { renderToString } from 'react-dom/server';
+import { renderToString , renderToStaticMarkup} from 'react-dom/server';
 
 export function findNexus() {
     const nexusSection = document.querySelectorAll('section[section-type="laravext-nexus-section"]');
@@ -157,8 +157,6 @@ export async function serverRender() {
 
                 let staticMarkup = renderToString(nexus);
 
-                console.log(staticMarkup);
-
                 nexusElement.innerHTML = staticMarkup;
 
                 console.log(document.querySelectorAll('section[section-type="laravext-nexus-section"]')[0].innerHTML);
@@ -178,7 +176,7 @@ export async function serverRender() {
             if (strandComponentPath) {
                 let StrandModule = await strandsResolver(strandComponentPath)
                 // pass strand data to component
-                let staticMarkup = renderToStaticMarkup(<StrandModule.default laravext={{ ...laravextPageData }} {...strandData} />);
+                let staticMarkup = renderToString(<StrandModule.default laravext={{ ...laravextPageData }} {...strandData} />);
                 strandElement.innerHTML = staticMarkup;
             }
         }

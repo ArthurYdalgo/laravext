@@ -202,6 +202,8 @@ class ResponseFactory
 
             $rendered_view = $view->render();
 
+            file_put_contents('test.html', $rendered_view);
+
             try {
                 return Http::post("http://localhost:13714/render", [
                     'html' => $view->render(),

@@ -1,13 +1,12 @@
 import { createLaravextApp, sharedProps } from "@laravext/react"
 import { resolveComponent } from "@laravext/react/tools"
+import { Ziggy } from "./ziggy";
 import './bootstrap';
 import '../css/app.css';
 import pt from './../../lang/pt.json'
-
+import {route as ziggyRoute} from "../../vendor/tightenco/ziggy/src/js/index.js";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import { Ziggy } from '@/ziggy';
-globalThis.Ziggy = Ziggy;
 import Cookies from "js-cookie";
 
 const user = sharedProps()?.auth?.user;
@@ -26,7 +25,14 @@ i18n
         }
     });
 
-i18n.changeLanguage(user?.locale || (Cookies.get('locale') ?? 'en'))
+i18n.changeLanguage(user?.locale ?? Cookies.get('locale') ?? 'en')
+
+window.Ziggy = Ziggy;
+window.route = (name, params, absolute) =>
+    ziggyRoute(name, params, absolute, {
+        ...sharedProps().ziggy,
+        url: sharedProps().ziggy.url
+    });
 
 document.addEventListener('DOMContentLoaded', function () {
     createLaravextApp({
