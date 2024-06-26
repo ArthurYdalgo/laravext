@@ -98,9 +98,9 @@ class ResponseFactory
         return $this;
     }
 
-    public function withHead($head, $value = null)
+    public function withHead(string|int|array $name, $value = null)
     {
-        $head = array_merge($this->shared_props['head'] ?? [], is_array($head) ? $head : [$head => $value]);
+        $head = array_merge($this->shared_props['head'] ?? [], is_array($name) ? $name : [$name => $value]);
 
         return $this->withSharedProps(compact('head'));
     }

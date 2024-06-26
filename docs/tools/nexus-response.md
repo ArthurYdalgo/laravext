@@ -58,7 +58,7 @@ This method is used to define the html skeleton that will be used to render the 
 
 Similar to the `withHtmlSkeleton` method, this method is used to define the view that will be used to render the html skeleton. You pass the view which will be used (follow the same `"path.to.view"` convention from Laravel) and any props you need. Props sent to the nexus or previously set as shared data will be available in this view by default (unless you override them by setting props with the same name as previously defined ones).
 
-## withHead($head, $value = null)
+## withHead(string|int|array $name, $value = null)
 
 This method is used to define the head data that will be passed to the view. It can be used as a `$head` variable inside the view files. You can send it as either an array or pass a string as the name of the attribute and the value as the second parameter.
 
