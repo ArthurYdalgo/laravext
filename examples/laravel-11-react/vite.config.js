@@ -30,7 +30,6 @@ export default function ({ mode }) {
                                 'moment',
                                 'lodash',
                                 'sweetalert2',
-                                'ziggy-js',
                                 'axios',
                                 '@fortawesome/free-solid-svg-icons',
                                 'nprogress',
