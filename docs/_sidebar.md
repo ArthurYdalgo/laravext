@@ -20,6 +20,7 @@
     - [Middleware](examples/middleware.md)
     - [Layout](examples/layout.md)
 - Misc
+    - [Contributors](misc/contributors.md)
     - [About this doc](misc/about-this-doc.md)
 - Links
     - [GitHub](https://github.com/ArthurYdalgo/laravext)
