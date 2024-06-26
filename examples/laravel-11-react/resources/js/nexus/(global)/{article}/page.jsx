@@ -47,7 +47,7 @@ export default () => {
             <img src={article.banner_url} width={'600px'} alt={article.title} />
         </p>
         <span className='flex justify-between'><h1>{article.title}</h1>
-        <Tooltip text={bookmarked ? t('Click to unbookmark this article') : t('Click to bookmark this article')}><Bookmark bookmarked={bookmarked} onClick={toggleBookmark} className='mt-3' /></Tooltip></span>
+        <Tooltip text={bookmarked ? t('Click to unbookmark this article') : t('Click to bookmark this article')}><Bookmark bookmarked={bookmarked} onClick={toggleBookmark} className={'transition-all mt-3 border-spacing-3 border-spacing-x-6 px-2 pt-1.5 p-1 rounded-md ' + (bookmarked ? ' bg-slate-200 text-red-600' : 'text-black hover:text-red-300')} /></Tooltip></span>
 
         <div className="pre-wrap break-words">
 

@@ -50,16 +50,63 @@ This method is used to define the props that will be passed to the view. It can 
 
 This method is used to define the shared props that will be passed to the view. It'll be merged with any previously defined shared props. Check [Tools/Shared Props](/tools/shared-props) for more information.
 
+## withHtmlSkeleton($html_skeleton)
+
+This method is used to define the html skeleton that will be used to render the view. It can be used in place of the `html_skeleton` parameter. It'll override any previously defined html skeleton from the router.
+
+## withViewSkeleton($view, $props = [])
+
+Similar to the `withHtmlSkeleton` method, this method is used to define the view that will be used to render the html skeleton. You pass the view which will be used (follow the same `"path.to.view"` convention from Laravel) and any props you need. Props sent to the nexus or previously set as shared data will be available in this view by default (unless you override them by setting props with the same name as previously defined ones).
+
+## withHead(string|int|array $name, $value = null)
+
+This method is used to define the head data that will be passed to the view. It can be used as a `$head` variable inside the view files. You can send it as either an array or pass a string as the name of the attribute and the value as the second parameter.
+
+```php
+return nexus(props: compact('books'))
+
+    ->withHead('og_image', 'https://example.com/example_og_image.jpg')
+    ->withHead('og_description', 'This is an example for the og:description meta tag')
+    // or
+    ->withHead([
+        'og_image' => 'https://example.com/example_og_image.jpg',
+        'og_description' => 'This is an example for the og:description meta tag'
+    ])
+    ->render();
+```
+
+### withHeadTitle($title) and withHeadDescription($description)
+
+These methods are shortcuts for the `withHead` method. They are used to define the title and description of the page, respectively.
+
+```php
+return nexus(props: compact('books'))
+    ->withHeadTitle('Books')
+    ->withHeadDescription('A list of books')
+    ->render();
+```
+
+they will be available in the view as inside a `$head` variable, like so:
+
+```php
+
+<title>{{ @$head['title'] ?? config('app.name', 'Laravel') }}</title>
+<meta name="description" content="{{ @$head['description'] ?? 'Default description' }}">
+<meta property="og:description" content="{{ @$head['og_description'] ?? 'Default og:description' }}">
+<meta property="og:image" content="{{ @$head['og_image'] ?? 'https://example.com/default_og_image.jpg' }}">
+
+```
+
+These are completely optional, and you may or not use them as you see fit. Remember to not send a variable named `head` in the props, as it will override the head data set via these methods, if you're using them.
+
+
 ## File Conventions
 
-You can also use [file conventions](/concepts/file-conventions) for the view that will be rendered. You can do so by using one of the following methods, passing the `path/to/the/convention/you/want/to/use/convention.(jsx|tsx|js|ts|vue)`, except for the `withSkeleton`, which receives the html content of the skeleton:
+You can also use [file conventions](/concepts/file-conventions) for the view that will be rendered. You can do so by using one of the following methods, passing the `path/to/the/convention/you/want/to/use/convention.(jsx|tsx|js|ts|vue)`.
 
 - `withLayout($layout)`
 - `withMiddleware($middleware)`
 - `withError($error)`
-- `withServerSkeleton($server_skeleton)`
-
-⚠️Once again, if you're using the withServerSkeleton, you must pass the html content of what you want to use as the server skeleton. Additionally if you're using a `@startNexus` and `@endNexus` in the blade that is being rendered (either the default one or a manually set) this will be ignored.⚠️
 
 ## No need to repeat yourself
 
@@ -79,3 +126,49 @@ Route::get('our-teams', function () {
 ```
 
 Sure, you can specify the path to the page parameter if you want to, or if you want to use another file to be used as the page convention.
+
+## Macros
+
+You can also create your own macros for the nexus response if you want to chain a custom method you might use a lot, like setting a head parameter. You can add it in you `App\Providers\AppServiceProvider` (or create a new service provider for it, it's your call) like so:
+
+```php
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Support\ServiceProvider;
+use Laravext\ResponseFactory;
+
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Register any application services.
+     */
+    public function register(): void
+    {
+        //
+    }
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        // The ResponseFactory accepts macros, so you can add your own methods to it and chain them
+        // before rendering the response.
+        ResponseFactory::macro('withHeadOgImage', function ($og_image) {
+            return $this->withHead(compact('og_image'));
+            // or 
+            // return $this->withHead('og_image', $og_image);
+        });
+    }
+}
+```
+
+now you can use it like so:
+
+```php
+return nexus(props: compact('books'))
+    ->withHeadOgImage('https://example.com/og_image.jpg')
+    ->render();
+```
