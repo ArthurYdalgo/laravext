@@ -200,6 +200,8 @@ class ResponseFactory
 
             $view = view($root_view);
 
+            return $view;
+
             $rendered_view = $view->render();
 
             try {

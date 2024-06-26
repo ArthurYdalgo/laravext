@@ -4,7 +4,7 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build && vite build --ssr",
-        "start": "nodemon"
+        "start": "nodemon -e js,jsx --watch resources/js --exec \"npm run build && node bootstrap/ssr/ssr.js\""
     },
     "dependencies": {
         "@fortawesome/fontawesome-svg-core": "^6.5.2",

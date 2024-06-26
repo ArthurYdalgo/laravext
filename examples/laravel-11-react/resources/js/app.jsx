@@ -1,5 +1,5 @@
-import Laravext from "@laravext/react"
 import { resolveComponent } from "@laravext/react/tools"
+import { createLaravextApp, sharedProps } from "@laravext/react"
 import { Ziggy } from "./ziggy";
 import './bootstrap';
 import '../css/app.css';
@@ -10,8 +10,6 @@ import { initReactI18next } from "react-i18next";
 import Cookies from "js-cookie";
 
 const user = sharedProps()?.auth?.user;
-
-const {sharedProps} = Laravext();
 
 i18n
     .use(initReactI18next)
@@ -37,7 +35,7 @@ window.route = (name, params, absolute) =>
     });
 
 document.addEventListener('DOMContentLoaded', function () {
-    Laravext.createLaravextApp({
+    createLaravextApp({
         nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
         strandsResolver: (name) => resolveComponent(`./strands/${name}.jsx`, import.meta.glob('./strands/**/*.jsx')),
         progress: {

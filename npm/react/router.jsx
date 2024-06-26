@@ -1,5 +1,5 @@
-import { clientRender } from './index';
 import { version, laravextPageData } from './index';
+import { clientRender, serverRender } from './tools';
 import { endProgress, startProgress } from './progress';
 
 export function visit(url) {

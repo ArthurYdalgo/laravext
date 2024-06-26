@@ -1,6 +1,6 @@
 import express from 'express';
 import { JSDOM } from 'jsdom';
-import Laravext, { createLaravextSsrApp, createLaravextApp } from '@laravext/react';
+import { createLaravextSsrApp, createLaravextApp } from '@laravext/react';
 import { resolveComponent } from "@laravext/react/tools"
 import { route } from '../../vendor/tightenco/ziggy/src/js';
 import i18n from "i18next";
@@ -32,18 +32,19 @@ app.post('/render', async (req, res) => {
         
         // set global window variable to be accesses inside renderToStaticMarkup
         global.navigator = navigator;
-
-        let laravext = new Laravext(dom.window);
+        global.window = dom.window;
+        global.document = dom.window.document;
+        let laravext = dom.window.__laravext;
 
         global.route = (name, params, absolute) =>
             route(name, params, absolute, {
-                ...(laravext.sharedProps().ziggy),
-                url: laravext.sharedProps().ziggy.url,
+                ...(sharedProps().ziggy),
+                url: sharedProps().ziggy.url,
             });
 
-        global.Ziggy = laravext.sharedProps().ziggy;
+        global.Ziggy = sharedProps().ziggy;
 
-        const user = laravext.sharedProps()?.auth?.user;
+        const user = sharedProps()?.auth?.user;
 
         i18n
             .use(initReactI18next)
@@ -61,7 +62,7 @@ app.post('/render', async (req, res) => {
 
         i18n.changeLanguage(user?.locale ?? Cookies.get('locale') ?? 'en')
 
-        await laravext.createLaravextSsrApp({
+        await createLaravextSsrApp({
             nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
             strandsResolver: (name) => resolveComponent(`./strands/${name}.jsx`, import.meta.glob('./strands/**/*.jsx')),
         })
