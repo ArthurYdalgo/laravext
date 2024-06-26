@@ -1,6 +1,6 @@
 import express from 'express';
 import { JSDOM } from 'jsdom';
-import { createLaravextSsrApp, createLaravextApp } from '@laravext/react';
+import Laravext, { createLaravextSsrApp, createLaravextApp } from '@laravext/react';
 import { resolveComponent } from "@laravext/react/tools"
 import { route } from '../../vendor/tightenco/ziggy/src/js';
 import i18n from "i18next";
@@ -28,24 +28,22 @@ app.post('/render', async (req, res) => {
         console.time('doSomething');
         const { html } = req.body;
         const dom = new JSDOM(html, { runScripts: "dangerously" });
-        const window = dom.window
-        const document = window.document;
-        const navigator = window.navigator;
-
+        const navigator = dom.window.navigator;
+        
         // set global window variable to be accesses inside renderToStaticMarkup
-        global.window = window;
-        global.document = document;
         global.navigator = navigator;
+
+        let laravext = new Laravext(dom.window);
 
         global.route = (name, params, absolute) =>
             route(name, params, absolute, {
-                ...sharedProps().ziggy,
-                url: sharedProps().ziggy.url,
+                ...(laravext.sharedProps().ziggy),
+                url: laravext.sharedProps().ziggy.url,
             });
 
-        global.Ziggy = sharedProps().ziggy;
+        global.Ziggy = laravext.sharedProps().ziggy;
 
-        const user = sharedProps()?.auth?.user;
+        const user = laravext.sharedProps()?.auth?.user;
 
         i18n
             .use(initReactI18next)
@@ -63,7 +61,7 @@ app.post('/render', async (req, res) => {
 
         i18n.changeLanguage(user?.locale ?? Cookies.get('locale') ?? 'en')
 
-        await createLaravextSsrApp({
+        await laravext.createLaravextSsrApp({
             nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
             strandsResolver: (name) => resolveComponent(`./strands/${name}.jsx`, import.meta.glob('./strands/**/*.jsx')),
         })
@@ -77,7 +75,9 @@ app.post('/render', async (req, res) => {
         // res.send('ok');
 
     } catch (error) {
+
         res.status(500).send('Error rendering page: ' + error.message);
+        throw error;
     }
 });
 

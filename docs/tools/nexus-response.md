@@ -26,9 +26,26 @@ Route::get('books', function($slug){
 })->name('books');
 ```
 
-You might have noticed the `rootView` chained method. This method is used to define the view that will be rendered. If you don't define it, the default view set in the configuration file will be used. The `render` method will render the view with the props you've defined.
+You might have noticed the `rootView` chained method. This method is used to define the view that will be rendered. If you don't define it, the default view set in the configuration file will be used. The `render` method will render the view with the props you've defined. Other chainable methods are explained below, after the next topic.
 
-Other methods that can be chained after the `nexus` method are:
+## No need to repeat yourself
+
+Let's say that there's a  `Route::laravext()` in the beginning of your `web.php` route file and there is a page convention in a path that creates a `/our-teams` route, and you declared a `Route::get('our-teams')` route after that. You don't need to specify the path to the page parameter in the `nexus` method, because it knows which page convention was used that created that uri, so you can just send the `props: [...]`, like so: 
+
+```php
+use App\Models\Team;
+use Illuminate\Support\Facades\Route;
+
+Route::laravext();
+
+Route::get('our-teams', function () {
+    $teams = Team::all();
+
+    return nexus(props: compact('teams'))->render();
+})->name('our-teams');
+```
+
+Sure, you can specify the path to the page parameter if you want to, or if you want to use another file to be used as the page convention.
 
 ## rootView($root_view)
 
@@ -54,9 +71,43 @@ This method is used to define the shared props that will be passed to the view. 
 
 This method is used to define the html skeleton that will be used to render the view. It can be used in place of the `html_skeleton` parameter. It'll override any previously defined html skeleton from the router.
 
+```php
+use App\Models\Article;
+use Illuminate\Support\Facades\Route;
+
+Route::get('', function () {
+    $articles = Article::latest()->paginate(10);
+
+    $server_skeleton = view('partials.articles', compact('articles'))->render();
+
+    return nexus()
+    ->withHtmlSkeleton($server_skeleton)
+    ->render();
+
+})->name('home');
+
+```
+
 ## withViewSkeleton($view, $props = [])
 
 Similar to the `withHtmlSkeleton` method, this method is used to define the view that will be used to render the html skeleton. You pass the view which will be used (follow the same `"path.to.view"` convention from Laravel) and any props you need. Props sent to the nexus or previously set as shared data will be available in this view by default (unless you override them by setting props with the same name as previously defined ones).
+
+```php
+use App\Models\Article;
+use Illuminate\Support\Facades\Route;
+
+Route::get('{article:slug}', function (Article $article) {
+
+    $article->append(['user_has_bookmarked', 'user_reactions']);
+
+    return nexus(props: compact('article'))
+        ->withViewSkeleton('partials.article') // the $article variable will be available in the view by default
+        ->withHeadTitle($article->title)
+        ->render();
+
+})->name('article');
+
+```
 
 ## withHead(string|int|array $name, $value = null)
 
@@ -107,25 +158,6 @@ You can also use [file conventions](/concepts/file-conventions) for the view tha
 - `withLayout($layout)`
 - `withMiddleware($middleware)`
 - `withError($error)`
-
-## No need to repeat yourself
-
-Let's say that there's a  `Route::laravext()` in the beginning of your `web.php` route file and there is a page convention in a path that creates a `/our-teams` route, and you declared a `Route::get('our-teams')` route after that. You don't need to specify the path to the page parameter in the `nexus` method, because it knows which page convention was used that created that uri, so you can just send the `props: [...]`, like so: 
-
-```php
-use App\Models\Team;
-use Illuminate\Support\Facades\Route;
-
-Route::laravext();
-
-Route::get('our-teams', function () {
-    $teams = Team::all();
-
-    return nexus(props: compact('teams'))->render();
-})->name('our-teams');
-```
-
-Sure, you can specify the path to the page parameter if you want to, or if you want to use another file to be used as the page convention.
 
 ## Macros
 

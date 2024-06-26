@@ -43,10 +43,6 @@ You may think of it as a Next.js' file based router inside your Laravel project.
 
 Well, yes... Moving on.
 
-### What is it not?
-
-It's not a server-side renderer of any React/Vue component, as it'd require some kind of javascript engine for it, and I wanted simplicity.
-
 ### In case you want to help me...
 
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/arthurydalgo)

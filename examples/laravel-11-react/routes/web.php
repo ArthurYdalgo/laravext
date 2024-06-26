@@ -25,7 +25,7 @@ Route::laravext();
 Route::get('', function () {
     $articles = Article::latest()->paginate(10);
 
-    $server_skeleton = view('partials.articles', compact('articles'));
+    $server_skeleton = view('partials.articles', compact('articles'))->render();
 
     return nexus(
     //     props: [
