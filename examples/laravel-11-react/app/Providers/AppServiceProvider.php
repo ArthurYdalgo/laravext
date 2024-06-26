@@ -24,6 +24,8 @@ class AppServiceProvider extends ServiceProvider
         // before rendering the response.
         // ResponseFactory::macro('withHeadOgImage', function ($og_image) {
         //     return $this->withHead(compact('og_image'));
+        //     or 
+        //     return $this->withHead('og_image', $og_image);
         // });
     }
 }
