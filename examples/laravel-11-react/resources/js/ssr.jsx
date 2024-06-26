@@ -34,7 +34,6 @@ app.post('/render', async (req, res) => {
         global.navigator = navigator;
         global.window = dom.window;
         global.document = dom.window.document;
-        let laravext = dom.window.__laravext;
 
         global.route = (name, params, absolute) =>
             route(name, params, absolute, {
