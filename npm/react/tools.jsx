@@ -131,7 +131,6 @@ export async function serverRender() {
                     });
                 }
 
-                console.log("nexus instantiated")
                 conventions = conventions.filter(convention => convention !== 'page');
 
                 for (let i = 0; i < conventions.length; i++) {
@@ -158,8 +157,6 @@ export async function serverRender() {
                 let staticMarkup = renderToString(nexus);
 
                 nexusElement.innerHTML = staticMarkup;
-
-                console.log(document.querySelectorAll('section[section-type="laravext-nexus-section"]')[0].innerHTML);
 
 
             }

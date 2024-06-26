@@ -28,7 +28,12 @@ class ArticleController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        //
+        /** @todo  @see https://laracasts.com/discuss/channels/laravel/how-to-remove-script-tags-from-the-markdown-input-by-the-user */
+
+        // function scriptStripper($input)
+        // {
+        //     return preg_replace('#<script(.*?)>(.*?)</script>#is', '', $input);
+        // }
     }
 
     /**
@@ -44,7 +49,6 @@ class ArticleController extends Controller
      */
     public function update(UpdateRequest $request, Article $article)
     {
-        
     }
 
     /**

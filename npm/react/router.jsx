@@ -28,7 +28,6 @@ export function visit(url) {
         return response.json();
     })
         .then((data) => {
-            console.log(data);
 
             if (data.action == 'redirect') {
                 window.location.href = data.url;

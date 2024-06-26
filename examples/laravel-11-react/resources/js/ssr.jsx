@@ -2,10 +2,11 @@ import express from 'express';
 import { JSDOM } from 'jsdom';
 import { createLaravextSsrApp, createLaravextApp } from '@laravext/react';
 import { resolveComponent } from "@laravext/react/tools"
-import { route } from '../../vendor/tightenco/ziggy/src/js/index.js';
+import { route } from '../../vendor/tightenco/ziggy/src/js';
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import pt from './../../lang/pt.json'
+import pt from '../../lang/pt.json'
+import {sharedProps} from '@laravext/react';
 
 const app = express();
 const port = 13714;
@@ -14,16 +15,17 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 if (process.env.NODE_ENV === 'production' || true) {
-    const originalWarn = console.warn;
-    console.warn = (message, ...args) => {
+    const originalError = console.error;
+    console.error = (message, ...args) => {
         if (!message.includes('useLayoutEffect does nothing on the server')) {
-            originalWarn(message, ...args);
+            originalError(message, ...args);
         }
     };
 }
 
 app.post('/render', async (req, res) => {
     try {
+        console.time('doSomething');
         const { html } = req.body;
         const dom = new JSDOM(html, { runScripts: "dangerously" });
         const window = dom.window
@@ -35,17 +37,15 @@ app.post('/render', async (req, res) => {
         global.document = document;
         global.navigator = navigator;
 
-        let laravextPageData = window.__laravext.page_data;
-
         global.route = (name, params, absolute) =>
             route(name, params, absolute, {
-                ...laravextPageData.shared_props.ziggy,
-                url: laravextPageData.shared_props.ziggy.url,
+                ...sharedProps().ziggy,
+                url: sharedProps().ziggy.url,
             });
 
-        global.Ziggy = laravextPageData.shared_props.ziggy;
+        global.Ziggy = sharedProps().ziggy;
 
-        const user = laravextPageData.shared_props?.auth?.user;
+        const user = sharedProps()?.auth?.user;
 
         i18n
             .use(initReactI18next)
@@ -73,6 +73,7 @@ app.post('/render', async (req, res) => {
         const updatedHtmlString = dom.serialize();
 
         res.send(updatedHtmlString);
+        console.timeEnd('doSomething');
         // res.send('ok');
 
     } catch (error) {
