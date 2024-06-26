@@ -27,10 +27,10 @@ i18n
 
 i18n.changeLanguage(user?.locale ?? Cookies.get('locale') ?? 'en')
 
-window.Ziggy = Ziggy;
+window.Ziggy = sharedProps().ziggy;
 window.route = (name, params, absolute) =>
     ziggyRoute(name, params, absolute, {
-        ...sharedProps().ziggy,
+        ...Ziggy,
         url: sharedProps().ziggy.url
     });
 

@@ -1,16 +1,11 @@
 import express from 'express';
 import { JSDOM } from 'jsdom';
-// import { renderToStaticMarkup } from 'react-dom/server';
 import { createLaravextSsrApp, createLaravextApp } from '@laravext/react';
 import { resolveComponent } from "@laravext/react/tools"
-// import {route} from "../../vendor/tightenco/ziggy/src/js/index.js";
-import { Ziggy } from './ziggy.js';
-import { route } from 'ziggy-js';
-// import { Ziggy } from 'ziggy-js';
+import { route } from '../../vendor/tightenco/ziggy/src/js/index.js';
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import pt from './../../lang/pt.json'
-// import {sharedProps} from '@laravext/react';
 
 const app = express();
 const port = 13714;
@@ -40,15 +35,17 @@ app.post('/render', async (req, res) => {
         global.document = document;
         global.navigator = navigator;
 
+        let laravextPageData = window.__laravext.page_data;
+
         global.route = (name, params, absolute) =>
             route(name, params, absolute, {
-                ...Ziggy,
-                url: Ziggy.url,
+                ...laravextPageData.shared_props.ziggy,
+                url: laravextPageData.shared_props.ziggy.url,
             });
 
-        global.Ziggy = Ziggy;
+        global.Ziggy = laravextPageData.shared_props.ziggy;
 
-        const user = window.__laravext.page_data.shared_props?.auth?.user;
+        const user = laravextPageData.shared_props?.auth?.user;
 
         i18n
             .use(initReactI18next)
