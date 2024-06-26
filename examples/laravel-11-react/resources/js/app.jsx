@@ -8,6 +8,7 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import { Ziggy } from '@/ziggy';
 globalThis.Ziggy = Ziggy;
+import Cookies from "js-cookie";
 
 const user = sharedProps()?.auth?.user;
 
@@ -25,7 +26,7 @@ i18n
         }
     });
 
-i18n.changeLanguage(user?.locale || (localStorage.getItem('locale') ?? 'en'))
+i18n.changeLanguage(user?.locale || (Cookies.get('locale') ?? 'en'))
 
 document.addEventListener('DOMContentLoaded', function () {
     createLaravextApp({

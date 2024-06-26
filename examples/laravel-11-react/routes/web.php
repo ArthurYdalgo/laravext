@@ -7,6 +7,11 @@ use App\Models\Team;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Route;
 
+/**
+ * Nothing stops you from creating your own custom routes, like this one.
+ * 
+ * @see https://laravel.com/docs/11.x/routing#view-routes for more details
+ */
 Route::view('about-this-project', 'sections.about-this-project')->name('about-this-project');
 
 /**
@@ -16,7 +21,6 @@ Route::view('about-this-project', 'sections.about-this-project')->name('about-th
  * @see https://laravext.dev/#/tools/routing?id=routelaravext for more detailed examples
  */
 Route::laravext();
-
 
 Route::get('', function () {
     $articles = Article::latest()->paginate(10);
@@ -44,13 +48,6 @@ Route::get('', function () {
     // ->withServerSkeleton($server_skeleton)
     ->render();
 })->name('home');
-
-/**
- * Nothing stops you from creating your own custom routes, like this one.
- * 
- * @see https://laravel.com/docs/11.x/routing#view-routes for more details
- */
-Route::view('about-this-project', 'sections.about-this-project')->name('about-this-project');
 
 Route::get('{article:slug}', function (Article $article) {
 

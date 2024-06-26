@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\HandleLaravextRequests;
+use App\Http\Middleware\Localization;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -38,6 +39,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             HandleLaravextRequests::class,
+            Localization::class,
         ],
 
         'api' => [
@@ -47,6 +49,7 @@ class Kernel extends HttpKernel
             \Illuminate\Session\Middleware\AuthenticateSession::class,
             \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            Localization::class,
         ],
     ];
 

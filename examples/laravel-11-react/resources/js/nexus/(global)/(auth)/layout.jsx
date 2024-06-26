@@ -11,6 +11,7 @@ import usePrivacy from '@/hooks/usePrivacy'
 import Fa from '@/components/Fa';
 import { useTranslation } from 'react-i18next';
 import Tooltip from '@/components/Tooltip';
+import Cookies from 'js-cookie';
 
 export default ({ children }) => {
     const { t, i18n } = useTranslation();
@@ -47,7 +48,7 @@ export default ({ children }) => {
     const handleLocaleChange = (locale) => {
         i18n.changeLanguage(locale);
 
-        localStorage.setItem('locale', locale);
+        Cookies.set('locale', locale);
 
         axios.put('/api/auth/user', {
             locale
