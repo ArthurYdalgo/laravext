@@ -50,16 +50,21 @@ This method is used to define the props that will be passed to the view. It can 
 
 This method is used to define the shared props that will be passed to the view. It'll be merged with any previously defined shared props. Check [Tools/Shared Props](/tools/shared-props) for more information.
 
+## withHtmlSkeleton($html_skeleton)
+
+This method is used to define the html skeleton that will be used to render the view. It can be used in place of the `html_skeleton` parameter. It'll override any previously defined html skeleton from the router.
+
+## withViewSkeleton($view, $props = [])
+
+Similar to the `withHtmlSkeleton` method, this method is used to define the view that will be used to render the html skeleton. You pass the view which will be used (follow the same `"path.to.view"` convention from Laravel) and any props you need. Props sent to the nexus or previously set as shared data will be available in this view by default (unless you override them by setting props with the same name as previously defined ones).
+
 ## File Conventions
 
-You can also use [file conventions](/concepts/file-conventions) for the view that will be rendered. You can do so by using one of the following methods, passing the `path/to/the/convention/you/want/to/use/convention.(jsx|tsx|js|ts|vue)`, except for the `withSkeleton`, which receives the html content of the skeleton:
+You can also use [file conventions](/concepts/file-conventions) for the view that will be rendered. You can do so by using one of the following methods, passing the `path/to/the/convention/you/want/to/use/convention.(jsx|tsx|js|ts|vue)`.
 
 - `withLayout($layout)`
 - `withMiddleware($middleware)`
 - `withError($error)`
-- `withServerSkeleton($server_skeleton)`
-
-⚠️Once again, if you're using the withServerSkeleton, you must pass the html content of what you want to use as the server skeleton. Additionally if you're using a `@startNexus` and `@endNexus` in the blade that is being rendered (either the default one or a manually set) this will be ignored.⚠️
 
 ## No need to repeat yourself
 

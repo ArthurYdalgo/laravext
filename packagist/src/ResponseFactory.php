@@ -5,9 +5,12 @@ namespace Laravext;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Traits\Macroable;
 
 class ResponseFactory
 {
+    use Macroable;
+
     public $props;
     public $root_view;
     public $query_params;
@@ -95,6 +98,23 @@ class ResponseFactory
         return $this;
     }
 
+    public function withHead($head, $value = null)
+    {
+        $head = array_merge($this->shared_props['head'] ?? [], is_array($head) ? $head : [$head => $value]);
+
+        return $this->withSharedProps(compact('head'));
+    }
+
+    public function withHeadTitle($title)
+    {
+        return $this->withHead(compact('title'));
+    }
+
+    public function withHeadDescription($description)
+    {
+        return $this->withHead(compact('description'));
+    }
+
     public function withError($error)
     {
         $this->error = $error;
@@ -102,9 +122,20 @@ class ResponseFactory
         return $this;
     }
 
-    public function withServerSkeleton($server_skeleton)
+    public function withViewSkeleton($view_name, array $props = [])
     {
-        $this->server_skeleton = $server_skeleton;
+        $html_skeleton = view($view_name, array_merge(
+            $this->shared_props,
+            $this->props,
+            $props
+        ))->render();
+
+        return $this->withHtmlSkeleton($html_skeleton);
+    }
+
+    public function withHtmlSkeleton($html_skeleton)
+    {
+        $this->server_skeleton = $html_skeleton;
 
         return $this;
     }
@@ -158,7 +189,7 @@ class ResponseFactory
         $root_view = $laravext_page_data['root_view'];
 
         $request = request();
-        
+
         if (!$request->header('X-Laravext') || config('laravext.force_page_visit')) {
             View::share('laravext_page_data', $laravext_page_data);
 
@@ -168,7 +199,7 @@ class ResponseFactory
 
             return view($root_view);
         }
-            
+
         $request_laravext_root_view = $request->header('X-Laravext-Root-View');
         $request_laravext_version = $request->header('X-Laravext-Version');
 

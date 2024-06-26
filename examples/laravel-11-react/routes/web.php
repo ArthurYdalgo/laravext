@@ -42,20 +42,18 @@ Route::get('', function () {
             ],
         ]
 
-    ])->withServerSkeleton($server_skeleton)->render();
+    ])->withHtmlSkeleton($server_skeleton)->render();
 })->name('home');
 
 Route::get('{article:slug}', function (Article $article) {
 
     $article->append(['user_has_bookmarked', 'user_reactions']);
 
-    $server_skeleton = view('partials.article', compact('article'));
+    return nexus(props: compact('article'))
+        ->withViewSkeleton('partials.article')
+        ->withHeadTitle($article->title)
+        ->render();
 
-    return nexus(props: [
-        'article' => $article
-    ])->rootView('sections.reader')
-        ->withServerSkeleton($server_skeleton)
-    ->render();
 })->name('article');
 
 // Redirect short links to the article

@@ -2,9 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\Team;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Laravext\ResponseFactory;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,6 +20,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Route::model('team', Team::class);
+        // The ResponseFactory accepts macros, so you can add your own methods to it and chain them
+        // before rendering the response.
+        // ResponseFactory::macro('withHeadOgImage', function ($og_image) {
+        //     return $this->withHead(compact('og_image'));
+        // });
     }
 }
