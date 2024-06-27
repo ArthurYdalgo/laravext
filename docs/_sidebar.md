@@ -4,11 +4,11 @@
 - [Before You Start](before-you-start.md)
 - [Quick Start Installation](quickstart.md)
 - [Configuration](configuration.md)
-- Concepts
+- [Concepts](concepts/router.md)
     - [Router](concepts/router.md)
     - [File Conventions](concepts/file-conventions.md)
     - [Laravext Prop](concepts/laravext-prop.md)
-- Tools
+- [Tools](tools/blade-directives.md)
     - [Blade Directives](tools/blade-directives.md)
     - [Routing](tools/routing.md)
     - [Nexus Response](tools/nexus-response.md)
@@ -19,10 +19,10 @@
     - [Page](examples/page.md)
     - [Middleware](examples/middleware.md)
     - [Layout](examples/layout.md)
-- Misc
+- [Misc](misc/contributors.md)
     - [Contributors](misc/contributors.md)
     - [About this doc](misc/about-this-doc.md)
-- Links
+- [Links]
     - [GitHub](https://github.com/ArthurYdalgo/laravext)
     - [YouTube](https://www.youtube.com/@laravext)
     - [Packagist](https://packagist.org/packages/arthurydalgo/laravext)
