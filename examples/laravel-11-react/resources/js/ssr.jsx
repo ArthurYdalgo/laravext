@@ -15,25 +15,24 @@ const port = 13714;
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-if (process.env.NODE_ENV === 'production') {
-    const originalError = console.error;
-    console.error = (message, ...args) => {
-        if (!message.includes('useLayoutEffect does nothing on the server')) {
-            originalError(message, ...args);
-        }
-    };
-}
+
+const originalError = console.error;
+console.error = (message, ...args) => {
+    if (!message.includes('useLayoutEffect does nothing on the server')) {
+        originalError(message, ...args);
+    }
+};
+
 
 app.post('/render', async (req, res) => {
     try {
-        if(process.env.NODE_ENV === 'production') {
+        if(process.env.NODE_ENV !== 'production') {
             console.time('Render Time');
         }
         const { html } = req.body;
         const dom = new JSDOM(html, { runScripts: "dangerously" });
         
-        // set global window variable to be accesses inside renderToStaticMarkup
-        // global.navigator = dom.window.navigator;
+        global.navigator = dom.window.navigator;
 
         global.route = (name, params, absolute) =>
             route(name, params, absolute, {
@@ -75,7 +74,7 @@ app.post('/render', async (req, res) => {
 
         res.send(updatedHtmlString);
 
-        if(process.env.NODE_ENV === 'production') {
+        if(process.env.NODE_ENV !== 'production') {
             console.timeEnd('Render Time');
         }
 

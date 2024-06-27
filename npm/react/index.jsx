@@ -87,9 +87,7 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, con
                 }
                 let nexus = <NexusModule.default laravext={laravext} />
                 if (!isEnvProduction()) {
-                    console.debug(`Page at ${nexusComponentPath} loaded successfully`, {
-                        NexusModule
-                    });
+                    console.debug(`Page at ${nexusComponentPath} loaded successfully`);
                 }
 
                 conventions = await conventions.filter(convention => convention !== 'page');
@@ -103,9 +101,7 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, con
                             };
                             let Convention = await nexusResolver(laravext?.page_data?.nexus?.[conventions[i]]);
                             if (!isEnvProduction()) {
-                                console.debug(`Convention ${conventions[i]} at ${laravext?.page_data?.nexus?.[conventions[i]]} loaded successfully`, {
-                                    Convention
-                                });
+                                console.debug(`Convention ${conventions[i]} at ${laravext?.page_data?.nexus?.[conventions[i]]} loaded successfully`);
                             }
 
                             nexus = <Convention.default laravext={laravext}>{nexus}</Convention.default>;

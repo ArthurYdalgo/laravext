@@ -55,9 +55,7 @@ export function clientRender() {
                     }
                     let nexus = <NexusModule.default laravext={laravextPageData} />
                     if (!isEnvProduction()) {
-                        console.debug(`Page at ${nexusComponentPath} loaded successfully`, {
-                            NexusModule
-                        });
+                        console.debug(`Page at ${nexusComponentPath} loaded successfully`);
                     }
 
                     conventions = conventions.filter(convention => convention !== 'page');
@@ -70,9 +68,7 @@ export function clientRender() {
                                 };
                                 let Convention = await nexusResolver(laravextPageData?.nexus?.[conventions[i]]);
                                 if (!isEnvProduction()) {
-                                    console.debug(`Convention ${conventions[i]} at ${laravextPageData?.nexus?.[conventions[i]]} loaded successfully`, {
-                                        Convention
-                                    });
+                                    console.debug(`Convention ${conventions[i]} at ${laravextPageData?.nexus?.[conventions[i]]} loaded successfully`);
                                 }
 
                                 nexus = <Convention.default laravext={laravextPageData}>{nexus}</Convention.default>;

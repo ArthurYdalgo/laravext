@@ -18,6 +18,8 @@ class LaravextServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->registerConsoleCommands();
+        
         $this->publishes([
             __DIR__ . '/../config/config.php' => config_path('laravext.php'),
         ], 'laravext-config');
@@ -44,6 +46,18 @@ class LaravextServiceProvider extends ServiceProvider
         Request::macro('laravext', function () {
             return (bool) $this->header('X-Laravext');
         });
+    }
+
+    protected function registerConsoleCommands(): void
+    {
+        if (! $this->app->runningInConsole()) {
+            return;
+        }
+
+        $this->commands([
+            Commands\StartSsr::class,
+            Commands\StopSsr::class,
+        ]);
     }
 
     protected function registerBladeDirectives(): void
