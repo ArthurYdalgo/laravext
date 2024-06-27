@@ -209,7 +209,8 @@ class ResponseFactory
                     'html' => $rendered_view,
                 ])->body();
             } catch (\Throwable $th) {
-                throw $th;
+                report($th);
+                
                 return $rendered_view;
             }
         }
