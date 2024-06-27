@@ -1,14 +1,25 @@
 import { laravext } from "./index";
 import { createRoot } from 'react-dom/client';
+import LaravextContext from './laravextContext';
 import { renderToString , renderToStaticMarkup} from 'react-dom/server';
 
-export function findNexus() {
-    const nexusSection = document.querySelectorAll('section[section-type="laravext-nexus-section"]');
+export function findNexus(doc = null) {
+
+    if(typeof window !== 'undefined') {
+        doc = document;
+    }
+
+    const nexusSection = doc.querySelectorAll('section[section-type="laravext-nexus-section"]');
     return nexusSection;
 }
 
-export function findStrands() {
-    const strands = document.querySelectorAll('section[section-type="laravext-strand-section"]');
+export function findStrands(doc = null) {
+
+    if(typeof window !== 'undefined') {
+        doc = document;
+    }
+
+    const strands = doc.querySelectorAll('section[section-type="laravext-strand-section"]');
     return strands;
 }
 
@@ -27,7 +38,7 @@ export function isEnvProduction() {
 }
 
 export function clientRender() {
-    const laravextPageData = laravext().page_data;
+    const laravextPageData = window.__laravext.page_data;
 
     let nexusResolver = window.__laravext.app.nexusResolver;
     let strandsResolver = window.__laravext.app.strandsResolver;
@@ -71,7 +82,11 @@ export function clientRender() {
                         }
                     }
 
+
+
                     let root = window.__laravext.app?.react_root ?? createRoot(nexusElement);
+
+                    nexus = <LaravextContext.Provider value={window.__laravext}>{nexus}</LaravextContext.Provider>;
 
                     root.render(nexus);
 
@@ -95,8 +110,9 @@ export function clientRender() {
             if (strandComponentPath) {
                 strandsResolver(strandComponentPath).then((StrandModule) => {
                     // pass strand data to component
-                    console.debug(strandData);
-                    createRoot(strandElement).render(<StrandModule.default laravext={{ ...laravextPageData }} {...strandData} />);
+                    let strand = <LaravextContext.Provider value={window.__laravext}><StrandModule.default laravext={{ ...laravextPageData }} {...strandData} /></LaravextContext.Provider>
+
+                    createRoot(strandElement).render(strand);
                 })
                     .catch((error) => {
                         console.error(`Error loading component at ${strandComponentPath}:`, error);

@@ -3,13 +3,15 @@ import { sharedProps } from '@laravext/react';
 
 export default ({children}) => {
 
+    const user = sharedProps().auth?.user;
+
     useEffect(() => {
-        if (!sharedProps().auth?.user) {
+        if (!user) {
             window.location.href = '/';
         }
     }, []);
 
-    if (sharedProps().auth?.user) {
+    if (user) {
         return <>{children}</>;
     } else {
         return (

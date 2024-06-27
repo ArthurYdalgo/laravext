@@ -200,19 +200,18 @@ class ResponseFactory
 
             $view = view($root_view);
 
-            return $view;
-
             $rendered_view = $view->render();
 
             try {
-                return Http::post("http://localhost:13714/render", [
-                    'html' => $view->render(),
+                return Http::withOptions([
+                    'http_errors' => true,
+                ])->post("http://localhost:13714/render", [
+                    'html' => $rendered_view,
                 ])->body();
             } catch (\Throwable $th) {
+                throw $th;
                 return $rendered_view;
             }
-
-            return $rendered_view;
         }
 
         $request_laravext_root_view = $request->header('X-Laravext-Root-View');

@@ -9,7 +9,8 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import Cookies from "js-cookie";
 
-const user = sharedProps()?.auth?.user;
+let laravextPageData = __laravext.page_data;
+const user = laravextPageData.shared_props?.auth?.user;
 
 i18n
     .use(initReactI18next)
@@ -27,11 +28,11 @@ i18n
 
 i18n.changeLanguage(user?.locale ?? Cookies.get('locale') ?? 'en')
 
-window.Ziggy = sharedProps().ziggy;
+window.Ziggy = laravextPageData.shared_props.ziggy;
 window.route = (name, params, absolute) =>
     ziggyRoute(name, params, absolute, {
         ...Ziggy,
-        url: sharedProps().ziggy.url
+        url: laravextPageData.shared_props.ziggy.url
     });
 
 document.addEventListener('DOMContentLoaded', function () {

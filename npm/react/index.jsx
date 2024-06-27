@@ -1,7 +1,10 @@
 import { setupProgress } from './progress';
-import { clientRender } from './tools';
+import { clientRender, findNexus, findStrands, isEnvProduction } from './tools';
+import { renderToString, renderToStaticMarkup } from 'react-dom/server';
+
 import { visit } from './router';
-export { default as laravext } from './laravext'
+import laravext from './laravext';
+import LaravextContext from './laravextContext';
 
 export const laravextPageData = () => {
     return laravext().page_data;
@@ -68,13 +71,12 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, con
     'error',
     'layout',
     'middleware',
-] }) {
-
-    const laravextPageData = laravext().page_data;
+], laravext, document }) {
 
     if (nexusResolver) {
-        const nexusComponentPath = laravextPageData?.nexus?.page?.replaceAll('\\', '/');
-        const nexus_tags = findNexus();
+        const nexusComponentPath = laravext?.page_data?.nexus?.page?.replaceAll('\\', '/');
+        const nexus_tags = findNexus(document);
+
         for (let i = 0; i < nexus_tags.length; i++) {
             let nexusElement = nexus_tags[i];
 
@@ -83,47 +85,45 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, con
                 if (!isEnvProduction()) {
                     console.debug(`Loading page at ${nexusComponentPath}`);
                 }
-                let nexus = <NexusModule.default laravext={laravextPageData} />
+                let nexus = <NexusModule.default laravext={laravext} />
                 if (!isEnvProduction()) {
                     console.debug(`Page at ${nexusComponentPath} loaded successfully`, {
                         NexusModule
                     });
                 }
 
-                conventions = conventions.filter(convention => convention !== 'page');
+                conventions = await conventions.filter(convention => convention !== 'page');
 
                 for (let i = 0; i < conventions.length; i++) {
-                    if (laravextPageData?.nexus?.[conventions[i]]) {
+                    if (laravext?.page_data?.nexus?.[conventions[i]]) {
                         try {
 
                             if (!isEnvProduction()) {
-                                console.debug(`Loading convention ${conventions[i]} at ${laravextPageData?.nexus?.[conventions[i]]}`)
+                                console.debug(`Loading convention ${conventions[i]} at ${laravext?.page_data?.nexus?.[conventions[i]]}`)
                             };
-                            let Convention = await nexusResolver(laravextPageData?.nexus?.[conventions[i]]);
+                            let Convention = await nexusResolver(laravext?.page_data?.nexus?.[conventions[i]]);
                             if (!isEnvProduction()) {
-                                console.debug(`Convention ${conventions[i]} at ${laravextPageData?.nexus?.[conventions[i]]} loaded successfully`, {
+                                console.debug(`Convention ${conventions[i]} at ${laravext?.page_data?.nexus?.[conventions[i]]} loaded successfully`, {
                                     Convention
                                 });
                             }
 
-                            nexus = <Convention.default laravext={laravextPageData}>{nexus}</Convention.default>;
+                            nexus = <Convention.default laravext={laravext}>{nexus}</Convention.default>;
                         } catch (error) {
-                            console.error(`Error loading convention ${conventions[i]} at ${laravextPageData?.nexus?.[conventions[i]]}:`, error);
+                            console.error(`Error loading convention ${conventions[i]} at ${laravext?.page_data?.nexus?.[conventions[i]]}:`, error);
                         }
                     }
                 }
 
+                nexus = <LaravextContext.Provider value={laravext}>{nexus}</LaravextContext.Provider>;
                 let staticMarkup = renderToString(nexus);
-
                 nexusElement.innerHTML = staticMarkup;
-
-
             }
         }
     }
 
     if (strandsResolver) {
-        const strands = findStrands();
+        const strands = findStrands(document);
         for (let i = 0; i < strands.length; i++) {
             let strandElement = strands[i];
             const strandComponentPath = strandElement.getAttribute('strand-component');
@@ -131,10 +131,14 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, con
 
             if (strandComponentPath) {
                 let StrandModule = await strandsResolver(strandComponentPath)
-                // pass strand data to component
-                let staticMarkup = renderToString(<StrandModule.default laravext={{ ...laravextPageData }} {...strandData} />);
+
+                let strand = <LaravextContext.Provider value={laravext}><StrandModule.default laravext={{ ...laravext }} {...strandData} /></LaravextContext.Provider>
+
+                let staticMarkup = renderToString(strand);
                 strandElement.innerHTML = staticMarkup;
             }
         }
     }
 }
+
+export { default as laravext } from './laravext';

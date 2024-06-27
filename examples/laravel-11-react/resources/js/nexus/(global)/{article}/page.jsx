@@ -10,8 +10,6 @@ import Swal from 'sweetalert2';
 export default () => {
     const { article } = nexusProps();
     const { t } = useTranslation();
-    
-
     const {user} = sharedProps().auth;
 
     const [bookmarked, setBookmarked] = useStateRef(article.user_has_bookmarked);
