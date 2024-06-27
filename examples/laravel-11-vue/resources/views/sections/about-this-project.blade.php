@@ -13,10 +13,7 @@
                     <h2 class="text-xl font-semibold text-black dark:text-white">Laravext Example - Vue.js</h2>
 
                     <p class="mt-4 text-sm/relaxed">
-                        This is the example of how to use Laravext with Vue.js in a Laravel 11 project (although in the "traditional" directory structure from Laravel 10). There're some pages
-                        in the navbar above that you can check. They're meerly examples of how you could use Laravext in
-                        your project and do not actually represent "Our Team" (as in Laravext's team) or "Our Projects" (as
-                        in Laravext's projects).
+                        {{__("This is the example of how to use Laravext with Vue.js in a Laravel 11 project (although in the \"traditional\" directory structure from Laravel 10). There're some pages in the navbar above that you can check. They're meerly examples of how you could use Laravext in your project and do not actually represent \"Our Team\" (as in Laravext's team) or \"Our Projects\" (as in Laravext's projects).")}}
                     </p>
                 </div>
 
@@ -38,7 +35,7 @@
                     <h2 class="text-xl font-semibold text-black dark:text-white">Laravext's GitHub Repo</h2>
 
                     <p class="mt-4 text-sm/relaxed">
-                        Click here to check Laravext's GitHub repository
+                        {{__("Click here to check Laravext's GitHub repository")}}
                     </p>
                 </div>
 

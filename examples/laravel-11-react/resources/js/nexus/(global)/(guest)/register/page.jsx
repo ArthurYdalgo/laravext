@@ -82,7 +82,7 @@ export default () => {
 
                 <div className="flex items-center justify-end mt-4">
                     <PrimaryButton className="ms-4" disabled={form.processing} style={{ opacity: form.processing ? 0.25 : 1 }}>
-                        Log in
+                        {t('Login')}
                     </PrimaryButton>
                 </div>
             </form>
