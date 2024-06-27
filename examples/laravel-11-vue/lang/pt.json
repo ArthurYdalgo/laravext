@@ -41,7 +41,7 @@
     "Forgot your password?": "Esqueceu sua senha?",
     "Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.": "Esqueceu sua senha? Sem problemas. Apenas informe seu endereço de e-mail que enviaremos um link que permitirá definir uma nova senha.",
     "Hello!": "Olá!",
-    "Home": "Principal",
+    "Home": "Página Principal",
     "I agree to the :terms_of_service and :privacy_policy": "Eu concordo com os :terms_of_service e com a :privacy_policy",
     "If necessary, you may log out of all of your other browser sessions across all of your devices. Some of your recent sessions are listed below; however, this list may not be exhaustive. If you feel your account has been compromised, you should also update your password.": "Se necessário, você pode sair de todas as outras sessões do navegador em todos os seus dispositivos. Algumas de suas sessões recentes estão listadas abaixo; no entanto, esta lista pode não ser exaustiva. Se você acha que sua conta foi comprometida, você também deve atualizar sua senha.",
     "If you already have an account, you may accept this invitation by clicking the button below:": "Se já tiver uma conta, você pode aceitar esse convite através do botão abaixo:",
@@ -169,6 +169,9 @@
     "Updated!" : "Atualizado!",
     "Record updated!": "Registro atualizado!",
     "Error!": "Erro!",
+
+    "This is the example of how to use Laravext with Vue.js in a Laravel 11 project (although in the \"traditional\" directory structure from Laravel 10). There're some pages in the navbar above that you can check. They're meerly examples of how you could use Laravext in your project and do not actually represent \"Our Team\" (as in Laravext's team) or \"Our Projects\" (as in Laravext's projects).": "Este é um exemplo de como usar Laravext com Vue.js em um projeto Laravel 11 (embora na estrutura de diretórios \"tradicional\" do Laravel 10). Há algumas páginas na barra de navegação acima que você pode verificar. Elas são meros exemplos de como você poderia usar Laravext em seu projeto e não representam realmente \"Nosso Time\" (como no time do Laravext) ou \"Nossos Projetos\" (como nos projetos do Laravext).",
+    "Click here to check Laravext's GitHub repository": "Clique aqui para verificar o repositório do Laravext no GitHub",
 
     "Add": "Adicionar",
 
