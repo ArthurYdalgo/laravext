@@ -4,7 +4,7 @@ import { renderToString, renderToStaticMarkup } from 'react-dom/server';
 
 import { visit } from './router';
 import laravext from './laravext';
-import LaravextContext from './laravextContext';
+import LaravextContext from './LaravextContext';
 
 export const laravextPageData = () => {
     return laravext().page_data;
