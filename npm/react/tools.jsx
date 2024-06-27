@@ -82,8 +82,6 @@ export function clientRender() {
                         }
                     }
 
-
-
                     let root = window.__laravext.app?.react_root ?? createRoot(nexusElement);
 
                     nexus = <LaravextContext.Provider value={window.__laravext}>{nexus}</LaravextContext.Provider>;

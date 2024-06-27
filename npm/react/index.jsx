@@ -71,7 +71,7 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, con
     'error',
     'layout',
     'middleware',
-], laravext, document }) {
+], laravext, document, render}) {
 
     if (nexusResolver) {
         const nexusComponentPath = laravext?.page_data?.nexus?.page?.replaceAll('\\', '/');
@@ -116,7 +116,7 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, con
                 }
 
                 nexus = <LaravextContext.Provider value={laravext}>{nexus}</LaravextContext.Provider>;
-                let staticMarkup = renderToString(nexus);
+                let staticMarkup = render ? render(nexus) : renderToString(nexus);
                 nexusElement.innerHTML = staticMarkup;
             }
         }
@@ -134,7 +134,7 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, con
 
                 let strand = <LaravextContext.Provider value={laravext}><StrandModule.default laravext={{ ...laravext }} {...strandData} /></LaravextContext.Provider>
 
-                let staticMarkup = renderToString(strand);
+                let staticMarkup = render ? render(strand) : renderToString(strand);
                 strandElement.innerHTML = staticMarkup;
             }
         }

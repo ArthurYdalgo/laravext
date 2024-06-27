@@ -1,10 +1,10 @@
 import { resolveComponent } from "@laravext/react/tools"
 import { createLaravextApp, sharedProps } from "@laravext/react"
-import { Ziggy } from "./ziggy";
+
 import './bootstrap';
 import '../css/app.css';
 import pt from './../../lang/pt.json'
-import {route as ziggyRoute} from "../../vendor/tightenco/ziggy/src/js/index.js";
+import { route } from '../../vendor/tightenco/ziggy';
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import Cookies from "js-cookie";
@@ -28,10 +28,9 @@ i18n
 
 i18n.changeLanguage(user?.locale ?? Cookies.get('locale') ?? 'en')
 
-window.Ziggy = laravextPageData.shared_props.ziggy;
 window.route = (name, params, absolute) =>
-    ziggyRoute(name, params, absolute, {
-        ...Ziggy,
+    route(name, params, absolute, {
+        ...(laravextPageData.shared_props.ziggy),
         url: laravextPageData.shared_props.ziggy.url
     });
 

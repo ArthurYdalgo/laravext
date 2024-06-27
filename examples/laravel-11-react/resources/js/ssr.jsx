@@ -43,7 +43,7 @@ app.post('/render', async (req, res) => {
 
         global.Ziggy = dom.window.__laravext.page_data.shared_props.ziggy;
 
-        let user = dom.window.__laravext.page_data?.auth?.user;
+        let user = dom.window.__laravext.page_data?.shared_props?.auth?.user;
 
         i18n
             .use(initReactI18next)
@@ -80,7 +80,6 @@ app.post('/render', async (req, res) => {
         }
 
     } catch (error) {
-
         console.log(error);
         res.status(500).send('Error rendering page: ' + error.message);
     }
