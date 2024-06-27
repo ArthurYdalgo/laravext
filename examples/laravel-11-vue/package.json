@@ -3,7 +3,8 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build",
+        "test-ssr": "npm run build && node bootstrap/ssr/ssr.js"
     },
     "dependencies": {
         "@formkit/icons": "^1.6.3",
