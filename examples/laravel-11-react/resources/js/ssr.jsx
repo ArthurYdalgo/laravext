@@ -18,7 +18,7 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 const originalError = console.error;
 console.error = (message, ...args) => {
-    if (!message.includes('useLayoutEffect does nothing on the server')) {
+    if (!message.includes('useLayoutEffect does nothing on the server') && !message.includes("Could not find one or more icon(s)")) {
         originalError(message, ...args);
     }
 };

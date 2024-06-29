@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue';
+import { defineComponent, reactive } from 'vue';
 import { setupProgress } from './progress';
 import { clientRender } from './tools';
 import { findNexus } from './tools';
@@ -6,9 +6,14 @@ import { visit } from './router';
 import { renderToString } from '@vue/server-renderer'
 import { isEnvProduction } from './tools';
 import { createSSRApp, h } from 'vue';
+import {laravext as reactiveLaravext} from './laravext';
 
 export const laravext = () => {
-    return window.__laravext;
+    return reactiveLaravext.value;
+}
+
+export const createLaravextContext = (laravextContext) => {
+    reactiveLaravext.value = laravextContext;
 }
 
 export const laravextPageData = () => {
@@ -86,6 +91,8 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, use
     'middleware',
 ], laravext, document, render }) {
 
+    createLaravextContext(laravext);
+
     if (nexusResolver) {
         const nexusComponentPath = laravext.page_data?.nexus?.page?.replaceAll('\\', '/');
         const nexusTags = findNexus(document);
@@ -122,10 +129,10 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, use
                             }
 
                             const previousRenderer = renderer;
-                            renderer = () => h(conventionComponent, { laravext: laravext.page_data }, {
+                            renderer = () => h(conventionComponent, { laravext }, {
                                 default: () => previousRenderer(),
                                 props: () => ({
-                                    laravext: laravext.page_data
+                                    laravext
                                 })
                             });
                         } catch (error) {
@@ -140,7 +147,7 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, use
                     }
                 });
 
-                const app = createSSRApp(rootComponent);
+                const app = createSSRApp(rootComponent, );
 
                 for (let use of uses()) {
                     app.use(use.plugin, use.options ?? {});

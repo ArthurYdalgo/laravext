@@ -9,7 +9,7 @@ const {routeName, href, active} = defineProps({
     },
     href: {
         type: String,
-        required: true,
+        required: false,
     },
     active: {
         type: [Boolean, null, undefined],

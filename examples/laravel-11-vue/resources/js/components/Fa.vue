@@ -13,7 +13,7 @@ library.add(faPlus, faTrash, faEye, faEyeSlash, faCheckCircle, faClock )
 
 const props = defineProps({
     icon: {
-        type: [Object, Array],
+        type: [Object, Array, String],
         required: true,
     },
     size: {

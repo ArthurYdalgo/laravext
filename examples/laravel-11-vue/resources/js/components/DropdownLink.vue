@@ -8,7 +8,7 @@ defineProps({
     },
     href: {
         type: String,
-        required: true,
+        required: false,
     },
 });
 </script>
