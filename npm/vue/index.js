@@ -6,14 +6,14 @@ import { visit } from './router';
 import { renderToString } from '@vue/server-renderer'
 import { isEnvProduction } from './tools';
 import { createSSRApp, h } from 'vue';
-import {laravext as reactiveLaravext} from './laravext';
+import {laravext as laravextReactive} from './laravext';
 
 export const laravext = () => {
-    return reactiveLaravext.value;
+    return laravextReactive.value;
 }
 
 export const createLaravextContext = (laravextContext) => {
-    reactiveLaravext.value = laravextContext;
+    laravextReactive.value = laravextContext;
 }
 
 export const laravextPageData = () => {
