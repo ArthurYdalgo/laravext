@@ -48,7 +48,7 @@ const submit = async () => {
 
         <form @submit.prevent="submit" class="w-96 ">
             <h3 class="mt-6 justify-center text-2xl font-extrabold text-gray-900 dark:text-white text-center">Login</h3>
-
+            
             <div>
                 <InputLabel for="email" :value="$t('Email')" />
 

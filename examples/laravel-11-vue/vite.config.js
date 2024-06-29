@@ -15,6 +15,7 @@ export default function ({ mode }) {
                     'resources/css/app.css',
                     'resources/js/app.js',
                 ],
+                ssr: 'resources/js/ssr.js',
                 refresh: [...refreshPaths, "resources/js/**", "app/**"],
             }),
             vue({

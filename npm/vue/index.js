@@ -1,7 +1,11 @@
 import { defineComponent } from 'vue';
 import { setupProgress } from './progress';
 import { clientRender } from './tools';
+import { findNexus } from './tools';
 import { visit } from './router';
+import { renderToString } from '@vue/server-renderer'
+import { isEnvProduction } from './tools';
+import { createSSRApp, h } from 'vue';
 
 export const laravext = () => {
     return window.__laravext;
@@ -53,15 +57,15 @@ export const Head = defineComponent({
     }
 });
 
-window.addEventListener("popstate", function (event) {
-    visit(window.location.href);
-});
+// window.addEventListener("popstate", function (event) {
+//     visit(window.location.href);
+// });
 
 export function createLaravextApp({ nexusResolver, strandsResolver, uses = () => [], conventions = [
     'error',
     'layout',
     'middleware',
-], progress = {}}) {
+], progress = {} }) {
     window.__laravext.app = {
         nexusResolver,
         strandsResolver,
@@ -69,9 +73,84 @@ export function createLaravextApp({ nexusResolver, strandsResolver, uses = () =>
         conventions,
     }
 
-    if(progress){
-        setupProgress( progress );
+    if (progress) {
+        setupProgress(progress);
     }
 
     clientRender();
+}
+
+export async function createLaravextSsrApp({ nexusResolver, strandsResolver, uses = () => [], conventions = [
+    'error',
+    'layout',
+    'middleware',
+], laravext, document, render }) {
+
+    if (nexusResolver) {
+        const nexusComponentPath = laravext.page_data?.nexus?.page?.replaceAll('\\', '/');
+        const nexusTags = findNexus(document);
+        for (let i = 0; i < nexusTags.length; i++) {
+            let nexusElement = nexusTags[i];
+
+            if (nexusComponentPath) {
+                let NexusComponent = await nexusResolver(nexusComponentPath);
+
+                if (!isEnvProduction()) {
+                    console.debug(`Loading page at ${nexusComponentPath}`);
+                    console.debug(`Page at ${nexusComponentPath} loaded successfully`);
+                }
+
+                let pageComponent = NexusComponent.default
+
+                let renderer = () => h(pageComponent, { laravext: laravext.page_data }, {
+                    props: () => ({
+                        laravext: laravext.page_data
+                    }),
+                });
+
+                conventions = conventions.filter(convention => convention !== 'page');
+
+                for (let i = 0; i < conventions.length; i++) {
+                    if (laravext.page_data?.nexus?.[conventions[i]]) {
+                        try {
+                            if (!isEnvProduction()) {
+                                console.debug(`Loading convention ${conventions[i]} at ${laravext.page_data?.nexus?.[conventions[i]]}`)
+                            };
+                            let conventionComponent = (await nexusResolver(laravext.page_data?.nexus?.[conventions[i]])).default;
+                            if (!isEnvProduction()) {
+                                console.debug(`Convention ${conventions[i]} at ${laravext.page_data?.nexus?.[conventions[i]]} loaded successfully`);
+                            }
+
+                            const previousRenderer = renderer;
+                            renderer = () => h(conventionComponent, { laravext: laravext.page_data }, {
+                                default: () => previousRenderer(),
+                                props: () => ({
+                                    laravext: laravext.page_data
+                                })
+                            });
+                        } catch (error) {
+                            console.error(`Error loading convention ${conventions[i]} at ${laravext.page_data?.nexus?.[conventions[i]]}:`, error);
+                        }
+                    }
+                }
+
+                const rootComponent = defineComponent({
+                    render() {
+                        return renderer()
+                    }
+                });
+
+                const app = createSSRApp(rootComponent);
+
+                for (let use of uses()) {
+                    app.use(use.plugin, use.options ?? {});
+                }
+        
+                let renderedComponent = render ? await render(app) : await renderToString(app);
+
+                nexusElement.innerHTML = renderedComponent;
+
+            }
+        }
+    }
 }

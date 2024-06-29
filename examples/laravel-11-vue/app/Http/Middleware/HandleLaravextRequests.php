@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Laravext\Middleware;
 use Illuminate\Support\Facades\View;
 use Symfony\Component\HttpFoundation\Response;
-use Tightenco\Ziggy\Ziggy;
+use Tighten\Ziggy\Ziggy;
 
 class HandleLaravextRequests extends Middleware
 {
@@ -17,6 +17,10 @@ class HandleLaravextRequests extends Middleware
         return array_merge(parent::share($request), [
             'auth' => [
                 'user' => $request->user(),
+            ],
+            'ziggy' => [
+                ...(new Ziggy())->toArray(),
+                'location' => $request->url(),
             ],
         ]);
 

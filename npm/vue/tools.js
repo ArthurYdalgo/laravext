@@ -1,13 +1,23 @@
 import { laravext } from "./index";
 import {defineComponent, createApp, h} from 'vue';
 
-export function findNexus() {
-    const nexusSection = document.querySelectorAll('section[section-type="laravext-nexus-section"]');
+export function findNexus(doc = null) {
+
+    if(typeof window !== 'undefined') {
+        doc = document;
+    }
+
+    const nexusSection = doc.querySelectorAll('section[section-type="laravext-nexus-section"]');
     return nexusSection;
 }
 
-export function findStrands() {
-    const strands = document.querySelectorAll('section[section-type="laravext-strand-section"]');
+export function findStrands(doc = null) {
+
+    if(typeof window !== 'undefined') {
+        doc = document;
+    }
+
+    const strands = doc.querySelectorAll('section[section-type="laravext-strand-section"]');
     return strands;
 }
 

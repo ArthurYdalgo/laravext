@@ -1,0 +1,227 @@
+{
+  "\u0000D:/laragon/www/laravext/npm/vue/node_modules/nprogress/nprogress.js?commonjs-module": [
+    "/build/assets/vendor-others-CNLO9YKw.js"
+  ],
+  "\u0000commonjsHelpers.js": [
+    "/build/assets/vendor-others-CNLO9YKw.js"
+  ],
+  "\u0000plugin-vue:export-helper": [
+    "/build/assets/_plugin-vue_export-helper-1tPrXgE0.js"
+  ],
+  "../../npm/vue/index.js": [],
+  "../../npm/vue/node_modules/nprogress/nprogress.js": [
+    "/build/assets/vendor-others-CNLO9YKw.js"
+  ],
+  "../../npm/vue/tools.js": [],
+  "formkit.theme.js": [],
+  "formkit.theme.mjs": [],
+  "lang/pt.json": [],
+  "resources/css/app.css": [],
+  "resources/js/bootstrap.js": [],
+  "resources/js/components/ApplicationLogo.vue": [
+    "/build/assets/layout-CFOzJ44m.js",
+    "/build/assets/vendor-sweetalert2-BViIYH8h.css",
+    "/build/assets/vendor-floating-vue-oNOpnjHk.css"
+  ],
+  "resources/js/components/Checkbox.vue": [
+    "/build/assets/page-Cc_jXvSn.js",
+    "/build/assets/vendor-sweetalert2-BViIYH8h.css"
+  ],
+  "resources/js/components/DangerButton.vue": [
+    "/build/assets/DangerButton-Dcecw4TW.js"
+  ],
+  "resources/js/components/Dropdown.vue": [
+    "/build/assets/layout-CFOzJ44m.js",
+    "/build/assets/vendor-sweetalert2-BViIYH8h.css",
+    "/build/assets/vendor-floating-vue-oNOpnjHk.css"
+  ],
+  "resources/js/components/DropdownButton.vue": [
+    "/build/assets/layout-CFOzJ44m.js",
+    "/build/assets/vendor-sweetalert2-BViIYH8h.css",
+    "/build/assets/vendor-floating-vue-oNOpnjHk.css"
+  ],
+  "resources/js/components/ErrorBoundary.vue": [
+    "/build/assets/error-D3sK7S9p.js"
+  ],
+  "resources/js/components/Fa.vue": [
+    "/build/assets/Fa-mqR-7ziz.js"
+  ],
+  "resources/js/components/Header.vue": [
+    "/build/assets/PageContent-DUCvys5k.js"
+  ],
+  "resources/js/components/InputError.vue": [
+    "/build/assets/page-Cc_jXvSn.js",
+    "/build/assets/vendor-sweetalert2-BViIYH8h.css"
+  ],
+  "resources/js/components/InputLabel.vue": [
+    "/build/assets/InputLabel-CaeVc5ld.js"
+  ],
+  "resources/js/components/Link.vue": [
+    "/build/assets/Link-5PMH6oFQ.js"
+  ],
+  "resources/js/components/Loading.vue": [
+    "/build/assets/Loading-B6yUkSxp.js"
+  ],
+  "resources/js/components/Modal.vue": [
+    "/build/assets/Modal-BZp5eeYU.js"
+  ],
+  "resources/js/components/MomentDate.vue": [
+    "/build/assets/page-CkkqEThk.js",
+    "/build/assets/vendor-sweetalert2-BViIYH8h.css"
+  ],
+  "resources/js/components/MomentDateTime.vue": [
+    "/build/assets/MomentDateTime-DH02jE00.js"
+  ],
+  "resources/js/components/NavLink.vue": [
+    "/build/assets/layout-CFOzJ44m.js",
+    "/build/assets/vendor-sweetalert2-BViIYH8h.css",
+    "/build/assets/vendor-floating-vue-oNOpnjHk.css"
+  ],
+  "resources/js/components/PageContent.vue": [
+    "/build/assets/PageContent-DUCvys5k.js"
+  ],
+  "resources/js/components/Pagination.vue": [
+    "/build/assets/SecondaryButton-VZaFm0Ff.js"
+  ],
+  "resources/js/components/PrimaryButton.vue": [
+    "/build/assets/PrimaryButton-q_mES2K7.js"
+  ],
+  "resources/js/components/ResponsiveNavLink.vue": [
+    "/build/assets/layout-CFOzJ44m.js",
+    "/build/assets/vendor-sweetalert2-BViIYH8h.css",
+    "/build/assets/vendor-floating-vue-oNOpnjHk.css"
+  ],
+  "resources/js/components/SecondaryButton.vue": [
+    "/build/assets/SecondaryButton-VZaFm0Ff.js"
+  ],
+  "resources/js/components/TextArea.vue": [
+    "/build/assets/TextArea-BWL8-cJW.js"
+  ],
+  "resources/js/components/TextInput.vue": [
+    "/build/assets/TextInput-C8eY-5uG.js"
+  ],
+  "resources/js/components/Tooltip.vue": [
+    "/build/assets/Tooltip-DzeBfJzi.js",
+    "/build/assets/vendor-floating-vue-oNOpnjHk.css"
+  ],
+  "resources/js/composables/usePrivacy.js": [
+    "/build/assets/usePrivacy-tgfaLRgV.js"
+  ],
+  "resources/js/nexus/(global)/(auth)/admin/companies/create/page.vue": [
+    "/build/assets/page-BWsjPrzA.js"
+  ],
+  "resources/js/nexus/(global)/(auth)/admin/companies/page.vue": [
+    "/build/assets/page-CRaTPFWy.js",
+    "/build/assets/vendor-sweetalert2-BViIYH8h.css"
+  ],
+  "resources/js/nexus/(global)/(auth)/admin/companies/{company}/edit/page.vue": [
+    "/build/assets/page-Msykcab0.js",
+    "/build/assets/vendor-sweetalert2-BViIYH8h.css"
+  ],
+  "resources/js/nexus/(global)/(auth)/admin/companies/{company}/page.vue": [
+    "/build/assets/page-CwbpYFTw.js",
+    "/build/assets/vendor-sweetalert2-BViIYH8h.css"
+  ],
+  "resources/js/nexus/(global)/(auth)/admin/companies/{company}/projects/page.vue": [
+    "/build/assets/page-ZSDFGcwA.js",
+    "/build/assets/vendor-sweetalert2-BViIYH8h.css"
+  ],
+  "resources/js/nexus/(global)/(auth)/admin/contact-requests/page.vue": [
+    "/build/assets/page-C0ByIe3y.js",
+    "/build/assets/vendor-sweetalert2-BViIYH8h.css",
+    "/build/assets/vendor-floating-vue-oNOpnjHk.css"
+  ],
+  "resources/js/nexus/(global)/(auth)/admin/dashboard/page.vue": [
+    "/build/assets/page-l9CrYJt1.js",
+    "/build/assets/vendor-sweetalert2-BViIYH8h.css"
+  ],
+  "resources/js/nexus/(global)/(auth)/admin/developers/create/page.vue": [
+    "/build/assets/page-beRHQ5Z7.js",
+    "/build/assets/vendor-sweetalert2-BViIYH8h.css"
+  ],
+  "resources/js/nexus/(global)/(auth)/admin/developers/page.vue": [
+    "/build/assets/page-CUEVvjVd.js",
+    "/build/assets/vendor-sweetalert2-BViIYH8h.css"
+  ],
+  "resources/js/nexus/(global)/(auth)/admin/developers/{developer}/edit/page.vue": [
+    "/build/assets/page-D-s-p67I.js",
+    "/build/assets/vendor-sweetalert2-BViIYH8h.css"
+  ],
+  "resources/js/nexus/(global)/(auth)/admin/projects/create/page.vue": [
+    "/build/assets/page-ABPtEhxE.js"
+  ],
+  "resources/js/nexus/(global)/(auth)/admin/projects/page.vue": [
+    "/build/assets/page-CkkqEThk.js",
+    "/build/assets/vendor-sweetalert2-BViIYH8h.css"
+  ],
+  "resources/js/nexus/(global)/(auth)/admin/projects/{project}/edit/page.vue": [
+    "/build/assets/page-DL1XOx5T.js",
+    "/build/assets/vendor-sweetalert2-BViIYH8h.css"
+  ],
+  "resources/js/nexus/(global)/(auth)/admin/projects/{project}/page.vue": [
+    "/build/assets/page-BO1jqtnS.js",
+    "/build/assets/vendor-sweetalert2-BViIYH8h.css"
+  ],
+  "resources/js/nexus/(global)/(auth)/admin/teams/create/page.vue": [
+    "/build/assets/page-tRNoFaWw.js"
+  ],
+  "resources/js/nexus/(global)/(auth)/admin/teams/page.vue": [
+    "/build/assets/page-Bq7_L37T.js",
+    "/build/assets/vendor-sweetalert2-BViIYH8h.css"
+  ],
+  "resources/js/nexus/(global)/(auth)/admin/teams/{team}/edit/page.vue": [
+    "/build/assets/page-Dn5nXkhy.js",
+    "/build/assets/vendor-sweetalert2-BViIYH8h.css",
+    "/build/assets/vendor-floating-vue-oNOpnjHk.css"
+  ],
+  "resources/js/nexus/(global)/(auth)/admin/teams/{team}/page.vue": [
+    "/build/assets/page-BCTQnVWT.js",
+    "/build/assets/vendor-sweetalert2-BViIYH8h.css"
+  ],
+  "resources/js/nexus/(global)/(auth)/admin/teams/{team}/projects/page.vue": [
+    "/build/assets/page-HS1_hVjP.js",
+    "/build/assets/vendor-sweetalert2-BViIYH8h.css"
+  ],
+  "resources/js/nexus/(global)/(auth)/error.vue": [
+    "/build/assets/error-D3sK7S9p.js"
+  ],
+  "resources/js/nexus/(global)/(auth)/layout.vue": [
+    "/build/assets/layout-CFOzJ44m.js",
+    "/build/assets/vendor-sweetalert2-BViIYH8h.css",
+    "/build/assets/vendor-floating-vue-oNOpnjHk.css"
+  ],
+  "resources/js/nexus/(global)/(auth)/middleware.vue": [
+    "/build/assets/middleware-B4Am7Dt9.js",
+    "/build/assets/vendor-sweetalert2-BViIYH8h.css"
+  ],
+  "resources/js/nexus/(global)/(guest)/contact-us/page.vue": [
+    "/build/assets/page-CYlGuJQR.js",
+    "/build/assets/vendor-sweetalert2-BViIYH8h.css"
+  ],
+  "resources/js/nexus/(global)/(guest)/loading.html": [
+    "/build/assets/loading-DP2rzg_V.js"
+  ],
+  "resources/js/nexus/(global)/(guest)/login/page.vue": [
+    "/build/assets/page-Cc_jXvSn.js",
+    "/build/assets/vendor-sweetalert2-BViIYH8h.css"
+  ],
+  "resources/js/nexus/(global)/(guest)/our-projects/page.vue": [
+    "/build/assets/page-Bi7KVGxq.js",
+    "/build/assets/vendor-sweetalert2-BViIYH8h.css"
+  ],
+  "resources/js/nexus/(global)/(guest)/our-teams/page.vue": [
+    "/build/assets/page-DzYTfImx.js",
+    "/build/assets/vendor-sweetalert2-BViIYH8h.css"
+  ],
+  "resources/js/nexus/(global)/loading.html": [
+    "/build/assets/loading-l0sNRNKZ.js"
+  ],
+  "resources/js/ssr.js": [],
+  "resources/js/strands/PrivacyToggle.vue": [
+    "/build/assets/PrivacyToggle-Stc8CUqq.js"
+  ],
+  "vendor/tightenco/ziggy/dist/index.js": [],
+  "vendor/tightenco/ziggy/src/js/Route.js": [],
+  "vendor/tightenco/ziggy/src/js/Router.js": [],
+  "vendor/tightenco/ziggy/src/js/index.js": []
+}

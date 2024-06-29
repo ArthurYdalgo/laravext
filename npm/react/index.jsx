@@ -75,10 +75,10 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, con
 
     if (nexusResolver) {
         const nexusComponentPath = laravext?.page_data?.nexus?.page?.replaceAll('\\', '/');
-        const nexus_tags = findNexus(document);
+        const nexusTags = findNexus(document);
 
-        for (let i = 0; i < nexus_tags.length; i++) {
-            let nexusElement = nexus_tags[i];
+        for (let i = 0; i < nexusTags.length; i++) {
+            let nexusElement = nexusTags[i];
 
             if (nexusComponentPath) {
                 let NexusModule = await nexusResolver(nexusComponentPath)
@@ -90,7 +90,7 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, con
                     console.debug(`Page at ${nexusComponentPath} loaded successfully`);
                 }
 
-                conventions = await conventions.filter(convention => convention !== 'page');
+                conventions = conventions.filter(convention => convention !== 'page');
 
                 for (let i = 0; i < conventions.length; i++) {
                     if (laravext?.page_data?.nexus?.[conventions[i]]) {
@@ -112,8 +112,8 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, con
                 }
 
                 nexus = <LaravextContext.Provider value={laravext}>{nexus}</LaravextContext.Provider>;
-                let staticMarkup = render ? render(nexus) : renderToString(nexus);
-                nexusElement.innerHTML = staticMarkup;
+                let renderedComponent = render ? render(nexus) : renderToString(nexus);
+                nexusElement.innerHTML = renderedComponent;
             }
         }
     }
@@ -130,8 +130,8 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, con
 
                 let strand = <LaravextContext.Provider value={laravext}><StrandModule.default laravext={{ ...laravext }} {...strandData} /></LaravextContext.Provider>
 
-                let staticMarkup = render ? render(strand) : renderToString(strand);
-                strandElement.innerHTML = staticMarkup;
+                let renderedComponent = render ? render(strand) : renderToString(strand);
+                strandElement.innerHTML = renderedComponent;
             }
         }
     }
