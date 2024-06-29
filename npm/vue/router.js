@@ -1,4 +1,4 @@
-import { isEnvProduction, render } from './tools';
+import { isEnvProduction, clientRender } from './tools';
 import { version, laravextPageData } from './index';
 import { endProgress, startProgress } from './progress';
 
@@ -47,7 +47,7 @@ export function visit(url) {
             window.__laravext.page_data = data.laravext_page_data;
 
             try {
-                render();
+                clientRender();
 
                 /** @todo fix it, as the pages are not always returnable */
                 history.pushState({}, '', url);

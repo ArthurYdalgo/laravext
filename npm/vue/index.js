@@ -1,6 +1,6 @@
 import { defineComponent } from 'vue';
 import { setupProgress } from './progress';
-import { render } from './tools';
+import { clientRender } from './tools';
 import { visit } from './router';
 
 export const laravext = () => {
@@ -73,5 +73,5 @@ export function createLaravextApp({ nexusResolver, strandsResolver, uses = () =>
         setupProgress( progress );
     }
 
-    render();
+    clientRender();
 }

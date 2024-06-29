@@ -25,7 +25,7 @@ export function isEnvProduction(){
 }
 
 
-export function render() {
+export function clientRender() {
     const laravextPageData = laravext().page_data;
 
     let nexusResolver = window.__laravext.app.nexusResolver;
