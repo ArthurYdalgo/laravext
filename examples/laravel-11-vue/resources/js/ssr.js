@@ -29,7 +29,6 @@ const errorLogShouldBeLogged = (message) => {
 
     return true;
 }
-
 const warnLogShouldBeLogged = (message) => {
     if(/\[intlify\] Not found '(.*?)' key in '(.*?)' locale messages./gm.test(message)) return false;
     if(/\[intlify\] Fall back to translate '(.*?)' key with '(.*?)' locale./gm.test(message)) return false;
@@ -70,8 +69,6 @@ app.post('/render', async (req, res) => {
                 url: dom.window.__laravext.page_data.shared_props.ziggy.url,
             });
 
-                
-        console.log({before: dom.window.__laravext?.page_data?.shared_props?.auth?.user});
         global.Ziggy = dom.window.__laravext.page_data.shared_props.ziggy;
 
         let user = dom.window.__laravext.page_data?.shared_props?.auth?.user;
@@ -111,9 +108,8 @@ app.post('/render', async (req, res) => {
             laravext: dom.window.__laravext,
             document: dom.window.document,
         })
-        console.log({after: dom.window.__laravext?.page_data?.shared_props?.auth?.user});
-        // console.log("here2");
-        // // Get the updated HTML string
+        
+        // Get the updated HTML string
         const updatedHtmlString = dom.serialize();
 
         res.send(updatedHtmlString);

@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, reactive, ref, inject } from 'vue';
 import Pagination from '@/components/Pagination.vue';
-import { debounce, _ } from 'lodash-es';
+import { debounce } from 'lodash-es';
 import PrimaryButton from '@/components/PrimaryButton.vue';
 import DangerButton from '@/components/DangerButton.vue';
 import VueSweetalert2 from 'vue-sweetalert2';

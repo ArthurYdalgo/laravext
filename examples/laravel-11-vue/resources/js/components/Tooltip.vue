@@ -1,5 +1,5 @@
 <script setup>
-import { Dropdown, Tooltip, Menu, vTooltip } from 'floating-vue'
+import { Tooltip } from 'floating-vue'
 import 'floating-vue/dist/style.css'
 
 defineProps({
