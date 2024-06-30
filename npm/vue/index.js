@@ -1,7 +1,8 @@
-import { defineComponent, createSSRApp , h} from 'vue';
+import { defineComponent, createSSRApp, h } from 'vue';
 import { renderToString } from '@vue/server-renderer';
 import { setupProgress } from './progress';
 import { clientRender, findNexus, findStrands, isEnvProduction } from './tools';
+import { visit } from './router';
 
 export const Head = defineComponent({
     props: {
@@ -17,9 +18,18 @@ export const Head = defineComponent({
     }
 });
 
-// window.addEventListener("popstate", function (event) {
-//     visit(window.location.href);
-// });
+if (typeof window !== 'undefined') {
+    window.addEventListener("popstate", function (event) {
+        try {
+            window.__laravext.page_data = event.state.laravext_page_data;
+    
+            clientRender();
+        } catch (error) {
+            console.error('Error updating page data:', error);
+            window.location.href = window.location.href;
+        }
+    });
+}
 
 export function createLaravextApp({ nexusResolver, strandsResolver, uses = () => [], conventions = [
     'error',
@@ -36,6 +46,8 @@ export function createLaravextApp({ nexusResolver, strandsResolver, uses = () =>
     if (progress) {
         setupProgress(progress);
     }
+
+    history.pushState({laravext_page_data: window.__laravext.page_data}, '', window.location.href);
 
     clientRender();
 }

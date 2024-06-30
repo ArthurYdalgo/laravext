@@ -13,7 +13,7 @@ export function visit(url) {
     
     startProgress();
 
-    const laravextPageData = window.__laravext.page_data;
+    const laravext = window.__laravext;
 
     fetch(url, {
         headers: {
@@ -21,8 +21,8 @@ export function visit(url) {
             'Pragma': 'no-cache',
             'Expires': '0',
             'X-Laravext': true,
-            'X-Laravext-Version': laravextPageData.version,
-            'X-Laravext-Root-View': laravextPageData.root_view,
+            'X-Laravext-Version': laravext.page_data.version,
+            'X-Laravext-Root-View': laravext.page_data.root_view,
         },
     }).then(async (response) => {
         if (!response.headers.get('X-Laravext')) {
@@ -50,8 +50,7 @@ export function visit(url) {
             try {
                 clientRender();
 
-                /** @todo fix it, as the pages are not always returnable */
-                history.pushState({}, '', url);
+                history.pushState({laravext_page_data: laravext.page_data}, '', url);
             } catch (error) {
                 console.error('Error updating page data:', error);
                 window.location.href = url;

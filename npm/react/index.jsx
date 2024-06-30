@@ -6,6 +6,19 @@ import { visit } from './router';
 import laravext from './laravext';
 import LaravextContext from './LaravextContext';
 
+if (typeof window !== 'undefined') {
+    window.addEventListener("popstate", function (event) {
+        try {
+            window.__laravext.page_data = event.state.laravext_page_data;
+    
+            clientRender();
+        } catch (error) {
+            console.error('Error updating page data:', error);
+            window.location.href = window.location.href;
+        }
+    });
+}
+
 export const laravextPageData = () => {
     return laravext().page_data;
 }
@@ -61,6 +74,8 @@ export function createLaravextApp({ nexusResolver, strandsResolver, conventions 
     if (progress) {
         setupProgress(progress);
     }
+
+    history.pushState({laravext_page_data: window.__laravext.page_data}, '', window.location.href);
 
     clientRender();
 }
