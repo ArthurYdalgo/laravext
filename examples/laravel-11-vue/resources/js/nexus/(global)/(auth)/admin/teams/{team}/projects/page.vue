@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, reactive, ref, inject } from 'vue';
 import Pagination from '@/components/Pagination.vue';
-import { debounce } from 'lodash';
+import { debounce } from 'lodash-es';
 import DangerButton from '@/components/DangerButton.vue';
 import Header from '@/components/Header.vue';
 import Link from '@/components/Link.vue';
@@ -9,10 +9,10 @@ import PrimaryButton from '@/components/PrimaryButton.vue';
 import SecondaryButton from '@/components/SecondaryButton.vue';
 import PageContent from '@/components/PageContent.vue';
 import Loading from '@/components/Loading.vue';
-import { routeParams } from '@laravext/vue';
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 const swal = inject('$swal')
+const axios = inject('$axios');
 
 const pagination = reactive({
     data: [],

@@ -1,6 +1,6 @@
 import './bootstrap';
 import '../css/app.css';
-import { createLaravextApp, sharedProps } from "@laravext/vue"
+import { createLaravextApp } from "@laravext/vue"
 
 import VueCookies from 'vue-cookies'
 
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
         nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
         strandsResolver: (name) => resolveComponent(`./strands/${name}.vue`, import.meta.glob('./strands/**/*.vue')),
         uses: () => {
-            let locale = sharedProps()?.auth?.user?.locale ?? VueCookies.get('locale') ?? 'en';
+            let locale = window.__laravext?.page_data?.shared_props?.auth?.user?.locale ?? VueCookies.get('locale') ?? 'en';
 
             const i18n = createI18n({
                 legacy: false,

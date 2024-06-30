@@ -15,14 +15,20 @@ const port = 13714;
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
+// Change this to what you see fit
+const errorMessageShouldBeLogged = (message) => {
+    if(message.includes('useLayoutEffect does nothing on the server')) return false;
+    if(message.includes("Could not find one or more icon(s)")) return false;
+
+    return true;
+}
 
 const originalError = console.error;
 console.error = (message, ...args) => {
-    if (!message.includes('useLayoutEffect does nothing on the server') && !message.includes("Could not find one or more icon(s)")) {
+    if (errorMessageShouldBeLogged(message)) {
         originalError(message, ...args);
     }
 };
-
 
 app.post('/render', async (req, res) => {
     try {

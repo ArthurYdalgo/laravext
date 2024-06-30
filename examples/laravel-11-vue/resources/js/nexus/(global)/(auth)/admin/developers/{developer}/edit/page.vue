@@ -7,8 +7,7 @@ import PageContent from '@/components/PageContent.vue';
 import PrimaryButton from '@/components/PrimaryButton.vue';
 import TextInput from '@/components/TextInput.vue';
 import { privacy } from '@/composables/usePrivacy';
-import { debounce } from 'lodash';
-import { nexusProps, routeParams } from '@laravext/vue';
+import { debounce } from 'lodash-es';
 import axios from 'axios';
 import { reactive, onMounted, inject } from 'vue';
 import DangerButton from '@/components/DangerButton.vue';
@@ -16,6 +15,8 @@ import Link from '@/components/Link.vue';
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
+const nexusProps = inject('$nexusProps');
+const routeParams = inject('$routeParams');
 const swal = inject('$swal')
 
 // Reactive form state

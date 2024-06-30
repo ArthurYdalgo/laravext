@@ -20,7 +20,7 @@ class CommentResource extends JsonResource
             return $this->user->only(['id', 'name', 'email']);
         });
 
-        $data['content'] = $this->deleted_at ? '-- This comment was deleted ' . $this->deleted_at->diffForHumans() . ' --' : $data['content'];
+        $data['content'] = $this->deleted_at ? '-- ' . __('This comment was deleted') . ' ' . $this->deleted_at->diffForHumans() . ' --' : $data['content'];
 
         return $data;
     }

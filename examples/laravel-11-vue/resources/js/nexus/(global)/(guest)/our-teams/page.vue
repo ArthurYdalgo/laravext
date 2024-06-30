@@ -1,5 +1,8 @@
 <script setup>
-import { Head, nexusProps } from '@laravext/vue'
+import { inject } from 'vue';
+import { Head } from '@laravext/vue'
+const nexusProps = inject('$nexusProps');
+
 const {teams} = nexusProps();
 
 </script>

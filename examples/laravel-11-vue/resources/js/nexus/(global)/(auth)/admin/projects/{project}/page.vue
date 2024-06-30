@@ -7,14 +7,18 @@ import MomentDateTime from '@/components/MomentDateTime.vue';
 import PageContent from '@/components/PageContent.vue';
 import PrimaryButton from '@/components/PrimaryButton.vue';
 import TextArea from '@/components/TextArea.vue';
+import Tooltip from '@/components/Tooltip.vue';
 import { privacy } from '@/composables/usePrivacy';
-import { routeParams, sharedProps } from '@laravext/vue';
 import axios from 'axios';
 import { reactive, onMounted, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
+const swal = inject('$swal')
+const sharedProps = inject('$sharedProps');
+const routeParams = inject('$routeParams');
+
+
 const { user } = sharedProps().auth;
 const { t } = useI18n();
-const swal = inject('$swal')
 
 const project = reactive({
     data: {
@@ -167,7 +171,9 @@ onMounted(() => {
                 :class="{ 'ml-auto': comment.user_id === user.id, 'mr-auto': comment.user_id !== user.id }">
                 <div class="bg-white shadow-md rounded-lg p-4">
                     <div class="flex justify-between">
-                        <Link class="text-blue-600" :href="`mailto:${comment.user.email}`">{{ comment.user.name }} <span class="text-xs text-gray-400" v-if="comment.user_id == user.id">({{ $t('You') }})</span></Link>
+                        <Tooltip :text="`${$t('Click to send an email to ')} ${comment.user.name} (${comment.user.email})`">
+                        <a class="text-blue-600" :href="`mailto:${comment.user.email}`">{{ comment.user.name }} <span class="text-xs text-gray-400" v-if="comment.user_id == user.id">({{ $t('You') }})</span></a>
+                        </Tooltip>
                         <MomentDateTime :date="comment.created_at" />
                     </div>
                     <div class="border-b-2 border-gray-200 my-2"></div>

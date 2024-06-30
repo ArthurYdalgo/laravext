@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function () {
 ```js
 import './bootstrap';
 import '../css/app.css';
-import { createLaravextApp, sharedProps } from "@laravext/vue"
+import { createLaravextApp } from "@laravext/vue"
 import { resolveComponent } from '@laravext/vue/tools';
 
 // Other imports for the Vue.js example
@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function() {
         uses: () => {
             const i18n = createI18n({
                 legacy: false,
-                locale: sharedProps()?.auth?.user?.locale || 'en',
+                locale: window.__laravext?.page_data?.shared_props?.auth?.user?.locale || 'en',
                 fallbackLocale: 'en',
                 messages: {
                     pt

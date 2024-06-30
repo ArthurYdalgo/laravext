@@ -18,7 +18,7 @@ export function visit(url) {
             'X-Laravext': true,
             'X-Laravext-Version': version(),
             'X-Laravext-Root-View': laravextPageData().root_view,
-        },
+        }, 
     }).then(async (response) => {
         if (!response.headers.get('X-Laravext')) {
             window.location.href = url;

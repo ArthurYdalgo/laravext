@@ -1,5 +1,4 @@
 import { isEnvProduction, clientRender } from './tools';
-import { version, laravextPageData } from './index';
 import { endProgress, startProgress } from './progress';
 
 export function visit(url) {
@@ -14,14 +13,16 @@ export function visit(url) {
     
     startProgress();
 
+    const laravextPageData = window.__laravext.page_data;
+
     fetch(url, {
         headers: {
             'Cache-Control': 'no-cache, no-store, must-revalidate',
             'Pragma': 'no-cache',
             'Expires': '0',
             'X-Laravext': true,
-            'X-Laravext-Version': version(),
-            'X-Laravext-Root-View': laravextPageData().root_view,
+            'X-Laravext-Version': laravextPageData.version,
+            'X-Laravext-Root-View': laravextPageData.root_view,
         },
     }).then(async (response) => {
         if (!response.headers.get('X-Laravext')) {

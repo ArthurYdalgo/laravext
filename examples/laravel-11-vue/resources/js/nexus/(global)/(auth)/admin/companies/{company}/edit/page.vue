@@ -2,7 +2,6 @@
 import Header from '@/components/Header.vue';
 import Loading from '@/components/Loading.vue';
 import PageContent from '@/components/PageContent.vue';
-import { routeParams } from '@laravext/vue';
 import axios from 'axios';
 import { reactive, onMounted, inject } from 'vue';
 import DangerButton from '@/components/DangerButton.vue';
@@ -10,7 +9,7 @@ import { useI18n } from 'vue-i18n';
 import PrimaryButton from '@/components/PrimaryButton.vue';
 import Link from '@/components/Link.vue';
 const { t } = useI18n();
-
+const routeParams = inject('$routeParams');
 const swal = inject('$swal')
 
 // Reactive form state

@@ -6,12 +6,12 @@ import Loading from '@/components/Loading.vue';
 import PageContent from '@/components/PageContent.vue';
 import PrimaryButton from '@/components/PrimaryButton.vue';
 import { privacy } from '@/composables/usePrivacy';
-import { routeParams } from '@laravext/vue';
 import axios from 'axios';
 import { reactive, onMounted, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 const swal = inject('$swal')
+const routeParams = inject('$routeParams');
 
 const company = reactive({
     data: {

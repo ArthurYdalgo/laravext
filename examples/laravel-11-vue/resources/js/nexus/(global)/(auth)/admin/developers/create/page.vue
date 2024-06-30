@@ -1,10 +1,10 @@
 <script setup>
 import Header from '@/components/Header.vue';
 import PageContent from '@/components/PageContent.vue';
-import { nexusProps, } from '@laravext/vue';
+
 import axios from 'axios';
 import { reactive, inject } from 'vue';
-
+const nexusProps = inject('$nexusProps')
 const swal = inject('$swal')
 
 // Reactive form state

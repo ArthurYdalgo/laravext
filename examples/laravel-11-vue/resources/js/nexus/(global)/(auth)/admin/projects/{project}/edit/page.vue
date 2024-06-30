@@ -4,11 +4,11 @@ import Header from '@/components/Header.vue';
 import Link from '@/components/Link.vue';
 import PageContent from '@/components/PageContent.vue';
 import PrimaryButton from '@/components/PrimaryButton.vue';
-import { routeParams } from '@laravext/vue';
 import { reactive,inject, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 const swal = inject('$swal')
+const routeParams = inject('$routeParams');
 
 const form = reactive({
     data: {
@@ -143,7 +143,7 @@ const loadCompany = (id, cachedOption) => {
 
 </script>
 <template>
-    <Header>{{ $t('Create a project') }}</Header>
+    <Header>{{ form.loading ? $t('Loading...') : `${$t('Edit project')} ${form.data.name}` }}</Header>
     <div class="mt-3 mx-4 flex justify-end space-x-2">
         <Link :href="`/admin/projects/${routeParams().project}`">
             <PrimaryButton>{{ $t('Show') }}</PrimaryButton>

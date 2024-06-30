@@ -1,5 +1,6 @@
 <script setup>
-import { sharedProps } from '@laravext/vue';
+import {inject } from 'vue';
+const sharedProps = inject('$sharedProps');
 
 if (!sharedProps().auth?.user) {
   window.location.href = '/'

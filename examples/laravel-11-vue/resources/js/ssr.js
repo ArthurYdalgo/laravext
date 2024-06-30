@@ -13,7 +13,7 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 import { resolveComponent } from '@laravext/vue/tools';
 import express from 'express';
 import { JSDOM } from 'jsdom';
-import { createLaravextSsrApp, createLaravextApp } from '@laravext/vue';
+import { createLaravextSsrApp } from '@laravext/vue';
 import { route } from '../../vendor/tightenco/ziggy/src/js';
 import Cookies from 'js-cookie';
 
@@ -23,13 +23,36 @@ const port = 13714;
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
+// Change these to what you see fit, if you want to ignore some logs
+const errorLogShouldBeLogged = (message) => {
+    if(message.includes("Could not find one or more icon(s)")) return false;
+
+    return true;
+}
+
+const warnLogShouldBeLogged = (message) => {
+    if(/\[intlify\] Not found '(.*?)' key in '(.*?)' locale messages./gm.test(message)) return false;
+    if(/\[intlify\] Fall back to translate '(.*?)' key with '(.*?)' locale./gm.test(message)) return false;
+    if(message == '[Vue warn]: Method "__floating-vue__popper" has type "object" in the component definition. Did you reference the function correctly?') return false;
+
+    return true;
+}
 
 const originalError = console.error;
 console.error = (message, ...args) => {
-    if (!message.includes('useLayoutEffect does nothing on the server') && !message.includes("Could not find one or more icon(s)")) {
+    if (errorLogShouldBeLogged(message)) {
         originalError(message, ...args);
     }
 };
+
+// Change this to what you see fit
+
+const originalWarn = console.warn;
+console.warn = (message, ...args) => {
+    if(warnLogShouldBeLogged(message)) {
+        originalWarn(message, ...args);
+    }
+}
 
 app.post('/render', async (req, res) => {
     try {
@@ -47,6 +70,8 @@ app.post('/render', async (req, res) => {
                 url: dom.window.__laravext.page_data.shared_props.ziggy.url,
             });
 
+                
+        console.log({before: dom.window.__laravext?.page_data?.shared_props?.auth?.user});
         global.Ziggy = dom.window.__laravext.page_data.shared_props.ziggy;
 
         let user = dom.window.__laravext.page_data?.shared_props?.auth?.user;
@@ -86,8 +111,7 @@ app.post('/render', async (req, res) => {
             laravext: dom.window.__laravext,
             document: dom.window.document,
         })
-
-
+        console.log({after: dom.window.__laravext?.page_data?.shared_props?.auth?.user});
         // console.log("here2");
         // // Get the updated HTML string
         const updatedHtmlString = dom.serialize();

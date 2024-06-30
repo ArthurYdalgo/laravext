@@ -1,52 +1,7 @@
-import { defineComponent, reactive } from 'vue';
+import { defineComponent, createSSRApp , h} from 'vue';
+import { renderToString } from '@vue/server-renderer';
 import { setupProgress } from './progress';
-import { clientRender } from './tools';
-import { findNexus } from './tools';
-import { visit } from './router';
-import { renderToString } from '@vue/server-renderer'
-import { isEnvProduction } from './tools';
-import { createSSRApp, h } from 'vue';
-import {laravext as laravextReactive} from './laravext';
-
-export const laravext = () => {
-    return laravextReactive.value;
-}
-
-export const createLaravextContext = (laravextContext) => {
-    laravextReactive.value = laravextContext;
-}
-
-export const laravextPageData = () => {
-    return laravext().page_data;
-}
-
-export const version = () => {
-    return laravextPageData().version;
-}
-
-export const nexus = () => {
-    return laravextPageData().nexus;
-}
-
-export const nexusProps = () => {
-    return nexus().props;
-}
-
-export const sharedProps = () => {
-    return laravextPageData().shared_props;
-}
-
-export const routeParams = () => {
-    return laravextPageData().route_params;
-}
-
-export const routeName = () => {
-    return laravextPageData().route_name;
-}
-
-export const queryParams = () => {
-    return laravextPageData().query_params;
-}
+import { clientRender, findNexus, findStrands, isEnvProduction } from './tools';
 
 export const Head = defineComponent({
     props: {
@@ -91,7 +46,17 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, use
     'middleware',
 ], laravext, document, render }) {
 
-    createLaravextContext(laravext);
+    let mixins = {
+        '$laravext': () => laravext,
+        '$sharedProps': () => laravext.page_data.shared_props,
+        '$laravextPageData': () => laravext.page_data,
+        '$laravextVersion': () => laravext.page_data.version,
+        '$nexus': () => laravext.page_data.nexus,
+        '$nexusProps': () => laravext.page_data.nexus.props,
+        '$routeParams': () => laravext.page_data.route_params,
+        '$routeName': () => laravext.page_data.route_name,
+        '$queryParams': () => laravext.page_data.query_params,
+    }
 
     if (nexusResolver) {
         const nexusComponentPath = laravext.page_data?.nexus?.page?.replaceAll('\\', '/');
@@ -110,6 +75,7 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, use
                 let pageComponent = NexusComponent.default
 
                 let renderer = () => h(pageComponent, { laravext: laravext.page_data }, {
+
                     props: () => ({
                         laravext: laravext.page_data
                     }),
@@ -147,12 +113,17 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, use
                     }
                 });
 
-                const app = createSSRApp(rootComponent, );
+                const app = createSSRApp(rootComponent);
+
+                app.mixin({
+                    provide: mixins,
+                    methods: mixins
+                })
 
                 for (let use of uses()) {
                     app.use(use.plugin, use.options ?? {});
                 }
-        
+
                 let renderedComponent = render ? await render(app) : await renderToString(app);
 
                 nexusElement.innerHTML = renderedComponent;
@@ -160,4 +131,35 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, use
             }
         }
     }
+
+    if (strandsResolver) {
+        const strands = findStrands(document);
+        for (let i = 0; i < strands.length; i++) {
+            let strandElement = strands[i];
+
+            const strandComponentPath = strandElement.getAttribute('strand-component');
+            const strandData = JSON.parse(strandElement.getAttribute('strand-data'));
+
+            if (strandComponentPath) {
+                let StrandComponent = await strandsResolver(strandComponentPath);
+
+                const app = createSSRApp(StrandComponent.default, { laravext, ...strandData });
+
+                app.mixin({
+                    provide: mixins,
+                    methods: mixins
+                })
+
+                for (let use of uses()) {
+                    app.use(use.plugin, use.options ?? {});
+                }
+
+                let renderedComponent = render ? await render(app) : await renderToString(app);
+
+                strandElement.innerHTML = renderedComponent;
+
+            }
+        }
+    }
+
 }

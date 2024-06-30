@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, reactive, ref, inject } from 'vue';
 import Pagination from '@/components/Pagination.vue';
-import { debounce, _ } from 'lodash';
+import { debounce, _ } from 'lodash-es';
 import PrimaryButton from '@/components/PrimaryButton.vue';
 import DangerButton from '@/components/DangerButton.vue';
 import VueSweetalert2 from 'vue-sweetalert2';
@@ -95,7 +95,7 @@ onMounted(async () => {
 
 </script>
 <template>
-    <Header>{{$t('Developers')}}</Header>
+    <Header>{{ $t('Developers')}}</Header>
 
     <div class="mt-3 mx-4 flex justify-end space-x-2">
         <Link routeName="admin.developers.create">

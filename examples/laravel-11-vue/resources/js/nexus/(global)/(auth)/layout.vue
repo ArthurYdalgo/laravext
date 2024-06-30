@@ -8,12 +8,12 @@ import NavLink from '@/components/NavLink.vue';
 import Link from '@/components/Link.vue';
 import ResponsiveNavLink from '@/components/ResponsiveNavLink.vue';
 import axios from 'axios';
-import { sharedProps } from '@laravext/vue';
 import { privacy } from '@/composables/usePrivacy'
 import Fa from '@/components/Fa.vue';
 import { useI18n } from 'vue-i18n';
 import Tooltip from '@/components/Tooltip.vue';
 import VueCookies from 'vue-cookies'
+const sharedProps = inject('$sharedProps');
 
 const { locale: i18nLocale } = useI18n();
 

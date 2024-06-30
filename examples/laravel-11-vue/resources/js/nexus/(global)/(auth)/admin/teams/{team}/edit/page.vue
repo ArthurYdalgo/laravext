@@ -7,8 +7,7 @@ import PageContent from '@/components/PageContent.vue';
 import PrimaryButton from '@/components/PrimaryButton.vue';
 import TextInput from '@/components/TextInput.vue';
 import { privacy } from '@/composables/usePrivacy';
-import { debounce } from 'lodash';
-import { routeParams } from '@laravext/vue';
+import { debounce } from 'lodash-es';
 import axios from 'axios';
 import { reactive, onMounted, inject } from 'vue';
 import DangerButton from '@/components/DangerButton.vue';
@@ -17,6 +16,7 @@ import { useI18n } from 'vue-i18n';
 import Tooltip from '@/components/Tooltip.vue';
 const { t } = useI18n();
 const swal = inject('$swal')
+const routeParams = inject('$routeParams');
 
 // Reactive form state
 const form = reactive({

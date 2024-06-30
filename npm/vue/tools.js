@@ -1,4 +1,4 @@
-import { laravext } from "./index";
+// import { laravext } from "./index";
 import {defineComponent, createApp, h} from 'vue';
 
 export function findNexus(doc = null) {
@@ -36,7 +36,20 @@ export function isEnvProduction(){
 
 
 export function clientRender() {
-    const laravextPageData = laravext().page_data;
+    // const laravext = laravext();
+    const laravext = window.__laravext;
+
+    let mixins = {
+        '$laravext': () => laravext,
+        '$sharedProps': () => laravext.page_data.shared_props,
+        '$laravextPageData': () => laravext.page_data,
+        '$laravextVersion': () => laravext.page_data.version,
+        '$nexus': () => laravext.page_data.nexus,
+        '$nexusProps': () => laravext.page_data.nexus.props,
+        '$routeParams': () => laravext.page_data.route_params,
+        '$routeName': () => laravext.page_data.route_name,
+        '$queryParams': () => laravext.page_data.query_params,
+    }
 
     let nexusResolver = window.__laravext.app.nexusResolver;
     let strandsResolver = window.__laravext.app.strandsResolver;
@@ -44,7 +57,7 @@ export function clientRender() {
     let conventions = window.__laravext.app.conventions;
 
     if (nexusResolver) {
-        const nexusComponentPath = laravextPageData?.nexus?.page?.replaceAll('\\', '/');
+        const nexusComponentPath = laravext?.page_data?.nexus?.page?.replaceAll('\\', '/');
         const nexusTags = findNexus();
         nexusTags.forEach((nexusElement) => {
             if (nexusComponentPath) {
@@ -56,34 +69,34 @@ export function clientRender() {
 
                     let pageComponent = NexusComponent.default
 
-                    let renderer = () => h(pageComponent, { laravext: laravextPageData }, {
+                    let renderer = () => h(pageComponent, {
                         props: () => ({
-                            laravext: laravextPageData
+                            // laravext: laravext?.page_data
                         }),
                     });
 
                     conventions = conventions.filter(convention => convention !== 'page');
 
                     for (let i = 0; i < conventions.length; i++) {
-                        if (laravextPageData?.nexus?.[conventions[i]]) {
+                        if (laravext?.page_data?.nexus?.[conventions[i]]) {
                             try {
                                 if (!isEnvProduction()) {
-                                    console.debug(`Loading convention ${conventions[i]} at ${laravextPageData?.nexus?.[conventions[i]]}`)
+                                    console.debug(`Loading convention ${conventions[i]} at ${laravext?.page_data?.nexus?.[conventions[i]]}`)
                                 };
-                                let conventionComponent = (await nexusResolver(laravextPageData?.nexus?.[conventions[i]])).default;
+                                let conventionComponent = (await nexusResolver(laravext?.page_data?.nexus?.[conventions[i]])).default;
                                 if (!isEnvProduction()) {
-                                    console.debug(`Convention ${conventions[i]} at ${laravextPageData?.nexus?.[conventions[i]]} loaded successfully`);
+                                    console.debug(`Convention ${conventions[i]} at ${laravext?.page_data?.nexus?.[conventions[i]]} loaded successfully`);
                                 }
 
                                 const previousRenderer = renderer;
-                                renderer = () => h(conventionComponent, { laravext: laravextPageData }, {
+                                renderer = () => h(conventionComponent, { }, {
                                     default: () => previousRenderer(),
                                     props: () => ({
-                                        laravext: laravextPageData
+                                        // laravext: laravext?.page_data
                                     })
                                 });
                             } catch (error) {
-                                console.error(`Error loading convention ${conventions[i]} at ${laravextPageData?.nexus?.[conventions[i]]}:`, error);
+                                console.error(`Error loading convention ${conventions[i]} at ${laravext?.page_data?.nexus?.[conventions[i]]}:`, error);
                             }
                         }
                     }
@@ -95,8 +108,13 @@ export function clientRender() {
                     });
 
                     const app = createApp(rootComponent);
+
+                    app.mixin({
+                        provide: mixins,
+                        methods: mixins
+                    })
                     
-                    laravext().app.vue?.unmount();
+                    laravext.app.vue?.unmount();
                     
                     for (let use of uses) {
                         app.use(use.plugin, use.options ?? {});
@@ -122,6 +140,16 @@ export function clientRender() {
             if (strandComponentPath) {
                 strandsResolver(strandComponentPath).then((StrandComponent) => {
                     const app = createApp(StrandComponent.default, { laravext, ...strandData });
+
+                    app.mixin({
+                        provide: mixins,
+                        methods: mixins
+                    })
+
+                    for (let use of uses) {
+                        app.use(use.plugin, use.options ?? {});
+                    }
+
                     app.mount(strandElement);
                 }).catch((error) => {
                     console.error(`Error loading component at ${strandComponentPath}:`, error);

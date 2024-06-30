@@ -36,7 +36,6 @@ export default function ({ mode }) {
                                 'vue-i18n',
                                 'vue-sweetalert2',
                                 'moment',
-                                'lodash',
                                 'vue-cookies',
                                 'sweetalert2',
                                 'ziggy-js',
