@@ -199,7 +199,7 @@ class ResponseFactory
             View::share($view_data);
 
             $view = view($root_view);
-            return $view;
+            // return $view;
             $rendered_view = $view->render();
 
             try {
