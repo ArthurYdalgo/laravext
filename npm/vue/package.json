@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@vue/server-renderer": "^3.4.31",
+    "jsdom": "^24.1.0",
     "nprogress": "^0.2.0",
     "vue": "^3.4.23"
   }

@@ -18,14 +18,6 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         setupNexus({ nexus, laravext }) {
 
-            global.route = (name, params, absolute) =>
-                route(name, params, absolute, {
-                    ...(laravext.page_data.shared_props.ziggy),
-                    url: laravext.page_data.shared_props.ziggy.url,
-                });
-    
-            global.Ziggy = laravext.page_data.shared_props.ziggy;
-
             const user = laravext.page_data.shared_props?.auth?.user;
 
             i18n

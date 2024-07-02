@@ -25,11 +25,15 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // Change these to what you see fit, if you want to ignore some logs
 const errorLogShouldBeLogged = (message) => {
+    if(typeof message !== 'string') return true;
+    
     if(message.includes("Could not find one or more icon(s)")) return false;
 
     return true;
 }
 const warnLogShouldBeLogged = (message) => {
+    if(typeof message !== 'string') return true;
+    
     if(/\[intlify\] Not found '(.*?)' key in '(.*?)' locale messages./gm.test(message)) return false;
     if(/\[intlify\] Fall back to translate '(.*?)' key with '(.*?)' locale./gm.test(message)) return false;
     if(message == '[Vue warn]: Method "__floating-vue__popper" has type "object" in the component definition. Did you reference the function correctly?') return false;

@@ -1,22 +1,17 @@
-import express from 'express';
-import { JSDOM } from 'jsdom';
 import { createLaravextSsrApp } from '@laravext/react';
 import { resolveComponent } from "@laravext/react/tools"
+import { serve } from "@laravext/react/server"
 import { route } from '../../vendor/tightenco/ziggy/src/js';
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import pt from '../../lang/pt.json'
-import Cookies from 'js-cookie';
 import { renderToString } from 'react-dom/server';
-
-const app = express();
-const port = 13714;
-
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ limit: '50mb', extended: true }));
+import Cookies from 'js-cookie';
 
 // Change this to what you see fit
 const errorMessageShouldBeLogged = (message) => {
+    if (typeof message !== 'string') return true;
+
     if (message.includes('useLayoutEffect does nothing on the server')) return false;
     if (message.includes("Could not find one or more icon(s)")) return false;
 
@@ -30,76 +25,51 @@ console.error = (message, ...args) => {
     }
 };
 
-app.post('/render', async (req, res) => {
-    try {
-        if (process.env.NODE_ENV !== 'production') {
-            console.time('Render Time');
-        }
-        const { html } = req.body;
-        const dom = new JSDOM(html, { runScripts: "dangerously" });
+serve(({ window }) => createLaravextSsrApp({
+    // This is optional, the default is renderToString, but you can use renderToStaticMarkup if you want
+    // render: renderToString,
 
-        global.navigator = dom.window.navigator;
+    nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
+    strandsResolver: (name) => resolveComponent(`./strands/${name}.jsx`, import.meta.glob('./strands/**/*.jsx')),
+    setupNexus: ({ nexus, laravext }) => {
 
         global.route = (name, params, absolute) =>
             route(name, params, absolute, {
-                ...(dom.window.__laravext.page_data.shared_props.ziggy),
-                url: dom.window.__laravext.page_data.shared_props.ziggy.url,
+                ...(laravext.page_data.shared_props.ziggy),
+                url: laravext.page_data.shared_props.ziggy.url,
             });
 
-        global.Ziggy = dom.window.__laravext.page_data.shared_props.ziggy;
+        global.Ziggy = laravext.page_data.shared_props.ziggy;
 
+        let user = laravext.page_data?.shared_props?.auth?.user;
 
+        i18n
+            .use(initReactI18next)
+            .init({
+                resources: {
+                    pt: {
+                        translation: pt
+                    }
+                },
+                fallbackLng: "en",
+                interpolation: {
+                    escapeValue: false
+                }
+            });
 
-        await createLaravextSsrApp({
-            nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
-            strandsResolver: (name) => resolveComponent(`./strands/${name}.jsx`, import.meta.glob('./strands/**/*.jsx')),
-            render: renderToString,
-            setupNexus: ({ nexus, laravext }) => {
+        i18n.changeLanguage(user?.locale ?? Cookies.get('locale') ?? 'en')
 
-                let user = laravext.page_data?.shared_props?.auth?.user;
+        // In case you need to wrap your app with a provider or something similar
+        // return <AnyComponentOrProvider>{nexus}</AnyComponentOrProvider>;
 
-                i18n
-                    .use(initReactI18next)
-                    .init({
-                        resources: {
-                            pt: {
-                                translation: pt
-                            }
-                        },
-                        fallbackLng: "en",
-                        interpolation: {
-                            escapeValue: false
-                        }
-                    });
-
-                i18n.changeLanguage(user?.locale ?? Cookies.get('locale') ?? 'en')
-
-                return nexus;
-            },
-            laravext: dom.window.__laravext,
-            document: dom.window.document,
-        })
-
-
-        // console.log("here2");
-        // // Get the updated HTML string
-        const updatedHtmlString = dom.serialize();
-
-        res.send(updatedHtmlString);
-
-        if (process.env.NODE_ENV !== 'production') {
-            console.timeEnd('Render Time');
-        }
-
-    } catch (error) {
-        console.log(error);
-        res.status(500).send('Error rendering page: ' + error.message);
-    }
-});
-
-app.listen(port, () => {
-    console.log(`Node.js server is running on port ${port}`);
-});
+        return nexus;
+    },
+    // setupStrand({strand, laravext}){
+    //     return <AnyComponentOrProvider>{strand}</AnyComponentOrProvider>
+    // }
+    laravext: window.__laravext,
+    document: window.document,
+}))
 
 
 
