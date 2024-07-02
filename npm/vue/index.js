@@ -31,16 +31,17 @@ if (typeof window !== 'undefined') {
     });
 }
 
-export function createLaravextApp({ nexusResolver, strandsResolver, uses = () => [], conventions = [
+export function createLaravextApp({ nexusResolver, strandsResolver, conventions = [
     'error',
     'layout',
     'middleware',
-], progress = {} }) {
+], progress = {}, setupNexus = null, setupStrand = null}) {
     window.__laravext.app = {
         nexusResolver,
         strandsResolver,
-        uses,
         conventions,
+        setupNexus,
+        setupStrand,
     }
 
     if (progress) {
@@ -52,11 +53,11 @@ export function createLaravextApp({ nexusResolver, strandsResolver, uses = () =>
     clientRender();
 }
 
-export async function createLaravextSsrApp({ nexusResolver, strandsResolver, uses = () => [], conventions = [
+export async function createLaravextSsrApp({ nexusResolver, strandsResolver, conventions = [
     'error',
     'layout',
     'middleware',
-], laravext, document, render }) {
+], laravext, document, render, setupNexus = null, setupStrand = null}) {
 
     let mixins = {
         '$laravext': () => laravext,
@@ -119,24 +120,24 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, use
                     }
                 }
 
-                const rootComponent = defineComponent({
+                const nexus = defineComponent({
                     render() {
                         return renderer()
                     }
                 });
 
-                const app = createSSRApp(rootComponent);
+                if(setupNexus){
+                   const nexusApp = setupNexus({nexus, laravext});
+                }else {
+                    const nexusApp = createSSRApp(nexus);
+                }
 
-                app.mixin({
+                nexusApp.mixin({
                     provide: mixins,
                     methods: mixins
                 })
 
-                for (let use of uses()) {
-                    app.use(use.plugin, use.options ?? {});
-                }
-
-                let renderedComponent = render ? await render(app) : await renderToString(app);
+                let renderedComponent = render ? await render(nexusApp) : await renderToString(nexusApp);
 
                 nexusElement.innerHTML = renderedComponent;
 
@@ -155,18 +156,20 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, use
             if (strandComponentPath) {
                 let StrandComponent = await strandsResolver(strandComponentPath);
 
-                const app = createSSRApp(StrandComponent.default, { laravext, ...strandData });
+                let strand = StrandComponent.default;
 
-                app.mixin({
+                if(setupStrand){
+                    const strandApp = setupStrand({strand, laravext, strandData });
+                }else{
+                    const strandApp = createSSRApp(StrandComponent.default, { laravext, ...strandData });
+                }
+
+                strandApp.mixin({
                     provide: mixins,
                     methods: mixins
                 })
 
-                for (let use of uses()) {
-                    app.use(use.plugin, use.options ?? {});
-                }
-
-                let renderedComponent = render ? await render(app) : await renderToString(app);
+                let renderedComponent = render ? await render(strandApp) : await renderToString(strandApp);
 
                 strandElement.innerHTML = renderedComponent;
 

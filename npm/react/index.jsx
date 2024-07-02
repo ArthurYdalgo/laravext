@@ -1,8 +1,6 @@
 import { setupProgress } from './progress';
 import { clientRender, findNexus, findStrands, isEnvProduction } from './tools';
-import { renderToString, renderToStaticMarkup } from 'react-dom/server';
-
-import { visit } from './router';
+import { renderToString } from 'react-dom/server';
 import laravext from './laravext';
 import LaravextContext from './LaravextContext';
 
@@ -63,12 +61,14 @@ export function createLaravextApp({ nexusResolver, strandsResolver, conventions 
     'error',
     'layout',
     'middleware',
-], progress = {} }) {
+], progress = {}, setupStrand = null, setupNexus = null}) {
 
     window.__laravext.app = {
         nexusResolver,
         strandsResolver,
         conventions,
+        setupStrand,
+        setupNexus,
     }
 
     if (progress) {
@@ -86,7 +86,7 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, con
     'error',
     'layout',
     'middleware',
-], laravext, document, render}) {
+], laravext, document, render, setupNexus = null, setupStrand = null }) {
 
     if (nexusResolver) {
         const nexusComponentPath = laravext?.page_data?.nexus?.page?.replaceAll('\\', '/');
@@ -126,6 +126,10 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, con
                     }
                 }
 
+                if (setupNexus) {
+                    nexus = setupNexus({nexus, laravext});
+                }
+
                 nexus = <LaravextContext.Provider value={laravext}>{nexus}</LaravextContext.Provider>;
                 let renderedComponent = render ? render(nexus) : renderToString(nexus);
                 nexusElement.innerHTML = renderedComponent;
@@ -143,7 +147,13 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, con
             if (strandComponentPath) {
                 let StrandModule = await strandsResolver(strandComponentPath)
 
-                let strand = <LaravextContext.Provider value={laravext}><StrandModule.default laravext={{ ...laravext }} {...strandData} /></LaravextContext.Provider>
+                let strand = <StrandModule.default laravext={{ ...laravext }} {...strandData} />
+
+                if(setupStrand){
+                    strand = setupStrand({strand, laravext});
+                }
+
+                strand = <LaravextContext.Provider value={laravext}>{strand}</LaravextContext.Provider>
 
                 let renderedComponent = render ? render(strand) : renderToString(strand);
                 strandElement.innerHTML = renderedComponent;

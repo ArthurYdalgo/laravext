@@ -53,8 +53,9 @@ export function clientRender() {
 
     let nexusResolver = window.__laravext.app.nexusResolver;
     let strandsResolver = window.__laravext.app.strandsResolver;
-    let uses = window.__laravext.app.uses();
     let conventions = window.__laravext.app.conventions;
+    let setupNexus = window.__laravext.app.setupNexus;
+    let setupStrand = window.__laravext.app.setupStrand;
 
     if (nexusResolver) {
         const nexusComponentPath = laravext?.page_data?.nexus?.page?.replaceAll('\\', '/');
@@ -116,10 +117,6 @@ export function clientRender() {
                     
                     laravext.app.vue?.unmount();
                     
-                    for (let use of uses) {
-                        app.use(use.plugin, use.options ?? {});
-                    }
-                    
                     app.mount(nexusElement);
 
                     window.__laravext.app.vue = app;
@@ -139,18 +136,20 @@ export function clientRender() {
 
             if (strandComponentPath) {
                 strandsResolver(strandComponentPath).then((StrandComponent) => {
-                    const app = createApp(StrandComponent.default, { laravext, ...strandData });
+                    let strand = StrandComponent.default;
 
-                    app.mixin({
+                    let  strandApp = createApp(StrandComponent.default, { laravext, ...strandData });
+                    
+                    if (setupStrand) {
+                        strandApp = setupStrand({ strand, laravext, strandData });
+                    }
+
+                    strandApp.mixin({
                         provide: mixins,
                         methods: mixins
                     })
 
-                    for (let use of uses) {
-                        app.use(use.plugin, use.options ?? {});
-                    }
-
-                    app.mount(strandElement);
+                    strandApp.mount(strandElement);
                 }).catch((error) => {
                     console.error(`Error loading component at ${strandComponentPath}:`, error);
                 });

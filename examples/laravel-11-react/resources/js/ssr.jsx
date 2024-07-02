@@ -1,13 +1,13 @@
 import express from 'express';
 import { JSDOM } from 'jsdom';
-import { createLaravextSsrApp, createLaravextApp } from '@laravext/react';
+import { createLaravextSsrApp } from '@laravext/react';
 import { resolveComponent } from "@laravext/react/tools"
 import { route } from '../../vendor/tightenco/ziggy/src/js';
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import pt from '../../lang/pt.json'
 import Cookies from 'js-cookie';
-import {sharedProps} from '@laravext/react';
+import { renderToString } from 'react-dom/server';
 
 const app = express();
 const port = 13714;
@@ -17,8 +17,8 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // Change this to what you see fit
 const errorMessageShouldBeLogged = (message) => {
-    if(message.includes('useLayoutEffect does nothing on the server')) return false;
-    if(message.includes("Could not find one or more icon(s)")) return false;
+    if (message.includes('useLayoutEffect does nothing on the server')) return false;
+    if (message.includes("Could not find one or more icon(s)")) return false;
 
     return true;
 }
@@ -32,12 +32,12 @@ console.error = (message, ...args) => {
 
 app.post('/render', async (req, res) => {
     try {
-        if(process.env.NODE_ENV !== 'production') {
+        if (process.env.NODE_ENV !== 'production') {
             console.time('Render Time');
         }
         const { html } = req.body;
         const dom = new JSDOM(html, { runScripts: "dangerously" });
-        
+
         global.navigator = dom.window.navigator;
 
         global.route = (name, params, absolute) =>
@@ -48,31 +48,38 @@ app.post('/render', async (req, res) => {
 
         global.Ziggy = dom.window.__laravext.page_data.shared_props.ziggy;
 
-        let user = dom.window.__laravext.page_data?.shared_props?.auth?.user;
 
-        i18n
-            .use(initReactI18next)
-            .init({
-                resources: {
-                    pt: {
-                        translation: pt
-                    }
-                },
-                fallbackLng: "en",
-                interpolation: {
-                    escapeValue: false
-                }
-            });
 
-        i18n.changeLanguage(user?.locale ?? Cookies.get('locale') ?? 'en')
-        
         await createLaravextSsrApp({
             nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
             strandsResolver: (name) => resolveComponent(`./strands/${name}.jsx`, import.meta.glob('./strands/**/*.jsx')),
+            render: renderToString,
+            setupNexus: ({ nexus, laravext }) => {
+
+                let user = laravext.page_data?.shared_props?.auth?.user;
+
+                i18n
+                    .use(initReactI18next)
+                    .init({
+                        resources: {
+                            pt: {
+                                translation: pt
+                            }
+                        },
+                        fallbackLng: "en",
+                        interpolation: {
+                            escapeValue: false
+                        }
+                    });
+
+                i18n.changeLanguage(user?.locale ?? Cookies.get('locale') ?? 'en')
+
+                return nexus;
+            },
             laravext: dom.window.__laravext,
             document: dom.window.document,
         })
-        
+
 
         // console.log("here2");
         // // Get the updated HTML string
@@ -80,7 +87,7 @@ app.post('/render', async (req, res) => {
 
         res.send(updatedHtmlString);
 
-        if(process.env.NODE_ENV !== 'production') {
+        if (process.env.NODE_ENV !== 'production') {
             console.timeEnd('Render Time');
         }
 

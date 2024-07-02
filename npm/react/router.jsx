@@ -1,5 +1,5 @@
 import { version, laravextPageData } from './index';
-import { clientRender } from './tools';
+import { clientRender, isEnvProduction } from './tools';
 import { endProgress, startProgress } from './progress';
 
 export function visit(url) {
@@ -59,4 +59,4 @@ export function visit(url) {
 
             endProgress();
         });
-}
+} 

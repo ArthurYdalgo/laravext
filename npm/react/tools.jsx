@@ -43,6 +43,9 @@ export function clientRender() {
     let nexusResolver = window.__laravext.app.nexusResolver;
     let strandsResolver = window.__laravext.app.strandsResolver;
     let conventions = window.__laravext.app.conventions;
+    let setupStrand = window.__laravext.app.setupStrand;
+    let setupNexus = window.__laravext.app.setupNexus;
+
 
     if (nexusResolver) {
         const nexusComponentPath = laravextPageData?.nexus?.page?.replaceAll('\\', '/');
@@ -80,6 +83,10 @@ export function clientRender() {
 
                     let root = window.__laravext.app?.react_root ?? createRoot(nexusElement);
 
+                    if (setupNexus) {
+                        nexus = setupNexus({ nexus, laravext: window.__laravext });
+                    }
+
                     nexus = <LaravextContext.Provider value={window.__laravext}>{nexus}</LaravextContext.Provider>;
 
                     root.render(nexus);
@@ -104,7 +111,13 @@ export function clientRender() {
             if (strandComponentPath) {
                 strandsResolver(strandComponentPath).then((StrandModule) => {
                     // pass strand data to component
-                    let strand = <LaravextContext.Provider value={window.__laravext}><StrandModule.default laravext={{ ...laravextPageData }} {...strandData} /></LaravextContext.Provider>
+                    let strand = <StrandModule.default laravext={{ ...laravextPageData }} {...strandData} />;
+
+                    if (setupStrand) {
+                        strand = setupStrand({ strand, laravext: laravextPageData });
+                    }
+
+                    strand = <LaravextContext.Provider value={laravextPageData}>{strand}</LaravextContext.Provider>;
 
                     createRoot(strandElement).render(strand);
                 })
