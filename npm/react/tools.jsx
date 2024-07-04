@@ -45,7 +45,11 @@ export function clientRender() {
     let conventions = window.__laravext.app.conventions;
     let setupStrand = window.__laravext.app.setupStrand;
     let setupNexus = window.__laravext.app.setupNexus;
+    let setup = window.__laravext.app.setup;
 
+    if (setup) {
+        setup({ laravext: window.__laravext });
+    }
 
     if (nexusResolver) {
         const nexusComponentPath = laravextPageData?.nexus?.page?.replaceAll('\\', '/');

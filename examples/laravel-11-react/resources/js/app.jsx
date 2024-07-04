@@ -16,8 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
         progress: {
             color: '#ff0000CC',
         },
-        setupNexus({ nexus, laravext }) {
-
+        setup: ({ laravext }) => {
             const user = laravext.page_data.shared_props?.auth?.user;
 
             i18n
@@ -42,13 +41,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     url: laravext.page_data.shared_props.ziggy.url
                 });
 
-            // In case you need to wrap your app with a provider or something similar
-            // return <AnyComponentOrProvider>{nexus}</AnyComponentOrProvider>;
-
-            return nexus;
-
         }
-        // setupStrand({strand, laravext}){
+        // The setupNexus function is applied only to the nexus component
+        // setupNexus: ({ nexus, laravext }) => {
+        // In case you need to wrap your app with a provider or something similar
+        // return <AnyComponentOrProvider>{nexus}</AnyComponentOrProvider>;
+        // },
+        // The setupStrand function is applied only to the strand components
+        // setupStrand: ({strand, laravext}) => {
         //     return <AnyComponentOrProvider>{strand}</AnyComponentOrProvider>
         // }
     })

@@ -20,7 +20,7 @@ export default () => {
                     <div className="relative w-full">
                         <input
                             type="text"
-                            placeholder="Search..."
+                            placeholder={`${t('Search')}...`}
                             className="w-full pr-36 pl-4 py-1.5 rounded-md border border-gray-300 transition duration-300 focus:outline-none"
                         />
                         <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none text-xs">

@@ -17,12 +17,6 @@ import { createLaravextSsrApp } from '@laravext/vue';
 import { route } from '../../vendor/tightenco/ziggy/src/js';
 import Cookies from 'js-cookie';
 
-const app = express();
-const port = 13714;
-
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ limit: '50mb', extended: true }));
-
 // Change these to what you see fit, if you want to ignore some logs
 const errorLogShouldBeLogged = (message) => {
     if(typeof message !== 'string') return true;
@@ -57,16 +51,6 @@ console.warn = (message, ...args) => {
     }
 }
 
-app.post('/render', async (req, res) => {
-    try {
-        if (process.env.NODE_ENV !== 'production') {
-            console.time('Render Time');
-        }
-        const { html } = req.body;
-        const dom = new JSDOM(html, { runScripts: "dangerously" });
-
-        global.navigator = dom.window.navigator;
-
         global.route = (name, params, absolute) =>
             route(name, params, absolute, {
                 ...(dom.window.__laravext.page_data.shared_props.ziggy),
@@ -80,6 +64,12 @@ app.post('/render', async (req, res) => {
         await createLaravextSsrApp({
             nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
             strandsResolver: (name) => resolveComponent(`./strands/${name}.vue`, import.meta.glob('./strands/**/*.vue')),
+
+            
+            setupNexus: ({ nexus, laravext }) => {
+            },
+            setupStrand: ({ strand, laravext }) => {
+            },
             uses: () => {
                 let locale = user?.locale ?? Cookies.get('locale') ?? 'en';
 

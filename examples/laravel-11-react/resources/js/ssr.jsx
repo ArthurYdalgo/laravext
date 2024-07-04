@@ -25,14 +25,15 @@ console.error = (message, ...args) => {
     }
 };
 
-serve(({ window }) => createLaravextSsrApp({
+serve(({ window, cookies }) => createLaravextSsrApp({
     // This is optional, the default is renderToString, but you can use renderToStaticMarkup if you want
     // render: renderToString,
 
     nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
     strandsResolver: (name) => resolveComponent(`./strands/${name}.jsx`, import.meta.glob('./strands/**/*.jsx')),
-    setupNexus: ({ nexus, laravext }) => {
-
+    // The setup function is executed once. You can use this to set up global variables or anything else, such as 
+    // localization, cookies, etc.
+    setup: ({ laravext }) => {
         global.route = (name, params, absolute) =>
             route(name, params, absolute, {
                 ...(laravext.page_data.shared_props.ziggy),
@@ -57,14 +58,16 @@ serve(({ window }) => createLaravextSsrApp({
                 }
             });
 
-        i18n.changeLanguage(user?.locale ?? Cookies.get('locale') ?? 'en')
-
-        // In case you need to wrap your app with a provider or something similar
-        // return <AnyComponentOrProvider>{nexus}</AnyComponentOrProvider>;
-
-        return nexus;
+        i18n.changeLanguage(user?.locale ?? cookies['locale'] ?? 'en');
     },
-    // setupStrand({strand, laravext}){
+
+    // The setupNexus function is applied only to the nexus component
+    // setupNexus: ({ nexus, laravext }) => {
+    // In case you need to wrap your app with a provider or something similar
+    // return <AnyComponentOrProvider>{nexus}</AnyComponentOrProvider>;
+    // },
+    // The setupStrand function is applied only to the strand components
+    // setupStrand: ({strand, laravext}) => {
     //     return <AnyComponentOrProvider>{strand}</AnyComponentOrProvider>
     // }
     laravext: window.__laravext,

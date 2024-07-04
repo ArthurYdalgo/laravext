@@ -61,7 +61,7 @@ export function createLaravextApp({ nexusResolver, strandsResolver, conventions 
     'error',
     'layout',
     'middleware',
-], progress = {}, setupStrand = null, setupNexus = null}) {
+], progress = {}, setup = null, setupNexus = null, setupStrand = null}) {
 
     window.__laravext.app = {
         nexusResolver,
@@ -69,6 +69,7 @@ export function createLaravextApp({ nexusResolver, strandsResolver, conventions 
         conventions,
         setupStrand,
         setupNexus,
+        setup,
     }
 
     if (progress) {
@@ -80,13 +81,15 @@ export function createLaravextApp({ nexusResolver, strandsResolver, conventions 
     clientRender();
 }
 
-
-
 export async function createLaravextSsrApp({ nexusResolver, strandsResolver, conventions = [
     'error',
     'layout',
     'middleware',
-], laravext, document, render, setupNexus = null, setupStrand = null }) {
+], laravext, document, render, setup = null, setupNexus = null, setupStrand = null }) {
+
+    if(setup){
+        setup({laravext});
+    }
 
     if (nexusResolver) {
         const nexusComponentPath = laravext?.page_data?.nexus?.page?.replaceAll('\\', '/');
@@ -126,7 +129,7 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, con
                     }
                 }
 
-                if (setupNexus) {
+                if(setupNexus){
                     nexus = setupNexus({nexus, laravext});
                 }
 
