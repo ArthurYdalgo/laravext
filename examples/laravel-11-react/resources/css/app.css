@@ -33,7 +33,7 @@
 }
 
 .article > div > p > code {
-    @apply bg-gray-300;
+    @apply bg-gray-200;
     @apply p-0.5;
     @apply rounded-md;
 }

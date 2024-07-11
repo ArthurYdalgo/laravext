@@ -15,7 +15,7 @@
     @vite(['resources/css/app.css'])
 </head>
 
-<body class="font-sans antialiased">
+<body class="font-sans antialiased" style="margin-right: 0px !important">
     @yield('content')
     <footer class="py-6 text-center text-sm text-black dark:text-white/70">
         <span>Powered by <a href="https://laravel.com" class="text-blue-500" target="_blank">Laravel
