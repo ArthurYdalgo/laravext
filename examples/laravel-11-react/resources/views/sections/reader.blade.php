@@ -14,23 +14,21 @@
                         </a>
 
                         <div class="relative w-full">
-                            <input type="text" placeholder="{{ __('Search') }}..."
-                                class="w-full pr-36 pl-4 py-1.5 rounded-md border border-gray-300 transition duration-300 focus:outline-none" />
-                            <span
-                                class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none text-xs">
-                                Powered by Meilisearch
-                            </span>
+                            <a href="https://laravel-11-react.test/search?q="
+                                class="absolute p-0.5 top-1/2 transform -translate-y-1/2 text-gray-500 text-xs"></a>
+                                <input type="text" placeholder="Buscar..." class="w-full md:pr-36 pl-10 py-1.5 rounded-md border border-gray-300 transition duration-300 focus:outline-none" value="">
+                                <span class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none text-xs md:block hidden">Powered by Meilisearch</span>
                         </div>
 
                         <div class="flex items-center space-x-4">
 
                             <a href="{{ route('login') }}"
                                 class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
-                                {{__('Login')}}
+                                {{ __('Login') }}
                             </a>
                             <a href="{{ route('register') }}"
                                 class="rounded-md whitespace-nowrap font-bold w-auto text-blue-600 px-3 py-2 border border-blue-600 ring-1 ring-transparent transition hover:text-white hover:bg-blue-600 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
-                                {{__('Register')}}
+                                {{ __('Register') }}
                             </a>
                         </div>
                     </div>
