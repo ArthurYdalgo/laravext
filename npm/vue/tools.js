@@ -54,8 +54,15 @@ export function clientRender() {
     let nexusResolver = window.__laravext.app.nexusResolver;
     let strandsResolver = window.__laravext.app.strandsResolver;
     let conventions = window.__laravext.app.conventions;
+    let beforeSetup = window.__laravext.app.beforeSetup;
+    let setup = window.__laravext.app.setup;
     let setupNexus = window.__laravext.app.setupNexus;
     let setupStrand = window.__laravext.app.setupStrand;
+    let reverseSetupOrder = window.__laravext.app.reverseSetupOrder;
+
+    if (beforeSetup) {
+        beforeSetup({ laravext: window.__laravext });
+    }
 
     if (nexusResolver) {
         const nexusComponentPath = laravext?.page_data?.nexus?.page?.replaceAll('\\', '/');

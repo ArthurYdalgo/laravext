@@ -6,9 +6,14 @@ import LaravextContext from './LaravextContext';
 
 if (typeof window !== 'undefined') {
     window.addEventListener("popstate", function (event) {
+        if(window.__laravext.app.disablePushState()){
+            window.location.href = window.location.href;
+            return;
+        }
+
         try {
             window.__laravext.page_data = event.state.laravext_page_data;
-    
+
             clientRender();
         } catch (error) {
             console.error('Error updating page data:', error);
@@ -61,22 +66,27 @@ export function createLaravextApp({ nexusResolver, strandsResolver, conventions 
     'error',
     'layout',
     'middleware',
-], progress = {}, setup = null, setupNexus = null, setupStrand = null}) {
+], progress = {}, beforeSetup = null, setup = null, setupNexus = null, setupStrand = null, reverseSetupOrder = false, disablePushState = () => false}) {
 
     window.__laravext.app = {
         nexusResolver,
         strandsResolver,
         conventions,
-        setupStrand,
-        setupNexus,
+        beforeSetup,
         setup,
+        setupNexus,
+        setupStrand,
+        reverseSetupOrder,
+        disablePushState
     }
 
     if (progress) {
         setupProgress(progress);
     }
 
-    history.pushState({laravext_page_data: window.__laravext.page_data}, '', window.location.href);
+    if(!disablePushState()){
+        history.pushState({ laravext_page_data: window.__laravext.page_data }, '', window.location.href);
+    }
 
     clientRender();
 }
@@ -85,10 +95,11 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, con
     'error',
     'layout',
     'middleware',
-], laravext, document, render, setup = null, setupNexus = null, setupStrand = null }) {
+], laravext, document, render, beforeSetup = null, setup = null, setupNexus = null, setupStrand = null, reverseSetupOrder = false }) {
+    laravext.app = {}
 
-    if(setup){
-        setup({laravext});
+    if (beforeSetup) {
+        beforeSetup({ laravext });
     }
 
     if (nexusResolver) {
@@ -129,8 +140,16 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, con
                     }
                 }
 
-                if(setupNexus){
-                    nexus = setupNexus({nexus, laravext});
+                if(reverseSetupOrder && setupNexus){
+                    nexus = setupNexus({ nexus, laravext });
+                }
+
+                if (setup) {
+                    nexus = setup({ component: nexus, laravext });
+                }
+
+                if(!reverseSetupOrder && setupNexus){
+                    nexus = setupNexus({ nexus, laravext });
                 }
 
                 nexus = <LaravextContext.Provider value={laravext}>{nexus}</LaravextContext.Provider>;
@@ -145,15 +164,23 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, con
         for (let i = 0; i < strands.length; i++) {
             let strandElement = strands[i];
             const strandComponentPath = strandElement.getAttribute('strand-component');
-            const strandData = JSON.parse(strandElement.getAttribute('strand-data'));
+            const strandData = JSON.parse(strandElement.getAttribute('strand-data').replace(/'/g, '"'));
 
             if (strandComponentPath) {
                 let StrandModule = await strandsResolver(strandComponentPath)
 
                 let strand = <StrandModule.default laravext={{ ...laravext }} {...strandData} />
 
-                if(setupStrand){
-                    strand = setupStrand({strand, laravext});
+                if(reverseSetupOrder && setupStrand){
+                    strand = setupStrand({ strand, laravext, strandData });
+                }
+
+                if (setup) {
+                    strand = setup({ component: strand, laravext });
+                }
+
+                if(!reverseSetupOrder && setupStrand){
+                    strand = setupStrand({ strand, laravext, strandData });
                 }
 
                 strand = <LaravextContext.Provider value={laravext}>{strand}</LaravextContext.Provider>

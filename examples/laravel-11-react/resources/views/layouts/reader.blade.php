@@ -12,20 +12,20 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-    <!-- Scripts -->
     @vite(['resources/css/app.css'])
 </head>
 
 <body class="font-sans antialiased">
     @yield('content')
     <footer class="py-6 text-center text-sm text-black dark:text-white/70">
-        <span>Powered by <a href="https://laravel.com" class="text-blue-500" target="_blank">Laravel {{ Illuminate\Foundation\Application::VERSION}} </a> and <a
-                href="https://laravext.dev" class="text-blue-500" target="_blank">Laravext</a></span>
+        <span>Powered by <a href="https://laravel.com" class="text-blue-500" target="_blank">Laravel
+                {{ Illuminate\Foundation\Application::VERSION }} </a> and <a href="https://laravext.dev"
+                class="text-blue-500" target="_blank">Laravext</a></span>
         <br>
         <span>Made with <span class="text-red-600 text-xs">❤</span> and <span class="text-blue-600">🥤</span></span>
         <br>
-        <span><a href="{{route('about-this-project')}}" class="text-blue-500" target="_blank">{{__('About this project')}}</a></span>
+        <span><a href="{{ route('about-this-project') }}" class="text-blue-500"
+                target="_blank">{{ __('About this project') }}</a></span>
     </footer>
     @routes
     @laravextScripts

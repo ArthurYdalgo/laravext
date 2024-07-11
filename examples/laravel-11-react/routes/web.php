@@ -5,6 +5,7 @@ use App\Models\Article;
 use App\Models\Developer;
 use App\Models\Team;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -13,6 +14,11 @@ use Illuminate\Support\Facades\Route;
  * @see https://laravel.com/docs/11.x/routing#view-routes for more details
  */
 Route::view('about-this-project', 'sections.about-this-project')->name('about-this-project');
+
+Route::get('articles/{article}', function (Article $article) {
+    // return view("sections.article", ['article' => $article])->render();
+    return Http::withOptions(['http_errors' => true,])->post("http://localhost:13714/render", ['html' => view("sections.article", ['article' => $article])->render()])->body();
+})->name('articles.show');
 
 /**
  * This will automagically generate all the file based routes of your application.
@@ -54,7 +60,7 @@ Route::get('{article:slug}', function (Article $article) {
     $article->append(['user_has_bookmarked', 'user_reactions']);
 
     return nexus(props: compact('article'))
-        ->withViewSkeleton('partials.article')
+        // ->withViewSkeleton('partials.article')
         ->withHeadTitle($article->title)
         ->render();
 

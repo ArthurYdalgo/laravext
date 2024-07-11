@@ -1,5 +1,4 @@
-import React from 'react';
-const LoaderComponent = ({ condition = true }) => {
+export default ({ condition = true }) => {
   return (
     <>
       {condition && (
@@ -10,4 +9,3 @@ const LoaderComponent = ({ condition = true }) => {
     </>
   );
 };
-export default LoaderComponent;

@@ -65,19 +65,19 @@ return [
         /**
          * If set to true, the server will attempt to server side render your javascript, and if set to false, it won't.
          */
-        'enabled' => env('LARAVEXT_JAVASCRIPT_SERVER_SIDE_RENDERING_ENABLED', true),
+        // 'enabled' => env('LARAVEXT_JAVASCRIPT_SERVER_SIDE_RENDERING_ENABLED', true),
 
         /**
          * You can also set as 'only' or 'except' to specify the URIs that should(n't) be SSR'd, if for some reason you need this
          * kind of control.
          */
         // 'enabled' => 'only',
-        // 'enabled' => 'except',
+        'enabled' => 'except',
 
         /**
          * The URIs that should not be SSR'd.
          */
-        'except' => [
+        'uris' => [
             'example/{uri}/*',
             'another-example/{uri}'
         ],
@@ -85,7 +85,7 @@ return [
         /**
          * The URIs that should be SSR'd. This is only used if the enabled config is set to 'only'.
          */
-        'only' => [
+        'route_names' => [
             'example/{uri}/*',
             'another-example/{uri}'
         ],

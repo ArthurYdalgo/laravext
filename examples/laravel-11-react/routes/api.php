@@ -4,6 +4,7 @@ use App\Http\Controllers\ArticleCommentController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CurrentUserController;
+use App\Http\Controllers\Tools\MarkdownPreviewController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
@@ -35,6 +36,8 @@ Route::group([
         Route::delete('reactions', [ArticleController::class, 'unreact']);
         Route::delete('bookmark', [ArticleController::class, 'unbookmark']);
     });
+
+    Route::post("tools/markdown-preview", MarkdownPreviewController::class);
 
     Route::prefix('comments/{comment}')->group(function () {
         Route::get('reactions', [CommentController::class, 'userReactions']);

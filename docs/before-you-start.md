@@ -73,7 +73,7 @@ Some code or file structures in this documentation might (or not) be derived fro
 
 The example projects use the "old" directory structure from Laravel 10, not the new one. 
 
-The Vue.js examples use the [FormKit](https://formkit.com/) package, and one of the components is an autocomplete which requires a key to work. You can get a free development-environment-only key at their website. Just put it in the `.env` file, at the `VITE_FORMKIT_KEY`.
+The Vue.js example uses the [FormKit](https://formkit.com/) package, and one of the components is an autocomplete which requires a key to work. You can get a free development-environment-only key at their website. Just put it in the `.env` file, at the `VITE_FORMKIT_KEY`.
 
 In order for you to have some basic comprehension of the project itself, here are the database structures:
 

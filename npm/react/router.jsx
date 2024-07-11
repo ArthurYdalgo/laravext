@@ -51,7 +51,7 @@ export function visit(url) {
             try {
                 clientRender();
 
-                history.pushState({laravext_page_data: laravext.page_data}, '', url);
+                history.pushState(( laravext.disablePushState ? {} : {laravext_page_data: laravext.page_data}), '', url);
             } catch (error) {
                 console.error('Error updating page data:', error);
                 window.location.href = url;

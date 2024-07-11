@@ -35,8 +35,18 @@ export default function ({ mode }) {
                                 'nprogress',
                                 'react-i18next',
                                 'zustand',
-                                '@fortawesome/free-solid-svg-icons'
+                                '@fortawesome/free-solid-svg-icons',
+                                'react-markdown',
+                                'remark-gfm',
+                                '@mdxeditor/editor',
+                                '@mdx-js/mdx',
+                                'react-syntax-highlighter',
+                                'hast-util',
+                                'mdast-util',
+                                // '@lezer',
+                                // '@codemirror'
                             ];
+                            // return `vendor-${id}`;
                             const chunk = modules.find(module => id.includes(module));
                             return chunk ? `vendor-${chunk}` : 'vendor-others';
                         }

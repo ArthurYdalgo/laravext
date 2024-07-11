@@ -3,7 +3,7 @@ import { resolveComponent } from "@laravext/react/tools"
 import { serve } from "@laravext/react/server"
 import { route } from '../../vendor/tightenco/ziggy/src/js';
 import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
+import { initReactI18next, I18nextProvider  } from "react-i18next";
 import pt from '../../lang/pt.json'
 import { renderToString } from 'react-dom/server';
 import Cookies from 'js-cookie';
@@ -14,6 +14,7 @@ const errorMessageShouldBeLogged = (message) => {
 
     if (message.includes('useLayoutEffect does nothing on the server')) return false;
     if (message.includes("Could not find one or more icon(s)")) return false;
+    if (message.includes("Could not find icon")) return false;
 
     return true;
 }
@@ -31,20 +32,23 @@ serve(({ window, cookies }) => createLaravextSsrApp({
 
     nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
     strandsResolver: (name) => resolveComponent(`./strands/${name}.jsx`, import.meta.glob('./strands/**/*.jsx')),
-    // The setup function is executed once. You can use this to set up global variables or anything else, such as 
-    // localization, cookies, etc.
-    setup: ({ laravext }) => {
-        global.route = (name, params, absolute) =>
-            route(name, params, absolute, {
-                ...(laravext.page_data.shared_props.ziggy),
-                url: laravext.page_data.shared_props.ziggy.url,
-            });
-
-        global.Ziggy = laravext.page_data.shared_props.ziggy;
+    // The beforeSetup function is executed once, before any of the setups. 
+    // You can use this to set up global variables or anything else, such as localization, cookies, etc.
+    beforeSetup: ({ laravext }) => {
+        if(laravext?.page_data?.shared_props?.ziggy){
+            global.route = (name, params, absolute) =>
+                route(name, params, absolute, {
+                    ...(laravext.page_data.shared_props.ziggy),
+                    url: laravext.page_data.shared_props.ziggy.url,
+                });
+    
+            global.Ziggy = laravext.page_data.shared_props.ziggy;
+        }
 
         let user = laravext.page_data?.shared_props?.auth?.user;
 
-        i18n
+        const i18nInstance = i18n.createInstance();
+        i18nInstance
             .use(initReactI18next)
             .init({
                 resources: {
@@ -58,18 +62,32 @@ serve(({ window, cookies }) => createLaravextSsrApp({
                 }
             });
 
-        i18n.changeLanguage(user?.locale ?? cookies['locale'] ?? 'en');
+        i18nInstance.changeLanguage(user?.locale ?? cookies['locale'] ?? 'en');
+
+        laravext.app.i18n = i18nInstance;
     },
 
-    // The setupNexus function is applied only to the nexus component
+    // This setup is applied to all components, including nexus and strands
+    setup: ({ component, laravext }) => {
+        return <I18nextProvider i18n={laravext.app.i18n}>
+            {component}
+        </I18nextProvider>
+    },
+
+    // The setupNexus function is applied only to the nexus component, after the 'setup' function, unless reverseSetupOrder is true
     // setupNexus: ({ nexus, laravext }) => {
-    // In case you need to wrap your app with a provider or something similar
     // return <AnyComponentOrProvider>{nexus}</AnyComponentOrProvider>;
     // },
-    // The setupStrand function is applied only to the strand components
-    // setupStrand: ({strand, laravext}) => {
+    // The setupStrand function is applied only to the strand components, after the 'setup' function, unless reverseSetupOrder is true
+    // The 'strandData' parameter is the data passed to the strand component from the blade where it was located, if applicable
+    // setupStrand: ({strand, laravext, strandData}) => {
     //     return <AnyComponentOrProvider>{strand}</AnyComponentOrProvider>
-    // }
+    // },
+
+    // If you want to reverse the order of the setup functions, set this to true
+    // reverseSetupOrder: true,
+
+    // Don't forget to pass the window object to the laravext object
     laravext: window.__laravext,
     document: window.document,
 }))

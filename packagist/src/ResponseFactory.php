@@ -200,7 +200,20 @@ class ResponseFactory
 
             $view = view($root_view);
 
-            // return $view;
+            // If SSR is disabled, return the view
+            if(!config('laravext.ssr.enabled')){
+                return $view;
+            }
+            
+            // If SSR is enabled only for specific URIs, check if the current URI is in the list
+            if(config('laravext.ssr.enabled') === 'only' && (!$request->is(config('laravext.ssr.uris', [])) && !$request->routeIs(config('laravext.ssr.route_names', [])))) {
+                return $view;
+            }
+
+            // If SSR is enabled except for specific URIs, check if the current URI is in the list
+            if(config('laravext.ssr.enabled') === 'except' && ($request->is(config('laravext.ssr.uris', [])) || $request->routeIs(config('laravext.ssr.route_names', [])))) {
+                return $view;
+            }
             
             $rendered_view = $view->render();
 

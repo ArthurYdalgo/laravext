@@ -53,7 +53,7 @@ class ArticlesSeeder extends Seeder
             for ($articles_count = 0; $articles_count < random_int(3, 5); $articles_count++) {
                 $title = fake()->sentence();
 
-                $banner = $writer->addMediaFromContent(generateTextedImage($title, 1000, 480, fake()->randomElement($light_colors), font_size: 45), 'media/articles');
+                $banner = $writer->addMediaFromContent(generateTextedImage($title, 1000, 480, fake()->randomElement($light_colors), font_size: 45), path_suffix: 'articles');
 
                 $content = "";
 
@@ -62,17 +62,15 @@ class ArticlesSeeder extends Seeder
                 for ($paragraphs_count = 0; $paragraphs_count < random_int(3, 5); $paragraphs_count++) {
                     $sentence = fake()->sentence(4);
 
-                    $media = $writer->addMediaFromContent(generateTextedImage($sentence, 1080, 720, fake()->randomElement($light_colors), font_size: 35), 'media/articles');
+                    $media = $writer->addMediaFromContent(generateTextedImage($sentence, 1080, 720, fake()->randomElement($light_colors), font_size: 35), path_suffix: 'articles');
 
                     $media_to_attach[] = $media->id;
 
                     $code = fake()->randomElement([
                         "```php\n<?php\n\n echo \"Hello, World!\";\n```",
-                        "```javascript\nconsole.log('Hello, World!');\n```",
-                        "```python\nprint('Hello, World!')\n```",
                     ]);
                     
-                    $paragraph = fake()->sentence(250) . "\n\n<br />Example Code:<br />\n{$code}\n<br />\n\n<br /><p align='center'><img width='500' src='$media->url'/></p><br /><br />\n\n";
+                    $paragraph = fake()->sentence(250) . "\n\nExample Code:\n{$code}\n\n\n![image]($media->url)\n\n";
                     
                     $header = fake()->sentence(5);
 

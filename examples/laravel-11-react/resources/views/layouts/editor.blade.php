@@ -18,6 +18,7 @@
 
 <body class="font-sans antialiased">
     @yield('content')
+    @routes
     @laravextScripts
     @viteReactRefresh
     @vite(['resources/js/app.jsx'])

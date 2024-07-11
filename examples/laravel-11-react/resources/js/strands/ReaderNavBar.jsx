@@ -5,7 +5,6 @@ export default () => {
 
     const { t } = useTranslation();
     
-
     return (
         <header className="bg-white dark:bg-gray-800 shadow">
             <div className="mx-auto py-[7px] px-6 sm:px-6 lg:px-[15%]">

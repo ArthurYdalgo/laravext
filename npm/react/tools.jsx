@@ -43,12 +43,14 @@ export function clientRender() {
     let nexusResolver = window.__laravext.app.nexusResolver;
     let strandsResolver = window.__laravext.app.strandsResolver;
     let conventions = window.__laravext.app.conventions;
-    let setupStrand = window.__laravext.app.setupStrand;
-    let setupNexus = window.__laravext.app.setupNexus;
+    let beforeSetup = window.__laravext.app.beforeSetup;
     let setup = window.__laravext.app.setup;
+    let setupNexus = window.__laravext.app.setupNexus;
+    let setupStrand = window.__laravext.app.setupStrand;
+    let reverseSetupOrder = window.__laravext.app.reverseSetupOrder;
 
-    if (setup) {
-        setup({ laravext: window.__laravext });
+    if (beforeSetup) {
+        beforeSetup({ laravext: window.__laravext });
     }
 
     if (nexusResolver) {
@@ -87,8 +89,22 @@ export function clientRender() {
 
                     let root = window.__laravext.app?.react_root ?? createRoot(nexusElement);
 
-                    if (setupNexus) {
-                        nexus = setupNexus({ nexus, laravext: window.__laravext });
+                    if(reverseSetupOrder) {
+                        if (setupNexus) {
+                            nexus = setupNexus({ nexus, laravext: window.__laravext });
+                        }
+
+                        if (setup) {
+                            nexus = setup({ component: nexus, laravext: window.__laravext });
+                        }
+                    }else{
+                        if (setup) {
+                            nexus = setup({ component: nexus, laravext: window.__laravext });
+                        }
+
+                        if (setupNexus) {
+                            nexus = setupNexus({ nexus, laravext: window.__laravext });
+                        }
                     }
 
                     nexus = <LaravextContext.Provider value={window.__laravext}>{nexus}</LaravextContext.Provider>;
@@ -117,8 +133,22 @@ export function clientRender() {
                     // pass strand data to component
                     let strand = <StrandModule.default laravext={{ ...laravextPageData }} {...strandData} />;
 
-                    if (setupStrand) {
-                        strand = setupStrand({ strand, laravext: laravextPageData });
+                    if (reverseSetupOrder) {
+                        if (setupStrand) {
+                            strand = setupStrand({ strand, laravext: laravextPageData, strandData });
+                        }
+
+                        if (setup) {
+                            strand = setup({ component: strand, laravext: laravextPageData });
+                        }
+                    }else{
+                        if (setup) {
+                            strand = setup({ component: strand, laravext: laravextPageData });
+                        }
+
+                        if (setupStrand) {
+                            strand = setupStrand({ strand, laravext: laravextPageData, strandData });
+                        }
                     }
 
                     strand = <LaravextContext.Provider value={laravextPageData}>{strand}</LaravextContext.Provider>;

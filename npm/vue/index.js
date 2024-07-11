@@ -20,6 +20,11 @@ export const Head = defineComponent({
 
 if (typeof window !== 'undefined') {
     window.addEventListener("popstate", function (event) {
+        if(window.__laravext.app.disablePushState()){
+            window.location.href = window.location.href;
+            return;
+        }
+        
         try {
             window.__laravext.page_data = event.state.laravext_page_data;
     

@@ -21,6 +21,9 @@ return new class extends Migration
             $table->boolean('privacy')->default(0);
             $table->string('locale')->default('en');
             $table->text('biography')->nullable();
+            $table->string('education')->nullable();
+            $table->string('work')->nullable();
+            $table->string("location")->nullable();
             $table->text('links')->nullable();
             $table->string('password');
             $table->rememberToken();

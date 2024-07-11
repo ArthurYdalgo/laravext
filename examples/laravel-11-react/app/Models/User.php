@@ -26,6 +26,9 @@ class User extends Authenticatable
         'privacy',
         'locale',
         'biography',
+        'education',
+        'work',
+        'location',
         'links',
     ];
 
@@ -111,7 +114,7 @@ class User extends Authenticatable
         return $this->addMediaFromContent($content);
     }
 
-    public function addMediaFromContent($content, $path_prefix = 'media')
+    public function addMediaFromContent($content, $path_prefix = 'media', $path_suffix = null)
     {
         $hash = hash('sha256', $content);
 
@@ -123,9 +126,14 @@ class User extends Authenticatable
 
         $extension = getMimeFromBinary($content, true);
 
-        $date = date("Y/m/d");
+        $path = "{$path_prefix}/{$this->id}";
 
-        $path = "{$path_prefix}/{$this->id}/{$date}/{$uuid}.{$extension}";
+        if($path_suffix){
+            $path .= "/{$path_suffix}";
+        }
+
+        $path .= "/{$uuid}.{$extension}";
+
         $disk = env('MEDIA_DISK', 'public');
 
         Storage::disk($disk)->put($path, $content);
