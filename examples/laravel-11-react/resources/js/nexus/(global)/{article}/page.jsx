@@ -21,7 +21,6 @@ export default () => {
             axios.put(`/api/articles/${article.id}/bookmark`).then(({ data }) => {
                 setBookmarked(data.bookmarked);
             }).catch(() => {
-                console.log("fuck");
                 setBookmarked(currentStatus);
             });
 
