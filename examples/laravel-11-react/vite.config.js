@@ -9,7 +9,9 @@ export default function ({ mode }) {
     const host = env.VITE_APP_ENV == "local" ? env.VITE_APP_DOMAIN : undefined;
 
     return defineConfig({
-        server: { host },
+        server: {
+            host: host
+        },
         plugins: [
             laravel({
                 input: [

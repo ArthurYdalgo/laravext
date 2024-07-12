@@ -20,7 +20,22 @@ class ArticleController extends Controller
      */
     public function index(IndexRequest $request)
     {
-        //
+        $scout_is_available = scoutIsAvailable();
+        
+        $search = $request->query('q');
+
+        $articles_query = $scout_is_available ? Article::search($search) : Article::when($search, function($query) use($search) {
+            $query->where(function($subquery) use($search) {
+                $subquery->where('articles.title', 'like', "%{$search}%")->orWhere('articles.subtitle', 'like', "%{$search}%")
+                ->orWhereHas("author", function($subsubquery) use($search) {
+                    $subsubquery->where('authors.name', 'like', "{$search}%");
+                })->orWhereHas("tags", function($subsubquery) use($search) {
+                    $subsubquery->where('tags.slug', 'like', "$search");
+                })->orWhereJsonContains('articles.keywords', $search);
+            });
+        });
+            
+        $articles = $articles_query->latest()->paginate(10);
     }
 
     /**

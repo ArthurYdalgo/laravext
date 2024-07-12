@@ -1,5 +1,6 @@
 import Fa from '@/components/Fa';
 import Link from '@/components/Link';
+import SVGLogo from '@/components/SVGLogo';
 import { useTranslation } from 'react-i18next';
 import useStateRef from 'react-usestateref';
 
@@ -8,7 +9,7 @@ export default () => {
 
     const { t } = useTranslation();
     const [search, setSearch, searchRef] = useStateRef('');
-    
+
     return (
         <header className="bg-white dark:bg-gray-800 shadow">
             <div className="mx-auto py-[7px] px-6 sm:px-6 lg:px-[15%]">
@@ -21,7 +22,7 @@ export default () => {
                     </a>
 
                     <div className="relative w-full">
-                        <Link href={route('search', {q: searchRef.current})} className="absolute p-0.5 top-1/2 transform -translate-y-1/2 text-gray-500 text-xs">
+                        <Link href={route('search', { q: searchRef.current })} className="absolute p-0.5 top-1/2 transform -translate-y-1/2 text-gray-500 text-xs">
                             <Fa icon="search" className='m-2 ml-3 w-[15px] -translate-y-[0.5px]' size='lg' />
                         </Link>
                         <input
@@ -31,9 +32,11 @@ export default () => {
                             onChange={(e) => setSearch(e.target.value)}
                             className="w-full md:pr-36 pl-10 py-1.5 rounded-md border border-gray-300 transition duration-300 focus:outline-none"
                         />
-                        <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none text-xs md:block hidden">
-                            Powered by Meilisearch
-                        </span>
+                        <div className='md:block hidden'>
+                            <span className="flex absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none text-xs ">
+                                Powered by Meilisearch <SVGLogo icon='/images/logos/meilisearch.svg' className='w-6 ml-1' />
+                            </span>
+                        </div>
                     </div>
 
                     <div className="flex items-center space-x-4">

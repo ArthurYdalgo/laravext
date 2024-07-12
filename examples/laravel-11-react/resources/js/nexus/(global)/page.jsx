@@ -1,5 +1,5 @@
 export default () => {
     return (<div>
-        Main page eeeeeeeerfefe
+        Main page eeeefess
     </div>)
 }

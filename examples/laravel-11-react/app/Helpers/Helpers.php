@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Http;
 use Laravel\Prompts\Output\ConsoleOutput;
 
 if (!function_exists('generateTextedImage')) {
@@ -57,6 +58,19 @@ if (!function_exists('getMimeFromBinary')) {
         }
 
         return $extension;
+    }
+}
+
+if (!function_exists('scoutIsAvailable')){
+    function scoutIsAvailable(){
+        try {
+            $status = Http::get(config('scout.url'))->json()['status'] ?? null;
+
+            return $status === 'available';
+        } catch (\Throwable $th) {
+            report("Scout is not available.");
+            return null;
+        }
     }
 }
 
