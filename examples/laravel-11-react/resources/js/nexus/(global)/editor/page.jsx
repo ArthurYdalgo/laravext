@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import PrimaryButton from '@/components/PrimaryButton';
 import axios from 'axios';
 import Loading from '@/components/Loading';
+import Article from '@/components/Article';
 export default () => {
 
     const { t } = useTranslation();
@@ -85,8 +86,9 @@ And insert images (they'll be centered in the final output) like this:
                 {mode == 'preview' && loadingPreview && <Loading />}
                 {mode == 'preview' && !loadingPreview &&
                     <div className="article pre-wrap break-words">
-                        <div dangerouslySetInnerHTML={{ __html: htmlPreview }}></div>
-                    </div>
+                    {typeof window == 'undefined' && <div className="server-side-rendered-article" dangerouslySetInnerHTML={{ __html: htmlPreview }}></div>}
+                    {typeof window != 'undefined' && <Article html={htmlPreview} />}
+                </div>
                 }
                 {mode == 'edit' && <MDXEditor
 

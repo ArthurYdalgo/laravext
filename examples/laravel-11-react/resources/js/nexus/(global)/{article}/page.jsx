@@ -21,6 +21,7 @@ export default () => {
             axios.put(`/api/articles/${article.id}/bookmark`).then(({ data }) => {
                 setBookmarked(data.bookmarked);
             }).catch(() => {
+                console.log("fuck");
                 setBookmarked(currentStatus);
             });
 
@@ -42,20 +43,26 @@ export default () => {
 
     return (<div>
         <p align='center'>
-            <img src={article.banner_url} width={'600px'} alt={article.title} />
+            <img src={article.banner_url} className='shadow-md max-w-[800px]' alt={article.title} />
         </p>
-        <span className='flex justify-between'><h1>{article.title}</h1>
-            <Tooltip text={bookmarked ? t('Click to unbookmark this article') : t('Click to bookmark this article')}>
-                <Bookmark bookmarked={bookmarked} onClick={toggleBookmark} className={'transition-all  rounded-md ' + (bookmarked ? ' bg-slate-200 text-red-600' : 'text-black hover:text-red-300')} />
-            </Tooltip>
-        </span>
+
+        <h1>{article.title}</h1>
+
 
         <div className="article pre-wrap break-words">
-            {typeof window == 'undefined' && <div className="server-side-rendered-article" dangerouslySetInnerHTML={{ __html: article.html }}></div>}
-            {typeof window != 'undefined' && <Article html={article.html} />}
             {/* <Article html={article.html} /> */}
         </div>
+        <hr className='my-4' />
+        <span className='flex mt-2 justify-between'>
+            <div>
 
+            </div>
+            <div>
+                <Tooltip text={bookmarked ? t('Click to unbookmark this article') : t('Click to bookmark this article')}>
+                    <Bookmark bookmarked={bookmarked} onClick={toggleBookmark} className={'transition-all  rounded-md ' + (bookmarked ? ' bg-slate-200 text-red-600' : 'text-black hover:text-red-300')} />
+                </Tooltip>
+            </div>
+        </span>
     </div>
     );
 }

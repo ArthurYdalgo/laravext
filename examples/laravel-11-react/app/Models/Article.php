@@ -5,6 +5,7 @@ namespace App\Models;
 use FastVolt\Helper\Markdown;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 use Laravel\Scout\Searchable;
 use Parsedown;
 
@@ -45,12 +46,28 @@ class Article extends Model
 
     public function getUserHasBookmarkedAttribute()
     {
-        return user() ? user()->hasBookmarked($this) : null;
+        $user = user();
+
+        if (!$user) {
+            return null;
+        }
+
+        return Cache::store("array")->remember("article:{$this->id}|user_{$user->id}_has_bookmarked", now()->addMinutes(5), function () use ($user) {
+            return $user->hasBookmarked($this);
+        });
     }
 
     public function getUserReactionsAttribute()
     {
-        return user() ? user()->reactionsTo($this) : null;
+        $user = user();
+
+        if (!$user) {
+            return null;
+        }
+
+        return Cache::store("array")->remember("article:{$this->id}|user_{$user->id}_reactions", now()->addMinutes(5), function () use ($user) {
+            return $user->reactionsTo($this);
+        });
     }
 
     // Relationships

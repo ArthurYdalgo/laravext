@@ -1,10 +1,10 @@
 <p align='center'>
-    <img src="{{ $article->banner_url }}" width="600px" alt="{{ $article->title }}" />
+    <img src="{{ $article->banner_url }}" class="shadow-md max-w-[800px]" alt="{{ $article->title }}" />
 </p>
 
 <h1>{{ $article->title }}</h1>
 <div class="article pre-wrap break-words">
-    <div>
+    <div class="server-side-rendered-article">
         {!! $article->html !!}
     </div>
 
