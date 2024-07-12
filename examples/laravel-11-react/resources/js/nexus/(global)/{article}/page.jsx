@@ -5,42 +5,7 @@ import { visit } from '@laravext/react/router';
 import useStateRef from 'react-usestateref';
 import { useTranslation } from 'react-i18next';
 import Swal from 'sweetalert2';
-
-const addCopyButtons = (html) => {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
-
-    let codeBlocks = doc.querySelectorAll('pre > code');
-    
-    for(let codeBlock of codeBlocks){
-        let button = document.createElement('button');
-        button.innerText = 'Copy';
-        button.className = 'copy-button';
-        button.style.position = 'absolute';
-        button.style.top = '10px';
-        button.style.right = '10px';
-        button.style.padding = '5px';
-        button.style.backgroundColor = 'white';
-        button.style.color = 'black';
-        button.style.border = 'none';
-        button.style.borderRadius = '3px';
-        button.style.cursor = 'pointer';
-
-        button.addEventListener('click', () => {
-            navigator.clipboard.writeText(codeBlock.innerText).then(() => {
-                alert('Copied to clipboard!');
-            }).catch(err => {
-                console.error('Failed to copy: ', err);
-            });
-        });
-
-        const pre = codeBlock.parentNode;
-        pre.style.position = 'relative';
-        pre.appendChild(button);
-    }
-
-    return doc.body.innerHTML;
-};
+import Article from '@/components/Article';
 
 export default () => {
     const { article } = nexusProps();
@@ -86,7 +51,9 @@ export default () => {
         </span>
 
         <div className="article pre-wrap break-words">
-            <div dangerouslySetInnerHTML={{ __html: addCopyButtons(article.html) }}></div>
+            {typeof window == 'undefined' && <div className="server-side-rendered-article" dangerouslySetInnerHTML={{ __html: article.html }}></div>}
+            {typeof window != 'undefined' && <Article html={article.html} />}
+            {/* <Article html={article.html} /> */}
         </div>
 
     </div>
