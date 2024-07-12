@@ -37,7 +37,7 @@ Route::group([
         Route::delete('bookmark', [ArticleController::class, 'unbookmark']);
     });
 
-    Route::post("tools/markdown-preview", MarkdownPreviewController::class);
+    Route::post("tools/markdown-preview", MarkdownPreviewController::class)->withoutMiddleware('auth');
 
     Route::prefix('comments/{comment}')->group(function () {
         Route::get('reactions', [CommentController::class, 'userReactions']);
