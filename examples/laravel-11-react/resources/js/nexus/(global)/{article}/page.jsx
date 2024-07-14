@@ -49,7 +49,7 @@ export default () => {
 
 
         <div className="article pre-wrap break-words">
-            {/* <Article html={article.html} /> */}
+            <Article html={article.html} />
         </div>
         <hr className='my-4' />
         <span className='flex mt-2 justify-between'>
