@@ -22,7 +22,7 @@
 - [Misc](misc/contributors.md)
     - [Contributors](misc/contributors.md)
     - [About this doc](misc/about-this-doc.md)
-- [Links]
+- Links
     - [Discord](https://dsc.gg/laravext)
     - [GitHub](https://github.com/ArthurYdalgo/laravext)
     - [YouTube](https://www.youtube.com/@laravext)
