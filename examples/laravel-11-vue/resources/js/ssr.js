@@ -13,6 +13,8 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 import { resolveComponent } from '@laravext/vue/tools';
 import express from 'express';
 import { JSDOM } from 'jsdom';
+import { serve } from "@laravext/vue/server"
+import { renderToString } from '@vue/server-renderer';
 import { createLaravextSsrApp } from '@laravext/vue';
 import { route } from '../../vendor/tightenco/ziggy/src/js';
 import Cookies from 'js-cookie';
@@ -51,15 +53,39 @@ console.warn = (message, ...args) => {
     }
 }
 
-        global.route = (name, params, absolute) =>
-            route(name, params, absolute, {
-                ...(dom.window.__laravext.page_data.shared_props.ziggy),
-                url: dom.window.__laravext.page_data.shared_props.ziggy.url,
-            });
+serve(({ window, cookies }) => createLaravextSsrApp({
+    // This is optional, the default is renderToString, but you can use renderToStaticMarkup if you want
+    // render: renderToString,
 
-        global.Ziggy = dom.window.__laravext.page_data.shared_props.ziggy;
+    nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
+    strandsResolver: (name) => resolveComponent(`./strands/${name}.vue`, import.meta.glob('./strands/**/*.vue')),
 
-        let user = dom.window.__laravext.page_data?.shared_props?.auth?.user;
+    // The beforeSetup function is executed once, before any of the setups.
+    // You can use this to set up global variables or anything else, such as localization, cookies, etc.
+    beforeSetup: ({ laravext }) => {
+        if(laravext?.page_data?.shared_props?.ziggy){
+
+            global.route = (name, params, absolute) =>
+                route(name, params, absolute, {
+                    ...(laravext.page_data.shared_props.ziggy),
+                    url: laravext.page_data.shared_props.ziggy.url,
+                });
+
+            global.Ziggy = dom.window.__laravext.page_data.shared_props.ziggy;
+        }
+
+        let user = laravext.page_data?.shared_props?.auth?.user;
+
+        let locale = user?.locale ?? Cookies.get('locale') ?? 'en';
+
+        const i18n = createI18n({
+            legacy: false,
+            locale: locale,
+            fallbackLocale: 'en',
+            messages: {
+                pt
+            }
+        })
 
         await createLaravextSsrApp({
             nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),

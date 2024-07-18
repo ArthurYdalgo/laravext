@@ -21,7 +21,9 @@ Route::group([
     'middleware' => 'auth'
 ], function () {
 
-    Route::apiResource('articles', ArticleController::class);
+    Route::apiResource('articles', ArticleController::class)->withoutMiddleware('auth')->only(['index', 'show']);
+    Route::apiResource('articles', ArticleController::class)->only(['store', 'update', 'destroy']);
+
     Route::apiResource('articles.comments', ArticleCommentController::class)->only(['store', 'index']);
 
     Route::prefix('articles/{article}')->group(function () {

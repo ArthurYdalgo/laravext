@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Laravel\Prompts\Output\ConsoleOutput;
 
@@ -64,7 +65,9 @@ if (!function_exists('getMimeFromBinary')) {
 if (!function_exists('scoutIsAvailable')){
     function scoutIsAvailable(){
         try {
-            $status = Http::get(config('scout.url'))->json()['status'] ?? null;
+            $status = Cache::remember('scout_status', 60, function () {
+                return Http::get(config('scout.url'))->json()['status'] ?? null;
+            });
 
             return $status === 'available';
         } catch (\Throwable $th) {
