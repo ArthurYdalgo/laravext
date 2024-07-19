@@ -15,9 +15,10 @@ document.addEventListener('DOMContentLoaded', function () {
         progress: {
             color: '#ff0000CC',
         },
+        // The beforeSetup function is executed once, before any of the setups. 
+        // You can use this to set something up, such as localization.
         beforeSetup: ({ laravext }) => {
             const user = laravext.page_data.shared_props?.auth?.user;
-
             
             i18n
             .use(initReactI18next)

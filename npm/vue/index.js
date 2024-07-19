@@ -68,7 +68,7 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, con
     'error',
     'layout',
     'middleware',
-], laravext, document, render, beforeSetup = null, setup = null, setupNexus = null, setupStrand = null, reverseSetupOrder = false }) {
+], laravext, document, render = null, beforeSetup = null, setup = null, setupNexus = null, setupStrand = null, reverseSetupOrder = false }) {
     laravext.app = {}
 
     if (beforeSetup) {

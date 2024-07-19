@@ -51,7 +51,7 @@ console.warn = (message, ...args) => {
 }
 
 serve(({ window, cookies }) => createLaravextSsrApp({
-    // This is optional, the default is renderToString, but you can use renderToStaticMarkup if you want
+    // This is optional, the default is renderToString from '@vue/server-renderer', but you can use renderToStaticMarkup if you want
     // render: renderToString,
 
     nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
@@ -90,9 +90,26 @@ serve(({ window, cookies }) => createLaravextSsrApp({
     // This setup is applied to all components, including nexus and strands
     setup: ({ app, laravext }) => {
         app.use(laravext.app.i18n);
+        app.use(VueSweetalert2);
+        app.use(fkPluging, fkDefaultConfig(fkConfig));
 
         return app;
     },
+
+    // The setupNexus function is applied only to the nexus component, after the 'setup' function, unless reverseSetupOrder is true
+    // setupNexus: ({ nexus, laravext }) => {
+    //     // Anything you want to do with the nexus app instance
+    //     nexus.use(Something)
+
+    //     return nexus;
+    // },
+    // The setupStrand function is applied only to the strand components, after the 'setup' function, unless reverseSetupOrder is true
+    // The 'strandData' parameter is the data passed to the strand component from the blade where it was located, if applicable
+    // setupStrand: ({strand, laravext, strandData}) => {
+    //     // Anything you want to do with the strand app instance
+    //     strand.use(SomethingElse)
+    //     return strand
+    // },
 
     // If you want to reverse the order of the setup functions (for some reason), set this to true
     // reverseSetupOrder: true,

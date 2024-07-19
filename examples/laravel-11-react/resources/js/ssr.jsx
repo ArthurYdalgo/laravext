@@ -27,7 +27,7 @@ console.error = (message, ...args) => {
 };
 
 serve(({ window, cookies }) => createLaravextSsrApp({
-    // This is optional, the default is renderToString, but you can use renderToStaticMarkup if you want
+    // This is optional, the default is renderToString from 'react-dom/server', but you can use renderToStaticMarkup if you want
     // render: renderToString,
 
     nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
