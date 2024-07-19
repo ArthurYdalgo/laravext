@@ -2,3 +2,5 @@
 .DS_Store
 examples/laravel-11-react/.nvmrc
 examples/laravel-11-vue/.nvmrc
+npm/vue/.nvmrc
+npm/react/.nvmrc
