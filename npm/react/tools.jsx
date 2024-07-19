@@ -1,7 +1,5 @@
-import { laravext } from "./index";
 import { createRoot } from 'react-dom/client';
 import LaravextContext from './LaravextContext';
-import { renderToString , renderToStaticMarkup} from 'react-dom/server';
 
 export function findNexus(doc = null) {
 

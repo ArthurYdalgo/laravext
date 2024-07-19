@@ -2,19 +2,15 @@ import './bootstrap';
 import '../css/app.css';
 import { createI18n } from 'vue-i18n'
 import pt from './../../lang/pt.json'
-import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import { plugin as fkPluging, defaultConfig as fkDefaultConfig } from '@formkit/vue'
 import VueSweetalert2 from 'vue-sweetalert2';
 import fkConfig from './../../formkit.theme.js'
 import 'sweetalert2/dist/sweetalert2.min.css';
 import { resolveComponent } from '@laravext/vue/tools';
-import express from 'express';
-import { JSDOM } from 'jsdom';
 import { serve } from "@laravext/vue/server"
-import { renderToString } from '@vue/server-renderer';
 import { createLaravextSsrApp } from '@laravext/vue';
 import { route } from '../../vendor/tightenco/ziggy/src/js';
-import Cookies from 'js-cookie';
+
 
 // Change these to what you see fit, if you want to ignore some logs
 const errorLogShouldBeLogged = (message) => {

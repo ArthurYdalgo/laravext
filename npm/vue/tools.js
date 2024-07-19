@@ -36,7 +36,6 @@ export function isEnvProduction(){
 
 
 export function clientRender() {
-    // const laravext = laravext();
     const laravext = window.__laravext;
 
     let mixins = {
