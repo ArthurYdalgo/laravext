@@ -1,8 +1,5 @@
 import './bootstrap';
 import '../css/app.css';
-
-import VueCookies from 'vue-cookies'
-
 import { createI18n } from 'vue-i18n'
 import pt from './../../lang/pt.json'
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
@@ -71,12 +68,12 @@ serve(({ window, cookies }) => createLaravextSsrApp({
                     url: laravext.page_data.shared_props.ziggy.url,
                 });
 
-            global.Ziggy = dom.window.__laravext.page_data.shared_props.ziggy;
+            global.Ziggy = laravext.page_data.shared_props.ziggy;
         }
 
         let user = laravext.page_data?.shared_props?.auth?.user;
 
-        let locale = user?.locale ?? Cookies.get('locale') ?? 'en';
+        let locale = user?.locale ?? cookies['locale'] ?? 'en';
 
         const i18n = createI18n({
             legacy: false,
@@ -87,63 +84,20 @@ serve(({ window, cookies }) => createLaravextSsrApp({
             }
         })
 
-        await createLaravextSsrApp({
-            nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
-            strandsResolver: (name) => resolveComponent(`./strands/${name}.vue`, import.meta.glob('./strands/**/*.vue')),
+        laravext.app.i18n = i18n;
+    },
 
-            
-            setupNexus: ({ nexus, laravext }) => {
-            },
-            setupStrand: ({ strand, laravext }) => {
-            },
-            uses: () => {
-                let locale = user?.locale ?? Cookies.get('locale') ?? 'en';
+    // This setup is applied to all components, including nexus and strands
+    setup: ({ app, laravext }) => {
+        app.use(laravext.app.i18n);
 
-                const i18n = createI18n({
-                    legacy: false,
-                    locale: locale,
-                    fallbackLocale: 'en',
-                    messages: {
-                        pt
-                    }
-                })
+        return app;
+    },
 
-                return [
-                    { plugin: VueCookies, options: { expires: '7d' } },
+    // If you want to reverse the order of the setup functions (for some reason), set this to true
+    // reverseSetupOrder: true,
 
-                    {
-                        plugin: ZiggyVue, options: {
-                            ...(dom.window.__laravext.page_data.shared_props.ziggy),
-                            url: dom.window.__laravext.page_data.shared_props.ziggy.url,
-                        }
-                    },
-
-                    /** @see https://vue-i18n.intlify.dev/guide/essentials/started.html for original example */
-                    { plugin: i18n },
-                    { plugin: VueSweetalert2 },
-                    { plugin: fkPluging, options: fkDefaultConfig(fkConfig) },
-                ]
-
-            },
-            laravext: dom.window.__laravext,
-            document: dom.window.document,
-        })
-        
-        // Get the updated HTML string
-        const updatedHtmlString = dom.serialize();
-
-        res.send(updatedHtmlString);
-
-        if (process.env.NODE_ENV !== 'production') {
-            console.timeEnd('Render Time');
-        }
-
-    } catch (error) {
-        console.log(error);
-        res.status(500).send('Error rendering page: ' + error.message);
-    }
-});
-
-app.listen(port, () => {
-    console.log(`Node.js server is running on port ${port}`);
-});
+    // Don't forget to pass the window object to the laravext object
+    laravext: window.__laravext,
+    document: window.document,
+}));

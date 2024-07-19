@@ -67,6 +67,10 @@ export function clientRender() {
     if (nexusResolver) {
         const nexusComponentPath = laravext?.page_data?.nexus?.page?.replaceAll('\\', '/');
         const nexusTags = findNexus();
+
+        // Although you're not supposed to have more than one nexus tag, Laravext will iterate over all of them. 
+        // However, unlike in React, only the last one will be used, because every app is unmounted 
+        // before the next one is mounted.
         nexusTags.forEach((nexusElement) => {
             if (nexusComponentPath) {
                 nexusResolver(nexusComponentPath).then(async (NexusComponent) => {
@@ -109,24 +113,36 @@ export function clientRender() {
                         }
                     }
 
-                    const rootComponent = defineComponent({
+                    let nexusComponent = defineComponent({
                         render() {
                             return renderer()
                         }
                     });
 
-                    const app = createApp(rootComponent);
+                    let nexusApp = createApp(nexusComponent);
 
-                    app.mixin({
+                    if(reverseSetupOrder && setupNexus){
+                        nexusApp = setupNexus({ nexus: nexusApp, laravext });
+                    }
+    
+                    if (setup) {
+                        nexusApp = setup({ app: nexusApp, laravext });
+                    }
+    
+                    if(!reverseSetupOrder && setupNexus){
+                        nexusApp = setupNexus({ nexus: nexusApp, laravext });
+                    }
+
+                    nexusApp.mixin({
                         provide: mixins,
                         methods: mixins
                     })
                     
                     laravext.app.vue?.unmount();
                     
-                    app.mount(nexusElement);
+                    nexusApp.mount(nexusElement);
 
-                    window.__laravext.app.vue = app;
+                    window.__laravext.app.vue = nexusApp;
                 }).catch((error) => {
                     console.error(`Error loading page at ${nexusComponentPath}:`, error);
                     throw error;
@@ -147,7 +163,15 @@ export function clientRender() {
 
                     let  strandApp = createApp(StrandComponent.default, { laravext, ...strandData });
                     
-                    if (setupStrand) {
+                    if (reverseSetupOrder && setupStrand) {
+                        strandApp = setupStrand({ strand, laravext, strandData });
+                    }
+
+                    if (setup) {
+                        strandApp = setup({ app: strandApp, laravext });
+                    }
+
+                    if (!reverseSetupOrder && setupStrand) {
                         strandApp = setupStrand({ strand, laravext, strandData });
                     }
 

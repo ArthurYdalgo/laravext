@@ -13,15 +13,19 @@ import fkConfig from './../../formkit.theme.js'
 import 'sweetalert2/dist/sweetalert2.min.css';
 import { resolveComponent } from '@laravext/vue/tools';
 import { color } from '@formkit/icons';
+import Cookies from 'js-cookie';
 
 
 document.addEventListener('DOMContentLoaded', function () {
     createLaravextApp({
         nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
         strandsResolver: (name) => resolveComponent(`./strands/${name}.vue`, import.meta.glob('./strands/**/*.vue')),
-        uses: () => {
-            let locale = window.__laravext?.page_data?.shared_props?.auth?.user?.locale ?? VueCookies.get('locale') ?? 'en';
 
+        beforeSetup: ({ laravext }) => {
+            let user = laravext.page_data?.shared_props?.auth?.user;
+    
+            let locale = user?.locale ?? Cookies.get('locale') ?? 'en';
+    
             const i18n = createI18n({
                 legacy: false,
                 locale: locale,
@@ -30,18 +34,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     pt
                 }
             })
+    
+            laravext.app.i18n = i18n;
+        },
+        // This setup is applied to all components, including nexus and strands
+        setup: ({ app, laravext }) => {
+            app.use(laravext.app.i18n);
 
-            return [
-                { plugin: VueCookies, options: { expires: '7d' } },
-
-                { plugin: ZiggyVue },
-
-                /** @see https://vue-i18n.intlify.dev/guide/essentials/started.html for original example */
-                { plugin: i18n },
-                { plugin: VueSweetalert2 },
-                { plugin: fkPluging, options: fkDefaultConfig(fkConfig) },
-            ]
-
+            return app;
         },
         progress: {
             color: '#ff0000',

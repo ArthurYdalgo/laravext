@@ -42,4 +42,77 @@ return [
      * By default, these are the file extensions that will be used to search for the nexus files. Change it to your liking.
      */
     'file_extensions' => ['vue'],
+
+    /**
+     * The router automatically generates a version based on the build files or the assets' url, but in case you want to
+     * set a version manually, you can do it here. This will be used to check if the client and server versions match,
+     * and force a reload if they don't at the next page visit.
+     * 
+     * If you're in you local environment, it will use a fixed version, so the router doesn't force a reload every time
+     * you visit the page.
+     */
+    'version' => in_array(env('APP_ENV'), ['local']) ? 'fixed-local-version' : env('LARAVEXT_VERSION'),
+
+    /**
+     * In case you want to force a page visit, you can set this to true. This will force the client to reload the page for every visit.
+     * This is only affected if you're using the visit helper in the client.
+     */
+    'force_page_visit' => env('LARAVEXT_FORCE_PAGE_VISIT', false),
+
+    /**
+     * This config is used to determine if the server should render the javascript or not.
+     * 
+     * @see https://laravext.dev/#/server-side-rendering/javascript-runtime
+     */
+    'ssr' => [
+        /**
+         * The URL where the server side rendering will be done.
+         */
+        'url' => env('LARAVEXT_JAVASCRIPT_SERVER_SIDE_RENDERING_URL', 'http://localhost:13714/render'),
+
+        /**
+         * If set to true, the server will attempt to server side render your javascript, and if set to false, it won't.
+         */
+        // 'enabled' => env('LARAVEXT_JAVASCRIPT_SERVER_SIDE_RENDERING_ENABLED', true),
+
+        /**
+         * You can also set as 'only' or 'except' to specify the URIs that should(n't) be SSR'd, if for some reason you need this
+         * kind of control.
+         */
+        // 'enabled' => 'only',
+        'enabled' => 'except',
+
+        /**
+         * The URIs that should/should not be SSR'd. This validation is dependent on the enabled config.
+         * 
+         * If enabled is set to 'only', the URIs listed here will be the only ones that will be SSR'd.
+         * If enabled is set to 'except', the URIs listed here will be the ones that won't be SSR'd.
+         * 
+         * If enabled is set to true, this config will be ignored.
+         * 
+         * Internally this is checked using the request()->is(config('laravext.ssr.uris', []))
+         */
+        'uris' => [
+            // 'example/{uri}/pattern/*',
+            // 'another-example/{uri}'
+        ],
+
+        /**
+         * The route names that should/should not be SSR'd. This validation is dependent on the enabled config.
+         * 
+         * If enabled is set to 'only', the route names listed here will be the only ones that will be SSR'd.
+         * If enabled is set to 'except', the route names listed here will be the ones that won't be SSR'd.
+         * 
+         * If enabled is set to true, this config will be ignored.
+         * 
+         * Internally this is checked using the request()->routeIs(config('laravext.ssr.route_names', []))
+         */
+        'route_names' => [
+            // 'route.name',
+            // 'route.name_pattern.*'
+        ],
+
+        // You may want to change this, if needed.
+        // 'bundle' => env('LARAVEXT_JAVASCRIPT_SERVER_SIDE_RENDERING_BUNDLE', 'app.js'),
+    ],
 ];

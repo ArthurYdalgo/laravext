@@ -47,8 +47,11 @@ return [
      * The router automatically generates a version based on the build files or the assets' url, but in case you want to
      * set a version manually, you can do it here. This will be used to check if the client and server versions match,
      * and force a reload if they don't at the next page visit.
+     * 
+     * If you're in you local environment, it will use a fixed version, so the router doesn't force a reload every time
+     * you visit the page.
      */
-    // 'version' => env('LARAVEXT_VERSION')
+    'version' => in_array(env('APP_ENV'), ['local']) ? 'fixed-local-version' : env('LARAVEXT_VERSION'),
 
     /**
      * In case you want to force a page visit, you can set this to true. This will force the client to reload the page for every visit.

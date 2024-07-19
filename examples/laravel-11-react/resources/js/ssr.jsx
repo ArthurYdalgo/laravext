@@ -81,10 +81,10 @@ serve(({ window, cookies }) => createLaravextSsrApp({
     // The setupStrand function is applied only to the strand components, after the 'setup' function, unless reverseSetupOrder is true
     // The 'strandData' parameter is the data passed to the strand component from the blade where it was located, if applicable
     // setupStrand: ({strand, laravext, strandData}) => {
-    //     return <AnyComponentOrProvider>{strand}</AnyComponentOrProvider>
+    //     return <AnyOtherComponentOrProvider>{strand}</AnyOtherComponentOrProvider>
     // },
 
-    // If you want to reverse the order of the setup functions, set this to true
+    // If you want to reverse the order of the setup functions (for some reason), set this to true
     // reverseSetupOrder: true,
 
     // Don't forget to pass the window object to the laravext object

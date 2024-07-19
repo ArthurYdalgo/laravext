@@ -56,6 +56,8 @@ export function clientRender() {
     if (nexusResolver) {
         const nexusComponentPath = laravextPageData?.nexus?.page?.replaceAll('\\', '/');
         const nexus_tags = findNexus();
+
+        // Although you're not supposed to have more than one nexus tag, it will render all of them.
         nexus_tags.forEach((nexusElement) => {
             if (nexusComponentPath) {
                 nexusResolver(nexusComponentPath).then(async (NexusModule) => {
@@ -89,22 +91,16 @@ export function clientRender() {
 
                     let root = window.__laravext.app?.react_root ?? createRoot(nexusElement);
 
-                    if(reverseSetupOrder) {
-                        if (setupNexus) {
-                            nexus = setupNexus({ nexus, laravext: window.__laravext });
-                        }
+                    if(reverseSetupOrder && setupNexus){
+                        nexus = setupNexus({ nexus, laravext: window.__laravext }); 
+                    }
+                        
+                    if (setup) {
+                        nexus = setup({ component: nexus, laravext: window.__laravext });
+                    }
 
-                        if (setup) {
-                            nexus = setup({ component: nexus, laravext: window.__laravext });
-                        }
-                    }else{
-                        if (setup) {
-                            nexus = setup({ component: nexus, laravext: window.__laravext });
-                        }
-
-                        if (setupNexus) {
-                            nexus = setupNexus({ nexus, laravext: window.__laravext });
-                        }
+                    if(!reverseSetupOrder && setupNexus){
+                        nexus = setupNexus({ nexus, laravext: window.__laravext });
                     }
 
                     nexus = <LaravextContext.Provider value={window.__laravext}>{nexus}</LaravextContext.Provider>;
@@ -133,22 +129,16 @@ export function clientRender() {
                     // pass strand data to component
                     let strand = <StrandModule.default laravext={{ ...laravextPageData }} {...strandData} />;
 
-                    if (reverseSetupOrder) {
-                        if (setupStrand) {
-                            strand = setupStrand({ strand, laravext: laravextPageData, strandData });
-                        }
+                    if(reverseSetupOrder && setupStrand){
+                        strand = setupStrand({ strand, laravext: laravextPageData, strandData });
+                    }
 
-                        if (setup) {
-                            strand = setup({ component: strand, laravext: laravextPageData });
-                        }
-                    }else{
-                        if (setup) {
-                            strand = setup({ component: strand, laravext: laravextPageData });
-                        }
+                    if (setup) {
+                        strand = setup({ component: strand, laravext: laravextPageData });
+                    }
 
-                        if (setupStrand) {
-                            strand = setupStrand({ strand, laravext: laravextPageData, strandData });
-                        }
+                    if(!reverseSetupOrder && setupStrand){
+                        strand = setupStrand({ strand, laravext: laravextPageData, strandData });
                     }
 
                     strand = <LaravextContext.Provider value={laravextPageData}>{strand}</LaravextContext.Provider>;

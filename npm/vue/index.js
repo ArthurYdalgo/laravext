@@ -4,20 +4,6 @@ import { setupProgress } from './progress';
 import { clientRender, findNexus, findStrands, isEnvProduction } from './tools';
 import { visit } from './router';
 
-export const Head = defineComponent({
-    props: {
-        title: String
-    },
-    mounted() {
-        if (this.title) {
-            document.title = this.title;
-        }
-    },
-    render() {
-        return null;
-    }
-});
-
 if (typeof window !== 'undefined') {
     window.addEventListener("popstate", function (event) {
         if(window.__laravext.app.disablePushState()){
@@ -36,24 +22,44 @@ if (typeof window !== 'undefined') {
     });
 }
 
+export const Head = defineComponent({
+    props: {
+        title: String
+    },
+    mounted() {
+        if (this.title) {
+            document.title = this.title;
+        }
+    },
+    render() {
+        return null;
+    }
+});
+
 export function createLaravextApp({ nexusResolver, strandsResolver, conventions = [
     'error',
     'layout',
     'middleware',
-], progress = {}, setupNexus = null, setupStrand = null}) {
+], progress = {}, beforeSetup = null, setup = null, setupNexus = null, setupStrand = null, reverseSetupOrder = false, disablePushState = () => false}) {
     window.__laravext.app = {
         nexusResolver,
         strandsResolver,
         conventions,
+        beforeSetup,
+        setup,
         setupNexus,
         setupStrand,
+        reverseSetupOrder,
+        disablePushState
     }
 
     if (progress) {
         setupProgress(progress);
     }
 
-    history.pushState({laravext_page_data: window.__laravext.page_data}, '', window.location.href);
+    if(!disablePushState()){
+        history.pushState({laravext_page_data: window.__laravext.page_data}, '', window.location.href);
+    }
 
     clientRender();
 }
@@ -62,7 +68,12 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, con
     'error',
     'layout',
     'middleware',
-], laravext, document, render, setupNexus = null, setupStrand = null}) {
+], laravext, document, render, beforeSetup = null, setup = null, setupNexus = null, setupStrand = null, reverseSetupOrder = false }) {
+    laravext.app = {}
+
+    if (beforeSetup) {
+        beforeSetup({ laravext });
+    }
 
     let mixins = {
         '$laravext': () => laravext,
@@ -93,7 +104,6 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, con
                 let pageComponent = NexusComponent.default
 
                 let renderer = () => h(pageComponent, { laravext: laravext.page_data }, {
-
                     props: () => ({
                         laravext: laravext.page_data
                     }),
@@ -125,16 +135,24 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, con
                     }
                 }
 
-                const nexus = defineComponent({
+                let nexusComponent = defineComponent({
                     render() {
                         return renderer()
                     }
                 });
 
-                if(setupNexus){
-                   const nexusApp = setupNexus({nexus, laravext});
-                }else {
-                    const nexusApp = createSSRApp(nexus);
+                let nexusApp = createSSRApp(nexusComponent);
+
+                if(reverseSetupOrder && setupNexus){
+                    nexusApp = setupNexus({ nexus: nexusApp, laravext });
+                }
+
+                if (setup) {
+                    nexusApp = setup({ app: nexusApp, laravext });
+                }
+
+                if(!reverseSetupOrder && setupNexus){
+                    nexusApp = setupNexus({ nexus: nexusApp, laravext });
                 }
 
                 nexusApp.mixin({
@@ -145,7 +163,6 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, con
                 let renderedComponent = render ? await render(nexusApp) : await renderToString(nexusApp);
 
                 nexusElement.innerHTML = renderedComponent;
-
             }
         }
     }
@@ -163,10 +180,18 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, con
 
                 let strand = StrandComponent.default;
 
-                if(setupStrand){
-                    const strandApp = setupStrand({strand, laravext, strandData });
-                }else{
-                    const strandApp = createSSRApp(StrandComponent.default, { laravext, ...strandData });
+                let strandApp = createSSRApp(strand, { laravext, ...strandData });
+
+                if(reverseSetupOrder && setupStrand){
+                    strandApp = setupStrand({strand, laravext, strandData });
+                }
+
+                if (setup) {
+                    strandApp = setup({ app: strandApp, laravext });
+                }
+
+                if(!reverseSetupOrder && setupStrand){
+                    strandApp = setupStrand({strand, laravext, strandData });
                 }
 
                 strandApp.mixin({

@@ -41,7 +41,7 @@ export function visit(url) {
             }
 
             if (data.action == 'redirect') {
-                window.location.href = data.url;
+                // window.location.href = data.url;
                 return;
             }
 
