@@ -151,6 +151,12 @@ Here's an example to how you could use it in a `app.blade.php` file:
 
 The NavBar component will be rendered and receive the props sent to it in the directive.
 
+## Known Issues
+
+### Deprecation Warning on Node 21+
+
+If you intend to use a Inertia.js style of SSR, you might get a ```[DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.``` warning in your console because of JSDom, which is used to render the React/Vue components. You can read more details in this [JSDom issue #3613](https://github.com/jsdom/jsdom/issues/3613)
+
 ## Legal Disclaimer
 
 This project has no financial intent, and is meerly a Frankenstein of Inertia.js and Next.js. I fully disclose that it may contain code that is straight up ~~copied from~~ inspired by the [inertiajs/inertia](https://github.com/inertiajs/inertia/), [inertiajs/inertia-laravel](https://github.com/inertiajs/inertia-laravel) and [laravel/folio](https://github.com/laravel/folio) repos ~~, and changed to fit my needs~~.
