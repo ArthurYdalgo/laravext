@@ -79,6 +79,7 @@ In order for you to have some basic comprehension of the project itself, here ar
 
 ### Articles Platform
 ![image](/images/illustrations/example-articles-database-diagram.png)
+
 <sup>Database diagram of the React example project. Designed on [dbdiagram.io](https://dbdiagram.io). The declaration used to create this illustration can be found in the [laravext repository](https://github.com/ArthurYdalgo/laravext/tree/main/docs/images/illustrations/example-articles-database-diagram.dbdiagram.io)</sub>
 
 ### Developer Team Manager
