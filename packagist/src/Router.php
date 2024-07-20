@@ -40,12 +40,14 @@ class Router
                 'relative_path' => null,
                 'conventions' => [],
                 'is_directory_a_group' => false,
+                'is_directory_also_a_segment' => false,
                 'children' => [],
             ];
         }
 
         $name = str($directory_path)->replaceFirst($root, '')->explode('/')->last();
-        $is_directory_a_group = preg_match('/\([\w]+\)$/', $name);
+        $is_directory_a_group = preg_match('/\([\w-]+\)$/', $name) || preg_match('/\(\([\w-]+\)\)$/', $name);
+        $is_directory_also_a_segment = (bool) preg_match('/\(\([\w-]+\)\)$/', $name);
 
         $conventions = array_merge($parent_conventions, self::parseDirectoryConventions($directory_path, $root));
 
@@ -54,7 +56,7 @@ class Router
         foreach (File::directories($directory_path) as $child_directory) {
             $cascated_conventions = $is_directory_a_group ? $conventions : $parent_conventions;
 
-            if($is_directory_a_group){
+            if ($is_directory_a_group) {
                 unset($cascated_conventions['page']);
             }
 
@@ -71,6 +73,7 @@ class Router
             'relative_path' => $relative_path,
             'conventions' => $conventions,
             'is_directory_a_group' => $is_directory_a_group,
+            'is_directory_also_a_segment' => $is_directory_also_a_segment,
             'children' => $children_directories,
         ];
     }
@@ -153,7 +156,15 @@ class Router
         return str($relative_path)->when(!$router_is_case_sensitive, function ($str) {
             return $str->lower();
         })->explode('/')->filter(function ($segment) {
-            return !preg_match('/\([\w]+\)$/', $segment);
+            // We will filter out the segments that are just route groups.
+            return (!preg_match('/\([\w-]+\)$/', $segment) || preg_match('/\(\([\w-]+\)\)$/', $segment));
+        })->map(function ($segment) {
+            // In case the route group should also be a segment, we will remove the parenthesis.
+            if(preg_match('/\(\([\w-]+\)\)$/', $segment)) {
+                return str($segment)->replaceFirst("((", "")->replaceLast("))", "");
+            }
+
+            return $segment;
         });
     }
 
@@ -175,28 +186,28 @@ class Router
             $segments = self::generateRouteSegments($directory['relative_path']);
 
             $route_uri = $segments->implode('/');
-            
+
             $uri = $uri ? self::trimStartingSlash($uri) : null;
-            
+
             if (!$uri || ($uri && str($route_uri)->startsWith($uri))) {
                 $name = $router_route_name_is_enabled ? $segments->map(function ($segment) {
                     return str($segment)->remove(["{", "}", "?"]);
                 })->join('.') : null;
-    
+
                 $server_skeleton = $directory['conventions']['server_skeleton'] ?? null;
                 $middleware = $directory['conventions']['middleware'] ?? null;
                 $layout = $directory['conventions']['layout'] ?? null;
                 $error = $directory['conventions']['error'] ?? null;
 
-                if($route_uri == ''){
-                    $route_uri = '/'; 
+                if ($route_uri == '') {
+                    $route_uri = '/';
                 }
-                
+
                 Cache::store('array')->put(
                     "laravext-uri:{$route_uri}-cache",
                     compact('server_skeleton', 'middleware', 'layout', 'error', 'page', 'uri', 'name', 'root_view')
                 );
-                
+
                 $router->nexus(
                     $route_uri,
                     $page,
@@ -259,7 +270,7 @@ class Router
      */
     public static function version()
     {
-        if(config('laravext.version')){
+        if (config('laravext.version')) {
             return config('laravext.version');
         }
 
