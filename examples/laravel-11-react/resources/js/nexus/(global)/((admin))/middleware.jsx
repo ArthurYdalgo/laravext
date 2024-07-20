@@ -5,13 +5,15 @@ export default ({children}) => {
 
     const user = sharedProps().auth?.user;
 
+    const allowedRoles = ['admin'];
+
     useEffect(() => {
-        if (!user) {
+        if (!user || !allowedRoles.some(role => user?.assigned_roles?.includes(role))) {
             window.location.href = '/';
         }
     }, []);
 
-    if (user) {
+    if (user && allowedRoles.some(role => user?.assigned_roles?.includes(role))) {
         return <>{children}</>;
     } else {
         return (

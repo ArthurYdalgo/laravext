@@ -1,6 +1,10 @@
 import { isEnvProduction, clientRender } from './tools';
 import { endProgress, startProgress } from './progress';
 
+export function reload() {
+    return visit('');
+}
+
 export function visit(url) {
     if(!history?.pushState){
         window.location.href = url;

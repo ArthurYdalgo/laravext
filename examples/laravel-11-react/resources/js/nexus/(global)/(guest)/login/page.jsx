@@ -6,6 +6,7 @@ import Link from '@/components/Link';
 import PrimaryButton from '@/components/PrimaryButton';
 import TextInput from '@/components/TextInput';
 import { useTranslation } from 'react-i18next';
+import { visit } from '@laravext/react/router';
 
 
 export default () => {
@@ -19,8 +20,6 @@ export default () => {
         response: null,
         processing: false,
     });
-
-    
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -48,7 +47,7 @@ export default () => {
             });
 
             if (response.ok) {
-                window.location.href = route('admin.dashboard');
+                visit('/')
             } else {
                 const responseData = await response.json();
                 setForm(prevForm => ({

@@ -7,8 +7,8 @@
                 <div class="mx-auto py-[7px] px-6 sm:px-6 lg:px-[15%]">
                     <div class="flex items-center justify-between space-x-4">
                         <a href="/"
-                            class=" rounded-[4px] px-3 py-1.5 border border-black hover:text-white hover:bg-black text-black ring-1 ring-transparent transition">
-                            <h2 class="font-semibold whitespace-nowrap text-lg leading-tight">
+                            class=" rounded-[4px] px-3 py-1.5 border-2 border-black hover:text-white hover:bg-black text-black ring-1 ring-transparent transition">
+                            <h2 class="font-extrabold uppercase whitespace-nowrap text-lg leading-tight">
                                 Dev Diary
                             </h2>
                         </a>
@@ -43,7 +43,7 @@
                                         <div><span class="inline-flex rounded-md"><button type="button"
                                                     class="inline-flex items-center px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150"><img
                                                         src="{{user()?->avatar_url ?? '/images/avatars/placeholder.png' }}" alt="Developer"
-                                                        class="w-24 rounded-full"><svg class="ms-2 -me-0.5 h-4 w-4"
+                                                        class="w-16 rounded-full"><svg class="ms-2 -me-0.5 h-4 w-4"
                                                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                                         fill="currentColor">
                                                         <path fill-rule="evenodd"
@@ -70,7 +70,7 @@
                 </div>
             </header>
             @endStrand
-            <div class="mx-auto py-6 px-6 sm:px-6 lg:px-[15%]">
+            <div class="mx-auto py-6 pt-4 px-6 sm:px-6 lg:px-[15%]">
                 @nexus
             </div>
         </div>

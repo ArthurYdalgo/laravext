@@ -14,7 +14,7 @@ Here's an example on how you could use it, which are used in the [example projec
 import { visit } from '@laravext/react/router';
 
 export default  ({ routeName, href, className = '', children }) => {
-  let resolvedHref = href ? href : (routeName && route().has(routeName) ? route(routeName) : '');
+  let resolvedHref = href ? href : (routeName != null && route().has(routeName) ? route(routeName) : '');
 
   return (
     <a href={resolvedHref} onClick={(e) =>{
@@ -53,7 +53,7 @@ const props = defineProps({
     },
 });
 
-let href = props.href ? props.href : (props.routeName && route().has(props.routeName) ? route(props.routeName) : '');
+let href = props.href ? props.href : (props.routeName != null && route().has(props.routeName) ? route(props.routeName) : '');
 let classes = props.classes ?? '';
 
 </script>

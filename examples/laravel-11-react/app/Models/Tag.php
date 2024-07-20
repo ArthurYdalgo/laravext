@@ -14,13 +14,13 @@ class Tag extends Model
         'articles_count',
     ];
 
-    protected $casts = [
-        'articles_count' => 'integer',
-    ];
-
     public function articles()
     {
         return $this->belongsToMany(Article::class);
+    }
+
+    public function users(){
+        return $this->belongsToMany(User::class);
     }
 
     public function updateArticlesCount()

@@ -151,6 +151,10 @@ class User extends Authenticatable
         return $this->media()->create(compact('disk', 'path', 'hash', 'url'));
     }
 
+    public function tags(){
+        return $this->belongsToMany(Tag::class);
+    }
+
     public function deleteAvatar()
     {
         $avatar = $this->avatar_url;

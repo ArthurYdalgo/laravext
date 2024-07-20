@@ -4,7 +4,7 @@ import SVGLogo from "@/components/SVGLogo";
 import { useTranslation } from "react-i18next";
 import useStateRef from "react-usestateref";
 import Auth from "@/components/Auth";
-import { visit } from '@laravext/react/router';
+import { reload } from '@laravext/react/router';
 import Guest from "@/components/Guest";
 import {sharedProps} from "@laravext/react";
 import RoleCheck from "@/components/RoleCheck";
@@ -17,15 +17,20 @@ export default () => {
     const { t } = useTranslation();
     const [search, setSearch, searchRef] = useStateRef("");
 
+    const logout = async () => {
+        await axios.post('/api/auth/logout');
+        reload();
+    };
+
     return (
         <header className="bg-white dark:bg-gray-800 shadow">
             <div className="mx-auto py-[7px] px-6 sm:px-6 lg:px-[15%]">
                 <div className="flex items-center justify-between space-x-4">
                     <Link
                         href="/"
-                        className=" rounded-[4px] px-3 py-1.5 border border-black hover:text-white hover:bg-black text-black ring-1 ring-transparent transition"
+                        className=" rounded-[4px] px-3 py-1.5 border-2 border-black hover:text-white hover:bg-black text-black ring-1 ring-transparent transition"
                     >
-                        <h2 className="font-semibold whitespace-nowrap text-lg leading-tight">
+                        <h2 className="font-extrabold uppercase whitespace-nowrap text-lg leading-tight">
                             Dev Diary
                         </h2>
                     </Link>
@@ -89,7 +94,7 @@ export default () => {
                                                 type="button"
                                                 className="inline-flex items-center px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150"
                                             >
-                                                <img src={user?.avatar_url ?? "/images/avatars/placeholder.png"} alt={user?.name ?? 'blank-placeholder'} className="w-24 rounded-full" />
+                                                <img src={user?.avatar_url ?? "/images/avatars/placeholder.png"} alt={user?.name ?? 'blank-placeholder'} className="w-16 rounded-full" />
                                                 <svg
                                                     className="ms-2 -me-0.5 h-4 w-4"
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -107,12 +112,12 @@ export default () => {
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content align="right" width="48">
-                                        <DropdownLink>
+                                        <DropdownLink href={user ? route('user', {user: user?.username}) : ''}>
                                             <p className="font-bold text-base">{user?.name}</p>
                                             <p>@{user?.username}</p>
                                         </DropdownLink>
                                         <div className="border-t border-gray-200 dark:border-gray-700"></div>
-                                        <DropdownLink>
+                                        <DropdownLink routeName='dashboard'>
                                             {t("Dashboard")}
                                         </DropdownLink>
                                         <DropdownLink routeName='new'>
@@ -131,7 +136,7 @@ export default () => {
                                         </DropdownLink>
                                         </RoleCheck>
                                         <div className="border-t border-gray-200 dark:border-gray-700"></div>
-                                        <DropdownButton>
+                                        <DropdownButton onClick={logout}>
                                             {t("Log Out")}
                                         </DropdownButton>
                                     </Dropdown.Content>
