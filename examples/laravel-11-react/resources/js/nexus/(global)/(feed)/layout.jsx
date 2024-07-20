@@ -1,5 +1,6 @@
 import FeedLayout from "@/components/Feed/FeedLayout";
 import Link from "@/components/Link";
+import { currentRouteIs } from "@/tools/helpers";
 
 export default ({ children, topPageButtons = null }) => {
     return (
@@ -23,8 +24,12 @@ export default ({ children, topPageButtons = null }) => {
                         </Link>
                         <Link
                             routeName={"top.week"}
-                            className="m-2 mt-0 py-[8px] px-[12px] hover:text-blue-700 hover:bg-white hover:rounded-lg"
-                            classNameWhenIsCurrentRoute="font-black"
+                            className={"m-2 mt-0 py-[8px] px-[12px] hover:text-blue-700 hover:bg-white hover:rounded-lg " + (currentRouteIs([
+                                "top.week",
+                                "top.month",
+                                "top.year",
+                                "top.infinity",
+                            ]) ? 'font-black' : '')}
                         >
                             Top
                         </Link>
