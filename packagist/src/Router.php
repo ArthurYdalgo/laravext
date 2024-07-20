@@ -40,14 +40,14 @@ class Router
                 'relative_path' => null,
                 'conventions' => [],
                 'is_directory_a_group' => false,
-                'is_directory_also_a_segment' => false,
+                'is_directory_group_also_a_segment' => false,
                 'children' => [],
             ];
         }
 
         $name = str($directory_path)->replaceFirst($root, '')->explode('/')->last();
         $is_directory_a_group = preg_match('/\([\w-]+\)$/', $name) || preg_match('/\(\([\w-]+\)\)$/', $name);
-        $is_directory_also_a_segment = (bool) preg_match('/\(\([\w-]+\)\)$/', $name);
+        $is_directory_group_also_a_segment = (bool) preg_match('/\(\([\w-]+\)\)$/', $name);
 
         $conventions = array_merge($parent_conventions, self::parseDirectoryConventions($directory_path, $root));
 
@@ -73,7 +73,7 @@ class Router
             'relative_path' => $relative_path,
             'conventions' => $conventions,
             'is_directory_a_group' => $is_directory_a_group,
-            'is_directory_also_a_segment' => $is_directory_also_a_segment,
+            'is_directory_group_also_a_segment' => $is_directory_group_also_a_segment,
             'children' => $children_directories,
         ];
     }
