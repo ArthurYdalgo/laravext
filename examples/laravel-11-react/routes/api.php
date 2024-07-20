@@ -5,6 +5,7 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CurrentUserController;
 use App\Http\Controllers\Tools\MarkdownPreviewController;
+use App\Http\Controllers\UserAvatarController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
@@ -12,6 +13,10 @@ Route::group([
 ], function () {
     Route::get("user", [CurrentUserController::class, 'show'])->middleware('auth');
     Route::put("user", [CurrentUserController::class, 'update'])->middleware('auth');
+
+    Route::post("user/avatar", [UserAvatarController::class, 'store'])->middleware('auth');
+    Route::delete("user/avatar", [UserAvatarController::class, 'destroy'])->middleware('auth');
+
     Route::post('login', [CurrentUserController::class, 'login']);
     Route::post('logout', [CurrentUserController::class, 'logout'])->middleware('auth');
 });

@@ -10,10 +10,10 @@
                 </div>
 
                 <div class="pt-3 sm:pt-5">
-                    <h2 class="text-xl font-semibold text-black dark:text-white">Laravext Example - React</h2>
+                    <h2 class="text-xl font-semibold text-black dark:text-white">{{__("Laravext Example - React")}}</h2>
 
                     <p class="mt-4 text-sm/relaxed">
-                        {{__("This is the example of how to use Laravext with React in a Laravel 11 project (although in the \"traditional\" directory structure from Laravel 10). There're some pages in the navbar above that you can check.")}}
+                        {{__("This is the example of how to use Laravext with React in a Laravel 11 project (although in the \"traditional\" directory structure from Laravel 10).")}}
                     </p>
                 </div>
 
@@ -32,7 +32,7 @@
                 </div>
 
                 <div class="pt-3 sm:pt-5">
-                    <h2 class="text-xl font-semibold text-black dark:text-white">Laravext's GitHub Repo</h2>
+                    <h2 class="text-xl font-semibold text-black dark:text-white">{{__("Laravext's GitHub Repo")}}</h2>
 
                     <p class="mt-4 text-sm/relaxed">
                         {{__("Click here to check Laravext's GitHub repository")}}
@@ -58,10 +58,10 @@
                 </div>
 
                 <div class="pt-3 sm:pt-5">
-                    <h2 class="text-xl font-semibold text-black dark:text-white">Laravext's Docs</h2>
+                    <h2 class="text-xl font-semibold text-black dark:text-white">{{__("Laravext's Doc")}}s</h2>
 
                     <p class="mt-4 text-sm/relaxed">
-                        Click here to check Laravext's Docs
+                        {{__("Click here to check Laravext's Docs")}}
                     </p>
                 </div>
 
@@ -82,10 +82,10 @@
                 </div>
 
                 <div class="pt-3 sm:pt-5">
-                    <h2 class="text-xl font-semibold text-black dark:text-white">Laravext's YouTube channel</h2>
+                    <h2 class="text-xl font-semibold text-black dark:text-white">{{__("Laravext's YouTube channel")}}</h2>
 
                     <p class="mt-4 text-sm/relaxed">
-                        Check out Laravext's YouTube channel for more tutorials and videos.
+                        {{__("Check out Laravext's YouTube channel for more tutorials and videos.")}}
                     </p>
                 </div>
 

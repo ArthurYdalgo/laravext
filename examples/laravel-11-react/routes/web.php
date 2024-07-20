@@ -15,11 +15,6 @@ use Illuminate\Support\Facades\Route;
  */
 Route::view('about-this-project', 'sections.about-this-project')->name('about-this-project');
 
-Route::get('articles/{article}', function (Article $article) {
-    // return view("sections.article", ['article' => $article])->render();
-    return Http::withOptions(['http_errors' => true,])->post("http://localhost:13714/render", ['html' => view("sections.article", ['article' => $article])->render()])->body();
-})->name('articles.show');
-
 /**
  * This will automagically generate all the file based routes of your application.
  * It creates a route group that you can send parameters to.
@@ -27,33 +22,6 @@ Route::get('articles/{article}', function (Article $article) {
  * @see https://laravext.dev/#/tools/routing?id=routelaravext for more detailed examples
  */
 Route::laravext();
-
-Route::get('', function () {
-    $articles = Article::latest()->paginate(10);
-
-    $server_skeleton = view('partials.articles', compact('articles'))->render();
-
-    return nexus(
-    //     props: [
-    //     'articles' => [
-    //         'data' => JsonResource::collection($articles),
-    //         'links' => $articles->links(),
-    //         'meta' => [
-    //             'current_page' => $articles->currentPage(),
-    //             'from' => $articles->firstItem(),
-    //             'last_page' => $articles->lastPage(),
-    //             'path' => $articles->path(),
-    //             'per_page' => $articles->perPage(),
-    //             'to' => $articles->lastItem(),
-    //             'total' => $articles->total()
-    //         ],
-    //     ]
-
-    // ]
-    )
-    // ->withHtmlSkeleton($server_skeleton)
-    ->render();
-})->name('home');
 
 Route::get('{article:slug}', function (Article $article) {
 
@@ -63,7 +31,6 @@ Route::get('{article:slug}', function (Article $article) {
         // ->withViewSkeleton('partials.article')
         ->withHeadTitle($article->title)
         ->render();
-
 })->name('article');
 
 // Redirect short links to the article
@@ -79,14 +46,14 @@ Route::get('s/{article:short_link_code}', function (Article $article) {
  * 
  */
 // Route::laravext("admin",  route_group_attributes: [
-//     'middleware' => 'auth',
+//     'middleware' => ['auth', 'role:admin'],
 // ], root_view: 'sections.app');
 
 // Route::get('admin/developers/{developer}/edit', function (Developer $developer) {
 //     $developer->load('team');
 //     $developer_roles = DeveloperRole::toArray(true);
 //     return nexus(props: compact('developer_roles', 'developer'))->render();
-// })->middleware('auth')->name('admin.developers.developer.edit');
+// })->middleware(['auth', 'role:admin'])->name('admin.developers.developer.edit');
 
 /**
  * However, because in this project I'm also using other routes that are subroutes of the 'admin' route, I'm going to use the 
@@ -94,7 +61,7 @@ Route::get('s/{article:short_link_code}', function (Article $article) {
  * and the Route::get() method.
  */
 Route::group([
-    'middleware' => 'auth',
+    'middleware' => ['auth', 'role:admin'],
 ], function () {
-    Route::laravext('admin', root_view: 'sections.editor');
+    Route::laravext('admin', root_view: 'sections.admin');
 });

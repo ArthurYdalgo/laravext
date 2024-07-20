@@ -137,11 +137,11 @@ export function clientRender() {
                         methods: mixins
                     })
                     
-                    laravext.app.vue?.unmount();
+                    laravext.app.vue_nexus_app?.unmount();
                     
                     nexusApp.mount(nexusElement);
 
-                    window.__laravext.app.vue = nexusApp;
+                    window.__laravext.app.vue_nexus_app = nexusApp;
                 }).catch((error) => {
                     console.error(`Error loading page at ${nexusComponentPath}:`, error);
                     throw error;
@@ -152,6 +152,13 @@ export function clientRender() {
 
     if (strandsResolver) {
         const strands = findStrands();
+
+        if(typeof window.__laravext.app?.vue_strand_apps == 'undefined') {
+            window.__laravext.app.vue_strand_apps = {};
+        }
+
+        let strandApps = window.__laravext.app.vue_strand_apps
+
         strands.forEach((strandElement) => {
             const strandComponentPath = strandElement.getAttribute('strand-component');
             const strandData = JSON.parse(strandElement.getAttribute('strand-data'));
@@ -159,8 +166,9 @@ export function clientRender() {
             if (strandComponentPath) {
                 strandsResolver(strandComponentPath).then((StrandComponent) => {
                     let strand = StrandComponent.default;
+                    let strandId = strandElement.getAttribute('id');
 
-                    let  strandApp = createApp(StrandComponent.default, { laravext, ...strandData });
+                    let strandApp = createApp(StrandComponent.default, { laravext, ...strandData });
                     
                     if (reverseSetupOrder && setupStrand) {
                         strandApp = setupStrand({ strand, laravext, strandData });
@@ -179,7 +187,13 @@ export function clientRender() {
                         methods: mixins
                     })
 
+                    if(strandApps[strandId]) {
+                        strandApps[strandId].unmount();
+                    }
+
                     strandApp.mount(strandElement);
+
+                    window.__laravext.app.vue_strand_apps[strandId] = strandApp;
                 }).catch((error) => {
                     console.error(`Error loading component at ${strandComponentPath}:`, error);
                 });

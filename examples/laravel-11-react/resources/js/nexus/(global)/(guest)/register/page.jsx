@@ -5,7 +5,7 @@ import InputLabel from '@/components/InputLabel';
 import Link from '@/components/Link';
 import PrimaryButton from '@/components/PrimaryButton';
 import TextInput from '@/components/TextInput';
-
+import { useTranslation } from 'react-i18next';
 
 export default () => {
     const [form, setForm] = useState({
@@ -16,6 +16,7 @@ export default () => {
         processing: false,
     });
 
+    const { t } = useTranslation();
     
 
     const handleInputChange = (e) => {
@@ -62,7 +63,7 @@ export default () => {
     return (
         <div className="flex justify-center items-center min-h-[70vh] mt-6">
             <form onSubmit={submit} className="w-96">
-                <h3 className="mt-6 justify-center text-2xl font-extrabold text-gray-900 dark:text-white text-center">Login</h3>
+                <h3 className="mt-6 justify-center text-2xl font-extrabold text-gray-900 dark:text-white text-center">Register</h3>
 
                 <div>
                     <InputLabel htmlFor="email" value="Email" />

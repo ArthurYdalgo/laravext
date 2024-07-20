@@ -48,6 +48,7 @@ class User extends Authenticatable
     protected $appends = [
         'first_name',
         'last_name',
+        'assigned_roles',
     ];
 
     // Getters and Setters
@@ -63,6 +64,11 @@ class User extends Authenticatable
         return end($names);
     }
 
+    public function getAssignedRolesAttribute()
+    {
+        return $this->roles()->get()->pluck('name');
+    }
+
     // Relationships
     public function comments()
     {
@@ -72,17 +78,18 @@ class User extends Authenticatable
     public function media()
     {
         return $this->hasMany(Media::class);
-    }	
+    }
 
     public function articles()
     {
         return $this->hasMany(Article::class);
     }
 
-    public function reactions(){
+    public function reactions()
+    {
         return $this->hasMany(Reaction::class);
     }
-    
+
     public function followersRelationship()
     {
         return $this->belongsToMany(User::class, 'follows', 'followee_id', 'follower_id');
@@ -103,7 +110,8 @@ class User extends Authenticatable
         return $this->following()->wherePivot('follows.ended_at', null);
     }
 
-    public function bookmarkedArticles(){
+    public function bookmarkedArticles()
+    {
         return $this->belongsToMany(Article::class, 'bookmarks');
     }
 
@@ -119,7 +127,7 @@ class User extends Authenticatable
     {
         $hash = hash('sha256', $content);
 
-        if($media = $this->media()->where('hash', $hash)->first()){
+        if ($media = $this->media()->where('hash', $hash)->first()) {
             return $media;
         }
 
@@ -129,7 +137,7 @@ class User extends Authenticatable
 
         $path = "{$path_prefix}/{$this->id}";
 
-        if($path_suffix){
+        if ($path_suffix) {
             $path .= "/{$path_suffix}";
         }
 
@@ -143,6 +151,33 @@ class User extends Authenticatable
         return $this->media()->create(compact('disk', 'path', 'hash', 'url'));
     }
 
+    public function deleteAvatar()
+    {
+        $avatar = $this->avatar_url;
+
+        if (!$avatar) {
+            return false;
+        }
+
+        $media = $this->media()->where('url', $avatar)->first();
+
+        if(!$media) {
+            $this->update([
+                'avatar_url' => null,
+            ]);
+
+            return false;
+        }
+
+        Storage::disk($media->disk)->delete($media->path);
+
+        $this->update([
+            'avatar_url' => null,
+        ]);
+
+        return true;
+    }
+
     public function reactTo($reactionable, $reaction)
     {
         return $reactionable->reactions()->firstOrCreate([
@@ -154,11 +189,11 @@ class User extends Authenticatable
     public function unreactTo($reactionable, $reaction = null)
     {
         return $reactionable->reactions()
-        ->where('user_id', $this->id)
-        ->when($reaction, function($query) use ($reaction){
-            return $query->where('reaction', $reaction);
-        })
-        ->delete();
+            ->where('user_id', $this->id)
+            ->when($reaction, function ($query) use ($reaction) {
+                return $query->where('reaction', $reaction);
+            })
+            ->delete();
     }
 
     public function reactionsTo($reactionable)

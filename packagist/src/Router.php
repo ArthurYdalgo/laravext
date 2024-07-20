@@ -52,7 +52,13 @@ class Router
         $children_directories = [];
 
         foreach (File::directories($directory_path) as $child_directory) {
-            $parsed_children_directory = self::parseDirectory($child_directory, $root, $is_directory_a_group ? $conventions : $parent_conventions);
+            $cascated_conventions = $is_directory_a_group ? $conventions : $parent_conventions;
+
+            if($is_directory_a_group){
+                unset($cascated_conventions['page']);
+            }
+
+            $parsed_children_directory = self::parseDirectory($child_directory, $root, $cascated_conventions);
 
             $children_directories[] = $parsed_children_directory;
         }

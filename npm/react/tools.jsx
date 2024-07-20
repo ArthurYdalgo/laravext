@@ -87,7 +87,7 @@ export function clientRender() {
                         }
                     }
 
-                    let root = window.__laravext.app?.react_root ?? createRoot(nexusElement);
+                    let nexusRoot = window.__laravext.app?.react_nexus_root ?? createRoot(nexusElement);
 
                     if(reverseSetupOrder && setupNexus){
                         nexus = setupNexus({ nexus, laravext: window.__laravext }); 
@@ -103,11 +103,9 @@ export function clientRender() {
 
                     nexus = <LaravextContext.Provider value={window.__laravext}>{nexus}</LaravextContext.Provider>;
 
-                    root.render(nexus);
+                    nexusRoot.render(nexus);
 
-                    if (!window.__laravext.app?.react_root) {
-                        window.__laravext.app.react_root = root;
-                    }
+                    window.__laravext.app.react_nexus_root = nexusRoot;
                 })
                     .catch((error) => {
                         console.error(`Error loading page at ${nexusComponentPath}:`, error);
@@ -118,6 +116,13 @@ export function clientRender() {
 
     if (strandsResolver) {
         const strands = findStrands();
+
+        if(typeof window.__laravext.app?.react_strand_roots == 'undefined') {
+            window.__laravext.app.react_strand_roots = {};
+        }
+
+        let strandRoots = window.__laravext.app.react_strand_roots
+
         strands.forEach((strandElement) => {
             const strandComponentPath = strandElement.getAttribute('strand-component');
             const strandData = JSON.parse(strandElement.getAttribute('strand-data'));
@@ -126,6 +131,13 @@ export function clientRender() {
                 strandsResolver(strandComponentPath).then((StrandModule) => {
                     // pass strand data to component
                     let strand = <StrandModule.default laravext={{ ...laravextPageData }} {...strandData} />;
+                    let strandId = strandElement.getAttribute('id');
+
+                    let strandRoot = strandRoots[strandId];
+
+                    if(typeof strandRoot == 'undefined') {
+                        strandRoot = createRoot(strandElement);
+                    }
 
                     if(reverseSetupOrder && setupStrand){
                         strand = setupStrand({ strand, laravext: laravextPageData, strandData });
@@ -139,9 +151,11 @@ export function clientRender() {
                         strand = setupStrand({ strand, laravext: laravextPageData, strandData });
                     }
 
-                    strand = <LaravextContext.Provider value={laravextPageData}>{strand}</LaravextContext.Provider>;
+                    strand = <LaravextContext.Provider value={window.__laravext}>{strand}</LaravextContext.Provider>;
 
-                    createRoot(strandElement).render(strand);
+                    strandRoot.render(strand);
+
+                    window.__laravext.app.react_strand_roots[strandId] = strandRoot;
                 })
                     .catch((error) => {
                         console.error(`Error loading component at ${strandComponentPath}:`, error);
