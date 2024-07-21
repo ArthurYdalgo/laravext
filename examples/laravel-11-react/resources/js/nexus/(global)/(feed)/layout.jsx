@@ -1,4 +1,4 @@
-import FeedLayout from "@/components/Feed/FeedLayout";
+import FeedLayout from "@/components/Article/Feed/FeedLayout";
 import Link from "@/components/Link";
 import { currentRouteIs } from "@/tools/helpers";
 
@@ -6,7 +6,7 @@ export default ({ children, topPageButtons = null }) => {
     return (
         <div>
             <FeedLayout>
-                <div className="flex justify-between">
+                <div className="space-y-1">
                     <div className="flex row space-x-1 text-lg ">
                         <Link
                             routeName={"home"}
@@ -34,10 +34,14 @@ export default ({ children, topPageButtons = null }) => {
                             Top
                         </Link>
                     </div>
+                    {/* horizontal line */}
                     {topPageButtons ? (
+                        <>
+                        <div className="border-b border-gray-200 "></div>
                         <div className="flex row space-x-2 text-lg ">
                             {topPageButtons}
                         </div>
+                        </>
                     ) : null}
                 </div>
                 {children}

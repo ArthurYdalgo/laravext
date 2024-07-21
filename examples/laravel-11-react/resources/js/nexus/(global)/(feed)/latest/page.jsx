@@ -1,5 +1,7 @@
+import ArticleListing from "@/components/Article/ArticleListing";
+
 export default () => {
-    return (<div>
-        Latest
-    </div>)
-}
+    return <ArticleListing queryParams={{
+        'sort': '-published_at'
+    }} />
+};

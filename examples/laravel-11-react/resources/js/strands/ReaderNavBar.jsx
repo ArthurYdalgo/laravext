@@ -5,20 +5,44 @@ import { useTranslation } from "react-i18next";
 import useStateRef from "react-usestateref";
 import Auth from "@/components/Auth";
 import Guest from "@/components/Guest";
-import {sharedProps} from "@laravext/react";
+import { sharedProps } from "@laravext/react";
 import RoleCheck from "@/components/RoleCheck";
 import Dropdown from "@/components/Dropdown";
 import DropdownButton from "@/components/DropdownButton";
 import DropdownLink from "@/components/DropdownLink";
 import useSearch from "@/hooks/useSearch";
+import Cookies from 'js-cookie';
 
 export default () => {
+    const { t, i18n } = useTranslation();
     const { user } = sharedProps().auth;
-    const { t } = useTranslation();
     const { text, tags, setText } = useSearch();
 
+    const locales = {
+        en: {
+            locale: "en",
+            flag: "/images/flags/us.svg",
+        },
+        pt: {
+            locale: "pt",
+            flag: "/images/flags/br.svg",
+        },
+    };
+
+    const handleLocaleChange = (locale) => {
+        i18n.changeLanguage(locale);
+
+        Cookies.set("locale", locale);
+
+        if (user) {
+            axios.put("/api/auth/user", {
+                locale,
+            });
+        }
+    };
+
     const logout = async () => {
-        await axios.post('/api/auth/logout');
+        await axios.post("/api/auth/logout");
         window.location.reload();
     };
 
@@ -65,6 +89,63 @@ export default () => {
                     </div>
 
                     <div className="flex items-center space-x-4">
+                        <Dropdown>
+                            <Dropdown.Trigger>
+                                <span className="inline-flex rounded-md">
+                                    <button
+                                        type="button"
+                                        className="inline-flex items-center px-2 py-2 border border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150"
+                                    >
+                                        <img
+                                            src={
+                                                locales[
+                                                    i18n.language ??
+                                                        user?.locale ??
+                                                        "en"
+                                                ].flag
+                                            }
+                                            className="w-[20px]"
+                                            alt="Flag"
+                                        />
+                                        <svg
+                                            className="ms-2 -me-0.5 h-4 w-10"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 20 20"
+                                            color=""
+                                            fill="currentColor"
+                                        >
+                                            <path
+                                                fillRule="evenodd"
+                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                clipRule="evenodd"
+                                            />
+                                        </svg>
+                                    </button>
+                                </span>
+                            </Dropdown.Trigger>
+
+                            <Dropdown.Content width="24" align="right">
+                                {Object.values(locales).map((locale) => (
+                                    <DropdownButton
+                                        key={locale.locale}
+                                        onClick={() =>
+                                            handleLocaleChange(locale.locale)
+                                        }
+                                    >
+                                        <span className="flex items-center space-x-2">
+                                            <img
+                                                src={locale.flag}
+                                                className="w-[30px]"
+                                                alt="Flag"
+                                            />
+                                            <span>
+                                                {locale.locale.toUpperCase()}
+                                            </span>
+                                        </span>
+                                    </DropdownButton>
+                                ))}
+                            </Dropdown.Content>
+                        </Dropdown>
                         <Guest>
                             <Link
                                 routeName="login"
@@ -94,7 +175,17 @@ export default () => {
                                                 type="button"
                                                 className="inline-flex items-center px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150"
                                             >
-                                                <img src={user?.avatar_url ?? "/images/avatars/placeholder.png"} alt={user?.name ?? 'blank-placeholder'} className="w-16 rounded-full" />
+                                                <img
+                                                    src={
+                                                        user?.avatar_url ??
+                                                        "/images/avatars/placeholder.png"
+                                                    }
+                                                    alt={
+                                                        user?.name ??
+                                                        "blank-placeholder"
+                                                    }
+                                                    className="w-16 rounded-full"
+                                                />
                                                 <svg
                                                     className="ms-2 -me-0.5 h-4 w-4"
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -112,15 +203,25 @@ export default () => {
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content align="right" width="48">
-                                        <DropdownLink href={user ? route('user', {user: user?.username}) : ''}>
-                                            <p className="font-bold text-base">{user?.name}</p>
+                                        <DropdownLink
+                                            href={
+                                                user
+                                                    ? route("user", {
+                                                          user: user?.username,
+                                                      })
+                                                    : ""
+                                            }
+                                        >
+                                            <p className="font-bold text-base">
+                                                {user?.name}
+                                            </p>
                                             <p>@{user?.username}</p>
                                         </DropdownLink>
                                         <div className="border-t border-gray-200 dark:border-gray-700"></div>
-                                        <DropdownLink routeName='dashboard'>
+                                        <DropdownLink routeName="dashboard">
                                             {t("Dashboard")}
                                         </DropdownLink>
-                                        <DropdownLink routeName='new'>
+                                        <DropdownLink routeName="new">
                                             {t("Create Post")}
                                         </DropdownLink>
                                         <DropdownLink>
@@ -128,12 +229,12 @@ export default () => {
                                         </DropdownLink>
                                         <DropdownLink>
                                             {t("Settings")}
-                                        </DropdownLink>    
-                                        <RoleCheck allowedRoles={["admin"]}>
-                                        <div className="border-t border-gray-200 dark:border-gray-700"></div>
-                                        <DropdownLink routeName='admin.dashboard'>
-                                            {t("Admin Dashboard")}
                                         </DropdownLink>
+                                        <RoleCheck allowedRoles={["admin"]}>
+                                            <div className="border-t border-gray-200 dark:border-gray-700"></div>
+                                            <DropdownLink routeName="admin.dashboard">
+                                                {t("Admin Dashboard")}
+                                            </DropdownLink>
                                         </RoleCheck>
                                         <div className="border-t border-gray-200 dark:border-gray-700"></div>
                                         <DropdownButton onClick={logout}>

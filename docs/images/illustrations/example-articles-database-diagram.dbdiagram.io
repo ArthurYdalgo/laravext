@@ -139,6 +139,11 @@ Table article_media {
   media_id integer
 }
 
+Table user_tag {
+  user_id integer
+  tag_id integer
+}
+
 
 Ref: "articles"."id" < "comments"."article_id"
 
@@ -177,3 +182,7 @@ Ref: "users"."id" < "abuse_reports"."user_id"
 Ref: "users"."id" < "shares"."user_id"
 
 Ref: "articles"."id" < "shares"."article_id"
+
+Ref: "users"."id" < "user_tag"."user_id"
+
+Ref: "tags"."id" < "user_tag"."tag_id"

@@ -1,9 +1,9 @@
 import moment from "moment/min/moment-with-locales";
 import { visit } from "@laravext/react/router";
-import GroupedReactions from "./GroupedReactions";
+import GroupedReactions from "@/components/GroupedReactions";
 import { useTranslation } from "react-i18next";
-import Fa from "./Fa";
-import Bookmark from "./Bookmark";
+import Fa from "@/components/Fa";
+import Bookmark from "@/components/Bookmark";
 import { useState } from "react";
 import Swal from 'sweetalert2';
 import {sharedProps} from "@laravext/react";

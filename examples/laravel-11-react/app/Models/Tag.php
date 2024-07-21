@@ -10,6 +10,7 @@ class Tag extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'slug',
         'articles_count',
     ];
@@ -19,8 +20,13 @@ class Tag extends Model
         return $this->belongsToMany(Article::class);
     }
 
+    public function creator()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function users(){
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'user_tag');
     }
 
     public function updateArticlesCount()

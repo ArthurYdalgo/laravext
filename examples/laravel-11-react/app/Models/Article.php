@@ -133,7 +133,7 @@ class Article extends Model
             $query->published();
 
             if (user()) {
-                $query->orWhere('user_id', user()->id);
+                $query->orWhere('articles.user_id', user()->id);
             }
 
             return $query;

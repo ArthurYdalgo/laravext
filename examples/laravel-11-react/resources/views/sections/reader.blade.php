@@ -33,6 +33,21 @@
                         </div>
 
                         <div class="flex items-center space-x-4">
+                            <div class="relative">
+                                <div><span class="inline-flex rounded-md"><button type="button"
+                                            class="inline-flex items-center px-2 py-2 border border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150"><img
+                                                src="{{ [
+                                                    'en' => '/images/flags/us.svg',
+                                                    'pt' => '/images/flags/br.svg',
+                                                ][user()?->locale ?? ($_COOKIE['locale'] ?? 'en')] }}"
+                                                class="w-[20px]" alt="Flag">
+                                            <svg class="ms-2 -me-0.5 h-4 w-10" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd"
+                                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                    clip-rule="evenodd"></path>
+                                            </svg></button></span></div>
+                            </div>
                             @auth
                                 <a href="{{ route('new') }}"
                                     class="rounded-md whitespace-nowrap font-bold w-auto text-blue-600 px-3 py-2 border border-blue-600 ring-1 ring-transparent transition hover:text-white hover:bg-blue-600 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
@@ -42,10 +57,10 @@
                                     <div class="relative">
                                         <div><span class="inline-flex rounded-md"><button type="button"
                                                     class="inline-flex items-center px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150"><img
-                                                        src="{{user()?->avatar_url ?? '/images/avatars/placeholder.png' }}" alt="Developer"
-                                                        class="w-16 rounded-full"><svg class="ms-2 -me-0.5 h-4 w-4"
-                                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                                                        fill="currentColor">
+                                                        src="{{ user()?->avatar_url ?? '/images/avatars/placeholder.png' }}"
+                                                        alt="Developer" class="w-16 rounded-full"><svg
+                                                        class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                        viewBox="0 0 20 20" fill="currentColor">
                                                         <path fill-rule="evenodd"
                                                             d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
                                                             clip-rule="evenodd"></path>

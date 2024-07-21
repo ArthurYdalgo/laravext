@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\QueryBuilders\Sorts\Relevance;
 use App\Http\Requests\Article\DestroyRequest;
 use App\Http\Requests\Article\IndexRequest;
 use App\Http\Requests\Article\ReactRequest;
@@ -17,6 +18,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedInclude;
+use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class ArticleController extends Controller
@@ -26,6 +28,7 @@ class ArticleController extends Controller
      */
     public function index(IndexRequest $request)
     {
+
         $articles = QueryBuilder::for(Article::class)
             ->allowedIncludes([
                 'user', 'tags',
@@ -35,14 +38,20 @@ class ArticleController extends Controller
             ->allowedFilters([
                 AllowedFilter::scope('search', 'whereScout')
             ])
+            ->allowedSorts([
+                'published_at',
+                AllowedSort::custom('relevance', new Relevance),
+            ])
+            ->orderBy('published_at', 'desc')
             ->when(user(), function ($query) {
                 $query->with(['bookmarks' => function ($query) {
-                    $query->where('user_id', user()->id);
+                    $query->where('bookmarks.user_id', user()->id);
                 }]);
             })
             ->available()
             ->withGroupedReactions()
-            ->latest('id')->paginate(10);
+            ->paginate(min(200, $request->query('per_page', 20)))
+            ->appends($request->query());
 
         $articles->makeHidden(['content', 'html']);
 

@@ -38,6 +38,14 @@ class ArticlesSeeder extends Seeder
         $initial_readers_count = 500;
         line("Creating {$initial_readers_count} readers...");
         $readers = User::factory($initial_readers_count)->create();
+        $tags = Tag::all();
+        $tags_count = $tags->count();
+
+        if($tags->isNotEmpty()){
+            foreach($readers as $reader){
+                $reader->followingTags()->sync($tags->random(min($tags_count, random_int(3, 10))));
+            }
+        }
 
         $initial_writes_count = 20;
         line("Creating {$initial_writes_count} writers and their articles...");
@@ -218,6 +226,10 @@ class ArticlesSeeder extends Seeder
                     ]);
                 }
             }
+        }
+
+        foreach($articles as $article){
+            $article->updateDenormalizedColumns();
         }
     }
 }

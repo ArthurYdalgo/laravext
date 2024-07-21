@@ -1,4 +1,4 @@
-import FeedLayout from "@/components/Feed/FeedLayout";
+import FeedLayout from "@/components/Article/Feed/FeedLayout";
 import Link from "@/components/Link";
 import Layout from "../layout";
 
