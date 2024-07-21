@@ -6,6 +6,7 @@ use FastVolt\Helper\Markdown;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Laravel\Scout\Searchable;
 use Parsedown;
 
@@ -25,12 +26,14 @@ class Article extends Model
         'language',
         'reading_time',
         'keywords',
+        'metadata',
         'published_at'
     ];
 
     protected $casts = [
         'published_at' => 'datetime',
         'keywords' => 'array',
+        'metadata' => 'array',
         'reading_time' => 'integer'
     ];
 
@@ -81,7 +84,8 @@ class Article extends Model
         return $this->hasMany(Comment::class);
     }
 
-    public function media(){
+    public function media()
+    {
         return $this->belongsToMany(Media::class);
     }
 
@@ -111,8 +115,17 @@ class Article extends Model
         return $this->morphMany(AbuseReport::class, 'reportable');
     }
 
+    public function scopeWithGroupedReactions($query)
+    {
+        return $query->with(['reactions' => function ($query) {
+            $query->select('reactionable_id', 'reaction', DB::raw('count(*) as count'))
+                ->groupBy('reactionable_id', 'reaction')->orderBy('count', 'desc');
+        }]);
+    }
+
     // Methods
-    public function toHtml(){
+    public function toHtml()
+    {
         $parsedown = new Parsedown();
 
         return $parsedown->text($this->content);

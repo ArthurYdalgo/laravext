@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('language')->default('en')->index();
             $table->integer('reading_time')->nullable();
             $table->text('keywords')->nullable();
+            $table->json('metadata')->nullable();
 
             $table->dateTime('published_at')->nullable();
             $table->softDeletes();

@@ -10,7 +10,7 @@ class Reaction extends Model
     use HasFactory;
 
     public static $available_reactions = [
-        'sparkle-hear',
+        'sparkle-heart',
         'unicorn',
         'exploding-head',
         'raised-hands',

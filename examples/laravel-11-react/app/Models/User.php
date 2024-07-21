@@ -66,7 +66,11 @@ class User extends Authenticatable
 
     public function getAssignedRolesAttribute()
     {
-        return $this->roles()->get()->pluck('name');
+        if($this->relationLoaded('roles')) {
+            return $this->roles->pluck('name');
+        }   
+
+        return null;
     }
 
     // Relationships

@@ -7,6 +7,7 @@ import mdxeditor from './../../lang/pt/mdxeditor.json'
 import { initReactI18next } from "react-i18next";
 import { createLaravextApp } from "@laravext/react"
 import { resolveComponent } from "@laravext/react/tools"
+import moment from 'moment/min/moment-with-locales';
 
 document.addEventListener('DOMContentLoaded', function () {
     createLaravextApp({
@@ -33,8 +34,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     escapeValue: false
                 }
             });
+
+            let locale = user?.locale ?? Cookies.get('locale') ?? 'en';
             
-            i18n.changeLanguage(user?.locale ?? Cookies.get('locale') ?? 'en')
+            i18n.changeLanguage(locale);
+            moment.locale(locale);
         },
 
         // This setup is applied to all components, including nexus and strands

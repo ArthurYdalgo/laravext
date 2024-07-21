@@ -84,6 +84,9 @@ class ArticlesSeeder extends Seeder
                     'short_link_code' => str()->random(16),
                     'content' => $content,
                     'banner_url' => $banner->url,
+                    'metadata' => [
+                        'display_banner_in_listing' => fake()->boolean(),
+                    ]
                 ]);
 
                 $article->media()->attach($media_to_attach);

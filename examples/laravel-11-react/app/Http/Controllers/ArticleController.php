@@ -13,6 +13,9 @@ use App\Http\Requests\Article\UserReactionsRequest;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\DB;
+use Spatie\QueryBuilder\AllowedInclude;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class ArticleController extends Controller
 {
@@ -36,7 +39,14 @@ class ArticleController extends Controller
             });
         });
             
-        $articles = $articles_query->latest()->paginate(10);
+        $articles = QueryBuilder::for($articles_query)
+        ->allowedIncludes([
+            'user', 'tags',
+            AllowedInclude::count('reactionsCount'),
+            AllowedInclude::count('commentsCount'),
+        ])
+        ->withGroupedReactions()
+        ->latest()->paginate(10);
 
         $articles->makeHidden(['content', 'html']);
 
