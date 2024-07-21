@@ -82,7 +82,7 @@ export default ({ article }) => {
                             onClick={() => {
                                 visit(route("search", { tags: tag.slug }));
                             }}
-                            className="text-xs hover:underline cursor-pointer bg-gray-100 rounded-lg px-2 py-1"
+                            className="text-sm hover:underline cursor-pointer bg-gray-100 rounded-lg px-2 py-1"
                         >
                             #{tag.slug}
                         </span>

@@ -1,8 +1,12 @@
 import FeedLayout from "@/components/Article/Feed/FeedLayout";
 import Link from "@/components/Link";
 import { currentRouteIs } from "@/tools/helpers";
+import { sharedProps } from "@laravext/react";
 
 export default ({ children, topPageButtons = null }) => {
+
+    const {user} = sharedProps().auth;
+
     return (
         <div>
             <FeedLayout>
@@ -13,15 +17,15 @@ export default ({ children, topPageButtons = null }) => {
                             className="m-2 mt-0 py-[8px] px-[12px] hover:text-blue-700 hover:bg-white hover:rounded-lg"
                             classNameWhenIsCurrentRoute="font-black"
                         >
-                            Relevant
+                            Latest
                         </Link>
-                        <Link
-                            routeName={"latest"}
+                        {user && <Link
+                            routeName={"relevant"}
                             className="m-2 mt-0 py-[8px] px-[12px] hover:text-blue-700 hover:bg-white hover:rounded-lg"
                             classNameWhenIsCurrentRoute="font-black"
                         >
-                            Latest
-                        </Link>
+                            Relevant
+                        </Link>}
                         <Link
                             routeName={"top.week"}
                             className={"m-2 mt-0 py-[8px] px-[12px] hover:text-blue-700 hover:bg-white hover:rounded-lg " + (currentRouteIs([

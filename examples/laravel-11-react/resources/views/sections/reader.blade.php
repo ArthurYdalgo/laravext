@@ -32,10 +32,10 @@
                             </span>
                         </div>
 
-                        <div class="flex items-center space-x-4">
+                        <div class="flex items-center space-x-3">
                             <div class="relative">
                                 <div><span class="inline-flex rounded-md"><button type="button"
-                                            class="inline-flex items-center px-2 py-2 border border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150"><img
+                                            class="inline-flex items-center py-2  border border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150"><img
                                                 src="{{ [
                                                     'en' => '/images/flags/us.svg',
                                                     'pt' => '/images/flags/br.svg',

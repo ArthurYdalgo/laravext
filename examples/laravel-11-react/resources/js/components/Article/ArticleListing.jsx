@@ -7,8 +7,10 @@ import { debounce } from "lodash-es";
 import useStateRef from "react-usestateref";
 import { Head } from "@laravext/react";
 import useSearch from "@/hooks/useSearch";
+import Loading from "../Loading";
+import PrimaryButton from "../PrimaryButton";
 
-export default ({queryParams = {}}) => {
+export default ({ queryParams = {} }) => {
     const { t } = useTranslation();
     const { text } = useSearch();
 
@@ -30,6 +32,15 @@ export default ({queryParams = {}}) => {
         debouncedFetchResources();
     }, [text]);
 
+    const paginateTo = ({ page, perPage }) => {
+        setPagination((prevState) => ({
+            ...prevState,
+            page,
+            per_page: perPage,
+        }));
+        fetchResources();
+    };
+
     const fetchResources = () => {
         setPagination((prevState) => ({ ...prevState, loading: true }));
 
@@ -37,23 +48,23 @@ export default ({queryParams = {}}) => {
             page: paginationRef.current.page,
             per_page: paginationRef.current.per_page,
             filter: {
-                search: filtersRef.current.search ?? '',
+                search: filtersRef.current.search ?? "",
             },
             include: "user,commentsCount,tags,reactionsCount",
         };
 
         if (queryParams) {
-            params = {...params, ...queryParams};
+            params = { ...params, ...queryParams };
         }
 
         axios
             .get("/api/articles", {
-                params
+                params,
             })
             .then((response) => {
                 setPagination((prevState) => ({
                     ...prevState,
-                    data: response.data.data,
+                    data: [...prevState.data, ...response.data.data],
                     meta: response.data.meta,
                     loading: false,
                 }));
@@ -69,24 +80,44 @@ export default ({queryParams = {}}) => {
 
     /**
      * If you're wondering why we're using `useCallback` here, here's a good explanation:
-     * 
+     *
      * @see: https://rajeshnaroth.medium.com/using-throttle-and-debounce-in-a-react-function-component-5489fc3461b3
      */
-    const debouncedFetchResources = useCallback(debounce(fetchResources, 500), []);
+    const debouncedFetchResources = useCallback(
+        debounce(fetchResources, 500),
+        []
+    );
 
     return (
         <>
-            <Head title={t("Articles")} />
-
             <div className="space-y-3">
                 {pagination.data.map((article) => (
                     <ArticleCard key={article.id} article={article} />
                 ))}
+                <Loading condition={pagination.loading} />
             </div>
-
-            {/* {!pagination.loading && (
-                <Pagination onPaginateTo={paginateTo} pagination={pagination} />
-            )} */}
+            <div className="flex justify-center mt-4">
+                {!pagination.loading &&
+                    pagination.meta?.current_page <
+                        pagination.meta?.last_page && (
+                        <PrimaryButton
+                            onClick={() => {
+                                paginateTo({
+                                    page: pagination.page + 1,
+                                    perPage: pagination.per_page,
+                                });
+                            }}
+                        >
+                            {t("Load More")}
+                        </PrimaryButton>
+                    )}
+                {pagination.meta?.current_page >=
+                    pagination.meta?.last_page && (
+                    <span className="text-gray-500 text-md">
+                        {t("No more articles to load")}
+                    </span>
+                )}
+            </div>
         </>
     );
 };
