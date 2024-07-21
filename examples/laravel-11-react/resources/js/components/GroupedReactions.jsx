@@ -17,30 +17,26 @@ export default ({ groupedReactions, compressed = false, fontSize = "sm" }) => {
     };
 
     if (compressed) {
-        // Grouped reactions are sorted by count in descending order, withing circles, and the one on the left slightly obscures the one on the right.
-        // This is a compressed version of the GroupedReactions component.
         return (
-                <div className="relative flex items-center">
-                    {groupedReactions.map((reaction, index) => (
-                        <div
-                            key={index}
-                            className="absolute flex items-center justify-center transition-all"
-                            style={{
-                                left: `${index * 25}px`,
-                                zIndex: groupedReactions.length - index,
-                            }}
-                        >
-                            <div className="flex items-center justify-center w-10 h-10 bg-white rounded-full shadow-md border-gray-400 border">
-                                <span>{emojis[reaction.reaction]}</span>
-                            </div>
-                            <span className="absolute bottom-[-6px] right-[-3px] px-2 py-1 text-[8px] text-white bg-red-500 rounded-full">
-                                {reaction.count}
-                            </span>
+            <div className="flex items-center">
+                {groupedReactions.map((reaction, index) => (
+                    <div
+                        key={index}
+                        className={`flex items-center relative justify-center transition-all ${index !== 0 ? '-ml-4' : ''}`}
+                        style={{
+                            zIndex: groupedReactions.length - index,
+                            left: `${index * 1}px`,
+                        }}
+                    >
+                        <div className="flex items-center justify-center w-8 h-8 pt-1 text-sm bg-white rounded-full shadow-md border-gray-400 border">
+                            <span>{emojis[reaction.reaction]}</span>
                         </div>
-                    ))}
-                </div>
+                    </div>
+                ))}
+            </div>
         );
     }
+
     return (
         <div className="flex items-center space-x-3">
             {groupedReactions.map((reaction) => {
@@ -50,10 +46,8 @@ export default ({ groupedReactions, compressed = false, fontSize = "sm" }) => {
                         className="flex items-center space-x-1"
                     >
                         <span className={fontSizes[fontSize] ?? "text-sm"}>
-                            {emojis[reaction.reaction]}
-                        </span>
-                        <span
-                            className={
+                            {emojis[reaction.reaction]}</span>
+                        <span className={
                                 "font-bold " +
                                 (fontSizes[fontSize] ?? "text-sm")
                             }

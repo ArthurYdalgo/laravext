@@ -99,6 +99,10 @@ class Article extends Model
         return $this->hasMany(Share::class);
     }
 
+    public function bookmarks()
+    {
+        return $this->belongsToMany(User::class, 'bookmarks');
+    }
 
     public function reads()
     {

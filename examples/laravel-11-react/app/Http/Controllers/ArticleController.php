@@ -10,6 +10,7 @@ use App\Http\Requests\Article\StoreRequest;
 use App\Http\Requests\Article\UnreactRequest;
 use App\Http\Requests\Article\UpdateRequest;
 use App\Http\Requests\Article\UserReactionsRequest;
+use App\Http\Resources\ArticleResource;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -45,12 +46,17 @@ class ArticleController extends Controller
             AllowedInclude::count('reactionsCount'),
             AllowedInclude::count('commentsCount'),
         ])
+        ->when(user(), function($query) {
+            $query->with(['bookmarks' => function($query) {
+                $query->where('user_id', user()->id);
+            }]);
+        })
         ->withGroupedReactions()
         ->latest()->paginate(10);
 
         $articles->makeHidden(['content', 'html']);
 
-        return JsonResource::collection($articles);
+        return ArticleResource::collection($articles);
     }
 
     /**

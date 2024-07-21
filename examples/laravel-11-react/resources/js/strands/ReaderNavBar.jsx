@@ -4,7 +4,6 @@ import SVGLogo from "@/components/SVGLogo";
 import { useTranslation } from "react-i18next";
 import useStateRef from "react-usestateref";
 import Auth from "@/components/Auth";
-import { reload } from '@laravext/react/router';
 import Guest from "@/components/Guest";
 import {sharedProps} from "@laravext/react";
 import RoleCheck from "@/components/RoleCheck";
@@ -19,7 +18,7 @@ export default () => {
 
     const logout = async () => {
         await axios.post('/api/auth/logout');
-        reload();
+        window.location.reload();
     };
 
     return (
