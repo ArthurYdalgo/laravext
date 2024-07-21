@@ -119,12 +119,64 @@ class Article extends Model
         return $this->morphMany(AbuseReport::class, 'reportable');
     }
 
+    // Scopes
     public function scopeWithGroupedReactions($query)
     {
         return $query->with(['reactions' => function ($query) {
             $query->select('reactionable_id', 'reaction', DB::raw('count(*) as count'))
                 ->groupBy('reactionable_id', 'reaction')->orderBy('count', 'desc');
         }]);
+    }
+
+    public function scopeAvailable($query){
+        return $query->where(function ($query) {
+            $query->published();
+
+            if (user()) {
+                $query->orWhere('user_id', user()->id);
+            }
+
+            return $query;
+        });
+    }
+
+    /**
+     * This is a workaround to use Laravel Scout with Spatie Query Builder
+     * 
+     * @see: https://github.com/spatie/laravel-query-builder/issues/147#issuecomment-1362814997
+     */
+    public function scopeWhereScout($query, string $search)
+    {
+        if(!$search){
+            return $query;
+        }
+
+        $scout_is_available = scoutIsAvailable();
+
+        if ($scout_is_available) {
+            return $query->whereIn(
+                'id',
+                self::search($search)
+                    ->get()
+                    ->pluck('id'),
+            );
+        }
+
+        return $query->where(function($subquery) use($search) {
+            $subquery->where('articles.title', 'like', "%{$search}%")->orWhere('articles.subtitle', 'like', "%{$search}%")
+            ->orWhereHas("user", function($subsubquery) use($search) {
+                $subsubquery->where('users.name', 'like', "{$search}%");
+            })->orWhereHas("tags", function($subsubquery) use($search) {
+                $subsubquery->where('tags.slug', 'like', "$search");
+            })->orWhereJsonContains('articles.keywords', $search);
+        });
+    }
+
+    public function scopePublished($query, $date = null)
+    {
+        return $query->where(function ($query) use ($date) {
+            return $query->whereNotNull('published_at')->where('published_at', '<=', $date ?? now());
+        });
     }
 
     // Methods

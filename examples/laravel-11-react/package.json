@@ -28,6 +28,7 @@
         "laravel-vite-plugin": "^1.0",
         "linkedom": "^0.18.3",
         "lodash": "^4.17.21",
+        "lodash-es": "^4.17.21",
         "moment": "^2.30.1",
         "postcss": "^8.4.31",
         "react": "^18.2.0",

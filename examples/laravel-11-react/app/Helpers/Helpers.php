@@ -66,7 +66,7 @@ if (!function_exists('scoutIsAvailable')){
     function scoutIsAvailable(){
         try {
             $status = Cache::remember('scout_status', 60, function () {
-                return Http::get(config('scout.url'))->json()['status'] ?? null;
+                return Http::get(config('scout.meilisearch.host')."/health")->json()['status'] ?? 'unavailable';
             });
 
             return $status === 'available';

@@ -1,14 +1,16 @@
 import ArticleCard from "@/components/ArticleCard";
 import Header from "@/components/Header";
 import Pagination from "@/components/Pagination";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { debounce } from "lodash";
+import { debounce } from "lodash-es";
 import useStateRef from "react-usestateref";
 import { Head } from "@laravext/react";
+import useSearch from "@/hooks/useSearch";
 
 export default () => {
     const { t } = useTranslation();
+    const { text } = useSearch();
 
     const [pagination, setPagination, paginationRef] = useStateRef({
         data: [],
@@ -19,27 +21,14 @@ export default () => {
     });
 
     const [filters, setFilters, filtersRef] = useStateRef({
-        search: "",
+        search: text,
     });
 
-    const debouncedFetchResources = debounce(() => {
-        pagination.page = 1;
-
-        fetchResources();
-    }, 1000);
-
     useEffect(() => {
-        fetchResources();
-    }, []);
-
-    const paginateTo = ({ page, perPage }) => {
-        setPagination((prevState) => ({
-            ...prevState,
-            page,
-            per_page: perPage,
-        }));
-        fetchResources();
-    };
+        setFilters((prevState) => ({ ...prevState, search: text }));
+        console.log("text", text);
+        debouncedFetchResources();
+    }, [text]);
 
     const fetchResources = () => {
         setPagination((prevState) => ({ ...prevState, loading: true }));
@@ -49,7 +38,9 @@ export default () => {
                 params: {
                     page: paginationRef.current.page,
                     per_page: paginationRef.current.per_page,
-                    search: filtersRef.current.search ?? "",
+                    filter: {
+                        search: filtersRef.current.search ?? '',
+                    },
                     include: "user,commentsCount,tags,reactionsCount",
                 },
             })
@@ -69,9 +60,18 @@ export default () => {
                 }));
             });
     };
+
+    /**
+     * If you're wondering why we're using `useCallback` here, here's a good explanation:
+     * 
+     * @see: https://rajeshnaroth.medium.com/using-throttle-and-debounce-in-a-react-function-component-5489fc3461b3
+     */
+    const debouncedFetchResources = useCallback(debounce(fetchResources, 500), []);
+
     return (
         <>
-            <Head>{t("Projects")}</Head>
+            <Head title={t("Articles")} />
+
             <div className="space-y-3">
                 {pagination.data.map((article) => (
                     <ArticleCard key={article.id} article={article} />

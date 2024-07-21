@@ -10,11 +10,12 @@ import RoleCheck from "@/components/RoleCheck";
 import Dropdown from "@/components/Dropdown";
 import DropdownButton from "@/components/DropdownButton";
 import DropdownLink from "@/components/DropdownLink";
+import useSearch from "@/hooks/useSearch";
 
 export default () => {
     const { user } = sharedProps().auth;
     const { t } = useTranslation();
-    const [search, setSearch, searchRef] = useStateRef("");
+    const { text, tags, setText } = useSearch();
 
     const logout = async () => {
         await axios.post('/api/auth/logout');
@@ -36,7 +37,7 @@ export default () => {
 
                     <div className="relative w-full">
                         <Link
-                            href={route("search", { q: searchRef.current })}
+                            href={route("search", { q: text })}
                             className="absolute p-0.5 top-1/2 transform -translate-y-1/2 text-gray-500 text-xs"
                         >
                             <Fa
@@ -48,8 +49,8 @@ export default () => {
                         <input
                             type="text"
                             placeholder={`${t("Search")}...`}
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
+                            value={text}
+                            onChange={(e) => setText(e.target.value)}
                             className="w-full md:pr-36 pl-10 py-1.5 rounded-md border border-gray-300 transition duration-300 focus:outline-none"
                         />
                         <div className="md:block hidden">

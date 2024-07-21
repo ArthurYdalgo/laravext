@@ -15,6 +15,7 @@ use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedInclude;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -25,34 +26,23 @@ class ArticleController extends Controller
      */
     public function index(IndexRequest $request)
     {
-        $scout_is_available = scoutIsAvailable();
-        
-        $search = $request->query('q');
-
-        $articles_query = $scout_is_available ? Article::search($search) : Article::when($search, function($query) use($search) {
-            $query->where(function($subquery) use($search) {
-                $subquery->where('articles.title', 'like', "%{$search}%")->orWhere('articles.subtitle', 'like', "%{$search}%")
-                ->orWhereHas("author", function($subsubquery) use($search) {
-                    $subsubquery->where('authors.name', 'like', "{$search}%");
-                })->orWhereHas("tags", function($subsubquery) use($search) {
-                    $subsubquery->where('tags.slug', 'like', "$search");
-                })->orWhereJsonContains('articles.keywords', $search);
-            });
-        });
-            
-        $articles = QueryBuilder::for($articles_query)
-        ->allowedIncludes([
-            'user', 'tags',
-            AllowedInclude::count('reactionsCount'),
-            AllowedInclude::count('commentsCount'),
-        ])
-        ->when(user(), function($query) {
-            $query->with(['bookmarks' => function($query) {
-                $query->where('user_id', user()->id);
-            }]);
-        })
-        ->withGroupedReactions()
-        ->latest()->paginate(10);
+        $articles = QueryBuilder::for(Article::class)
+            ->allowedIncludes([
+                'user', 'tags',
+                AllowedInclude::count('reactionsCount'),
+                AllowedInclude::count('commentsCount'),
+            ])
+            ->allowedFilters([
+                AllowedFilter::scope('search', 'whereScout')
+            ])
+            ->when(user(), function ($query) {
+                $query->with(['bookmarks' => function ($query) {
+                    $query->where('user_id', user()->id);
+                }]);
+            })
+            ->available()
+            ->withGroupedReactions()
+            ->latest('id')->paginate(10);
 
         $articles->makeHidden(['content', 'html']);
 
