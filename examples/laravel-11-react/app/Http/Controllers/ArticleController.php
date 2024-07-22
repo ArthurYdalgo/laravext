@@ -36,12 +36,35 @@ class ArticleController extends Controller
                 AllowedInclude::count('commentsCount'),
             ])
             ->allowedFilters([
-                AllowedFilter::scope('search', 'whereScout')
+                AllowedFilter::scope('search', 'whereScout'),
+                AllowedFilter::callback('relevance', function ($query, $value, $property) {
+                    if (!user()) {
+                        return $query;
+                    }
+
+                    if ($value == 'author') {
+                        $followedUserIds = DB::table('follows')
+                            ->where('follower_id', user()->id)
+                            ->pluck('followee_id')->values()->toArray();
+
+                        return $query->whereIn('user_id', $followedUserIds);
+                    }
+
+                    if ($value == 'tag') {
+                        $userTagIds = DB::table('user_tag')
+                            ->where('user_id', user()->id)
+                            ->pluck('tag_id')->values()->toArray();
+
+                        return $query->whereHas('tags', function ($query) use ($userTagIds) {
+                            $query->whereIn('tags.id', $userTagIds);
+                        });
+                    }
+                })
             ])
             ->allowedSorts([
                 'published_at',
-                AllowedSort::custom('relevance', new Relevance),
             ])
+
             ->orderBy('published_at', 'desc')
             ->when(user(), function ($query) {
                 $query->with(['bookmarks' => function ($query) {

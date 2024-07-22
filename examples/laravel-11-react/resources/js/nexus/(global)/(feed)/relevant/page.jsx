@@ -2,6 +2,8 @@ import ArticleListing from "@/components/Article/ArticleListing";
 
 export default () => {
     return <ArticleListing queryParams={{
-        'sort': 'relevance'
+        'filter': {
+            'relevance': true
+        }
     }} />
 };
