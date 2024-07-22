@@ -11,6 +11,7 @@ use App\Models\Share;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Lottery;
 use Spatie\Permission\Models\Role;
 
@@ -21,95 +22,111 @@ class ArticlesSeeder extends Seeder
      */
     public function run(): void
     {
-        $write_role = Role::findOrCreate('writer');
+        // $standard_password = Hash::make('password');
 
-        $light_colors = [
-            [255, 255, 255],
-            [211, 211, 211],
-            [173, 216, 230],
-            [144, 238, 144],
-            [255, 255, 224],
-            [255, 182, 193],
-            [230, 230, 250],
-            [255, 228, 196],
-            [255, 192, 203],
-        ];
+        // $light_colors = [
+        //     [255, 255, 255],
+        //     [211, 211, 211],
+        //     [173, 216, 230],
+        //     [144, 238, 144],
+        //     [255, 255, 224],
+        //     [255, 182, 193],
+        //     [230, 230, 250],
+        //     [255, 228, 196],
+        //     [255, 192, 203],
+        // ];
 
-        $initial_readers_count = 500;
-        line("Creating {$initial_readers_count} readers...");
-        $readers = User::factory($initial_readers_count)->create();
+        // $initial_readers_count = 1000000;
+        // line("Creating {$initial_readers_count} readers, in batches...");
+        // for ($batch = 0; $batch < 4; $batch++){
+        //     line("Creating batch {$batch} of readers... (".now()->toDateTimeString().")");
+        //     $readers_data = User::factory(250000)->make()->toArray();
+        //     line("inserting");
+        //     foreach($readers_data as $index => $reader_data){
+        //         if($index % 10000 === 0){
+        //             line("Creating reader {$index}...");
+        //         }
+        //         $reader_data['password'] = $standard_password;
+        //         User::create($reader_data);
+        //     }
+        // }
+        // unset($readers_data);
+        $readers = User::all();
         $tags = Tag::all();
         $tags_count = $tags->count();
 
-        if($tags->isNotEmpty()){
-            foreach($readers as $reader){
-                $reader->followingTags()->sync($tags->random(min($tags_count, random_int(3, 10))));
-            }
-        }
+        // if($tags->isNotEmpty()){
+        //     foreach($readers as $reader){
+        //         $reader->tags()->sync($tags->random(min($tags_count, random_int(3, 10))));
+        //     }
+        // }
 
-        $initial_writes_count = 20;
-        line("Creating {$initial_writes_count} writers and their articles...");
-        $writers = User::factory($initial_writes_count)->create();
+        $writers = $readers->random(5000);
+        line("Seeding Articles...");
 
-        foreach ($writers as $writer) {
-            $writer->assignRole($write_role);
+        // foreach ($writers as $writer_index => $writer) {
 
-            $writer->update([
-                'username' => str($writer->name)->slug()->toString(),
-            ]);
+        //     $writer->update([
+        //         'username' => str($writer->name)->slug()->toString(),
+        //     ]);
 
-            for ($articles_count = 0; $articles_count < random_int(3, 5); $articles_count++) {
-                $title = fake()->sentence();
+        //     if($writer_index % 100 === 0){
+        //         line("Creating articles of write {$writer_index}...");
+        //     }
 
-                $banner = $writer->addMediaFromContent(generateTextedImage($title, 1000, 480, fake()->randomElement($light_colors), font_size: 45), path_suffix: 'articles');
+        //     for ($articles_count = 0; $articles_count < random_int(30, 300); $articles_count++) {
+        //         $title = fake()->sentence();
 
-                $content = "";
+        //         // $banner = $writer->addMediaFromContent(generateTextedImage($title, 1000, 480, fake()->randomElement($light_colors), font_size: 45), path_suffix: 'articles');
 
-                $media_to_attach = [];
+        //         $content = "";
 
-                for ($paragraphs_count = 0; $paragraphs_count < random_int(3, 5); $paragraphs_count++) {
-                    $sentence = fake()->sentence(4);
+        //         $media_to_attach = [];
 
-                    $media = $writer->addMediaFromContent(generateTextedImage($sentence, 1080, 720, fake()->randomElement($light_colors), font_size: 35), path_suffix: 'articles');
+        //         for ($paragraphs_count = 0; $paragraphs_count < random_int(3, 5); $paragraphs_count++) {
+        //             $sentence = fake()->sentence(4);
 
-                    $media_to_attach[] = $media->id;
+        //             // $media = $writer->addMediaFromContent(generateTextedImage($sentence, 1080, 720, fake()->randomElement($light_colors), font_size: 35), path_suffix: 'articles');
 
-                    $code = fake()->randomElement([
-                        "```php\n<?php\n\n echo \"Hello, World!\";\n```",
-                    ]);
+        //             // $media_to_attach[] = $media->id;
+
+        //             $code = fake()->randomElement([
+        //                 "```php\n<?php\n\n echo \"Hello, World!\";\n```",
+        //             ]);
                     
-                    $paragraph = fake()->sentence(250) . "\n\nExample Code:\n{$code}\n\n\n![image]($media->url)\n\n";
+        //             // $paragraph = fake()->sentence(250) . "\n\nExample Code:\n{$code}\n\n\n![image]($media->url)\n\n";
+        //             $paragraph = fake()->sentence(250) . "\n\nExample Code:\n{$code}\n\n";
                     
-                    $header = fake()->sentence(5);
+        //             $header = fake()->sentence(5);
 
-                    $content .= "## {$header}\n\n{$paragraph}\n\n";
-                }
+        //             $content .= "## {$header}\n\n{$paragraph}\n\n";
+        //         }
 
-                $article = Article::factory()->create([
-                    'user_id' => $writer->id,
-                    'slug' => str($title)->slug()->append(str()->random(5))->toString(),
-                    'title' => $title,
-                    'short_link_code' => str()->random(16),
-                    'content' => $content,
-                    'banner_url' => $banner->url,
-                    'metadata' => [
-                        'display_banner_in_listing' => fake()->boolean(),
-                    ]
-                ]);
+        //         $article = Article::factory()->create([
+        //             'user_id' => $writer->id,
+        //             'slug' => str($title)->slug()->append(str()->random(5))->toString(),
+        //             'title' => $title,
+        //             'short_link_code' => str()->random(16),
+        //             'content' => $content,
+        //             // 'banner_url' => $banner->url,
+        //             'metadata' => [
+        //                 'display_banner_in_listing' => fake()->boolean(),
+        //             ]
+        //         ]);
 
-                $article->media()->attach($media_to_attach);
+        //         $article->media()->attach($media_to_attach);
 
-                $article->tags()->attach(Tag::all()->random(5));
-            }
-        }
+        //         $article->tags()->attach(Tag::all()->random(5));
+        //     }
+        // }
 
         $articles = Article::all();
 
-        $random_articles = $articles->random(min($articles->count(), random_int(10, $articles->count())));
+        $random_articles = $articles->random(min($articles->count(), random_int(1000, $articles->count())));
 
         line("Seeding Interactions...");
         foreach ($random_articles as $random_article) {
-            for ($interactions_count = 0; $interactions_count < random_int(5, 10); $interactions_count++) {
+            for ($interactions_count = 0; $interactions_count < random_int(50, 1000); $interactions_count++) {
                 $reader = $readers->random();
 
                 // follow
@@ -162,11 +179,11 @@ class ArticlesSeeder extends Seeder
             }
         }
 
-        $random_articles = $articles->random(min($articles->count(), random_int(10, $articles->count())));
+        $random_articles = $articles->random(min($articles->count(), random_int(1000, $articles->count())));
 
         $comments = Comment::all();
 
-        $random_comments = $comments->random(min($comments->count(), random_int(5, intval($comments->count() / 2))));
+        $random_comments = $comments->random(min($comments->count(), random_int(50, intval($comments->count() / 2))));
 
         line("Seeding Replies, Reactions and Abuse Reports on Comments...");
         foreach ($random_comments as $random_comment) {

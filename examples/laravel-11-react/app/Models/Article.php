@@ -128,7 +128,8 @@ class Article extends Model
         }]);
     }
 
-    public function scopeAvailable($query){
+    public function scopeAvailable($query)
+    {
         return $query->where(function ($query) {
             $query->published();
 
@@ -147,7 +148,7 @@ class Article extends Model
      */
     public function scopeWhereScout($query, string $search)
     {
-        if(!$search){
+        if (!$search) {
             return $query;
         }
 
@@ -156,19 +157,23 @@ class Article extends Model
         if ($scout_is_available) {
             return $query->whereIn(
                 'id',
-                self::search($search)
+                self::search($search, function ($meilisearch, $query, $options) {
+                    $options['limit'] = 1000;
+
+                    return $meilisearch->search($query, $options);
+                })
                     ->get()
                     ->pluck('id'),
             );
         }
 
-        return $query->where(function($subquery) use($search) {
+        return $query->where(function ($subquery) use ($search) {
             $subquery->where('articles.title', 'like', "%{$search}%")->orWhere('articles.subtitle', 'like', "%{$search}%")
-            ->orWhereHas("user", function($subsubquery) use($search) {
-                $subsubquery->where('users.name', 'like', "{$search}%");
-            })->orWhereHas("tags", function($subsubquery) use($search) {
-                $subsubquery->where('tags.slug', 'like', "$search");
-            })->orWhereJsonContains('articles.keywords', $search);
+                ->orWhereHas("user", function ($subsubquery) use ($search) {
+                    $subsubquery->where('users.name', 'like', "{$search}%");
+                })->orWhereHas("tags", function ($subsubquery) use ($search) {
+                    $subsubquery->where('tags.slug', 'like', "$search");
+                })->orWhereJsonContains('articles.keywords', $search);
         });
     }
 

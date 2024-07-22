@@ -41,7 +41,7 @@ export default ({ article }) => {
 
     return (
         <div className="rounded-lg bg-white">
-            {(article.metadata?.display_banner_in_listing ?? true) && (
+            {(article.banner_url && (article.metadata?.display_banner_in_listing ?? true)) && (
                 <img
                     className=" rounded-t-lg max-w-full w-full h-auto"
                     src={article.banner_url}

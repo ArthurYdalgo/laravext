@@ -28,20 +28,20 @@ export default ({ queryParams = {} }) => {
 
     useEffect(() => {
         setFilters((prevState) => ({ ...prevState, search: text }));
-        console.log("text", text);
+        setPagination((prevState) => ({ ...prevState, page: 1 }));
         debouncedFetchResources();
     }, [text]);
 
-    const paginateTo = ({ page, perPage }) => {
+    const paginateTo = ({ page, perPage, clearData = true }) => {
         setPagination((prevState) => ({
             ...prevState,
             page,
             per_page: perPage,
         }));
-        fetchResources();
+        fetchResources(clearData);
     };
 
-    const fetchResources = () => {
+    const fetchResources = (clearData = true) => {
         setPagination((prevState) => ({ ...prevState, loading: true }));
 
         let params = {
@@ -64,7 +64,7 @@ export default ({ queryParams = {} }) => {
             .then((response) => {
                 setPagination((prevState) => ({
                     ...prevState,
-                    data: [...prevState.data, ...response.data.data],
+                    data: clearData ? response.data.data : [...prevState.data, ...response.data.data],
                     meta: response.data.meta,
                     loading: false,
                 }));
@@ -105,6 +105,7 @@ export default ({ queryParams = {} }) => {
                                 paginateTo({
                                     page: pagination.page + 1,
                                     perPage: pagination.per_page,
+                                    clearData: false,
                                 });
                             }}
                         >
