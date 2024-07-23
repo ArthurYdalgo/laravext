@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
-import Fa from "./Fa";
-import FadingShadowText from "./FadingShadowText";
+import Fa from "@/components/Fa";
+import FadingShadowText from "@/components/FadingShadowText";
 import { useState } from "react";
 import CryptoJS from 'crypto-js';
 

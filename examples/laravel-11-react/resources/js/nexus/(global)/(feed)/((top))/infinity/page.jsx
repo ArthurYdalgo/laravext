@@ -1,3 +1,7 @@
+import ArticleListing from "@/components/Article/ArticleListing";
+
 export default () => {
-    return <>Best posts ever</>;
+    return <ArticleListing queryParams={{
+        'sort' : '-top_infinity'
+    }} />
 };

@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 import PrimaryButton from '@/components/PrimaryButton';
 import axios from 'axios';
 import Loading from '@/components/Loading';
-import Article from '@/components/Article';
+import Article from '@/components/Article/Article';
 export default () => {
 
     const { t } = useTranslation();

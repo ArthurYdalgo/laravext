@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\QueryBuilders\Sorts\Relevance;
+use App\Http\QueryBuilders\Filters\Relevance as RelevanceFilter;
+use App\Http\QueryBuilders\Sorts\Relevance as RelevanceSort;
+use App\Http\QueryBuilders\Sorts\TopInfinity;
+use App\Http\QueryBuilders\Sorts\TopMonth;
+use App\Http\QueryBuilders\Sorts\TopWeek;
+use App\Http\QueryBuilders\Sorts\TopYear;
 use App\Http\Requests\Article\DestroyRequest;
 use App\Http\Requests\Article\IndexRequest;
 use App\Http\Requests\Article\ReactRequest;
@@ -37,32 +42,14 @@ class ArticleController extends Controller
             ])
             ->allowedFilters([
                 AllowedFilter::scope('search', 'whereScout'),
-                AllowedFilter::callback('relevance', function ($query, $value, $property) {
-                    if (!user()) {
-                        return $query;
-                    }
-
-                    if ($value == 'author') {
-                        $followedUserIds = DB::table('follows')
-                            ->where('follower_id', user()->id)
-                            ->pluck('followee_id')->values()->toArray();
-
-                        return $query->whereIn('user_id', $followedUserIds);
-                    }
-
-                    if ($value == 'tag') {
-                        $userTagIds = DB::table('user_tag')
-                            ->where('user_id', user()->id)
-                            ->pluck('tag_id')->values()->toArray();
-
-                        return $query->whereHas('tags', function ($query) use ($userTagIds) {
-                            $query->whereIn('tags.id', $userTagIds);
-                        });
-                    }
-                })
+                AllowedFilter::callback('relevance', new RelevanceFilter)
             ])
             ->allowedSorts([
-                'published_at',
+                AllowedSort::custom('top_week', new TopWeek),
+                AllowedSort::custom('top_month', new TopMonth),
+                AllowedSort::custom('top_year', new TopYear),
+                AllowedSort::custom('top_infinity', new TopInfinity),
+
             ])
 
             ->orderBy('published_at', 'desc')

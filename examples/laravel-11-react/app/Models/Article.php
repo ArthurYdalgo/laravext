@@ -167,6 +167,8 @@ class Article extends Model
             );
         }
 
+        $search = str_replace('\"', '', $search);
+
         return $query->where(function ($subquery) use ($search) {
             $subquery->where('articles.title', 'like', "%{$search}%")->orWhere('articles.subtitle', 'like', "%{$search}%")
                 ->orWhereHas("user", function ($subsubquery) use ($search) {

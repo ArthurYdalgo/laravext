@@ -9,6 +9,7 @@ import { Head } from "@laravext/react";
 import useSearch from "@/hooks/useSearch";
 import Loading from "../Loading";
 import PrimaryButton from "../PrimaryButton";
+import LoadingButton from "../LoadingButton";
 
 export default ({ queryParams = {} }) => {
     const { t } = useTranslation();
@@ -53,8 +54,8 @@ export default ({ queryParams = {} }) => {
             include: "user,commentsCount,tags,reactionsCount",
         };
 
-        if (queryParams) {
-            params = { ...params, ...queryParams };
+        if (queryParams) {    
+            params = { ...params, ...queryParams, filter: { ...(params.filter), ...(queryParams.filter ?? {}) } };
         }
 
         axios
@@ -97,10 +98,10 @@ export default ({ queryParams = {} }) => {
                 <Loading condition={pagination.loading} />
             </div>
             <div className="flex justify-center mt-4">
-                {!pagination.loading &&
-                    pagination.meta?.current_page <
+                {pagination.meta?.current_page <
                         pagination.meta?.last_page && (
-                        <PrimaryButton
+                        <LoadingButton
+                            loading={pagination.loading}
                             onClick={() => {
                                 paginateTo({
                                     page: pagination.page + 1,
@@ -110,7 +111,7 @@ export default ({ queryParams = {} }) => {
                             }}
                         >
                             {t("Load More")}
-                        </PrimaryButton>
+                        </LoadingButton>
                     )}
                 {pagination.meta?.current_page >=
                     pagination.meta?.last_page && (

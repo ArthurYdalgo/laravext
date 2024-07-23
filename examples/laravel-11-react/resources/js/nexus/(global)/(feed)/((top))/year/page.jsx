@@ -1,3 +1,7 @@
+import ArticleListing from "@/components/Article/ArticleListing";
+
 export default () => {
-    return <>Best posts of this year</>;
+    return <ArticleListing queryParams={{
+        'sort' : '-top_year'
+    }} />
 };

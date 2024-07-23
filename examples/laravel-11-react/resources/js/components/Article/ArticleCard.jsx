@@ -4,12 +4,12 @@ import GroupedReactions from "@/components/GroupedReactions";
 import { useTranslation } from "react-i18next";
 import Fa from "@/components/Fa";
 import Bookmark from "@/components/Bookmark";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Swal from 'sweetalert2';
 import {sharedProps} from "@laravext/react";
 
 export default ({ article }) => {
-    const { t } = useTranslation();
+    const { t , i18n} = useTranslation();
     const {user} = sharedProps().auth;
     const [isBookmarked, setIsBookmarked] = useState(article.has_been_bookmarked_by_user ?? false);
 
@@ -64,8 +64,8 @@ export default ({ article }) => {
                                 {article.user.name}
                             </p>
                             <p className="text-xs text-gray-500">
-                                {moment(article.published_at).format("LL")} (
-                                {moment(article.published_at).fromNow()})
+                                {moment(article.published_at).locale(i18n.language).format("LL")} (
+                                {moment(article.published_at).locale(i18n.language).fromNow()})
                             </p>
                         </div>
                     </div>

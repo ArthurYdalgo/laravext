@@ -175,6 +175,7 @@ class ArticlesSeeder extends Seeder
                     'user_id' => $reader->id,
                     'share_id' => $share?->id,
                     'ip_address' => fake()->ipv4,
+                    'created_at' => fake()->dateTimeBetween($random_article->published_at, now()),
                 ]);
             }
         }

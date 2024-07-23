@@ -14,6 +14,7 @@ class Read extends Model
         'article_id',
         'share_id',
         'ip_address',
+        'created_at',
     ];
 
     public function article()
