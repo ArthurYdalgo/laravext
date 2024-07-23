@@ -16,9 +16,15 @@ class HandleLaravextRequests extends Middleware
     public function share(Request $request)
     {   
         $now = now();
+        $user = $request->user();
+
+        if($user){
+            $user->loadMissing('roles');
+        }
+
         return array_merge(parent::share($request), [
             'auth' => [
-                'user' => $request->user(),
+                'user' => $user,
             ],
             'ziggy' => [
                 ...(new Ziggy)->toArray(),

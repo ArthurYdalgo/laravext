@@ -54,8 +54,12 @@ export default ({ queryParams = {} }) => {
             include: "user,commentsCount,tags,reactionsCount",
         };
 
-        if (queryParams) {    
-            params = { ...params, ...queryParams, filter: { ...(params.filter), ...(queryParams.filter ?? {}) } };
+        if (queryParams) {
+            params = {
+                ...params,
+                ...queryParams,
+                filter: { ...params.filter, ...(queryParams.filter ?? {}) },
+            };
         }
 
         axios
@@ -65,7 +69,9 @@ export default ({ queryParams = {} }) => {
             .then((response) => {
                 setPagination((prevState) => ({
                     ...prevState,
-                    data: clearData ? response.data.data : [...prevState.data, ...response.data.data],
+                    data: clearData
+                        ? response.data.data
+                        : [...prevState.data, ...response.data.data],
                     meta: response.data.meta,
                     loading: false,
                 }));
@@ -95,24 +101,22 @@ export default ({ queryParams = {} }) => {
                 {pagination.data.map((article) => (
                     <ArticleCard key={article.id} article={article} />
                 ))}
-                <Loading condition={pagination.loading} />
             </div>
             <div className="flex justify-center mt-4">
-                {pagination.meta?.current_page <
-                        pagination.meta?.last_page && (
-                        <LoadingButton
-                            loading={pagination.loading}
-                            onClick={() => {
-                                paginateTo({
-                                    page: pagination.page + 1,
-                                    perPage: pagination.per_page,
-                                    clearData: false,
-                                });
-                            }}
-                        >
-                            {t("Load More")}
-                        </LoadingButton>
-                    )}
+                {((pagination.meta?.current_page < pagination.meta?.last_page) || pagination.loading) && (
+                    <LoadingButton
+                        loading={pagination.loading}
+                        onClick={() => {
+                            paginateTo({
+                                page: pagination.page + 1,
+                                perPage: pagination.per_page,
+                                clearData: false,
+                            });
+                        }}
+                    >
+                        {pagination.loading ? t("Loading") : t("Load More")}
+                    </LoadingButton>
+                )}
                 {pagination.meta?.current_page >=
                     pagination.meta?.last_page && (
                     <span className="text-gray-500 text-md">

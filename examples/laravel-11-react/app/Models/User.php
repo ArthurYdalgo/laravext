@@ -36,6 +36,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'roles',
     ];
 
     protected $casts = [
@@ -46,9 +47,9 @@ class User extends Authenticatable
     ];
 
     protected $appends = [
-        // 'first_name',
-        // 'last_name',
-        // 'assigned_roles',
+        'first_name',
+        'last_name',
+        'assigned_roles',
     ];
 
     // Getters and Setters

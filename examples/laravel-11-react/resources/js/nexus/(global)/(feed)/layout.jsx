@@ -2,10 +2,12 @@ import FeedLayout from "@/components/Article/Feed/FeedLayout";
 import Link from "@/components/Link";
 import { currentRouteIs } from "@/tools/helpers";
 import { sharedProps } from "@laravext/react";
+import { useTranslation } from "react-i18next";
 
 export default ({ children, topPageButtons = null }) => {
 
     const {user} = sharedProps().auth;
+    const { t } = useTranslation();
 
     return (
         <div>
@@ -17,14 +19,14 @@ export default ({ children, topPageButtons = null }) => {
                             className="m-2 mt-0 py-[8px] px-[12px] hover:text-blue-700 hover:bg-white hover:rounded-lg"
                             classNameWhenIsCurrentRoute="font-black"
                         >
-                            Latest
+                            {t('Latest')}
                         </Link>
                         {user && <Link
                             routeName={"relevant"}
                             className="m-2 mt-0 py-[8px] px-[12px] hover:text-blue-700 hover:bg-white hover:rounded-lg"
                             classNameWhenIsCurrentRoute="font-black"
                         >
-                            Relevant
+                            {t('Relevant')}
                         </Link>}
                         <Link
                             routeName={"top.week"}
@@ -35,7 +37,7 @@ export default ({ children, topPageButtons = null }) => {
                                 "top.infinity",
                             ]) ? 'font-black' : '')}
                         >
-                            Top
+                            {t('Top')}
                         </Link>
                     </div>
                     {/* horizontal line */}
