@@ -120,7 +120,7 @@ export default ({ queryParams = {} }) => {
                 {pagination.meta?.current_page >=
                     pagination.meta?.last_page && (
                     <span className="text-gray-500 text-md">
-                        {t("No more articles to load")}
+                        {t("No more articles to load")} {text && `${t("for the search")} "${text}"`}
                     </span>
                 )}
             </div>
