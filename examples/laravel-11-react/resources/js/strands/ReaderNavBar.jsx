@@ -60,7 +60,7 @@ export default () => {
 
                     <div className="relative w-full">
                         <Link
-                            href={route("search", { q: text })}
+                            href={route("search")}
                             className="absolute p-0.5 top-1/2 transform -translate-y-1/2 text-gray-500 text-xs"
                         >
                             <Fa

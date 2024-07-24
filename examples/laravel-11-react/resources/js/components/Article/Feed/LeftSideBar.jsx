@@ -6,6 +6,7 @@ import Tag from "@/components/Icons/Tag";
 import Link from "@/components/Link";
 import { sharedProps } from "@laravext/react";
 import { useTranslation } from "react-i18next";
+import { route } from "ziggy-js";
 
 export default ({ children, ...props }) => {
     const { user } = sharedProps().auth;
@@ -35,7 +36,9 @@ export default ({ children, ...props }) => {
                         <span className="text-lg font-bold">
                             {t("Your Tags")}
                         </span>
+                        <Link routeName={"dashboard.following.tags"} className="flex row">
                         <Cog />
+                        </Link>
                     </div>
                     {user.tags?.length == 0 ? (
                         <span className="text-sm text-gray-500">
@@ -46,7 +49,7 @@ export default ({ children, ...props }) => {
                         {user.tags.sort((a, b) => a.slug.localeCompare(b.slug)).map((tag) => (
                             <Link
                                 key={tag.id}
-                                routeName={"search"}
+                                href={route ("search", { tags: tag.slug })}
                                 params={{ tags: tag.slug }}
                                 className="flex row hover:underline cursor-pointer"
                             >
