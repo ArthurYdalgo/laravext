@@ -1,4 +1,3 @@
-import { text } from "body-parser";
 import { create } from "zustand";
 
 const useSearch = create((set) => ({

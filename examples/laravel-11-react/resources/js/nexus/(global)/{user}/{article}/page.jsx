@@ -5,7 +5,7 @@ import { visit } from '@laravext/react/router';
 import useStateRef from 'react-usestateref';
 import { useTranslation } from 'react-i18next';
 import Swal from 'sweetalert2';
-import Article from '@/components/Article';
+import Article from '@/components/Article/Article';
 
 export default () => {
     const { article } = nexusProps();

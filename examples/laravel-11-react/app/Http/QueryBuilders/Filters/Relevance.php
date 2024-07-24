@@ -23,7 +23,11 @@ class Relevance implements Filter
             }
     
             if(in_array($value, ['author', 'any'])){
-                $query->orWhereRaw("articles.user_id IN (SELECT followee_id FROM follows WHERE follower_id = ?)", [$user->id]);
+                $query->orWhereRaw("articles.user_id IN (SELECT followee_id FROM follows WHERE follower_id = ? and ended_at is not null)", [$user->id]);
+            }
+
+            if(in_array($value, ['bookmarks', 'any'])){
+                $query->orWhereRaw("articles.id IN (SELECT article_id FROM bookmarks WHERE user_id = ?)", [$user->id]);
             }
 
             return $query;

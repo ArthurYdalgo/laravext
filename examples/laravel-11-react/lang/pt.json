@@ -220,13 +220,16 @@
 
     "min read": "min de leitura",
 
-    "Latest": "Mais Recentes",
-    "Relevant": "Mais Relevantes",
-    "Top": "Mais Populares",
+    "Latest": "Recentes",
+    "Relevant": "Relevantes",
+    "Top": "Populares",
     "week": "semana",
     "month": "mês",
     "year": "ano",
     "infinity": "todo o tempo",
+
+    "Your Tags": "Suas Tags",
+    "You do not follow any tags yet.": "Você ainda não segue nenhuma tag.",
     
     "No more articles to load": "Não há mais artigos para carregar",
     "Load More": "Carregar Mais",

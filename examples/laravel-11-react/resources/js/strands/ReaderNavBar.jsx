@@ -9,7 +9,6 @@ import { sharedProps } from "@laravext/react";
 import RoleCheck from "@/components/RoleCheck";
 import Dropdown from "@/components/Dropdown";
 import DropdownButton from "@/components/DropdownButton";
-import DropdownLink from "@/components/DropdownLink";
 import useSearch from "@/hooks/useSearch";
 import Cookies from 'js-cookie';
 
@@ -203,7 +202,7 @@ export default () => {
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content align="right" width="48">
-                                        <DropdownLink
+                                        <Dropdown.Link
                                             href={
                                                 user
                                                     ? route("user", {
@@ -216,25 +215,25 @@ export default () => {
                                                 {user?.name}
                                             </p>
                                             <p>@{user?.username}</p>
-                                        </DropdownLink>
+                                        </Dropdown.Link>
                                         <div className="border-t border-gray-200 dark:border-gray-700"></div>
-                                        <DropdownLink routeName="dashboard">
+                                        <Dropdown.Link routeName="dashboard">
                                             {t("Dashboard")}
-                                        </DropdownLink>
-                                        <DropdownLink routeName="new">
+                                        </Dropdown.Link>
+                                        <Dropdown.Link routeName="new">
                                             {t("Create Post")}
-                                        </DropdownLink>
-                                        <DropdownLink>
+                                        </Dropdown.Link>
+                                        <Dropdown.Link routeName={'bookmarks'}>
                                             {t("Bookmarks")}
-                                        </DropdownLink>
-                                        <DropdownLink>
+                                        </Dropdown.Link>
+                                        <Dropdown.Link>
                                             {t("Settings")}
-                                        </DropdownLink>
+                                        </Dropdown.Link>
                                         <RoleCheck allowedRoles={["admin"]}>
                                             <div className="border-t border-gray-200 dark:border-gray-700"></div>
-                                            <DropdownLink routeName="admin.dashboard">
+                                            <Dropdown.Link routeName="admin.dashboard">
                                                 {t("Admin Dashboard")}
-                                            </DropdownLink>
+                                            </Dropdown.Link>
                                         </RoleCheck>
                                         <div className="border-t border-gray-200 dark:border-gray-700"></div>
                                         <DropdownButton onClick={logout}>

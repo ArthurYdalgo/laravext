@@ -19,7 +19,7 @@ class HandleLaravextRequests extends Middleware
         $user = $request->user();
 
         if($user){
-            $user->loadMissing('roles');
+            $user->loadMissing(['roles', 'tags']);
         }
 
         return array_merge(parent::share($request), [
