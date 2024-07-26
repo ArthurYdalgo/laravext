@@ -37,7 +37,7 @@ Route::get('{user:username}/{article:slug}', function (User $user, Article $arti
         // ->withViewSkeleton('partials.article')
         ->withHeadTitle($article->title)
         ->render();
-})->name('article');
+})->name('user.article');
 
 // Redirect short links to the article
 Route::get('s/{article:short_link_code}', function (Article $article) {

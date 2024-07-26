@@ -15,16 +15,16 @@ export default ({ children, ...props }) => {
     return (
         <div {...props}>
             <div className="flex flex-col space-y-2">
-                <Link routeName={"home"} className="flex row">
+                <Link routeName={"home"} className="flex row hover:underline">
                     <Home className="mr-1" />
                     {t("Home")}
                 </Link>
-                <Link routeName={"tags"} className="flex row">
+                <Link routeName={"tags"} className="flex row hover:underline">
                     <Tag className="mr-1" />
                     {t("Tags")}
                 </Link>
                 {user && (
-                    <Link routeName={"bookmarks"} className="flex row">
+                    <Link routeName={"bookmarks"} className="flex row hover:underline">
                         <BookmarkDrawer className="mr-1" />
                         {t("Bookmarks")}
                     </Link>
@@ -36,7 +36,7 @@ export default ({ children, ...props }) => {
                         <span className="text-lg font-bold">
                             {t("Your Tags")}
                         </span>
-                        <Link routeName={"dashboard.following.tags"} className="flex row">
+                        <Link routeName={"dashboard.following.tags"} className="flex row hover:bg-gray-300 rounded-full p-[5px] transition duration-300">
                         <Cog />
                         </Link>
                     </div>

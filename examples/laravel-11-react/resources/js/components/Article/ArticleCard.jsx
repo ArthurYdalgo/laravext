@@ -7,6 +7,7 @@ import Bookmark from "@/components/Bookmark";
 import { useEffect, useState } from "react";
 import Swal from 'sweetalert2';
 import {sharedProps} from "@laravext/react";
+import Link from "../Link";
 
 export default ({ article }) => {
     const { t , i18n} = useTranslation();
@@ -42,15 +43,18 @@ export default ({ article }) => {
     return (
         <div className="rounded-lg bg-white">
             {(article.banner_url && (article.metadata?.display_banner_in_listing ?? true)) && (
+                <Link href={route("user.article", { user: article.user.username, article: article.slug })}>
                 <img
                     className=" rounded-t-lg max-w-full w-full h-auto"
                     src={article.banner_url}
                     alt={article.title}
                 />
+                </Link>
             )}
             <div className="p-1">
                 <div className="flex items-center justify-between">
-                    <div className="flex items-center">
+                    <Link href={route("user", { user: article.user.username })}>
+                    <div className="flex items-center hover:underline">
                         <img
                             className="h-8 w-8 rounded-full"
                             src={
@@ -69,11 +73,14 @@ export default ({ article }) => {
                             </p>
                         </div>
                     </div>
+                    </Link>
                 </div>
                 {/* title */}
-                <h2 className="text-2xl px-3 antialiased font-semibold mt-2">
+                <Link href={route("user.article", { user: article.user.username, article: article.slug })}>
+                <h2 className="text-2xl px-3 antialiased font-semibold mt-2 hover:underline">
                     {article.title}
                 </h2>
+                </Link>
                 {/* tags */}
                 <div className="flex space-x-2 px-3 mt-2">
                     {article.tags.map((tag) => (
@@ -89,7 +96,8 @@ export default ({ article }) => {
                     ))}
                 </div>
                 <div className="flex justify-between">
-                    <div className="flex items-center">
+                    <Link href={route("user.article", { user: article.user.username, article: article.slug })}>
+                    <div className="flex items-center hover:bg-gray-100 transition duration-300 hover:rounded-md mt-2 pr-4">
                         {article.reactions_count > 0 && (
                             <div className="p-1 space-x-2 flex items-center">
                                 <GroupedReactions
@@ -117,6 +125,7 @@ export default ({ article }) => {
                             </div>
                         )}
                     </div>
+                    </Link>
                     <div className="flex items-center pr-4 space-x-3">
                         <span className="text-sm text-gray-500">{article.reading_time} {t("min read")}</span>
                         <Bookmark bookmarked={isBookmarked} onClick={toggleBookmark} size='sm' className={'transition-all ' + (isBookmarked ? ' text-red-600' : 'text-black hover:text-red-300')} />
