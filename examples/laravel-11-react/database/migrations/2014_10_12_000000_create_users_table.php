@@ -20,11 +20,13 @@ return new class extends Migration
             $table->string('theme')->default('light');
             $table->boolean('privacy')->default(0);
             $table->string('locale')->default('en');
+            $table->string('avatar_url', 512)->nullable();
+            $table->string('banner_hex_color', 10)->nullable();
             $table->text('biography')->nullable();
             $table->string('education')->nullable();
             $table->string('work')->nullable();
             $table->string("location")->nullable();
-            $table->text('links')->nullable();
+            $table->json('links')->nullable();
             $table->string('password');
             $table->rememberToken();
 

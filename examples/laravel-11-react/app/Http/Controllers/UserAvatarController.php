@@ -12,9 +12,14 @@ class UserAvatarController extends Controller
     {
         user()->deleteAvatar();
 
+        $content = $request->file('avatar');
+
+        $banner_hex_color = getAverageColorFromImageBinary($content);
+
         $avatar = user()->addMediaFromContent($request->file('avatar'), path_suffix: 'avatar');
 
         user()->update([
+            'banner_hex_color' => $banner_hex_color,
             'avatar_url' => $avatar->url,
         ]);
 

@@ -77,6 +77,35 @@ if (!function_exists('scoutIsAvailable')){
     }
 }
 
+if (!function_exists('getAverageColorFromImageBinary')){
+    function getAverageColorFromImageBinary($binary_content){
+        $image = imagecreatefromstring($binary_content);
+
+        $width = imagesx($image);
+        $height = imagesy($image);
+
+        $r = $g = $b = 0;
+
+        for ($x = 0; $x < $width; $x++) {
+            for ($y = 0; $y < $height; $y++) {
+                $rgb = imagecolorat($image, $x, $y);
+                $r += ($rgb >> 16) & 0xFF;
+                $g += ($rgb >> 8) & 0xFF;
+                $b += $rgb & 0xFF;
+            }
+        }
+
+        $total = $width * $height;
+
+        $r = round($r / $total);
+        $g = round($g / $total);
+        $b = round($b / $total);
+
+        // return hex
+        return sprintf("#%02x%02x%02x", $r, $g, $b);
+    }
+}
+
 if (!function_exists('user')){
     /**
      * Get the authenticated user

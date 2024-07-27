@@ -26,6 +26,12 @@ Route::laravext();
 
 Route::nexus('')->name('home');
 
+Route::get('{user:username}', function (User $user) {
+    $user->loadCount(['articles', 'comments', 'followers', 'following', 'tags']);
+
+    return nexus(props: compact('user'))->render();
+})->name('user');
+
 Route::get('{user:username}/{article:slug}', function (User $user, Article $article) {
     if(!$article->user->is($user)) {
         abort(404);

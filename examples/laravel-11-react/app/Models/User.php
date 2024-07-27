@@ -24,6 +24,8 @@ class User extends Authenticatable
         'email_verified_at',
         'password',
         'theme',
+        'avatar_url',
+        'banner_hex_color',
         'privacy',
         'locale',
         'biography',
@@ -102,7 +104,7 @@ class User extends Authenticatable
 
     public function followers()
     {
-        return $this->followers()->wherePivot('follows.ended_at', null);
+        return $this->followersRelationship()->wherePivot('follows.ended_at', null);
     }
 
     public function followingRelationship()
@@ -112,7 +114,7 @@ class User extends Authenticatable
 
     public function following()
     {
-        return $this->following()->wherePivot('follows.ended_at', null);
+        return $this->followingRelationship()->wherePivot('follows.ended_at', null);
     }
 
     public function bookmarkedArticles()
@@ -218,6 +220,11 @@ class User extends Authenticatable
     public function isFollowing($user)
     {
         return $this->following()->where('followee_id', $user->id)->exists();
+    }
+
+    public function isFollowedBy($user)
+    {
+        return $this->followers()->where('follower_id', $user->id)->exists();
     }
 
     public function follow($user)
