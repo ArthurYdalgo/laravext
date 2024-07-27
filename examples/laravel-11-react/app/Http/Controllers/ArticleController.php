@@ -115,14 +115,14 @@ class ArticleController extends Controller
     {
         user()->reactTo($article, $request->reaction);
 
-        return user()->reactionsTo($article);
+        return $this->successResponse(user()->reactionsTo($article));
     }
 
     public function unreact(UnreactRequest $request, Article $article)
     {
         user()->unreactTo($article, $request->reaction);
 
-        return user()->reactionsTo($article);
+        return $this->successResponse(user()->reactionsTo($article));
     }
 
     public function hasBookmarked(Article $article)

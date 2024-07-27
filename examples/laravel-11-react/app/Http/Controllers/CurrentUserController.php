@@ -15,7 +15,7 @@ class CurrentUserController extends Controller
         $user = $request->user();
         $user->update($request->validated());
         
-        return $user;
+        return $this->successResponse($user);
     }
 
     public function login(Request $request){
@@ -27,9 +27,7 @@ class CurrentUserController extends Controller
             return auth()->user();
         }
 
-        return response()->json([
-            'message' => __('auth.failed')
-        ], 422);
+        return $this->errorResponse('Invalid credentials', 401);
     }
 
     public function logout(Request $request){

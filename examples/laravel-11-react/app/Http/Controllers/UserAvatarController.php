@@ -23,7 +23,7 @@ class UserAvatarController extends Controller
             'avatar_url' => $avatar->url,
         ]);
 
-        return $request->user();
+        return $this->successResponse(user());
     }
 
     public function destroy(Request $request)
