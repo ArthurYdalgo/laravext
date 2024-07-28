@@ -4,6 +4,7 @@ use App\Http\Controllers\ArticleCommentController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CurrentUserController;
+use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\Tools\MarkdownPreviewController;
 use App\Http\Controllers\UserAvatarController;
 use Illuminate\Support\Facades\Route;
@@ -44,18 +45,33 @@ Route::group([
         Route::delete('bookmark', [ArticleController::class, 'unbookmark']);
     });
 
-    Route::post("tools/markdown-preview", MarkdownPreviewController::class)->withoutMiddleware('auth');
-
+    
     Route::prefix('comments/{comment}')->group(function () {
         Route::get('reactions', [CommentController::class, 'userReactions']);
         Route::get('replies', [CommentController::class, 'replies']);
-
+        
         Route::post('reactions', [CommentController::class, 'react']);
         Route::post('replies', [CommentController::class, 'reply']);
-
+        
         Route::put('', [CommentController::class, 'update']);
-
+        
         Route::delete('', [CommentController::class, 'destroy']);
         Route::delete('reactions', [CommentController::class, 'unreact']);
+    });
+});
+
+Route::group([
+    'prefix' => 'tools'
+], function () {
+    Route::post('article/markdown-preview', [MarkdownPreviewController::class, 'preview'])->middleware('auth');
+
+    Route::group([
+        'prefix' => 'users'
+    ], function () {
+        Route::get('{follower}/is-following/{followee}', [FollowerController::class, 'isFollowing']);
+        Route::get('{followee}/is-followed-by/{follower}', [FollowerController::class, 'isFollowedBy']);
+
+        Route::put('follow/{followee}', [FollowerController::class, 'follow']);
+        Route::put('unfollow/{followee}', [FollowerController::class, 'unfollow']);
     });
 });

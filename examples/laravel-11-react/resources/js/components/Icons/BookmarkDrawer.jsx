@@ -7,7 +7,7 @@ export default ({...props}) => {
             height="24"
             {...props}
         >
-            <g class="nc-icon-wrapper">
+            <g className="nc-icon-wrapper">
                 <path
                     fill="#67757F"
                     d="M39 24c0 2.209-1.791 2-4 2H9c-2.209 0-4 .209-4-2l2-12c.125-1.917 1.791-4 4-4h22c2.209 0 3.791 2.208 4 4l2 12z"

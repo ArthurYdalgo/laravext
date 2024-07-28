@@ -18,6 +18,6 @@ class MarkdownPreviewController extends Controller
 
         $html = $parsedown->text($markdown);
 
-        return compact('html');
+        return $this->successResponse(compact('html'));
     }
 }

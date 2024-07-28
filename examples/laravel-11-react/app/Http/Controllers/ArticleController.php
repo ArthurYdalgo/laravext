@@ -108,7 +108,7 @@ class ArticleController extends Controller
 
     public function userReactions(Article $article)
     {
-        return user()->reactionsTo($article);
+        return $this->successResponse(user()->reactionsTo($article));
     }
 
     public function react(ReactRequest $request, Article $article)
@@ -127,7 +127,7 @@ class ArticleController extends Controller
 
     public function hasBookmarked(Article $article)
     {
-        return response()->json(['bookmarked' => user()->hasBookmarked($article)]);
+        return $this->successResponse(['bookmarked' => user()->hasBookmarked($article)]);
     }
 
     public function toggleBookmark(Article $article)
@@ -143,13 +143,13 @@ class ArticleController extends Controller
     {
         user()->bookmark($article);
 
-        return response()->json(['bookmarked' => user()->hasBookmarked($article)]);
+        return $this->successResponse(['bookmarked' => user()->hasBookmarked($article)]);
     }
 
     public function unbookmark(Article $article)
     {
         user()->unbookmark($article);
 
-        return response()->json(['bookmarked' => user()->hasBookmarked($article)]);
+        return $this->successResponse(['bookmarked' => user()->hasBookmarked($article)]);
     }
 }

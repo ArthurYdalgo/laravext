@@ -1,6 +1,6 @@
 export default ({...props}) => {
     return (<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44" width="24" height="24" {...props}>
-        <g class="nc-icon-wrapper">
+        <g className="nc-icon-wrapper">
             <path fill="#A0041E" d="M13.344 18.702h-2a.5.5 0 01-.5-.5v-7a.5.5 0 01.5-.5h2a.5.5 0 01.5.5v7a.5.5 0 01-.5.5z"></path>
             <path fill="#FFE8B6" d="M9 20L22 7l13 13v17H9z"></path>
             <path fill="#FFCC4D" d="M22 20h1v16h-1z"></path>

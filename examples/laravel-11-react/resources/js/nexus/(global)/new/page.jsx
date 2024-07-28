@@ -66,8 +66,8 @@ And insert images (they'll be centered in the final output) like this:
                     setLoadingPreview(true);
                     setMode('preview');
 
-                    axios.post('/api/tools/markdown-preview', { markdown }).then(({ data }) => {
-                        setHtmlPreview(data.html);
+                    axios.post('/api/tools/articles/markdown-preview', { markdown }).then(({ data }) => {
+                        setHtmlPreview(data.data.html);
                         setLoadingPreview(false);
                     }).catch(() => {
                         setLoadingPreview(false);

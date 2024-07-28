@@ -19,7 +19,7 @@ export default ({ article }) => {
             let currentStatus = isBookmarked;
             setIsBookmarked(!currentStatus);
             axios.put(`/api/articles/${article.id}/bookmark`).then(({ data }) => {
-                setIsBookmarked(data.bookmarked);
+                setIsBookmarked(data.data.bookmarked);
             }).catch(() => {
                 setIsBookmarked(currentStatus);
             });
