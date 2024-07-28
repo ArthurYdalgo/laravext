@@ -44,7 +44,7 @@ export default () => {
                         <FollowButton followee={pageUser} />
                         <Dropdown>
                             <Dropdown.Trigger>
-                                <button className="ml-1 transition inline-flex items-center px-4 py-2 hover:bg-gray-50 rounded-md">
+                                <button className="ml-1 transition inline-flex items-center px-4 py-2 hover:bg-gray-100 rounded-md">
                                     <ThreeDots />
                                 </button>
                             </Dropdown.Trigger>
