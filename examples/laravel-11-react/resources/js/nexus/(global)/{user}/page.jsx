@@ -7,12 +7,19 @@ import ThreeDots from '@/components/Icons/ThreeDots';
 import PrimaryButton from '@/components/PrimaryButton';
 import SecondaryButton from '@/components/SecondaryButton';
 import { sharedProps, nexusProps } from '@laravext/react'
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next'
 
 export default () => {
 
     const { t } = useTranslation();
     const { user } = sharedProps().auth;
+
+    const [reportAbuseModal, setReportAbuseModal] = useState({
+        open: false,
+        submitting: false,
+        report: '',
+    });
 
     const { user: pageUser } = nexusProps();
 
@@ -37,9 +44,9 @@ export default () => {
                         <FollowButton followee={pageUser} />
                         <Dropdown>
                             <Dropdown.Trigger>
-                                <SecondaryButton className="ml-2 border-0 shadow-none">
+                                <button className="ml-1 transition inline-flex items-center px-4 py-2 hover:bg-gray-50 rounded-md">
                                     <ThreeDots />
-                                </SecondaryButton>
+                                </button>
                             </Dropdown.Trigger>
 
                             <Dropdown.Content align="right">

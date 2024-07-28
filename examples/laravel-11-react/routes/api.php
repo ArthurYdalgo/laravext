@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\ArticleCommentController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CurrentUserController;
 use App\Http\Controllers\FollowerController;
@@ -18,8 +21,9 @@ Route::group([
     Route::post("user/avatar", [UserAvatarController::class, 'store'])->middleware('auth');
     Route::delete("user/avatar", [UserAvatarController::class, 'destroy'])->middleware('auth');
 
-    Route::post('login', [CurrentUserController::class, 'login']);
-    Route::post('logout', [CurrentUserController::class, 'logout'])->middleware('auth');
+    Route::post('login', LoginController::class);
+    Route::post('register', RegisterController::class)->middleware('guest');
+    Route::post('logout', LogoutController::class)->middleware('auth');
 });
 
 

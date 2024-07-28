@@ -128,7 +128,7 @@ export default ({ article }) => {
                     </Link>
                     <div className="flex items-center pr-4 space-x-3">
                         <span className="text-sm text-gray-500">{article.reading_time} {t("min read")}</span>
-                        <Bookmark bookmarked={isBookmarked} onClick={toggleBookmark} size='sm' className={'transition-all ' + (isBookmarked ? ' text-red-600' : 'text-black hover:text-red-300')} />
+                        <Bookmark bookmarked={isBookmarked} onClick={toggleBookmark} size='sm' className={'px-1 transition-all ' + (isBookmarked ? ' text-red-600' : 'text-black hover:text-red-300')} />
                     </div>
                 </div>
                 {/* mind read and bookmark */}

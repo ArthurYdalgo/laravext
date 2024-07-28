@@ -24,15 +24,15 @@ class UserFactory extends Factory
     public function definition(): array
     {
         $random_skills = fake()->randomElements([
-            'PHP', 
-            'JavaScript', 
-            'Python', 
-            'Ruby', 
-            'Java', 
-            'C#', 
-            'C++', 
-            'Go', 
-            'Swift', 
+            'PHP',
+            'JavaScript',
+            'Python',
+            'Ruby',
+            'Java',
+            'C#',
+            'C++',
+            'Go',
+            'Swift',
             'Kotlin',
             'TypeScript',
             'Rust',
@@ -50,12 +50,16 @@ class UserFactory extends Factory
             'Flask',
             'Ruby on Rails',
             'Spring',
-    ], random_int(2,5));
+        ], random_int(2, 5));
+
+        $gender = fake()->randomElement(['male', 'female']);
+
 
         return [
-            'name' => fake()->name(),
+            'name' => fake()->firstName($gender) . " " . fake()->lastName(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
+            'pronouns' => $gender == 'male' ? 'he/him' : 'she/her', // or they/them, ze/zer, etc.
             'skills' => $random_skills,
             'biography' => fake()->paragraph(),
             'banner_hex_color' => fake()->hexColor(),

@@ -41,9 +41,10 @@ export default () => {
     }
 
     return (<div>
-        <p align='center'>
+
+        {article.banner_url && <p align='center'>
             <img src={article.banner_url} className='shadow-md max-w-[800px]' alt={article.title} />
-        </p>
+        </p>}
 
         <h1>{article.title}</h1>
 
@@ -58,7 +59,7 @@ export default () => {
             </div>
             <div>
                 <Tooltip text={bookmarked ? t('Click to unbookmark this article') : t('Click to bookmark this article')}>
-                    <Bookmark bookmarked={bookmarked} onClick={toggleBookmark} className={'transition-all  rounded-md ' + (bookmarked ? ' bg-slate-200 text-red-600' : 'text-black hover:text-red-300')} />
+                    <Bookmark bookmarked={bookmarked} onClick={toggleBookmark} className={'px-1 transition-all  rounded-md ' + (bookmarked ? ' bg-slate-200 text-red-600' : 'text-black hover:text-red-300')} />
                 </Tooltip>
             </div>
         </span>

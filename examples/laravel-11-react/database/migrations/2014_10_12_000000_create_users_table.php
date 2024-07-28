@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('education')->nullable();
             $table->string('work')->nullable();
             $table->string('skills')->nullable();
+            $table->string('pronouns')->nullable();
             $table->string("location")->nullable();
             $table->json('links')->nullable();
             $table->string('password');
