@@ -27,7 +27,7 @@ export default () => {
             <div className={"flex items-center justify-center rounded-t-md"} style={{ backgroundColor: pageUser?.banner_hex_color ?? '#000000' }}>
 
                 <div className='p-4 py-6'>
-                    <img className="h-32 w-32 rounded-full border-gray-200 border-2" src={pageUser?.avatar_url ?? "/images/avatars/placeholder.png"} alt={pageUser?.name} />
+                    <img className="h-32 w-32 shadow-lg rounded-full border-gray-200 border-2" src={pageUser?.avatar_url ?? "/images/avatars/placeholder.png"} alt={pageUser?.name} />
                 </div>
             </div>
             <div className="flex items-center justify-center p-1">
@@ -58,9 +58,12 @@ export default () => {
                             </Dropdown.Content>
                         </Dropdown>
                     </div>)}
-
                     <div className="text-center text-base mt-2 px-6">
                         {pageUser.biography}
+                    </div>
+                    <div className='border-b border-gray-200 w-full'></div>
+                    <div className="text-center text-base mt-2 px-6">
+                        links, location, etc
                     </div>
                 </div>
             </div>
