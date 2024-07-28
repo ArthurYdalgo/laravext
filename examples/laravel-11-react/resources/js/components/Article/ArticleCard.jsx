@@ -8,11 +8,13 @@ import { useEffect, useState } from "react";
 import Swal from 'sweetalert2';
 import {sharedProps} from "@laravext/react";
 import Link from "../Link";
+import useSearch from "@/hooks/useSearch";
 
 export default ({ article }) => {
     const { t , i18n} = useTranslation();
     const {user} = sharedProps().auth;
     const [isBookmarked, setIsBookmarked] = useState(article.has_been_bookmarked_by_user ?? false);
+    const {setText} = useSearch();
 
     const toggleBookmark = () => {
         if (user) {
@@ -80,6 +82,9 @@ export default ({ article }) => {
                 <h2 className="text-2xl px-3 antialiased font-semibold mt-2 hover:underline">
                     {article.title}
                 </h2>
+                {((article.metadata['display_subtitle_in_listing'] ?? false) && article.subtitle?.length > 0) && <h3 className="text-base px-3 antialiased mb-4 hover:underline">
+                    {article.subtitle}
+                </h3>}
                 </Link>
                 {/* tags */}
                 <div className="flex space-x-2 px-3 mt-2">
@@ -87,6 +92,7 @@ export default ({ article }) => {
                         <span
                             key={tag.id}
                             onClick={() => {
+                                setText('');
                                 visit(route("search", { tags: tag.slug }));
                             }}
                             className="text-sm hover:underline cursor-pointer bg-gray-100 rounded-lg px-2 py-1"

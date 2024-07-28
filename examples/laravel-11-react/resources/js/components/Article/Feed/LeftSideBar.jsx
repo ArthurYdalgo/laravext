@@ -23,12 +23,6 @@ export default ({ children, ...props }) => {
                     <Tag className="mr-1" />
                     {t("Tags")}
                 </Link>
-                {user && (
-                    <Link routeName={"bookmarks"} className="flex row hover:underline">
-                        <BookmarkDrawer className="mr-1" />
-                        {t("Bookmarks")}
-                    </Link>
-                )}
             </div>
             {user && (
                 <div className="mt-6">

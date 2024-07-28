@@ -23,6 +23,8 @@ class ArticlesSeeder extends Seeder
     {
         $write_role = Role::findOrCreate('writer');
 
+        $seed_images = false;
+
         $light_colors = [
             [255, 255, 255],
             [211, 211, 211],
@@ -61,7 +63,11 @@ class ArticlesSeeder extends Seeder
             for ($articles_count = 0; $articles_count < random_int(3, 5); $articles_count++) {
                 $title = fake()->sentence();
 
-                // $banner = $writer->addMediaFromContent(generateTextedImage($title, 1000, 480, fake()->randomElement($light_colors), font_size: 45), path_suffix: 'articles');
+                $banner = null;
+
+                if($seed_images){
+                    $banner = $writer->addMediaFromContent(generateTextedImage($title, 1000, 480, fake()->randomElement($light_colors), font_size: 45), path_suffix: 'articles');
+                }
 
                 $content = "";
 
@@ -70,15 +76,19 @@ class ArticlesSeeder extends Seeder
                 for ($paragraphs_count = 0; $paragraphs_count < random_int(3, 5); $paragraphs_count++) {
                     $sentence = fake()->sentence(4);
 
-                    // $media = $writer->addMediaFromContent(generateTextedImage($sentence, 1080, 720, fake()->randomElement($light_colors), font_size: 35), path_suffix: 'articles');
+                    $media = $writer->addMediaFromContent(generateTextedImage($sentence, 1080, 720, fake()->randomElement($light_colors), font_size: 35), path_suffix: 'articles');
 
-                    // $media_to_attach[] = $media->id;
+                    $media_to_attach[] = $media->id;
 
                     $code = fake()->randomElement([
                         "```php\n<?php\n\n echo \"Hello, World!\";\n```",
                     ]);
                     
                     $paragraph = fake()->sentence(250) . "\n\nExample Code:\n{$code}\n\n\n";
+
+                    if($seed_images){
+                        $paragraph .= "![image]($media->url)\n\n";
+                    }
                     
                     $header = fake()->sentence(5);
 
@@ -89,11 +99,14 @@ class ArticlesSeeder extends Seeder
                     'user_id' => $writer->id,
                     'slug' => str($title)->slug()->append(str()->random(5))->toString(),
                     'title' => $title,
+                    'subtitle' => fake()->sentence(),
                     'short_link_code' => str()->random(16),
                     'content' => $content,
-                    // 'banner_url' => $banner->url,
+                    'banner_url' => $banner?->url,
                     'metadata' => [
                         'display_banner_in_listing' => fake()->boolean(),
+                        'display_subtitle_in_listing' => fake()->boolean(),
+                        'display_subtitle_in_article_page' => fake()->boolean(),
                     ]
                 ]);
 
