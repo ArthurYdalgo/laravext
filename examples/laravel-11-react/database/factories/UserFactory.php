@@ -23,10 +23,42 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $random_skills = fake()->randomElements([
+            'PHP', 
+            'JavaScript', 
+            'Python', 
+            'Ruby', 
+            'Java', 
+            'C#', 
+            'C++', 
+            'Go', 
+            'Swift', 
+            'Kotlin',
+            'TypeScript',
+            'Rust',
+            'Scala',
+            'Perl',
+            'R',
+            'Haskell',
+            'Lua',
+            'Laravel',
+            'Vue.js',
+            'React',
+            'Angular',
+            'Ember.js',
+            'Django',
+            'Flask',
+            'Ruby on Rails',
+            'Spring',
+    ], random_int(2,5));
+
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
+            'skills' => $random_skills,
+            'biography' => fake()->paragraph(),
+            'banner_hex_color' => fake()->hexColor(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
         ];

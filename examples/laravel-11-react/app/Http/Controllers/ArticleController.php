@@ -42,6 +42,7 @@ class ArticleController extends Controller
             ])
             ->allowedFilters([
                 AllowedFilter::scope('search', 'whereScout'),
+                AllowedFilter::exact('user_id'),
                 AllowedFilter::callback('relevance', new RelevanceFilter)
             ])
             ->allowedSorts([

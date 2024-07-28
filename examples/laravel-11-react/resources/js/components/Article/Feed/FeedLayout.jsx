@@ -6,7 +6,7 @@ export default ({children, ...props}) => {
     return <div {...props} className="flex">
         <LeftSideBar className="hidden sm:block sm:w-3/12 lg:w-3/12  px-3" />
 
-        <div className="feed-layout sm:w-9/12 lg:w-9/12 px-3">
+        <div className="sm:w-9/12 lg:w-9/12 px-3">
             {children}
         </div>
     </div>

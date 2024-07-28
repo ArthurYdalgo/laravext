@@ -41,7 +41,7 @@ export default ({ article }) => {
     }
 
     return (
-        <div className="rounded-lg bg-white">
+        <div className="rounded-lg bg-white shadow-md">
             {(article.banner_url && (article.metadata?.display_banner_in_listing ?? true)) && (
                 <Link href={route("user.article", { user: article.user.username, article: article.slug })}>
                 <img

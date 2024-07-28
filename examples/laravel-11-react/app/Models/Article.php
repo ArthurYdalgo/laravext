@@ -12,7 +12,7 @@ use Parsedown;
 
 class Article extends Model
 {
-    use Searchable;
+    // use Searchable;
     use HasFactory;
 
     protected $fillable = [

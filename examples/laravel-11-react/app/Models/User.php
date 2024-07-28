@@ -29,6 +29,7 @@ class User extends Authenticatable
         'privacy',
         'locale',
         'biography',
+        'skills',
         'education',
         'work',
         'location',
@@ -46,6 +47,7 @@ class User extends Authenticatable
         'password' => 'hashed',
         'privacy' => 'boolean',
         'links' => 'array',
+        'skills' => 'array',
     ];
 
     protected $appends = [
