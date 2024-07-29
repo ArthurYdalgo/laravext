@@ -9,18 +9,54 @@ import Modal from "@/components/Modal";
 import PrimaryButton from "@/components/PrimaryButton";
 import SecondaryButton from "@/components/SecondaryButton";
 import { sharedProps, nexusProps } from "@laravext/react";
+import { visit  } from "@laravext/react/router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import Swal from "sweetalert2";
 
 export default () => {
     const { t } = useTranslation();
     const { user } = sharedProps().auth;
 
-    const [reportAbuseModal, setReportAbuseModal] = useState({
-        show: true,
+    const [abuseReportModal, setAbuseReportModal] = useState({
+        show: false,
         submitting: false,
         report: "",
     });
+
+    const submitAbuseReport = () => {
+        setAbuseReportModal((prevState) => ({
+            ...prevState,
+            submitting: true,
+        }));
+        axios
+            .post(`/api/users/${pageUser.id}/report`, {
+                report: abuseReportModal.report,
+            })
+            .then((response) => {
+                setAbuseReportModal((prevState) => ({
+                    ...prevState,
+                    show: false,
+                    submitting: false,
+                }));
+                Swal.fire({
+                    title: t("User reported successfully"),
+                    icon: "success",
+                });
+
+            })
+            .catch((error) => {
+                console.error(error);
+                setAbuseReportModal((prevState) => ({
+                    ...prevState,
+                    submitting: false,
+                }));
+                Swal.fire({
+                    title: t("Failed to report user"),
+                    icon: "error",
+                });
+            });
+    }
 
     const { user: pageUser } = nexusProps();
 
@@ -69,7 +105,21 @@ export default () => {
                                     <Dropdown.Content align="right">
                                         <DropdownButton
                                             onClick={() => {
-                                                setReportAbuseModal(
+                                                if(!user) {
+                                                    Swal.fire({
+                                                        title: t('You must be logged in to report this user'),
+                                                        icon: 'info',
+                                                        showCancelButton: true,
+                                                        confirmButtonText: t('Login'),
+                                                        cancelButtonText: t('Cancel')
+                                                    }).then(({ isConfirmed }) => {
+                                                        if (isConfirmed) {
+                                                            visit(route('login'));
+                                                        }
+                                                    });
+                                                    return;
+                                                }
+                                                setAbuseReportModal(
                                                     (prevState) => ({
                                                         ...prevState,
                                                         show: true,
@@ -142,10 +192,10 @@ export default () => {
                 </div>
             </div>
             <Modal
-                show={reportAbuseModal.show}
+                show={abuseReportModal.show}
                 
                 onClose={() =>
-                    setReportAbuseModal((prevState) => ({
+                    setAbuseReportModal((prevState) => ({
                         ...prevState,
                         show: false,
                     }))
@@ -161,9 +211,9 @@ export default () => {
                     </p>
                     <textarea
                         className="w-full h-32 border border-gray-300 rounded-lg"
-                        value={reportAbuseModal.report}
+                        value={abuseReportModal.report}
                         onChange={(e) => {
-                            setReportAbuseModal((prevState) => ({
+                            setAbuseReportModal((prevState) => ({
                                 ...prevState,
                                 report: e.target.value,
                             }));
@@ -171,43 +221,25 @@ export default () => {
                     />
                     <div className=" text-gray-500 mt-2 flex flex-row justify-end w-full">
                         <PrimaryButton
-                            loading={reportAbuseModal.submitting}
+                            loading={abuseReportModal.submitting}
                             onClick={() => {
-                                setReportAbuseModal((prevState) => ({
-                                    ...prevState,
-                                    submitting: true,
-                                }));
-                                axios
-                                    .post(
-                                        `/api/articles/${reportAbuseModal.articleId}/report`,
-                                        {
-                                            report: reportAbuseModal.report,
-                                        }
-                                    )
-                                    .then((response) => {
-                                        setReportAbuseModal((prevState) => ({
-                                            ...prevState,
-                                            show: false,
-                                            submitting: false,
-                                        }));
-                                        toast.success(
-                                            t("Article reported successfully")
-                                        );
-                                    })
-                                    .catch((error) => {
-                                        console.error(error);
-                                        setReportAbuseModal((prevState) => ({
-                                            ...prevState,
-                                            submitting: false,
-                                        }));
-                                        toast.error(
-                                            t("Failed to report article")
-                                        );
-                                    });
+                                Swal.fire({
+                                    title: t("Are you sure?"),
+                                    text: t("Do you really want to report this user?"),
+                                    icon: "warning",
+                                    showCancelButton: true,
+                                    confirmButtonText: t("Yes"),
+                                    cancelButtonText: t("No"),
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        submitAbuseReport();
+                                    }
+                                });
+                                
                             }}
-                            disabled={reportAbuseModal.submitting}
+                            disabled={abuseReportModal.submitting}
                         >
-                            {reportAbuseModal.submitting && <div className="mini-loader mr-2"></div>}{t("Submit")}
+                            {abuseReportModal.submitting && <div className="mini-loader mr-2"></div>}{t("Submit")}
                         </PrimaryButton>
                     </div>
                 </div>
