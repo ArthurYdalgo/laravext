@@ -82,7 +82,7 @@ export default ({ article }) => {
                 <h2 className="text-2xl px-3 antialiased font-semibold mt-2 hover:underline">
                     {article.title}
                 </h2>
-                {((article.metadata['display_subtitle_in_listing'] ?? false) && article.subtitle?.length > 0) && <h3 className="text-base px-3 antialiased mb-4 hover:underline">
+                {((article.metadata?.display_subtitle_in_listing ?? false) && article.subtitle?.length > 0) && <h3 className="text-base px-3 antialiased mb-4 hover:underline">
                     {article.subtitle}
                 </h3>}
                 </Link>
