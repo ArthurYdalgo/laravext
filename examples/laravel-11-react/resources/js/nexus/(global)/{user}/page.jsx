@@ -96,7 +96,7 @@ export default () => {
                     </div>
                 </div>
                 <div className="flex items-center justify-center p-1">
-                    <div className="flex flex-col items-center space-y-2 w-full">
+                    <div className="flex flex-col items-center space-y-3 w-full">
                         <span className="font-extrabold text-3xl">
                             {pageUser?.name} {pageUser?.pronouns ? <span className="text-gray-500 text-sm">({pageUser?.pronouns})</span> : ""}
                         </span>
@@ -149,14 +149,14 @@ export default () => {
                                 </Dropdown.Content>
                             </Dropdown>
                         </div>
-
+                    
                         <div className="text-center text-base mt-2 px-6">
                             {pageUser.biography}
                         </div>
                         <div className="border-b border-gray-200 w-full"></div>
 
                         {/* maximum of 4 per line. no line break */}
-                        <div className="flex flex-wrap justify-center space-x-4 px-24 py-4">
+                        <div className="flex flex-wrap justify-center space-x-4 px-24 pt-4 pb-3">
                             <span><Fa icon="birthday-cake" className="mr-1" />{t('Joined on')} {moment(pageUser.created_at).locale(i18n.language).format("LL")}</span>
                             {pageUser.location && (
                                 <span>
