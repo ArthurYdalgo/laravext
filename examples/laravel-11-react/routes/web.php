@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\DeveloperRole;
+use App\Models\AbuseReport;
 use App\Models\Article;
 use App\Models\Developer;
 use App\Models\Team;

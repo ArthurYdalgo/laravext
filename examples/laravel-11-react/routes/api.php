@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AbuseReportController;
 use App\Http\Controllers\ArticleCommentController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\Auth\LoginController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CurrentUserController;
 use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\Tools\MarkdownPreviewController;
+use App\Http\Controllers\UserAbuseReportController;
 use App\Http\Controllers\UserAvatarController;
 use Illuminate\Support\Facades\Route;
 
@@ -62,6 +64,12 @@ Route::group([
         Route::delete('', [CommentController::class, 'destroy']);
         Route::delete('reactions', [CommentController::class, 'unreact']);
     });
+
+    Route::post('users/{user}/abuse-reports', [UserAbuseReportController::class, 'store']);
+
+    Route::apiResource('abuse-reports', AbuseReportController::class)->except(['store'])->middleware('admin');
+
+
 });
 
 Route::group([

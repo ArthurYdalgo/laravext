@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import { useTranslation } from 'react-i18next';
 
-export default ({ followee }) => {
+export default ({ followee , disabled = false}) => {
 
     const { t } = useTranslation();
 
@@ -97,7 +97,7 @@ export default ({ followee }) => {
     }
 
     return (
-        <SecondaryButton onClick={() => {
+        <SecondaryButton disabled={disabled} onClick={() => {
             followingStatus.value ? unfollow() : follow();
         }}>
             {followingStatus.loading && <div className="mini-loader mr-3 ml-[-5px]"></div>}

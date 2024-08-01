@@ -114,6 +114,15 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'follows', 'follower_id', 'followee_id');
     }
 
+    public function abuseReports()
+    {
+        return $this->morphMany(AbuseReport::class, 'reportable');
+    }
+
+    public function submittedAbuseReports(){
+        return $this->hasMany(AbuseReport::class);
+    }
+
     public function following()
     {
         return $this->followingRelationship()->wherePivot('follows.ended_at', null);

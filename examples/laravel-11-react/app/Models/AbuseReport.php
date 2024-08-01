@@ -10,17 +10,16 @@ class AbuseReport extends Model
     use HasFactory;
 
     public static $available_types = [
-        'spam',
-        'hate_speech',
-        'virus',
-        'scam',
-        'inappropriate',
-        'immediate_danger',
+        'spam' => 'Spam',
+        'hate_speech' => 'Hate Speech',
+        'virus' => 'Virus',
+        'scam' => 'Scam',
+        'inappropriate' => 'Inappropriate',
     ];
     
     protected $fillable = [
-        'abuse_reportable_id',
-        'abuse_reportable_type',
+        'reportable_id',
+        'reportable_type',
         'user_id',
         'ip_address',
         'type',
@@ -41,6 +40,27 @@ class AbuseReport extends Model
     public function abuseReportable()
     {
         return $this->morphTo();
+    }
+
+    public function scopeType($query, $type)
+    {
+        return $query->where('type', $type);
+    }
+
+    public function scopeAbuseReportableIs($query, $model)
+    {
+        return $query->where('reportable_id', $model->id)
+            ->where('reportable_type', $model->getMorphClass());
+    }
+
+    public function scopeReplied($query)
+    {
+        return $query->whereNotNull('replied_at');
+    }
+
+    public function scopeNotReplied($query)
+    {
+        return $query->whereNull('replied_at');
     }
 
 }
