@@ -22,8 +22,9 @@
                 {{ Illuminate\Foundation\Application::VERSION }} </a> and <a href="https://laravext.dev"
                 class="text-blue-500" target="_blank">Laravext</a></span>
         <br>
-        <span>Made with <span class="text-red-600 text-xs">❤</span> and <span class="text-blue-600">🥤</span></span>
-        <br>
+        <div class="flex flex-row justify-center items-center space-x-2">
+        Made with ❤️ and 🥤 in <img src='/images/flags/br.svg' class="ml-2 h-4" />
+        </div>
         <span><a href="{{ route('about-this-project') }}" class="text-blue-500"
                 target="_blank">{{ __('About this project') }}</a></span>
     </footer>
