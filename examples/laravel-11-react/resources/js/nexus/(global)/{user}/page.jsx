@@ -7,16 +7,17 @@ import FormSaveButton from "@/components/FormSaveButton";
 import ThreeDots from "@/components/Icons/ThreeDots";
 import Modal from "@/components/Modal";
 import PrimaryButton from "@/components/PrimaryButton";
+import ProfileLink from "@/components/ProfileLink";
 import SecondaryButton from "@/components/SecondaryButton";
 import { sharedProps, nexusProps } from "@laravext/react";
 import { visit } from "@laravext/react/router";
-import moment from "moment/min/moment-with-locales";    
+import moment from "moment/min/moment-with-locales";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
 
 export default () => {
-    const { t , i18n} = useTranslation();
+    const { t, i18n } = useTranslation();
     const { user } = sharedProps().auth;
 
     const { available_abuse_report_types } = sharedProps();
@@ -98,16 +99,30 @@ export default () => {
                 <div className="flex items-center justify-center p-1">
                     <div className="flex flex-col items-center space-y-3 w-full">
                         <span className="font-extrabold text-3xl">
-                            {pageUser?.name} {pageUser?.pronouns ? <span className="text-gray-500 text-sm">({pageUser?.pronouns})</span> : ""}
+                            {pageUser?.name}{" "}
+                            {pageUser?.pronouns ? (
+                                <span className="text-gray-500 text-xs">
+                                    ({pageUser?.pronouns})
+                                </span>
+                            ) : (
+                                ""
+                            )}
                         </span>
                         <div className="flex">
-                            <FollowButton disabled={user && pageUser?.id == user?.id}
-                            followee={pageUser} />
+                            <FollowButton
+                                disabled={user && pageUser?.id == user?.id}
+                                followee={pageUser}
+                            />
                             <Dropdown>
                                 <Dropdown.Trigger>
                                     <button
                                         disabled={pageUser?.id == user?.id}
-                                        className={"ml-1 transition inline-flex items-center px-4 py-2 hover:bg-gray-100 rounded-md " + (pageUser?.id == user?.id ? "cursor-not-allowed" : "")}
+                                        className={
+                                            "ml-1 transition inline-flex items-center px-4 py-2 hover:bg-gray-100 rounded-md " +
+                                            (pageUser?.id == user?.id
+                                                ? "cursor-not-allowed"
+                                                : "")
+                                        }
                                     >
                                         <ThreeDots />
                                     </button>
@@ -149,18 +164,24 @@ export default () => {
                                 </Dropdown.Content>
                             </Dropdown>
                         </div>
-                    
+
                         <div className="text-center text-base mt-2 px-6">
                             {pageUser.biography}
                         </div>
-                        <div className="border-b border-gray-200 w-full"></div>
+                        {/* <div className="border-b border-gray-200 w-full"></div> */}
 
                         {/* maximum of 4 per line. no line break */}
                         <div className="flex flex-wrap justify-center space-x-4 px-24 pt-4 pb-3">
-                            <span><Fa icon="birthday-cake" className="mr-1" />{t('Joined on')} {moment(pageUser.created_at).locale(i18n.language).format("LL")}</span>
+                            <span>
+                                <Fa icon="birthday-cake" className="mr-1" />
+                                {t("Joined on")}{" "}
+                                {moment(pageUser.created_at)
+                                    .locale(i18n.language)
+                                    .format("LL")}
+                            </span>
                             {pageUser.location && (
                                 <span>
-                                    <Fa icon="map-marker" className="mr-1" />
+                                    <Fa icon="location-dot" className="mr-1" />
                                     {pageUser.location}
                                 </span>
                             )}
@@ -172,10 +193,24 @@ export default () => {
                             )}
                             {pageUser.education && (
                                 <span>
-                                    <Fa icon="graduation-cap" className="mr-1" />
+                                    <Fa
+                                        icon="graduation-cap"
+                                        className="mr-1"
+                                    />
                                     {pageUser.education}
                                 </span>
                             )}
+                        </div>
+                        <div className="border-b border-gray-200 w-full"></div>
+                        <div className="flex flex-wrap justify-center space-x-4 px-24 pt-4 pb-3">
+                            {pageUser.links?.map((link, index) => {
+                                return (
+                                    <ProfileLink
+                                        key={`link-${index}`}
+                                        link={link}
+                                    />
+                                );
+                            })}
                         </div>
                     </div>
                 </div>

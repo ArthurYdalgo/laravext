@@ -39,6 +39,8 @@ Route::get('{user:username}/{article:slug}', function (User $user, Article $arti
     }
 
     $article->append(['user_has_bookmarked', 'user_reactions']);
+    $article->loadCount('bookmarks', 'comments', 'reactions');
+    $article->loadGroupedReactions();
 
     return nexus(props: compact('article'))
         // ->withViewSkeleton('partials.article')

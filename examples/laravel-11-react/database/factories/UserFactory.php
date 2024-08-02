@@ -54,6 +54,30 @@ class UserFactory extends Factory
 
         $gender = fake()->randomElement(['male', 'female']);
 
+        $link_types = [
+            'link',
+            'linkedin',
+            'github',
+            'discord',
+            'twitter',
+            'facebook',
+            'x-twitter',
+            'youtube'
+        ];
+
+        $links = [];
+
+        for($i = 0; $i < random_int(2, 4); $i++) {
+
+            $link_type = fake()->randomElement($link_types);
+            $links[] = [
+                'type' => $link_type,
+                'href' => "https://$link_type.com/" . fake()->userName(),
+                'display_mode' => $link_type == 'link' ? 'short_link' : 'icon',
+            ];
+
+            unset($link_types[array_search($link_type, $link_types)]);  
+        }
 
         return [
             'name' => fake()->firstName($gender) . " " . fake()->lastName(),

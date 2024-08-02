@@ -194,6 +194,14 @@ class Article extends Model
         return $parsedown->text($this->content);
     }
 
+    public function loadGroupedReactions()
+    {
+        $this->load(['reactions' => function ($query) {
+            $query->select('reactionable_id', 'reaction', DB::raw('count(*) as count'))
+                ->groupBy('reactionable_id', 'reaction')->orderBy('count', 'desc');
+        }]);
+    }
+
     public function toSearchableArray(): array
     {
         return [
