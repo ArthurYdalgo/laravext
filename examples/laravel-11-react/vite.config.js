@@ -18,7 +18,7 @@ export default function ({ mode }) {
                     'resources/css/app.css',
                     'resources/js/app.jsx',
                 ],
-                refresh: [...refreshPaths, "resources/js/**", "app/**"],
+                refresh: true,
                 ssr: 'resources/js/ssr.jsx',
             }),
             react()

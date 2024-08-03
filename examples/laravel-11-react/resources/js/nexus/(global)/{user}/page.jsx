@@ -267,6 +267,9 @@ export default () => {
                     setAbuseReportModal((prevState) => ({
                         ...prevState,
                         show: false,
+                        message: "",
+                        type: "",
+                        submitting: false,
                     }))
                 }
             >
@@ -306,7 +309,7 @@ export default () => {
                     )}
                     <p className="text-sm text-gray-500 mt-2">
                         {t(
-                            "Please provide a detailed description of what you believe should be reported about this profle."
+                            "Please provide a detailed description of what you believe should be reported about this profile."
                         )}
                     </p>
                     <textarea
@@ -337,7 +340,6 @@ export default () => {
                     )}
                     <div className=" text-gray-500 mt-2 flex flex-row justify-end w-full">
                         <PrimaryButton
-                            loading={abuseReportModal.submitting}
                             onClick={() => {
                                 Swal.fire({
                                     title: t("Are you sure?"),

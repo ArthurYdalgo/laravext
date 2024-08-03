@@ -85,7 +85,7 @@
                 </div>
             </header>
             @endStrand
-            <div class="mx-auto py-6 pt-4 px-6 sm:px-6 lg:px-[15%]">
+            <div class="mx-auto py-6 pt-4 px-3 sm:px-0.5 lg:px-[15%]">
                 @nexus
             </div>
         </div>
