@@ -13,6 +13,9 @@ import DropdownButton from "@/components/DropdownButton";
 import CopyToClipboard from "@/components/CopyToClipboard";
 import Fa from "@/components/Fa";
 import PrimaryButton from "@/components/PrimaryButton";
+import { ReactionBarSelector } from '@charkour/react-reactions';
+import GroupedReactions from "@/components/GroupedReactions";
+import ReactionButton from "@/components/Article/ReactionButton";
 
 export default () => {
     const { article } = nexusProps();
@@ -104,8 +107,9 @@ export default () => {
             <div className="flex ">
                 <div className="hidden sm:block sm:w-20 lg:w-20 px-1">
                     <div className="flex flex-col space-y-2">
+                        <div className="flex justify-center"></div>
                         <div className="flex justify-center">
-                            
+                            <ReactionButton />
                         </div>
                         <div className="flex justify-center">
                             <Tooltip

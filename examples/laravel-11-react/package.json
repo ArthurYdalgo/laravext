@@ -7,6 +7,7 @@
         "test-ssr": "npm run build && node bootstrap/ssr/ssr.js"
     },
     "dependencies": {
+        "@charkour/react-reactions": "^0.11.0",
         "@fortawesome/fontawesome-svg-core": "^6.5.2",
         "@fortawesome/free-brands-svg-icons": "^6.5.2",
         "@fortawesome/free-regular-svg-icons": "^6.5.2",
