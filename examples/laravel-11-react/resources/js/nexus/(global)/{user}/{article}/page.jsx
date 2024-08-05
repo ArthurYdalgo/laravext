@@ -104,9 +104,8 @@ export default () => {
             <div className="flex ">
                 <div className="hidden sm:block sm:w-20 lg:w-20 px-1">
                     <div className="flex flex-col space-y-2">
-                        
                         <div className="flex justify-center">
-                                        
+                            
                         </div>
                         <div className="flex justify-center">
                             <Tooltip
