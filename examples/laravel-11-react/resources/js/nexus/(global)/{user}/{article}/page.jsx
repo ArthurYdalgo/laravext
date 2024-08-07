@@ -115,7 +115,7 @@ export default () => {
                             <ReactionButton onSelection={reactToArticle} />
                         </div>
                         <div className="flex justify-center">
-                            <button className="rounded-full p-[10px] hover:bg-gray-200">
+                            <button className="rounded-full p-[10px]  hover:bg-gray-200">
                                 <Fa icon="comment" size='lg' />
                             </button>
                         </div>
