@@ -19,6 +19,14 @@
     @apply w-full
 }
 
+.reactions-bar-selector {
+    z-index: 999;
+}
+
+.reactions-bar-selector >div> div >div> div:nth-of-type(1) {
+    display: none !important;
+}
+
 .article {
     @apply p-1
 }

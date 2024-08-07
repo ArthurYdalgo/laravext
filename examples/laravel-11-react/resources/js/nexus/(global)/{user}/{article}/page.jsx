@@ -31,6 +31,10 @@ export default () => {
         type: "",
     });
 
+    const reactToArticle = (reaction) => {
+
+    }
+
     const [bookmarked, setBookmarked] = useStateRef(
         article.user_has_bookmarked
     );
@@ -107,9 +111,13 @@ export default () => {
             <div className="flex ">
                 <div className="hidden sm:block sm:w-20 lg:w-20 px-1">
                     <div className="flex flex-col space-y-2">
-                        <div className="flex justify-center"></div>
                         <div className="flex justify-center">
-                            <ReactionButton />
+                            <ReactionButton onSelection={reactToArticle} />
+                        </div>
+                        <div className="flex justify-center">
+                            <button className="rounded-full p-[10px] hover:bg-gray-200">
+                                <Fa icon="comment" size='lg' />
+                            </button>
                         </div>
                         <div className="flex justify-center">
                             <Tooltip
@@ -208,29 +216,6 @@ export default () => {
                         <Article html={article.html} />
                     </div>
                     <hr className="my-4" />
-                    <span className="flex mt-2 justify-between">
-                        <div></div>
-                        <div>
-                            <Tooltip
-                                text={
-                                    bookmarked
-                                        ? t("Click to unbookmark this article")
-                                        : t("Click to bookmark this article")
-                                }
-                            >
-                                <Bookmark
-                                    bookmarked={bookmarked}
-                                    onClick={toggleBookmark}
-                                    className={
-                                        "p-1.5 transition-all  rounded-md " +
-                                        (bookmarked
-                                            ? " bg-slate-200 text-red-600"
-                                            : "text-black hover:text-red-300")
-                                    }
-                                />
-                            </Tooltip>
-                        </div>
-                    </span>
                 </div>
                 <div className="hidden lg:block lg:w-[20%] px-3">
                     author area
