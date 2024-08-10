@@ -1,4 +1,4 @@
-export default ({ groupedReactions, compressed = false, fontSize = "sm" }) => {
+export default ({ groupedReactions, compressed = false, fontSize = "sm", includeMissingReactions = false }) => {
     const emojis = {
         "sparkle-heart": "💖",
         unicorn: "🦄",
@@ -6,6 +6,13 @@ export default ({ groupedReactions, compressed = false, fontSize = "sm" }) => {
         "raised-hands": "🙌",
         fire: "🔥",
     };
+
+    const missingReactions = Object.keys(emojis).filter(
+        (reaction) =>
+            !groupedReactions.find((groupedReaction) => groupedReaction.reaction === reaction)
+    ).map((reaction) => ({ reaction, count: 0 }));
+
+    console.log(missingReactions);
 
     const fontSizes = {
         xs: "text-xs",
@@ -21,7 +28,7 @@ export default ({ groupedReactions, compressed = false, fontSize = "sm" }) => {
             <div className="flex items-center">
                 {groupedReactions.map((reaction, index) => (
                     <div
-                        key={index}
+                        key={reaction.reaction}
                         className={`flex items-center relative justify-center transition-all ${index !== 0 ? '-ml-4' : ''}`}
                         style={{
                             zIndex: groupedReactions.length - index,
@@ -40,15 +47,16 @@ export default ({ groupedReactions, compressed = false, fontSize = "sm" }) => {
     return (
         <div className="flex items-center space-x-3">
             {groupedReactions.map((reaction) => {
+                
                 return (
                     <div
-                        key={reaction.id}
+                        key={reaction.reaction}
                         className="flex items-center space-x-1"
                     >
                         <span className={fontSizes[fontSize] ?? "text-sm"}>
                             {emojis[reaction.reaction]}</span>
                         <span className={
-                                "font-bold " +
+                                "" +
                                 (fontSizes[fontSize] ?? "text-sm")
                             }
                         >
@@ -57,6 +65,26 @@ export default ({ groupedReactions, compressed = false, fontSize = "sm" }) => {
                     </div>
                 );
             })}
+
+            {includeMissingReactions ? missingReactions.map((reaction) => (
+                <div
+                    key={reaction.reaction}
+                    className="flex items-center space-x-1"
+                >
+                    <span className={fontSizes[fontSize] ?? "text-sm"}>
+                        {emojis[reaction.reaction]}
+                    </span>
+                    <span className={
+                            "" +
+                            (fontSizes[fontSize] ?? "text-sm")
+                        }
+                    >
+                        {reaction.count}
+                    </span>
+                </div>
+            )) : null}
+            
+
         </div>
     );
 };

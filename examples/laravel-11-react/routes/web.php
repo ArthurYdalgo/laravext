@@ -27,6 +27,7 @@ Route::laravext();
 
 Route::nexus('')->name('home');
 
+// For simplicity reasons, I won't be using a controller for some of these routes
 Route::get('{user:username}', function (User $user) {
     $user->loadCount(['articles', 'comments', 'followers', 'following', 'tags']);
 

@@ -40,6 +40,7 @@ Route::group([
 
     Route::prefix('articles/{article}')->group(function () {
         Route::get('reactions', [ArticleController::class, 'userReactions']);
+        Route::get('grouped-reactions', [ArticleController::class, 'groupedReactions']);
         Route::get('bookmark', [ArticleController::class, 'hasBookmarked']);
 
         Route::post('reactions', [ArticleController::class, 'react']);

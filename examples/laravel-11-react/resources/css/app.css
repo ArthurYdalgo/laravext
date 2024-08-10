@@ -27,6 +27,10 @@
     display: none !important;
 }
 
+.reactions-bar-selector >div> div >div> div:nth-of-type(2) {
+    /* @apply px-2 !important; */
+}
+
 .article {
     @apply p-1
 }

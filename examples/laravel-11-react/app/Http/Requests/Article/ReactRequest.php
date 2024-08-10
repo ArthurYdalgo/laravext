@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Article;
 
+use App\Models\Reaction;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ReactRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class ReactRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +24,7 @@ class ReactRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'reaction' => ['required', Rule::in(Reaction::$available_reactions)],
         ];
     }
 }

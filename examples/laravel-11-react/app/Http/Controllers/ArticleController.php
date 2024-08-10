@@ -112,6 +112,13 @@ class ArticleController extends Controller
         return $this->successResponse(user()->reactionsTo($article));
     }
 
+    public function groupedReactions(Article $article)
+    {
+        $article->loadGroupedReactions();
+        
+        return $this->successResponse($article->reactions);
+    }
+
     public function react(ReactRequest $request, Article $article)
     {
         user()->reactTo($article, $request->reaction);

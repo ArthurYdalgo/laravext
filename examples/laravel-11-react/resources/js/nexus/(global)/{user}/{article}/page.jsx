@@ -13,7 +13,7 @@ import DropdownButton from "@/components/DropdownButton";
 import CopyToClipboard from "@/components/CopyToClipboard";
 import Fa from "@/components/Fa";
 import PrimaryButton from "@/components/PrimaryButton";
-import { ReactionBarSelector } from '@charkour/react-reactions';
+import { ReactionBarSelector } from "@charkour/react-reactions";
 import GroupedReactions from "@/components/GroupedReactions";
 import ReactionButton from "@/components/Article/ReactionButton";
 
@@ -31,9 +31,93 @@ export default () => {
         type: "",
     });
 
+    const [userReactions, setUserReactions] = useStateRef(article.user_reactions);
+    const [groupedReactions, setGroupedReactions] = useStateRef(article.reactions);
+    const [reactionsCount, setReactionsCount] = useStateRef(article.reactions_count);
+
     const reactToArticle = (reaction) => {
 
-    }
+        setReactionsCount(reactionsCount + 1);
+        setGroupedReactions(groupedReactions.map((groupedReaction) => {
+            if(groupedReaction.reaction === reaction){
+                return {
+                    ...groupedReaction,
+                    count: groupedReaction.count + 1,
+                };
+            }
+
+            return groupedReaction;
+        }));
+
+        setUserReactions([...userReactions, reaction]);
+
+        axios
+            .post(`/api/articles/${article.id}/reactions`, {
+                reaction: reaction,
+            })
+            .then((response) => {
+                setUserReactions(response.data.data);
+
+                axios.get(`/api/articles/${article.id}/grouped-reactions`).then((response) => {
+                    setGroupedReactions(response.data.data);
+
+                    // sum the count of all reactions
+                    setReactionsCount(response.data.data.reduce((acc, reaction) => {
+                        return acc + reaction.count;
+                    }, 0));
+                }).catch((error) => {
+                    console.error(error);
+                });
+
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
+    const unreactToArticle = (reaction) => {
+
+        setReactionsCount(reactionsCount - 1);
+        setGroupedReactions(groupedReactions.map((groupedReaction) => {
+            if(groupedReaction.reaction === reaction){
+                let reaction = {
+                    ...groupedReaction,
+                    count: groupedReaction.count - 1,
+                };
+
+                if(reaction.count <= 0){
+                    return null;
+                }
+
+                return reaction;
+            }
+
+            return groupedReaction;
+        }).filter((groupedReaction) => groupedReaction !== null));
+
+        setUserReactions(userReactions.filter((userReaction) => userReaction !== reaction));
+
+        axios.delete(`/api/articles/${article.id}/reactions`, {
+            data: {
+                reaction: reaction,
+            },
+        }).then((response) => {
+            setUserReactions(response.data.data);
+
+            axios.get(`/api/articles/${article.id}/grouped-reactions`).then((response) => {
+                setGroupedReactions(response.data.data);
+
+                setReactionsCount(response.data.data.reduce((acc, reaction) => {
+                    return acc + reaction.count;
+                }, 0));
+            }).catch((error) => {
+                console.error(error);
+            })
+
+        }).catch((error) => {
+            console.error(error);
+        });
+    };
 
     const [bookmarked, setBookmarked] = useStateRef(
         article.user_has_bookmarked
@@ -112,12 +196,47 @@ export default () => {
                 <div className="hidden sm:block sm:w-20 lg:w-20 px-1">
                     <div className="flex flex-col space-y-2">
                         <div className="flex justify-center">
-                            <ReactionButton onSelection={reactToArticle} />
+                            <ReactionButton
+                                onSelection={reactToArticle}
+                                closeOnReactionClick={false}
+                                reactionsCount={reactionsCount}
+                                highlightKeys={userReactions}
+                                onReact={(reaction) => {
+                                    if(!user){
+                                        Swal.fire({
+                                            title: t("You must be logged in to react to articles"),
+                                            icon: "info",
+                                            showCancelButton: true,
+                                            confirmButtonText: t("Login"),
+                                            cancelButtonText: t("Cancel"),
+                                        }).then(({ isConfirmed }) => {
+                                            if (isConfirmed) {
+                                                visit(route("login"));
+                                            }
+                                        });
+                                        return;
+                                    }
+
+                                    if(userReactions.includes(reaction)){
+                                        unreactToArticle(reaction);
+                                    }else{
+                                        reactToArticle(reaction);
+                                    }
+                                }}
+                            />
                         </div>
                         <div className="flex justify-center">
-                            <button className="rounded-full p-[10px]  hover:bg-gray-200">
-                                <Fa icon="comment" size='lg' />
-                            </button>
+                            <div className="flex flex-col items-center">
+                                <button className="rounded-full px-[12px] py-[10px]  hover:bg-gray-200"
+                                    onClick={() => {
+                                        document.getElementById("comments").scrollIntoView({ behavior: "smooth" });
+                                    }}
+
+                                >
+                                    <Fa icon="comment" size="lg" />
+                                </button>
+                                {article.comments_count}
+                            </div>
                         </div>
                         <div className="flex justify-center">
                             <Tooltip
@@ -205,9 +324,16 @@ export default () => {
                             />
                         </p>
                     )}
-
-                    <div className="flex justify-center">
-                        <h1 className="px-8 text-[2.25rem] font-bold antialiased">
+                    <div className="flex items-center justify-between px-8 py-4">
+                        <GroupedReactions
+                            includeMissingReactions={true}
+                            fontSize="lg"
+                            compressed={false}
+                            groupedReactions={groupedReactions}
+                        />
+                    </div>
+                    <div className="flex justify-start">
+                        <h1 className="px-8 text-[2.25rem] font-bold antialiased font-sans">
                             {article.title}
                         </h1>
                     </div>
@@ -216,6 +342,11 @@ export default () => {
                         <Article html={article.html} />
                     </div>
                     <hr className="my-4" />
+                    <div className="flex justify-between px-8 py-4" id="comments">
+                        foo
+                        </div>
+                        
+
                 </div>
                 <div className="hidden lg:block lg:w-[20%] px-3">
                     author area

@@ -53,7 +53,7 @@ export default () => {
                         href="/"
                         className=" rounded-[4px] px-3 py-1.5 border-2 border-black hover:text-white hover:bg-black text-black ring-1 ring-transparent transition"
                     >
-                        <h2 className="font-extrabold uppercase whitespace-nowrap text-lg leading-tight">
+                        <h2 className="font-semibold uppercase whitespace-nowrap text-lg leading-tight">
                             Dev Diary
                         </h2>
                     </Link>
