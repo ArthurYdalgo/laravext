@@ -15,6 +15,10 @@ class Tag extends Model
         'articles_count',
     ];
 
+    protected $hidden = [
+        'pivot',
+    ];
+
     public function articles()
     {
         return $this->belongsToMany(Article::class);

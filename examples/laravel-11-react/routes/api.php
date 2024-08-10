@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AbuseReportController;
+use App\Http\Controllers\ArticleAbuseReportController;
 use App\Http\Controllers\ArticleCommentController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\Auth\LoginController;
@@ -50,6 +51,8 @@ Route::group([
 
         Route::delete('reactions', [ArticleController::class, 'unreact']);
         Route::delete('bookmark', [ArticleController::class, 'unbookmark']);
+
+        Route::post('abuse-reports', [ArticleAbuseReportController::class, 'store']);
     });
 
     

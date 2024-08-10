@@ -17,7 +17,7 @@ return new class extends Migration
         Schema::create('reads', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(User::class)->nullable()->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Article::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Share::class)->nullable()->constrained()->cascadeOnDelete();
             $table->string('ip_address')->index()->nullable();

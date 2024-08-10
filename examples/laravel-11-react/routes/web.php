@@ -4,6 +4,9 @@ use App\Enums\DeveloperRole;
 use App\Models\AbuseReport;
 use App\Models\Article;
 use App\Models\Developer;
+use App\Models\Reaction;
+use App\Models\Read;
+use App\Models\Share;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -16,6 +19,16 @@ use Illuminate\Support\Facades\Route;
  * @see https://laravel.com/docs/11.x/routing#view-routes for more details
  */
 Route::view('about-this-project', 'sections.about-this-project')->name('about-this-project');
+
+// Redirect article short link codes to the article
+Route::get('sl/{article:short_link_code}', function (Article $article) {
+    return redirect()->route('user.article', ['article' => $article->slug, 'user' => $article->user->username]);
+})->name('article.short-link');
+
+// Redirect share links to the article
+Route::get('s/{share:code}', function (Share $share) {
+    return redirect()->route('user.article', ['article' => $share->article->slug, 'user' => $share->article->user->username, 'sid' => $share->id]);
+})->name('share');
 
 /**
  * This will automagically generate all the file based routes of your application.
@@ -34,14 +47,25 @@ Route::get('{user:username}', function (User $user) {
     return nexus(props: compact('user'))->render();
 })->name('user');
 
+
 Route::get('{user:username}/{article:slug}', function (User $user, Article $article) {
     if(!$article->user->is($user)) {
         abort(404);
     }
 
+    $share_id = request()->query('sid');
+
+    Read::firstOrCreate([
+        'user_id' => auth()?->id(),
+        'article_id' => $article->id,
+        'share_id' => $share_id,
+        'ip_address' => request()->ip(),
+    ]);
+
     $article->append(['user_has_bookmarked', 'user_reactions']);
     $article->loadCount('bookmarks', 'comments', 'reactions');
     $article->loadGroupedReactions();
+    $article->load(['tags:slug']);
 
     return nexus(props: compact('article'))
         // ->withViewSkeleton('partials.article')
@@ -49,10 +73,6 @@ Route::get('{user:username}/{article:slug}', function (User $user, Article $arti
         ->render();
 })->name('user.article');
 
-// Redirect short links to the article
-Route::get('s/{article:short_link_code}', function (Article $article) {
-    return redirect()->route('article', ['article' => $article->slug, 'user' => $article->user->username]);
-})->name('short-link');
 
 /**
  * You could also make it so that any child route of admin will require the user to be authenticated, and also

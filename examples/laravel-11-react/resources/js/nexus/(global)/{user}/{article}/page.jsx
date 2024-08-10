@@ -16,10 +16,13 @@ import PrimaryButton from "@/components/PrimaryButton";
 import { ReactionBarSelector } from "@charkour/react-reactions";
 import GroupedReactions from "@/components/GroupedReactions";
 import ReactionButton from "@/components/Article/ReactionButton";
+import Link from "@/components/Link";
+import moment from "moment";
+import axios from "axios";
 
 export default () => {
     const { article } = nexusProps();
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { user } = sharedProps().auth;
 
     const { available_abuse_report_types } = sharedProps();
@@ -31,23 +34,30 @@ export default () => {
         type: "",
     });
 
-    const [userReactions, setUserReactions] = useStateRef(article.user_reactions);
-    const [groupedReactions, setGroupedReactions] = useStateRef(article.reactions);
-    const [reactionsCount, setReactionsCount] = useStateRef(article.reactions_count);
+    const [userReactions, setUserReactions] = useStateRef(
+        article.user_reactions
+    );
+    const [groupedReactions, setGroupedReactions] = useStateRef(
+        article.reactions
+    );
+    const [reactionsCount, setReactionsCount] = useStateRef(
+        article.reactions_count
+    );
 
     const reactToArticle = (reaction) => {
-
         setReactionsCount(reactionsCount + 1);
-        setGroupedReactions(groupedReactions.map((groupedReaction) => {
-            if(groupedReaction.reaction === reaction){
-                return {
-                    ...groupedReaction,
-                    count: groupedReaction.count + 1,
-                };
-            }
+        setGroupedReactions(
+            groupedReactions.map((groupedReaction) => {
+                if (groupedReaction.reaction === reaction) {
+                    return {
+                        ...groupedReaction,
+                        count: groupedReaction.count + 1,
+                    };
+                }
 
-            return groupedReaction;
-        }));
+                return groupedReaction;
+            })
+        );
 
         setUserReactions([...userReactions, reaction]);
 
@@ -58,17 +68,21 @@ export default () => {
             .then((response) => {
                 setUserReactions(response.data.data);
 
-                axios.get(`/api/articles/${article.id}/grouped-reactions`).then((response) => {
-                    setGroupedReactions(response.data.data);
+                axios
+                    .get(`/api/articles/${article.id}/grouped-reactions`)
+                    .then((response) => {
+                        setGroupedReactions(response.data.data);
 
-                    // sum the count of all reactions
-                    setReactionsCount(response.data.data.reduce((acc, reaction) => {
-                        return acc + reaction.count;
-                    }, 0));
-                }).catch((error) => {
-                    console.error(error);
-                });
-
+                        // sum the count of all reactions
+                        setReactionsCount(
+                            response.data.data.reduce((acc, reaction) => {
+                                return acc + reaction.count;
+                            }, 0)
+                        );
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
             })
             .catch((error) => {
                 console.error(error);
@@ -76,48 +90,95 @@ export default () => {
     };
 
     const unreactToArticle = (reaction) => {
-
         setReactionsCount(reactionsCount - 1);
-        setGroupedReactions(groupedReactions.map((groupedReaction) => {
-            if(groupedReaction.reaction === reaction){
-                let reaction = {
-                    ...groupedReaction,
-                    count: groupedReaction.count - 1,
-                };
+        setGroupedReactions(
+            groupedReactions
+                .map((groupedReaction) => {
+                    if (groupedReaction.reaction === reaction) {
+                        let reaction = {
+                            ...groupedReaction,
+                            count: groupedReaction.count - 1,
+                        };
 
-                if(reaction.count <= 0){
-                    return null;
-                }
+                        if (reaction.count <= 0) {
+                            return null;
+                        }
 
-                return reaction;
-            }
+                        return reaction;
+                    }
 
-            return groupedReaction;
-        }).filter((groupedReaction) => groupedReaction !== null));
+                    return groupedReaction;
+                })
+                .filter((groupedReaction) => groupedReaction !== null)
+        );
 
-        setUserReactions(userReactions.filter((userReaction) => userReaction !== reaction));
+        setUserReactions(
+            userReactions.filter((userReaction) => userReaction !== reaction)
+        );
 
-        axios.delete(`/api/articles/${article.id}/reactions`, {
-            data: {
-                reaction: reaction,
-            },
-        }).then((response) => {
-            setUserReactions(response.data.data);
-
-            axios.get(`/api/articles/${article.id}/grouped-reactions`).then((response) => {
-                setGroupedReactions(response.data.data);
-
-                setReactionsCount(response.data.data.reduce((acc, reaction) => {
-                    return acc + reaction.count;
-                }, 0));
-            }).catch((error) => {
-                console.error(error);
+        axios
+            .delete(`/api/articles/${article.id}/reactions`, {
+                data: {
+                    reaction: reaction,
+                },
             })
+            .then((response) => {
+                setUserReactions(response.data.data);
 
+                axios
+                    .get(`/api/articles/${article.id}/grouped-reactions`)
+                    .then((response) => {
+                        setGroupedReactions(response.data.data);
+
+                        setReactionsCount(
+                            response.data.data.reduce((acc, reaction) => {
+                                return acc + reaction.count;
+                            }, 0)
+                        );
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
+    const shareArticle = () => {
+        // make api request to get shareable link
+        axios.get(`/api/articles/${article.id}/shareable-link`, {
+            timeout: 3000,
+        }).then((response) => {
+            // copy to clipboard
+            navigator.clipboard.writeText(response.data.data.shareable_link);
+
+            // show success message
+            Swal.fire({
+                title: t("Link copied to clipboard"),
+                icon: "success",
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: true,
+                confirmButtonColor: "#2d3748",
+            });
         }).catch((error) => {
             console.error(error);
+            navigator.clipboard.writeText(route('article.short-link', { article: article.short_link_code }));
+
+            // show success message
+            Swal.fire({
+                title: t("Link copied to clipboard"),
+                icon: "success",
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: true,
+                confirmButtonColor: "#2d3748",
+            });
+
         });
-    };
+        // swal to notify it was copied to clipbloard
+    }
 
     const [bookmarked, setBookmarked] = useStateRef(
         article.user_has_bookmarked
@@ -202,9 +263,11 @@ export default () => {
                                 reactionsCount={reactionsCount}
                                 highlightKeys={userReactions}
                                 onReact={(reaction) => {
-                                    if(!user){
+                                    if (!user) {
                                         Swal.fire({
-                                            title: t("You must be logged in to react to articles"),
+                                            title: t(
+                                                "You must be logged in to react to articles"
+                                            ),
                                             icon: "info",
                                             showCancelButton: true,
                                             confirmButtonText: t("Login"),
@@ -217,9 +280,9 @@ export default () => {
                                         return;
                                     }
 
-                                    if(userReactions.includes(reaction)){
+                                    if (userReactions.includes(reaction)) {
                                         unreactToArticle(reaction);
-                                    }else{
+                                    } else {
                                         reactToArticle(reaction);
                                     }
                                 }}
@@ -227,11 +290,15 @@ export default () => {
                         </div>
                         <div className="flex justify-center">
                             <div className="flex flex-col items-center">
-                                <button className="rounded-full px-[12px] py-[10px]  hover:bg-gray-200"
+                                <button
+                                    className="rounded-full px-[12px] py-[10px]  hover:bg-gray-200"
                                     onClick={() => {
-                                        document.getElementById("comments").scrollIntoView({ behavior: "smooth" });
+                                        document
+                                            .getElementById("comments")
+                                            .scrollIntoView({
+                                                behavior: "smooth",
+                                            });
                                     }}
-
                                 >
                                     <Fa icon="comment" size="lg" />
                                 </button>
@@ -259,6 +326,17 @@ export default () => {
                             </Tooltip>
                         </div>
                         <div className="flex justify-center">
+                            <Tooltip
+                                text={t("Share this article")}
+                            >
+                                <button className="rounded-full px-[12px] py-[10px] hover:bg-gray-200"
+                                    onClick={shareArticle}
+                                >
+                                    <Fa icon="share-alt" size="lg" />
+                                </button>
+                            </Tooltip>
+                        </div>
+                        <div className="flex justify-center">
                             <Dropdown>
                                 <Dropdown.Trigger className="flex justify-center">
                                     <button className="transition px-2 py-2 hover:bg-gray-200 rounded-full ">
@@ -266,16 +344,6 @@ export default () => {
                                     </button>
                                 </Dropdown.Trigger>
                                 <Dropdown.Content align="left">
-                                    <DropdownButton>
-                                        <span className="flex justify-between">
-                                            {t("Copy Shareable Link")}{" "}
-                                            <Fa
-                                                icon="copy"
-                                                className="mt-0.5"
-                                            />
-                                        </span>
-                                    </DropdownButton>
-                                    <div className="border-b border-gray-200 w-full"></div>
                                     <DropdownButton
                                         onClick={() => {
                                             if (!user) {
@@ -324,7 +392,35 @@ export default () => {
                             />
                         </p>
                     )}
-                    <div className="flex items-center justify-between px-8 py-4">
+                    <div className="flex justify-start px-8 mt-4 space-x-2">
+                        <div className="flex items-center space-x-2">
+                            <Link href={route("user", { user: article.user.username })}>
+                            <img
+                                src={article.user.avatar_url ?? "/images/avatars/placeholder.png"}
+                                className="w-10 h-10 rounded-full"
+                                alt={article.user.name}
+                            />
+                            </Link>
+                        </div>
+                        <div className="flex flex-col py-2">
+                            <span className="text-lg font-bold hover:underline">
+                                <Link href={route("user", { user: article.user.username })} 
+                                >{article.user.name}</Link>
+                            </span>
+                            <span className="text-sm text-gray-500">
+                                {moment(article.published_at).locale(i18n.language).format("LL")}
+                                {article.updated_at > article.published_at && (
+                                    <span className="text-xs text-gray-500">
+                                        {" "}
+                                        - {t("Updated on")}{" "}
+                                        {moment(article.updated_at).locale(i18n.language).format("LL")}
+                                    </span>
+                                )}
+                                    
+                            </span>
+                        </div>
+                    </div>
+                    <div className="flex items-center justify-between px-8 pt-3">
                         <GroupedReactions
                             includeMissingReactions={true}
                             fontSize="lg"
@@ -337,16 +433,36 @@ export default () => {
                             {article.title}
                         </h1>
                     </div>
+                    <div className="flex justify-start px-8 space-x-2">
+                        {article.tags.sort((a, b) => a.slug.localeCompare(b.slug)).map((tag) => (
+                                <Link
+                                key={tag.slug}
+                                href={route("search", { tags: tag.slug })}
+                                params={{ tags: tag.slug }}
+                                className="flex row hover:underline cursor-pointer"
+                            >
+                                    <span
+                                        className={`rounded-md text-gray-500`}
+                                    >
+                                        #
+                                    </span>
+                                    {tag.slug}
+                                </Link>
+
+                            )
+                        )}
+                    </div>
 
                     <div className="article pre-wrap break-words ">
                         <Article html={article.html} />
                     </div>
                     <hr className="my-4" />
-                    <div className="flex justify-between px-8 py-4" id="comments">
+                    <div
+                        className="flex justify-between px-8 py-4"
+                        id="comments"
+                    >
                         foo
-                        </div>
-                        
-
+                    </div>
                 </div>
                 <div className="hidden lg:block lg:w-[20%] px-3">
                     author area
