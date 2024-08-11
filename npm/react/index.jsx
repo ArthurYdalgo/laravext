@@ -13,9 +13,12 @@ if (typeof window !== 'undefined') {
         }
 
         try {
-            window.__laravext.page_data = event.state.laravext_page_data;
+            clientRender(event.state.laravext_page_data);
 
-            clientRender();
+            if(window.__laravext.scroll_state != null){
+                window.scrollTo(0, window.__laravext.scroll_state);
+            }
+
         } catch (error) {
             console.error('Error updating page data:', error);
             window.location.href = window.location.href;

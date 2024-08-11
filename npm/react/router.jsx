@@ -51,7 +51,12 @@ export function visit(url, options = {
             try {
                 clientRender(data.laravext_page_data);
 
-                history.pushState(( laravext.disablePushState ? {} : {laravext_page_data: laravext.page_data}), '', url);
+                window.scrollTo(0, 0);
+
+                history.pushState(( laravext.disablePushState ? {} : {
+                    laravext_page_data: laravext.page_data,
+                    scroll_state: options.preserveScroll ? window.scrollY : 0,
+                }), '', url);
             } catch (error) {
                 console.error('Error updating page data:', error);
                 window.location.href = url;
