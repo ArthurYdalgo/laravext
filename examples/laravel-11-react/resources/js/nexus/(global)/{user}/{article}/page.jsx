@@ -542,7 +542,7 @@ export default () => {
                         <h2 className="text-lg font-bold">{t("More from")} <Link className="text-blue-500" href={route('user', article.user.username)}>{article.user.name}</Link></h2>
                         <div className="border-b border-gray-200 w-full"></div>
                         {latest_articles_from_user.map((article, index) => (
-                            <>
+                            <div  key={article.id}>
                             <div key={article.id} className="flex flex-col space-y-2">
                                 <Link href={route("user.article", { user: article.user.username, article: article.slug })}>
                                     <h3 className="text-lg hover:underline">{article.title}</h3>
@@ -550,7 +550,7 @@ export default () => {
                                 <span className="text-sm text-gray-500">{moment(article.published_at).locale(i18n.language).format("LL")}</span>
                             </div>
                             {index < latest_articles_from_user.length - 1 && <div className="border-b border-gray-200 w-full"></div>}
-                            </>
+                            </div>
                         ))}
                     </div>}
                 </div>
