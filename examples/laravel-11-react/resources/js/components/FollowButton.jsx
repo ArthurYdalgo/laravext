@@ -97,7 +97,8 @@ export default ({ followee , disabled = false}) => {
     }
 
     return (
-        <SecondaryButton disabled={disabled} onClick={() => {
+        <SecondaryButton className="flex items-center justify-center" 
+        disabled={disabled} onClick={() => {
             followingStatus.value ? unfollow() : follow();
         }}>
             {followingStatus.loading && <div className="mini-loader mr-3 ml-[-5px]"></div>}

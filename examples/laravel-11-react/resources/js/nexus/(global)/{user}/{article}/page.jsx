@@ -19,6 +19,7 @@ import ReactionButton from "@/components/Article/ReactionButton";
 import Link from "@/components/Link";
 import moment from "moment";
 import axios from "axios";
+import FollowButton from "@/components/FollowButton";
 
 export default () => {
     const { article } = nexusProps();
@@ -475,8 +476,22 @@ export default () => {
                         foo
                     </div>
                 </div>
-                <div className="hidden lg:block lg:w-[20%] px-3">
-                    author area
+                <div className="hidden lg:block lg:w-[300px] px-3">
+                    <div className="flex flex-col space-y-2 border-t-[30px] bg-white rounded-md p-4 pt-0 w-full" style={{
+                        borderTopColor: article.user.banner_hex_color ?? "#000000"
+                    }}>
+                        <div className="-mt-4 flex items-end">
+                            <img 
+                                src={article.user.avatar_url ?? "/images/avatars/placeholder.png"}
+                                className="w-14 h-14 rounded-full border-2 border-white"
+                                alt={article.user.name}
+                            />
+                            <span  className="text-lg font-bold ml-1 mb-1">
+                            {article.user.name}
+                            </span>
+                        </div>
+                        <FollowButton followee={article.user} disabled={user && user?.id == article.user_id} />
+                    </div>
                 </div>
             </div>
             <Modal
