@@ -4,8 +4,6 @@
 
 This is an example of a Laravel 11 application with Vue that makes use of the [Laravext package](laravext.dev).
 
-There's a React Example that was partially implemented, that you can check it out [here](https://github.com/ArthurYdalgo/laravext/examples/laravel-11-react).
-
 ## Instructions
 
 I'm assuming you have PHP (8.2 or later), Composer and Node.js installed on your machine, and also that you have some kind of database server running (like MySQL or SQLite), that you have created a `.env` file based on the `.env.example` file and set it up with your database credentials.
