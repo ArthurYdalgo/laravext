@@ -17,7 +17,7 @@ class CommentResource extends JsonResource
         $data = parent::toArray($request);
 
         $data['user'] = $this->whenLoaded('user', function(){
-            return $this->user->only(['id', 'name', 'email']);
+            return $this->user->only(['id', 'name', 'username', 'avatar_url', 'banner_hex_color']);
         });
 
         $data['content'] = $this->deleted_at ? '-- ' . __('This comment was deleted') . ' ' . $this->deleted_at->diffForHumans() . ' --' : $data['content'];
