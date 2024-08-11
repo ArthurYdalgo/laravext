@@ -44,6 +44,7 @@ export default function ({ mode }) {
                                 '@mdx-js/mdx',
                                 'react-syntax-highlighter',
                                 'hast-util',
+                                '@charkour',
                                 'mdast-util',
                                 // '@lezer',
                                 // '@codemirror'

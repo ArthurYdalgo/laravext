@@ -1,6 +1,6 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus,faTrash, faEye, faEyeSlash, faCopy,faComment,faLocationDot,faSuitcase, faGraduationCap, faBirthdayCake, faHashtag, faNewspaper, faCheckCircle, faSearch, faClock, faBookmark as faSolidBookmark, faLink, faHeartCirclePlus, faShare, faShareAlt } from '@fortawesome/free-solid-svg-icons'
+import { faPlus,faTrash, faEye, faEyeSlash, faCopy,faComment,faLocationDot,faSuitcase, faGraduationCap, faBirthdayCake, faHashtag, faNewspaper, faCheckCircle, faSearch, faClock, faBookmark as faSolidBookmark, faLink, faHeartCirclePlus, faShareAlt } from '@fortawesome/free-solid-svg-icons'
 import { faBookmark as faRegularBookmark} from '@fortawesome/free-regular-svg-icons'
 import { faDiscord, faGithub, faYoutube, faXTwitter, faTwitter, faFacebook, faLinkedin } from '@fortawesome/free-brands-svg-icons'
 
