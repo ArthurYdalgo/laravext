@@ -1,6 +1,5 @@
 // FacebookReactionsComponent.jsx
 import {
-    FacebookSelector,
     ReactionBarSelector,
 } from "@charkour/react-reactions";
 import React, { useState, useRef, useEffect } from "react";
