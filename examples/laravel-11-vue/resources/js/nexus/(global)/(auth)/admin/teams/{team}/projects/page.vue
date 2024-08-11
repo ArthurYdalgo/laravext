@@ -10,9 +10,10 @@ import SecondaryButton from '@/components/SecondaryButton.vue';
 import PageContent from '@/components/PageContent.vue';
 import Loading from '@/components/Loading.vue';
 import { useI18n } from 'vue-i18n';
+import axios from 'axios';
 const { t } = useI18n();
 const swal = inject('$swal')
-const axios = inject('$axios');
+const routeParams = inject('$routeParams');
 
 const pagination = reactive({
     data: [],
