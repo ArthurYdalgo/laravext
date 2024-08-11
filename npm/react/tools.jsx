@@ -52,7 +52,7 @@ export function shouldLinkClickEventBeIntercepted(event) {
     );
 }
 
-export function clientRender(pageData = null) {
+export function clientRender(pageData = null, scrollState = null) {
     const laravextPageData = pageData ?? window.__laravext.page_data;
 
     let nexusResolver = window.__laravext.app.nexusResolver;
@@ -184,6 +184,10 @@ export function clientRender(pageData = null) {
 
                         window.__laravext.app.react_nexus_root = nexusRoot;
                         window.__laravext.page_data = laravextPageData;
+
+                        if(scrollState != null){
+                            window.scrollTo(scrollState.x ?? 0, scrollState.y ?? 0);
+                        }
                     })
                     .catch((error) => {
                         console.error(

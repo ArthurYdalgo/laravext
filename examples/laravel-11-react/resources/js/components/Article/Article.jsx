@@ -36,7 +36,7 @@ export default ({ html }) => {
             }
 
             return (<div key={generateMD5Hash(`${elementIndex}_${preChildrenIndex}_code`)} className="relative">
-                <span className="bg-white text-black p-[7px] rounded-md absolute top-2 right-4 font-bold font-sans cursor-pointer" onClick={() => {
+                <span className="bg-white text-black p-[7px] rounded-md absolute top-2 right-4 font-semibold font-sans cursor-pointer" onClick={() => {
                     let decodedCode = document.createElement('textarea');
                     decodedCode.innerHTML = preChild.innerHTML;
                     let code = decodedCode.value;

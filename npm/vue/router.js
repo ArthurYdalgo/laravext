@@ -43,18 +43,32 @@ export function visit(url, options = {
             }
 
             if (data.action == 'redirect') {
-                // window.location.href = data.url;
+                window.location.href = data.url;
                 return;
             }
+
+            let currentScroll = {x: window.scrollX, y: window.scrollY};
 
             window.__laravext.page_data = data.laravext_page_data;
 
             try {
-                clientRender();
+                if(!laravext.app.disablePushedStateData()){
+                    let currentState = {
+                        ... history.state,
+                        laravext_page_data: window.__laravext.page_data,
+                        scroll_state: options?.preserveScroll ? currentScroll : {x: 0, y: 0},
+                    };
+    
+                    history.replaceState(currentState, '', window.location.href);
+                }
 
-                window.scrollTo(0, 0);
+                clientRender({x: 0, y: 0});
 
-                history.pushState({laravext_page_data: laravext.page_data}, '', url);
+                let newState = {
+                    laravext_page_data: data.laravext_page_data,
+                };
+
+                history.pushState(( laravext.app.disablePushedStateData() ? {} : newState), '', url);
             } catch (error) {
                 console.error('Error updating page data:', error);
                 window.location.href = url;

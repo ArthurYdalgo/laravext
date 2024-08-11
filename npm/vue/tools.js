@@ -48,7 +48,7 @@ export function shouldLinkClickEventBeIntercepted(event) {
     );
 }
 
-export function clientRender() {
+export function clientRender(scrollState = null) {
     const laravext = window.__laravext;
 
     let mixins = {
@@ -153,6 +153,10 @@ export function clientRender() {
                     laravext.app.vue_nexus_app?.unmount();
                     
                     nexusApp.mount(nexusElement);
+
+                    if(scrollState != null){
+                        window.scrollTo(scrollState.x ?? 0, scrollState.y ?? 0);
+                    }
 
                     window.__laravext.app.vue_nexus_app = nexusApp;
                 }).catch((error) => {

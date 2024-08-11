@@ -12,6 +12,7 @@ export default  ({ routeName, href, className = '', children , classNameWhenIsCu
     <Link
       href={resolvedHref}
       className={className}
+      preserveScroll={true}
       >
       {children}
     </Link>

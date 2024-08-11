@@ -12,8 +12,6 @@ export default ({ groupedReactions, compressed = false, fontSize = "sm", include
             !groupedReactions.find((groupedReaction) => groupedReaction.reaction === reaction)
     ).map((reaction) => ({ reaction, count: 0 }));
 
-    console.log(missingReactions);
-
     const fontSizes = {
         xs: "text-xs",
         sm: "text-sm",

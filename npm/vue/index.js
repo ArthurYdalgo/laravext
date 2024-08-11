@@ -6,7 +6,7 @@ import { visit } from './router';
 
 if (typeof window !== 'undefined') {
     window.addEventListener("popstate", function (event) {
-        if(window.__laravext.app.disablePushState()){
+        if(window.__laravext.app.disablePushedStateData()){
             window.location.href = window.location.href;
             return;
         }
@@ -68,7 +68,7 @@ export function createLaravextApp({ nexusResolver, strandsResolver, conventions 
     'error',
     'layout',
     'middleware',
-], progress = {}, beforeSetup = null, setup = null, setupNexus = null, setupStrand = null, reverseSetupOrder = false, disablePushState = () => false}) {
+], progress = {}, beforeSetup = null, setup = null, setupNexus = null, setupStrand = null, reverseSetupOrder = false, disablePushedStateData = () => false}) {
     window.__laravext.app = {
         nexusResolver,
         strandsResolver,
@@ -78,15 +78,15 @@ export function createLaravextApp({ nexusResolver, strandsResolver, conventions 
         setupNexus,
         setupStrand,
         reverseSetupOrder,
-        disablePushState
+        disablePushedStateData
     }
 
     if (progress) {
         setupProgress(progress);
     }
 
-    if(!disablePushState()){
-        history.pushState({laravext_page_data: window.__laravext.page_data}, '', window.location.href);
+    if(history?.pushState){
+        history.pushState({laravext_page_data: (disablePushedStateData() ? window.__laravext.page_data : {})}, '', window.location.href);
     }
 
     clientRender();
