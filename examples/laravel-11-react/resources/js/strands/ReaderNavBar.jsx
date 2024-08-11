@@ -47,7 +47,7 @@ export default () => {
 
     return (
         <header className="bg-white dark:bg-gray-800 shadow">
-            <div className="mx-auto py-[7px] px-6 sm:px-6 lg:px-[15%]">
+            <div className="mx-auto py-[7px] px-4 sm:px-4 lg:px-[7%]">
                 <div className="flex items-center justify-between space-x-4">
                     <Link
                         href="/"

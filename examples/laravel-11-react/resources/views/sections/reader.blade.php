@@ -4,7 +4,7 @@
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
             @startStrand('ReaderNavBar')
             <header class="bg-white dark:bg-gray-800 shadow">
-                <div class="mx-auto py-[7px] px-6 sm:px-6 lg:px-[15%]">
+                <div class="mx-auto py-[7px] px-4 sm:px-4 lg:px-[7%]">
                     <div class="flex items-center justify-between space-x-4">
                         <a href="/"
                             class=" rounded-[4px] px-3 py-1.5 border-2 border-black hover:text-white hover:bg-black text-black ring-1 ring-transparent transition">
@@ -85,7 +85,7 @@
                 </div>
             </header>
             @endStrand
-            <div class="mx-auto py-6 pt-4 px-3 sm:px-0.5 lg:px-[15%]">
+            <div class="mx-auto py-6 pt-4 px-3 sm:px-0.5 lg:px-[7%]">
                 @nexus
             </div>
         </div>
