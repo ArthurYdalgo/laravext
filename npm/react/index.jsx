@@ -1,8 +1,9 @@
 import { setupProgress } from './progress';
-import { clientRender, findNexus, findStrands, isEnvProduction } from './tools';
+import { clientRender, findNexus, findStrands, isEnvProduction, shouldLinkClickEventBeIntercepted } from './tools';
 import { renderToString } from 'react-dom/server';
 import laravext from './laravext';
 import LaravextContext from './LaravextContext';
+import { visit } from './router';
 
 if (typeof window !== 'undefined') {
     window.addEventListener("popstate", function (event) {
@@ -61,6 +62,24 @@ export function Head({ title }) {
     return null;
 }
 
+export function Link({ href, preserveScroll = false, children, ...props }) {
+    return (
+      <a
+        href={href}
+        onClick={(event) => {
+          if (shouldLinkClickEventBeIntercepted(event)) {
+            event.preventDefault();
+            visit(href, {
+                preserveScroll,
+            });
+          }
+        }}
+        {... props}
+      >
+        {children}
+      </a>
+    );
+  }
 
 export function createLaravextApp({ nexusResolver, strandsResolver, conventions = [
     'error',

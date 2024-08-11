@@ -2,7 +2,9 @@ import { version, laravextPageData } from './index';
 import { clientRender, isEnvProduction } from './tools';
 import { endProgress, startProgress } from './progress';
 
-export function visit(url) {
+export function visit(url, options = {
+    preserveScroll : false,
+}) {
     if(!history?.pushState){
         window.location.href = url;
         return;
@@ -46,10 +48,8 @@ export function visit(url) {
                 return;
             }
 
-            window.__laravext.page_data = data.laravext_page_data;
-
             try {
-                clientRender();
+                clientRender(data.laravext_page_data);
 
                 history.pushState(( laravext.disablePushState ? {} : {laravext_page_data: laravext.page_data}), '', url);
             } catch (error) {

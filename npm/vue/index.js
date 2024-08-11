@@ -1,7 +1,7 @@
 import { defineComponent, createSSRApp, h } from 'vue';
 import { renderToString } from '@vue/server-renderer';
 import { setupProgress } from './progress';
-import { clientRender, findNexus, findStrands, isEnvProduction } from './tools';
+import { clientRender, findNexus, findStrands, isEnvProduction, shouldLinkClickEventBeIntercepted } from './tools';
 import { visit } from './router';
 
 if (typeof window !== 'undefined') {
@@ -33,6 +33,34 @@ export const Head = defineComponent({
     },
     render() {
         return null;
+    }
+});
+
+export const Link = defineComponent({
+    props: {
+        href: String,
+        preserveScroll: Boolean,
+        onClick: Function
+    },
+    setup(props) {
+        const handleClick = (event) => {
+            if (shouldLinkClickEventBeIntercepted(event)) {
+                event.preventDefault();
+                visit(props.href, {
+                    preserveScroll: props.preserveScroll
+                });
+            }
+        }
+
+        return {
+            handleClick
+        }
+    },
+    render() {
+        return h('a', {
+            href: this.href,
+            onClick: this.handleClick
+        }, this.$slots.default());
     }
 });
 

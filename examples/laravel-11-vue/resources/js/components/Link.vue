@@ -1,5 +1,6 @@
 <script setup>
 import { visit } from '@laravext/vue/router';
+import { Link } from '@laravext/vue'
 
 const props = defineProps({
     routeName: {
@@ -22,7 +23,10 @@ let classes = props.classes ?? '';
 </script>
 
 <template>
-    <a :href="href" v-on:click.prevent="visit(href)" :class="classes">
+    <Link
+        :href="href"
+        :class="classes"
+    >
         <slot />
-    </a>
+    </Link>
 </template>

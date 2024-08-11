@@ -34,6 +34,19 @@ export function isEnvProduction(){
     return !['development', 'local'].includes(import.meta.env.VITE_APP_ENV ?? 'production');
 }
 
+export function shouldLinkClickEventBeIntercepted(event) {
+    const isLink = event.currentTarget.tagName.toLowerCase() === "a";
+
+    return !(
+        (event.target && event?.target.isContentEditable) ||
+        event.defaultPrevented ||
+        (isLink && event.altKey) ||
+        (isLink && event.ctrlKey) ||
+        (isLink && event.metaKey) ||
+        (isLink && event.shiftKey) ||
+        (isLink && "button" in event && event.button !== 0)
+    );
+}
 
 export function clientRender() {
     const laravext = window.__laravext;

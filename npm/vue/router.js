@@ -1,7 +1,9 @@
 import { isEnvProduction, clientRender } from './tools';
 import { endProgress, startProgress } from './progress';
 
-export function visit(url) {
+export function visit(url, options = {
+    preserveScroll : false,
+}) {
     if(!history?.pushState){
         window.location.href = url;
         return;
