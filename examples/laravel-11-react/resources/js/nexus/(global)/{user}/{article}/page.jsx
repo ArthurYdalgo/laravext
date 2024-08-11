@@ -568,7 +568,12 @@ export default () => {
                         <div className="px-4 border-b border-gray-200 w-full"></div>
                     </div>
 
-                    <h3 className="px-4 mt-4 mb-2 font-semibold">{t("Comments")}</h3>
+                    <h3 className="px-4 mt-4 mb-2 font-semibold">{t("Comments")}{commentsPagination?.meta?.total != null && (
+                        <span>
+                            {" "}
+                            ({commentsPagination.meta.total})
+                        </span>
+                    )}</h3>
                     <div className="space-y-2 px-4 py-4" id="comments">
                         <div className="felx-col space-y-3 ">
                             {commentsPagination.data.map((comment) => (
@@ -686,7 +691,9 @@ export default () => {
                             <span className="text-sm text-gray-500">
                                 {article.user.biography}
                             </span>
-                            <div className="border-b border-gray-200 w-full"></div>
+
+                            { article.user.location && article.user.work && article.user.education
+                            && (<div className="border-b border-gray-200 w-full"></div>)}
                             {article.user.location && (
                                 <span className="text-sm text-gray-500">
                                     <Fa icon="location-dot" className="mr-1" />
@@ -723,11 +730,12 @@ export default () => {
                                 </Link>
                             </h2>
                             <div className="border-b border-gray-200 w-full"></div>
+                            <div className="flex flex-col space-y-2">
                             {latest_articles_from_user.map((article, index) => (
                                 <div key={article.id}>
                                     <div
                                         key={article.id}
-                                        className="flex flex-col space-y-2"
+                                        className="flex flex-col space-y-1"
                                     >
                                         <Link
                                             href={route("user.article", {
@@ -748,10 +756,11 @@ export default () => {
                                     {index <
                                         latest_articles_from_user.length -
                                             1 && (
-                                        <div className="border-b border-gray-200 w-full"></div>
+                                        <div className="border-b border-gray-200 w-full mt-2"></div>
                                     )}
                                 </div>
                             ))}
+                            </div>
                         </div>
                     )}
                 </div>
