@@ -79,7 +79,7 @@ Route::group([
 Route::group([
     'prefix' => 'tools'
 ], function () {
-    Route::post('article/markdown-preview', [MarkdownPreviewController::class, 'preview'])->middleware('auth');
+    Route::post('article/markdown-preview', MarkdownPreviewController::class)->middleware('auth');
 
     Route::group([
         'prefix' => 'users'

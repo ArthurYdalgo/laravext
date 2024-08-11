@@ -40,16 +40,29 @@ export default ({ children, ...props }) => {
                         </span>
                     ) : (
                     <div className="flex flex-col space-y-2">
-                        {user.tags.sort((a, b) => a.slug.localeCompare(b.slug)).map((tag) => (
+                        {user.tags.sort((a, b) => a.slug.localeCompare(b.slug)).map((tag) => {
+                            const hash = tag.slug.split("").reduce((acc, char) => {
+                                return char.charCodeAt(0) + ((acc << 5) - acc);
+                            }, 0);
+
+                            const color = `#${((hash & 0x00FFFFFF) | 0x1000000).toString(16).substring(1)}`;
+
+                            return (
                             <Link
                                 key={tag.id}
                                 href={route ("search", { tags: tag.slug })}
                                 params={{ tags: tag.slug }}
                                 className="flex row hover:underline cursor-pointer"
                             >
-                                <span className="bg-white rounded-lg px-2 py-1 text-sm">#{tag.slug}</span>
+                                <span className="bg-white rounded-lg px-2 py-1 text-sm">
+                                    <span
+                                     style={{
+                                        color: color,
+                                    }}
+                                    >#</span>
+                                    {tag.slug}</span>
                             </Link>
-                        ))}
+                        )})}
                     </div>)}
                 </div>
             )}

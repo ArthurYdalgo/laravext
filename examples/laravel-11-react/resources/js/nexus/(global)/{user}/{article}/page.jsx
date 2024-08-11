@@ -329,7 +329,7 @@ export default () => {
                             <Tooltip
                                 text={t("Share this article")}
                             >
-                                <button className="rounded-full px-[12px] py-[10px] hover:bg-gray-200"
+                                <button className="rounded-full px-[12px] py-[9px] hover:bg-gray-200"
                                     onClick={shareArticle}
                                 >
                                     <Fa icon="share-alt" size="lg" />
@@ -434,7 +434,16 @@ export default () => {
                         </h1>
                     </div>
                     <div className="flex justify-start px-8 space-x-2">
-                        {article.tags.sort((a, b) => a.slug.localeCompare(b.slug)).map((tag) => (
+                        {article.tags.sort((a, b) => a.slug.localeCompare(b.slug)).map((tag) => {
+                            
+                            // hash the tag and generate a random hex color
+                            const hash = tag.slug.split("").reduce((acc, char) => {
+                                return char.charCodeAt(0) + ((acc << 5) - acc);
+                            }, 0);
+
+                            const color = `#${((hash & 0x00FFFFFF) | 0x1000000).toString(16).substring(1)}`;
+
+                            return (
                                 <Link
                                 key={tag.slug}
                                 href={route("search", { tags: tag.slug })}
@@ -442,14 +451,16 @@ export default () => {
                                 className="flex row hover:underline cursor-pointer"
                             >
                                     <span
-                                        className={`rounded-md text-gray-500`}
+                                        style={{
+                                            color: color,
+                                        }}
                                     >
                                         #
                                     </span>
                                     {tag.slug}
                                 </Link>
 
-                            )
+                            )}
                         )}
                     </div>
 
