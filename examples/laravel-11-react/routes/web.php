@@ -67,7 +67,11 @@ Route::get('{user:username}/{article:slug}', function (User $user, Article $arti
     $article->loadGroupedReactions();
     $article->load(['tags:slug']);
 
-    return nexus(props: compact('article'))
+    $latest_articles_from_user = $user->articles()->with(['tags', 'user'])->latest('published_at')
+    ->available()
+    ->limit(5)->get();
+
+    return nexus(props: compact('article', 'latest_articles_from_user'))
         // ->withViewSkeleton('partials.article')
         ->withHeadTitle($article->title)
         ->render();

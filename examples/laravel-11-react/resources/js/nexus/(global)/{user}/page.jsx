@@ -98,7 +98,7 @@ export default () => {
                 </div>
                 <div className="flex items-center justify-center p-1">
                     <div className="flex flex-col items-center space-y-3 w-full">
-                        <span className="font-extrabold text-3xl">
+                        <span className="font-bold text-3xl">
                             {pageUser?.name}{" "}
                             {pageUser?.pronouns ? (
                                 <span className="text-gray-500 text-xs">

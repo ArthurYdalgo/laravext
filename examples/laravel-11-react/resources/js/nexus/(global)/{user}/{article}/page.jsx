@@ -17,12 +17,13 @@ import { ReactionBarSelector } from "@charkour/react-reactions";
 import GroupedReactions from "@/components/GroupedReactions";
 import ReactionButton from "@/components/Article/ReactionButton";
 import Link from "@/components/Link";
-import moment from "moment";
+import moment from "moment/min/moment-with-locales";
 import axios from "axios";
 import FollowButton from "@/components/FollowButton";
+import ProfileLink from "@/components/ProfileLink";
 
 export default () => {
-    const { article } = nexusProps();
+    const { article, latest_articles_from_user } = nexusProps();
     const { t, i18n } = useTranslation();
     const { user } = sharedProps().auth;
 
@@ -44,6 +45,10 @@ export default () => {
     const [reactionsCount, setReactionsCount] = useStateRef(
         article.reactions_count
     );
+
+    const [commentsCount , setCommentsCount] = useStateRef(article.comments_count);
+
+    const [newComment, setNewComment] = useStateRef("");
 
     const reactToArticle = (reaction) => {
         setReactionsCount(reactionsCount + 1);
@@ -468,30 +473,86 @@ export default () => {
                     <div className="article pre-wrap break-words ">
                         <Article html={article.html} />
                     </div>
-                    <hr className="my-4" />
+
+                    <div className="px-2">
+                    <div className="px-4 border-b border-gray-200 w-full"></div>
+                    </div>
+
                     <div
                         className="flex justify-between px-8 py-4"
                         id="comments"
                     >
-                        foo
+                        <h3>
+                            {t("Comments")}
+                        </h3>
                     </div>
                 </div>
-                <div className="hidden lg:block lg:w-[300px] px-3">
-                    <div className="flex flex-col space-y-2 border-t-[30px] bg-white rounded-md p-4 pt-0 w-full" style={{
+                <div className="hidden lg:block lg:w-[400px] px-3 space-y-2">
+                    <div className="flex flex-col space-y-2 border-t-[30px] bg-white shadow rounded-md p-4 pt-0 w-full" style={{
                         borderTopColor: article.user.banner_hex_color ?? "#000000"
                     }}>
                         <div className="-mt-4 flex items-end">
+                        <Link href={route("user", { user: article.user.username })}>
                             <img 
                                 src={article.user.avatar_url ?? "/images/avatars/placeholder.png"}
                                 className="w-14 h-14 rounded-full border-2 border-white"
                                 alt={article.user.name}
                             />
+                            </Link>
                             <span  className="text-lg font-bold ml-1 mb-1">
-                            {article.user.name}
+                            <Link className="hover:underline" href={route("user", { user: article.user.username })}>{article.user.name}</Link>{" "}{
+                                article.user.pronouns && (
+                                    <span className="text-xs text-gray-500">
+                                        ({article.user.pronouns})
+                                    </span>
+                                )
+                            }
                             </span>
                         </div>
                         <FollowButton followee={article.user} disabled={user && user?.id == article.user_id} />
+                        <div className="flex flex-col space-y-2 mt-2">
+                            <span className="text-sm text-gray-500">
+                                {article.user.biography}
+                            </span>
+                            <div className="border-b border-gray-200 w-full"></div>
+                            {article.user.location && (
+                                <span className="text-sm text-gray-500">
+
+                                    <Fa icon="location-dot" className="mr-1" />
+                                    {article.user.location}
+                                </span>
+                            )}
+                            {article.user.work && (
+                                <span className="text-sm text-gray-500">
+                                    <Fa icon="suitcase" className="mr-1" />
+                                    {article.user.work}
+                                </span>
+                            )}
+                            {article.user.education && (
+                                <span className="text-sm text-gray-500">
+                                    <Fa icon="graduation-cap" className="mr-1" />
+                                    {article.user.education}
+                                </span>
+                            )}  
+
+                        </div>
                     </div>
+                
+                    {latest_articles_from_user.length > 0 && <div className="flex flex-col space-y-2 bg-white rounded-md shadow p-3 w-full">
+                        <h2 className="text-lg font-bold">{t("More from")} <Link className="text-blue-500" href={route('user', article.user.username)}>{article.user.name}</Link></h2>
+                        <div className="border-b border-gray-200 w-full"></div>
+                        {latest_articles_from_user.map((article, index) => (
+                            <>
+                            <div key={article.id} className="flex flex-col space-y-2">
+                                <Link href={route("user.article", { user: article.user.username, article: article.slug })}>
+                                    <h3 className="text-lg hover:underline">{article.title}</h3>
+                                </Link>
+                                <span className="text-sm text-gray-500">{moment(article.published_at).locale(i18n.language).format("LL")}</span>
+                            </div>
+                            {index < latest_articles_from_user.length - 1 && <div className="border-b border-gray-200 w-full"></div>}
+                            </>
+                        ))}
+                    </div>}
                 </div>
             </div>
             <Modal
