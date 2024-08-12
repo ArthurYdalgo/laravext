@@ -14,28 +14,28 @@ export default ({ children }) => {
                     <Link
                         routeName={"top.week"}
                         className="m-2 mt-0 py-[8px] px-[12px] text-base hover:text-blue-700 hover:bg-white hover:rounded-lg"
-                        classNameWhenIsCurrentRoute="font-black"
+                        classNameWhenIsCurrentRoute="font-bold"
                     >
                         {t('week')}
                     </Link>
                     <Link
                         routeName={"top.month"}
                         className="m-2 mt-0 py-[8px] px-[12px] text-base hover:text-blue-700 hover:bg-white hover:rounded-lg"
-                        classNameWhenIsCurrentRoute="font-black"
+                        classNameWhenIsCurrentRoute="font-bold"
                     >
                         {t('month')}
                     </Link>
                     <Link
                         routeName={"top.year"}
                         className="m-2 mt-0 py-[8px] px-[12px] text-base hover:text-blue-700 hover:bg-white hover:rounded-lg"
-                        classNameWhenIsCurrentRoute="font-black"
+                        classNameWhenIsCurrentRoute="font-bold"
                     >
                         {t('year')}
                     </Link>
                     <Link
                         routeName={"top.infinity"}
                         className="m-2 mt-0 py-[8px] px-[12px] text-base hover:text-blue-700 hover:bg-white hover:rounded-lg"
-                        classNameWhenIsCurrentRoute="font-black"
+                        classNameWhenIsCurrentRoute="font-bold"
                     >
                         {t('infinity')}
                     </Link>

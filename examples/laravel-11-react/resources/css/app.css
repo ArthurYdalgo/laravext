@@ -31,6 +31,10 @@
     /* @apply px-2 !important; */
 }
 
+.comment-html a {
+    @apply text-blue-500;
+}
+
 .article {
     @apply p-1
 }

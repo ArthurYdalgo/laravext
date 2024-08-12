@@ -23,6 +23,7 @@ import FollowButton from "@/components/FollowButton";
 import ProfileLink from "@/components/ProfileLink";
 import { useEffect } from "react";
 import LoadingButton from "@/components/LoadingButton";
+import SecondaryButton from "@/components/SecondaryButton";
 
 export default () => {
     const { article, latest_articles_from_user } = nexusProps();
@@ -104,7 +105,58 @@ export default () => {
         article.comments_count
     );
 
-    const [newComment, setNewComment] = useStateRef("");
+    const [newComment, setNewComment] = useStateRef({
+        content: "",
+        preview: "",
+        loadingPreview: false,
+        mode: "edit",
+    });
+
+    const editNewComment = () => {
+        setNewComment((prevState) => ({
+            ...prevState,
+            mode: "edit",
+        }));
+
+        return;
+    };
+
+
+    const previewNewComment = () => {
+        setNewComment((prevState) => ({
+            ...prevState,
+            mode: 'preview',
+            loadingPreview: true,
+        }));
+
+        axios
+            .post("/api/tools/markdown-preview", {
+                markdown: newComment.content,
+            })
+            .then(({ data }) => {
+                setNewComment((prevState) => ({
+                    ...prevState,
+                    preview: data.data.html,
+                    loadingPreview: false,
+                }));
+            })
+            .catch(() => {
+                setNewComment((prevState) => ({
+                    ...prevState,
+                    loadingPreview: false,
+                }));
+
+                Swal.fire({
+                    title: t("An error occurred while trying to preview the markdown"),
+                    icon: "error",
+                    confirmButtonText: t("OK"),
+                });
+
+                return;
+            });
+
+        return;
+    };
 
     const reactToArticle = (reaction) => {
         setReactionsCount(reactionsCount + 1);
@@ -452,7 +504,7 @@ export default () => {
                     </div>
                 </div>
                 <div className="lg:w-[65.5%] rounded-md bg-white mx-1 lg:mx-2">
-                    {article.banner_url && (
+                    {/* {article.banner_url && (
                         <p align="center">
                             <img
                                 src={article.banner_url}
@@ -460,7 +512,7 @@ export default () => {
                                 alt={article.title}
                             />
                         </p>
-                    )}
+                    )} */}
                     <div className="flex justify-start px-8 mt-4 space-x-2">
                         <div className="flex items-center space-x-2">
                             <Link
@@ -564,17 +616,107 @@ export default () => {
                         {/* <Article html={article.html} /> */}
                     </div>
 
-                    <div className="px-2">
-                        <div className="px-4 border-b border-gray-200 w-full"></div>
+                    <div className="px-4">
+                        <div className="border-b border-gray-200 w-full"></div>
                     </div>
 
-                    <h3 className="px-4 mt-4 mb-2 font-semibold">{t("Comments")}{commentsPagination?.meta?.total != null && (
-                        <span>
-                            {" "}
-                            ({commentsPagination.meta.total})
-                        </span>
-                    )}</h3>
+                    <h3 className="px-4 mt-4 mb-2 font-semibold">
+                        {t("Comments")} ({commentsCount})
+                    </h3>
                     <div className="space-y-2 px-4 py-4" id="comments">
+                        <div>
+                            <div className="flex justify-start items-start">
+                                <span className="w-12 mr-2">
+                                    <img
+                                        src={
+                                            user?.avatar_url ??
+                                            "/images/avatars/placeholder.png"
+                                        }
+                                        className="w-10 h-10 rounded-full"
+                                        alt={user?.name}
+                                    />
+                                </span>
+                                {newComment.mode == 'edit' && <textarea
+                                    className="w-full h-32 border max-h-[250px] min-h-12 border-gray-300 rounded-lg"
+                                    value={newComment.content}
+                                    placeholder="Write a comment... You can use markdown here, _italic_ (or other *italic*), **bold**, [links](https://example.com), and more."
+                                    onClick={(e) => {
+                                        if (!user) {
+                                            e.preventDefault();
+                                            Swal.fire({
+                                                title: t(
+                                                    "You must be logged in to comment on articles"
+                                                ),
+                                                icon: "info",
+                                                showCancelButton: true,
+                                                confirmButtonText: t("Login"),
+                                                cancelButtonText: t("Cancel"),
+                                            }).then(({ isConfirmed }) => {
+                                                if (isConfirmed) {
+                                                    visit(route("login"));
+                                                }
+                                            });
+                                        }
+                                    }}
+                                    onChange={(e) => {
+                                        if (!user) {
+                                            Swal.fire({
+                                                title: t(
+                                                    "You must be logged in to comment on articles"
+                                                ),
+                                                icon: "info",
+                                                showCancelButton: true,
+                                                confirmButtonText: t("Login"),
+                                                cancelButtonText: t("Cancel"),
+                                            }).then(({ isConfirmed }) => {
+                                                if (isConfirmed) {
+                                                    visit(route("login"));
+                                                }
+                                            });
+
+                                            return;
+                                        }
+                                        setNewComment({
+                                            ...newComment,
+                                            content: e.target.value,
+                                        });
+                                    }}
+                                ></textarea>}
+                                {newComment.mode == 'preview' && !newComment.loadingPreview && <div
+                                    className="w-full comment-html px-3 py-2 h-32 border max-h-[250px] min-h-12 border-gray-300 rounded-lg"
+                                    dangerouslySetInnerHTML={{
+                                        __html: newComment.preview,
+                                    }}
+                                ></div>}
+                                {newComment.loadingPreview && (
+                                    <div className="w-full h-32 border max-h-[250px] min-h-12 border-gray-300 rounded-lg">
+                                        <div className="flex justify-center items-center h-full">
+                                            <div className="mini-loader text-blue-500"></div>
+                                        </div>
+                                    </div>
+                                )}
+                                    
+                            </div>
+                            <div className="flex justify-end mt-2 space-x-2">
+                                <SecondaryButton onClick={() => {
+                                    if (newComment.mode === "edit") {
+                                        previewNewComment();
+                                    } else {
+                                        editNewComment();
+                                    }
+                                }}>
+                                    {newComment.mode === "edit"
+                                        ? t("Preview")
+                                        : t("Edit")}
+                                </SecondaryButton>
+                                <PrimaryButton>{t("Submit")}</PrimaryButton>
+                            </div>
+                        </div>
+
+                        {article.comments_count > 0 && (
+                            <div className=" border-b border-gray-200 w-full"></div>
+                        )}
+
                         <div className="felx-col space-y-3 ">
                             {commentsPagination.data.map((comment) => (
                                 <div key={comment.id} className="">
@@ -609,7 +751,12 @@ export default () => {
                                         </span>
                                     </div>
                                     <div className="flex flex-col py-2">
-                                        <p className="text-sm px-2" dangerouslySetInnerHTML={{__html: comment.html}} />
+                                        <p
+                                            className="text-sm px-2 comment-html"
+                                            dangerouslySetInnerHTML={{
+                                                __html: comment.html,
+                                            }}
+                                        />
                                     </div>
                                 </div>
                             ))}
@@ -636,11 +783,17 @@ export default () => {
                             )}
                             {!commentsPagination.loading &&
                                 commentsPagination.meta?.current_page >=
-                                    commentsPagination.meta?.last_page && (
+                                    commentsPagination.meta?.last_page &&
+                                article.comments_count > 0 && (
                                     <span className="text-gray-500 text-md">
                                         {t("No more comments to load")}{" "}
                                     </span>
                                 )}
+                            {article.comments_count === 0 && (
+                                <span className="text-gray-500 text-md">
+                                    {t("No comments yet")}
+                                </span>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -692,8 +845,11 @@ export default () => {
                                 {article.user.biography}
                             </span>
 
-                            { article.user.location && article.user.work && article.user.education
-                            && (<div className="border-b border-gray-200 w-full"></div>)}
+                            {article.user.location &&
+                                article.user.work &&
+                                article.user.education && (
+                                    <div className="border-b border-gray-200 w-full"></div>
+                                )}
                             {article.user.location && (
                                 <span className="text-sm text-gray-500">
                                     <Fa icon="location-dot" className="mr-1" />
@@ -731,35 +887,44 @@ export default () => {
                             </h2>
                             <div className="border-b border-gray-200 w-full"></div>
                             <div className="flex flex-col space-y-2">
-                            {latest_articles_from_user.map((article, index) => (
-                                <div key={article.id}>
-                                    <div
-                                        key={article.id}
-                                        className="flex flex-col space-y-1"
-                                    >
-                                        <Link
-                                            href={route("user.article", {
-                                                user: article.user.username,
-                                                article: article.slug,
-                                            })}
-                                        >
-                                            <h3 className="text-lg hover:underline">
-                                                {article.title}
-                                            </h3>
-                                        </Link>
-                                        <span className="text-sm text-gray-500">
-                                            {moment(article.published_at)
-                                                .locale(i18n.language)
-                                                .format("LL")}
-                                        </span>
-                                    </div>
-                                    {index <
-                                        latest_articles_from_user.length -
-                                            1 && (
-                                        <div className="border-b border-gray-200 w-full mt-2"></div>
-                                    )}
-                                </div>
-                            ))}
+                                {latest_articles_from_user.map(
+                                    (article, index) => (
+                                        <div key={article.id}>
+                                            <div
+                                                key={article.id}
+                                                className="flex flex-col space-y-1"
+                                            >
+                                                <Link
+                                                    href={route(
+                                                        "user.article",
+                                                        {
+                                                            user: article.user
+                                                                .username,
+                                                            article:
+                                                                article.slug,
+                                                        }
+                                                    )}
+                                                >
+                                                    <h3 className="text-lg hover:underline">
+                                                        {article.title}
+                                                    </h3>
+                                                </Link>
+                                                <span className="text-sm text-gray-500">
+                                                    {moment(
+                                                        article.published_at
+                                                    )
+                                                        .locale(i18n.language)
+                                                        .format("LL")}
+                                                </span>
+                                            </div>
+                                            {index <
+                                                latest_articles_from_user.length -
+                                                    1 && (
+                                                <div className="border-b border-gray-200 w-full mt-2"></div>
+                                            )}
+                                        </div>
+                                    )
+                                )}
                             </div>
                         </div>
                     )}

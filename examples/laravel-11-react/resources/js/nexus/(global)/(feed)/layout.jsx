@@ -15,7 +15,7 @@ export default ({ children, topPageButtons = null }) => {
                     <Link
                         routeName={"home"}
                         className="m-2 mt-0 py-[8px] px-[12px] hover:text-blue-700 hover:bg-white hover:rounded-lg"
-                        classNameWhenIsCurrentRoute="font-black"
+                        classNameWhenIsCurrentRoute="font-bold"
                     >
                         {t("Latest")}
                     </Link>
@@ -29,7 +29,7 @@ export default ({ children, topPageButtons = null }) => {
                                 "top.year",
                                 "top.infinity",
                             ])
-                                ? "font-black"
+                                ? "font-bold"
                                 : "")
                         }
                     >
@@ -40,14 +40,14 @@ export default ({ children, topPageButtons = null }) => {
                             <Link
                                 routeName={"relevant"}
                                 className="m-2 mt-0 py-[8px] px-[12px] hover:text-blue-700 hover:bg-white hover:rounded-lg"
-                                classNameWhenIsCurrentRoute="font-black"
+                                classNameWhenIsCurrentRoute="font-bold"
                             >
                                 {t("Relevant")}
                             </Link>
                             <Link
                                 routeName={"bookmarks"}
                                 className="m-2 mt-0 py-[8px] px-[12px] hover:text-blue-700 hover:bg-white hover:rounded-lg"
-                                classNameWhenIsCurrentRoute="font-black"
+                                classNameWhenIsCurrentRoute="font-bold"
                             >
                                 {t("Bookmarks")}
                             </Link>

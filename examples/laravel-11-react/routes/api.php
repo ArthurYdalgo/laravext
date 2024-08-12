@@ -37,8 +37,8 @@ Route::group([
     Route::apiResource('articles', ArticleController::class)->withoutMiddleware('auth')->only(['index', 'show']);
     Route::apiResource('articles', ArticleController::class)->only(['store', 'update', 'destroy']);
 
-    Route::apiResource('articles.comments', ArticleCommentController::class)->only(['store', 'index']);
-    Route::get('articles/{article}/comments/{comment}/replies', [ArticleCommentController::class, 'replies']);
+    Route::apiResource('articles.comments', ArticleCommentController::class)->only(['store', 'index'])->withoutMiddleware('auth');
+    Route::get('articles/{article}/comments/{comment}/replies', [ArticleCommentController::class, 'replies'])->withoutMiddleware('auth');
     Route::post('articles/{article}/comments/{comment}/replies', [ArticleCommentController::class, 'storeReply']);
 
     Route::prefix('articles/{article}')->group(function () {
