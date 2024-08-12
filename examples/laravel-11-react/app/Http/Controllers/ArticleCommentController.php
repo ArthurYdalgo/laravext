@@ -24,9 +24,9 @@ class ArticleCommentController extends Controller
                 'tags',
             ])
             ->allowedFilters([
-                AllowedFilter::callback('not_ids', function ($query, $ids) {
+                AllowedFilter::callback('without_ids', function ($query, $ids) {
                     $ids = is_array($ids) ? $ids : explode(',', $ids);
-                    
+
                     $query->whereNotIn('comments.id', $ids);
                 }),
             ])

@@ -54,7 +54,7 @@ export default () => {
             per_page: commentsPaginationRef.current.per_page,
             include: "user",
             filter: {
-                not_ids: recentlyCreatedCommentIds.join(","),
+                without_ids: recentlyCreatedCommentIds.join(","),
             }
         };
 
@@ -768,7 +768,7 @@ export default () => {
                             </div>
                         </div>
 
-                        {article.comments_count > 0 && (
+                        {commentsCount > 0 && (
                             <div className=" border-b border-gray-200 w-full"></div>
                         )}
 
@@ -839,12 +839,12 @@ export default () => {
                             {!commentsPagination.loading &&
                                 commentsPagination.meta?.current_page >=
                                     commentsPagination.meta?.last_page &&
-                                article.comments_count > 0 && (
+                                commentsCount > 0 && (
                                     <span className="text-gray-500 text-md">
                                         {t("No more comments to load")}{" "}
                                     </span>
                                 )}
-                            {article.comments_count === 0 && (
+                            {commentsCount === 0 && (
                                 <span className="text-gray-500 text-md">
                                     {t("No comments yet")}
                                 </span>
