@@ -552,7 +552,7 @@ export default () => {
                     </div>
                 </div>
                 <div className="lg:w-[65.5%] rounded-md bg-white mx-1 lg:mx-2">
-                    {/* {article.banner_url && (
+                    {article.banner_url && (
                         <p align="center">
                             <img
                                 src={article.banner_url}
@@ -560,7 +560,7 @@ export default () => {
                                 alt={article.title}
                             />
                         </p>
-                    )} */}
+                    )}
                     <div className="flex justify-start px-8 mt-4 space-x-2">
                         <div className="flex items-center space-x-2">
                             <Link
@@ -661,7 +661,7 @@ export default () => {
                     </div>
 
                     <div className="article pre-wrap break-words ">
-                        {/* <Article html={article.html} /> */}
+                        <Article html={article.html} />
                     </div>
 
                     <div className="px-4">
@@ -777,6 +777,7 @@ export default () => {
                                 <div key={comment.id} className="border-2 border-gray-200 p-1 rounded-lg">
                                     <div className="flex items-center space-x-2">
                                         <Link
+                                            
                                             href={route("user", {
                                                 user: comment.user.username,
                                             })}
@@ -792,6 +793,7 @@ export default () => {
                                         </Link>
                                         <span className="flex text-md font-semibold flex-col">
                                             <Link
+                                                className="hover:underline"
                                                 href={route("user", {
                                                     user: comment.user.username,
                                                 })}
