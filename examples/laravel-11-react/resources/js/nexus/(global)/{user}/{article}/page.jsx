@@ -54,7 +54,7 @@ export default () => {
             per_page: commentsPaginationRef.current.per_page,
             include: "user",
             filter: {
-                without_ids: recentlyCreatedCommentIds.join(","),
+                exclude_ids: recentlyCreatedCommentIds.join(","),
             }
         };
 
