@@ -24,6 +24,7 @@ import ProfileLink from "@/components/ProfileLink";
 import { useEffect } from "react";
 import LoadingButton from "@/components/LoadingButton";
 import SecondaryButton from "@/components/SecondaryButton";
+import { set } from "lodash";
 
 export default () => {
     const { article, latest_articles_from_user } = nexusProps();
@@ -38,7 +39,7 @@ export default () => {
             meta: {},
             loading: true,
             page: 1,
-            per_page: 3,
+            per_page: 5,
         });
 
     useEffect(() => {
@@ -52,6 +53,9 @@ export default () => {
             page: commentsPaginationRef.current.page,
             per_page: commentsPaginationRef.current.per_page,
             include: "user",
+            filter: {
+                exclude_ids: recentlyCreatedCommentIds.join(","),
+            }
         };
 
         axios
@@ -104,6 +108,50 @@ export default () => {
     const [commentsCount, setCommentsCount] = useStateRef(
         article.comments_count
     );
+
+    const [recentlyCreatedCommentIds, setRecentlyCreatedCommentIds] =
+        useStateRef([]);
+
+    const submitNewComment = () => {
+        axios
+            .post(`/api/articles/${article.id}/comments`, {
+                content: newComment.content,
+            })
+            .then((response) => {
+                setCommentsPagination((prevState) => ({
+                    ...prevState,
+                    data: [response.data.data, ...prevState.data],
+                }));
+                setCommentsCount(commentsCount + 1);
+                setNewComment((prevState) => ({
+                    ...prevState,
+                    content: "",
+                    preview: "",
+                    mode: "edit",
+                }));
+
+                setRecentlyCreatedCommentIds((prevState) => [
+                    response.data.data.id,
+                    ...prevState,
+                ]);
+
+                Swal.fire({
+                    title: t("Comment submitted successfully"),
+                    icon: "success",
+                    timer: 2000,
+                    timerProgressBar: true,
+                });
+
+            })
+            .catch((error) => {
+                console.error(error);
+                Swal.fire({
+                    title: t("Failed to submit comment"),
+                    icon: "error",
+                });
+            });
+    };
+
 
     const [newComment, setNewComment] = useStateRef({
         content: "",
@@ -424,7 +472,7 @@ export default () => {
                                 >
                                     <Fa icon="comment" size="lg" />
                                 </button>
-                                {article.comments_count}
+                                {commentsCount}
                             </div>
                         </div>
                         <div className="flex justify-center">
@@ -504,7 +552,7 @@ export default () => {
                     </div>
                 </div>
                 <div className="lg:w-[65.5%] rounded-md bg-white mx-1 lg:mx-2">
-                    {/* {article.banner_url && (
+                    {article.banner_url && (
                         <p align="center">
                             <img
                                 src={article.banner_url}
@@ -512,7 +560,7 @@ export default () => {
                                 alt={article.title}
                             />
                         </p>
-                    )} */}
+                    )}
                     <div className="flex justify-start px-8 mt-4 space-x-2">
                         <div className="flex items-center space-x-2">
                             <Link
@@ -613,7 +661,7 @@ export default () => {
                     </div>
 
                     <div className="article pre-wrap break-words ">
-                        {/* <Article html={article.html} /> */}
+                        <Article html={article.html} />
                     </div>
 
                     <div className="px-4">
@@ -639,6 +687,7 @@ export default () => {
                                 {newComment.mode == 'edit' && <textarea
                                     className="w-full h-32 border max-h-[250px] min-h-12 border-gray-300 rounded-lg"
                                     value={newComment.content}
+                                    maxLength={5000}
                                     placeholder="Write a comment... You can use markdown here, _italic_ (or other *italic*), **bold**, [links](https://example.com), and more."
                                     onClick={(e) => {
                                         if (!user) {
@@ -698,7 +747,10 @@ export default () => {
                                     
                             </div>
                             <div className="flex justify-end mt-2 space-x-2">
-                                <SecondaryButton onClick={() => {
+                                <SecondaryButton
+                                    disabled={!user || newComment.content.length <= 0}
+
+                                onClick={() => {
                                     if (newComment.mode === "edit") {
                                         previewNewComment();
                                     } else {
@@ -709,19 +761,23 @@ export default () => {
                                         ? t("Preview")
                                         : t("Edit")}
                                 </SecondaryButton>
-                                <PrimaryButton>{t("Submit")}</PrimaryButton>
+                                <PrimaryButton
+                                    onClick={submitNewComment}
+                                    disabled={!user || newComment.content.length <= 0}
+                                >{t("Submit")}</PrimaryButton>
                             </div>
                         </div>
 
-                        {article.comments_count > 0 && (
+                        {commentsCount > 0 && (
                             <div className=" border-b border-gray-200 w-full"></div>
                         )}
 
                         <div className="felx-col space-y-3 ">
                             {commentsPagination.data.map((comment) => (
-                                <div key={comment.id} className="">
+                                <div key={comment.id} className="border-2 border-gray-200 p-1 rounded-lg">
                                     <div className="flex items-center space-x-2">
                                         <Link
+                                            
                                             href={route("user", {
                                                 user: comment.user.username,
                                             })}
@@ -737,6 +793,7 @@ export default () => {
                                         </Link>
                                         <span className="flex text-md font-semibold flex-col">
                                             <Link
+                                                className="hover:underline"
                                                 href={route("user", {
                                                     user: comment.user.username,
                                                 })}
@@ -784,12 +841,12 @@ export default () => {
                             {!commentsPagination.loading &&
                                 commentsPagination.meta?.current_page >=
                                     commentsPagination.meta?.last_page &&
-                                article.comments_count > 0 && (
+                                commentsCount > 0 && (
                                     <span className="text-gray-500 text-md">
                                         {t("No more comments to load")}{" "}
                                     </span>
                                 )}
-                            {article.comments_count === 0 && (
+                            {commentsCount === 0 && (
                                 <span className="text-gray-500 text-md">
                                     {t("No comments yet")}
                                 </span>

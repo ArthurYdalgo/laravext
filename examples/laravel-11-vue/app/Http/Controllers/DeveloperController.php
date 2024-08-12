@@ -48,7 +48,7 @@ class DeveloperController extends Controller
 
                     return $query->whereNotNull('team_id');
                 }),
-                AllowedFilter::callback('not_ids', function ($query, $ids) {
+                AllowedFilter::callback('exclude_ids', function ($query, $ids) {
                     $ids = is_array($ids) ? $ids : explode(',', $ids);
                     return $query->whereNotIn('id', $ids);
                 }),

@@ -92,7 +92,7 @@ const fetchDevelopers = () => {
             search: addDeveloperToTeamModal.search,
             filter: {
                 not_team_ids: [routeParams().team].join(','),
-                not_ids: form.data.developers.map(developer => developer.id).join(','),
+                exclude_ids: form.data.developers.map(developer => developer.id).join(','),
             },
         },
     })
