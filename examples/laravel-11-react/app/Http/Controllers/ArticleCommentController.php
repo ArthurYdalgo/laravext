@@ -2,18 +2,35 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CommentResource;
 use App\Models\Article;
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\AllowedInclude;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class ArticleCommentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Article $article)
+    public function index(Request $request, Article $article)
     {
-        //
+        $comments = QueryBuilder::for($article->comments())
+        ->allowedIncludes([
+            'user', 'tags',
+        ])
+        ->withCount(['reactions', 'replies'])
+        ->latest()
+        // ->sortBy('reactions_count')   
+        ->paginate(min(200, $request->query('per_page', 20)))
+        ->appends($request->query());
+
+        $comments->each(function (Comment $comment) {
+            $comment->append('html');
+        });
+
+        return CommentResource::collection($comments);
     }
 
     /**
@@ -60,6 +77,16 @@ class ArticleCommentController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(Article $article, Comment $comment)
+    {
+        //
+    }
+
+    public function replies(Article $article, Comment $comment)
+    {
+        //
+    }
+
+    public function storeReply(Request $request, Article $article, Comment $comment)
     {
         //
     }

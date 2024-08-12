@@ -37,7 +37,9 @@ Route::group([
     Route::apiResource('articles', ArticleController::class)->withoutMiddleware('auth')->only(['index', 'show']);
     Route::apiResource('articles', ArticleController::class)->only(['store', 'update', 'destroy']);
 
-    Route::apiResource('articles.comments', ArticleCommentController::class)->only(['store', 'index']);
+    Route::apiResource('articles.comments', ArticleCommentController::class)->only(['store', 'index'])->withoutMiddleware('auth');
+    Route::get('articles/{article}/comments/{comment}/replies', [ArticleCommentController::class, 'replies'])->withoutMiddleware('auth');
+    Route::post('articles/{article}/comments/{comment}/replies', [ArticleCommentController::class, 'storeReply']);
 
     Route::prefix('articles/{article}')->group(function () {
         Route::get('reactions', [ArticleController::class, 'userReactions']);
@@ -79,7 +81,7 @@ Route::group([
 Route::group([
     'prefix' => 'tools'
 ], function () {
-    Route::post('article/markdown-preview', MarkdownPreviewController::class)->middleware('auth');
+    Route::post('markdown-preview', MarkdownPreviewController::class)->middleware('auth');
 
     Route::group([
         'prefix' => 'users'

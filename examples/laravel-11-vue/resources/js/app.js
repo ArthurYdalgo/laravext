@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // If for some reason you must disable the pushState of the laravext client router, you can do so here. Be aware that this will disable the 
         // back navigation, and you're user will endup going back to the previous non-laravext page.
-        // disablePushState: () => {
+        // disablePushedStateData: () => {
         //    // Your logic here, such as detecting browsers, etc.
         //    let logicResult = true
         //    return logicResult

@@ -65,6 +65,9 @@ export default ({ followee , disabled = false}) => {
 
             return;
         }
+
+        setFollowingStatus({... followingStatus, value: true});
+
         axios.put(`/api/tools/users/follow/${followee.id}`)
         .then(response => {
             getFollwingStatus();
@@ -89,6 +92,7 @@ export default ({ followee , disabled = false}) => {
             return;
         }
 
+        setFollowingStatus({... followingStatus, value: false});
         axios.put(`/api/tools/users/unfollow/${followee.id}`)
             .then(response => {
                 getFollwingStatus();

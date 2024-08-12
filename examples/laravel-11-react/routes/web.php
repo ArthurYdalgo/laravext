@@ -67,7 +67,9 @@ Route::get('{user:username}/{article:slug}', function (User $user, Article $arti
     $article->loadGroupedReactions();
     $article->load(['tags:slug']);
 
-    $latest_articles_from_user = $user->articles()->with(['tags', 'user'])->latest('published_at')
+    $latest_articles_from_user = $user->articles()->with(['tags', 'user'])
+    ->where("id", "!=", $article->id)
+    ->latest('published_at')
     ->available()
     ->limit(5)->get();
 

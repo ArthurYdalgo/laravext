@@ -1,23 +1,24 @@
 import { setupProgress } from './progress';
-import { clientRender, findNexus, findStrands, isEnvProduction } from './tools';
+import { clientRender, findNexus, findStrands, isEnvProduction, shouldLinkClickEventBeIntercepted } from './tools';
 import { renderToString } from 'react-dom/server';
 import laravext from './laravext';
 import LaravextContext from './LaravextContext';
+import { visit } from './router';
 
 if (typeof window !== 'undefined') {
     window.addEventListener("popstate", function (event) {
-        if(window.__laravext.app.disablePushState()){
+        if(window.__laravext.app.disablePushedStateData()){
             window.location.href = window.location.href;
             return;
         }
 
         try {
-            window.__laravext.page_data = event.state.laravext_page_data;
+            console.log(event.state.scroll_state);
+            clientRender(event.state.laravext_page_data, event.state.scroll_state ?? 0);
 
-            clientRender();
         } catch (error) {
             console.error('Error updating page data:', error);
-            window.location.href = window.location.href;
+            // window.location.href = window.location.href;
         }
     });
 }
@@ -61,12 +62,30 @@ export function Head({ title }) {
     return null;
 }
 
+export function Link({ href, preserveScroll = false, children, ...props }) {
+    return (
+      <a
+        href={href}
+        onClick={(event) => {
+          if (shouldLinkClickEventBeIntercepted(event)) {
+            event.preventDefault();
+            visit(href, {
+                preserveScroll,
+            });
+          }
+        }}
+        {... props}
+      >
+        {children}
+      </a>
+    );
+  }
 
 export function createLaravextApp({ nexusResolver, strandsResolver, conventions = [
     'error',
     'layout',
     'middleware',
-], progress = {}, beforeSetup = null, setup = null, setupNexus = null, setupStrand = null, reverseSetupOrder = false, disablePushState = () => false}) {
+], progress = {}, beforeSetup = null, setup = null, setupNexus = null, setupStrand = null, reverseSetupOrder = false, disablePushedStateData = () => false}) {
 
     window.__laravext.app = {
         nexusResolver,
@@ -77,15 +96,15 @@ export function createLaravextApp({ nexusResolver, strandsResolver, conventions 
         setupNexus,
         setupStrand,
         reverseSetupOrder,
-        disablePushState
+        disablePushedStateData
     }
 
     if (progress) {
         setupProgress(progress);
     }
 
-    if(!disablePushState()){
-        history.pushState({ laravext_page_data: window.__laravext.page_data }, '', window.location.href);
+    if(history?.pushState){
+        history.pushState({ laravext_page_data: (disablePushedStateData() ? window.__laravext.page_data : {}) }, '', window.location.href);
     }
 
     clientRender();

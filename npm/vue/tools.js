@@ -34,8 +34,21 @@ export function isEnvProduction(){
     return !['development', 'local'].includes(import.meta.env.VITE_APP_ENV ?? 'production');
 }
 
+export function shouldLinkClickEventBeIntercepted(event) {
+    const isLink = event.currentTarget.tagName.toLowerCase() === "a";
 
-export function clientRender() {
+    return !(
+        (event.target && event?.target.isContentEditable) ||
+        event.defaultPrevented ||
+        (isLink && event.altKey) ||
+        (isLink && event.ctrlKey) ||
+        (isLink && event.metaKey) ||
+        (isLink && event.shiftKey) ||
+        (isLink && "button" in event && event.button !== 0)
+    );
+}
+
+export function clientRender(scrollState = null) {
     const laravext = window.__laravext;
 
     let mixins = {
@@ -140,6 +153,10 @@ export function clientRender() {
                     laravext.app.vue_nexus_app?.unmount();
                     
                     nexusApp.mount(nexusElement);
+
+                    if(scrollState != null){
+                        window.scrollTo(scrollState.x ?? 0, scrollState.y ?? 0);
+                    }
 
                     window.__laravext.app.vue_nexus_app = nexusApp;
                 }).catch((error) => {

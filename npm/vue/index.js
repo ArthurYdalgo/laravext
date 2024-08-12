@@ -1,12 +1,12 @@
 import { defineComponent, createSSRApp, h } from 'vue';
 import { renderToString } from '@vue/server-renderer';
 import { setupProgress } from './progress';
-import { clientRender, findNexus, findStrands, isEnvProduction } from './tools';
+import { clientRender, findNexus, findStrands, isEnvProduction, shouldLinkClickEventBeIntercepted } from './tools';
 import { visit } from './router';
 
 if (typeof window !== 'undefined') {
     window.addEventListener("popstate", function (event) {
-        if(window.__laravext.app.disablePushState()){
+        if(window.__laravext.app.disablePushedStateData()){
             window.location.href = window.location.href;
             return;
         }
@@ -36,11 +36,39 @@ export const Head = defineComponent({
     }
 });
 
+export const Link = defineComponent({
+    props: {
+        href: String,
+        preserveScroll: Boolean,
+        onClick: Function
+    },
+    setup(props) {
+        const handleClick = (event) => {
+            if (shouldLinkClickEventBeIntercepted(event)) {
+                event.preventDefault();
+                visit(props.href, {
+                    preserveScroll: props.preserveScroll
+                });
+            }
+        }
+
+        return {
+            handleClick
+        }
+    },
+    render() {
+        return h('a', {
+            href: this.href,
+            onClick: this.handleClick
+        }, this.$slots.default());
+    }
+});
+
 export function createLaravextApp({ nexusResolver, strandsResolver, conventions = [
     'error',
     'layout',
     'middleware',
-], progress = {}, beforeSetup = null, setup = null, setupNexus = null, setupStrand = null, reverseSetupOrder = false, disablePushState = () => false}) {
+], progress = {}, beforeSetup = null, setup = null, setupNexus = null, setupStrand = null, reverseSetupOrder = false, disablePushedStateData = () => false}) {
     window.__laravext.app = {
         nexusResolver,
         strandsResolver,
@@ -50,15 +78,15 @@ export function createLaravextApp({ nexusResolver, strandsResolver, conventions 
         setupNexus,
         setupStrand,
         reverseSetupOrder,
-        disablePushState
+        disablePushedStateData
     }
 
     if (progress) {
         setupProgress(progress);
     }
 
-    if(!disablePushState()){
-        history.pushState({laravext_page_data: window.__laravext.page_data}, '', window.location.href);
+    if(history?.pushState){
+        history.pushState({laravext_page_data: (disablePushedStateData() ? window.__laravext.page_data : {})}, '', window.location.href);
     }
 
     clientRender();

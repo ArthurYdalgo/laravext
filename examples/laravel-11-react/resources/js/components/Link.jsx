@@ -1,5 +1,5 @@
 import {currentRouteIs} from '@/tools/helpers';
-import { visit } from '@laravext/react/router';
+import {Link} from '@laravext/react';
 
 export default  ({ routeName, href, className = '', children , classNameWhenIsCurrentRoute = ''}) => {
   let resolvedHref = href ? href : (routeName != null && route().has(routeName) ? route(routeName) : '');
@@ -9,13 +9,12 @@ export default  ({ routeName, href, className = '', children , classNameWhenIsCu
   }
 
   return (
-    <a href={resolvedHref} onClick={(e) =>{
-      e.preventDefault();
-      visit(resolvedHref);
-    }
-
-    } className={className}>
+    <Link
+      href={resolvedHref}
+      className={className}
+      preserveScroll={true}
+      >
       {children}
-    </a>
+    </Link>
   );
 };
