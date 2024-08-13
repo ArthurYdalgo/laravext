@@ -154,9 +154,7 @@ export default ({ reply , onDelete = (reply) => {}}) => {
                                     ? "text-red-600"
                                     : " hover:text-red-300")
                             }
-                        />{" "}
-                        • {likesCount}{" "}
-                        {likesCount == 1 ? t("like") : t("likes")}
+                        /> • {likesCount} {likesCount == 1 ? t("like") : t("likes")}
                     </button>
                 </div>
             </div>

@@ -214,8 +214,7 @@ export default ({ comment , onDelete = (comment) => {}}) => {
                                 "transition-all mr-1 cursor-pointer text-gray-500 " +
                                 (liked ? "text-red-600" : " hover:text-red-300")
                             }
-                        />{" "}
-                        • {likesCount}{" "}
+                        /> • {likesCount}{" "}
                         {likesCount == 1 ? t("like") : t("likes")}
                     </button>
                     <span>
@@ -223,9 +222,7 @@ export default ({ comment , onDelete = (comment) => {}}) => {
                             icon="comment-medical"
                             size="sm"
                             className="transition-all mr-1 cursor-pointer text-gray-500 hover:text-blue-300"
-                        />{" "}
-                        • {comment.replies_count}{" "}
-                        {comment.replies_count == 1 ? t("reply") : t("replies")}
+                        /> • {repliesCount} {repliesCount == 1 ? t("reply") : t("replies")}
                     </span>
                 </div>
                 {
