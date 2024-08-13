@@ -2,64 +2,58 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Comment\DestroyRequest;
+use App\Http\Resources\CommentResource;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function replies(Comment $comment)
+    {
+        $replies = $comment->replies()
+            ->with('user')
+            ->withCount(['reactions'])
+            ->latest()
+            ->when(user(), function ($query) {
+                $query->with(['reactions' => function ($query) {
+                    $query->where('reactions.user_id', user()->id);
+                }]);
+            })
+            ->paginate(min(200, request()->query('per_page', 20)))
+            ->appends(request()->query());
+
+        $replies->each(function (Comment $reply) {
+            $reply->append('html');
+        });
+
+        return CommentResource::collection($replies);
+    }
+
+    public function storeReply(Comment $comment)
     {
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function like(Comment $comment)
     {
-        //
+        user()->reactTo($comment, 'sparkle-heart');
+
+        return $this->successResponse(user()->reactionsTo($comment));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function unlike(Comment $comment)
     {
-        //
+        user()->unreactTo($comment);
+
+        return $this->successResponse(user()->reactionsTo($comment));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Comment $comment)
+    public function destroy(DestroyRequest $request, Comment $comment)
     {
-        //
-    }
+        $comment->delete();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Comment $comment)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Comment $comment)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Comment $comment)
-    {
-        //
+        return $this->successResponse();
+        
     }
 }

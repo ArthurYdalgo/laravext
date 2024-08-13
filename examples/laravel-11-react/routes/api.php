@@ -38,8 +38,12 @@ Route::group([
     Route::apiResource('articles', ArticleController::class)->only(['store', 'update', 'destroy']);
 
     Route::apiResource('articles.comments', ArticleCommentController::class)->only(['store', 'index'])->withoutMiddleware('auth');
-    Route::get('articles/{article}/comments/{comment}/replies', [ArticleCommentController::class, 'replies'])->withoutMiddleware('auth');
-    Route::post('articles/{article}/comments/{comment}/replies', [ArticleCommentController::class, 'storeReply']);
+
+    Route::get('comments/{comment}/replies', [CommentController::class, 'replies'])->withoutMiddleware('auth');
+    Route::post('comments/{comment}/replies', [CommentController::class, 'storeReply']);
+    Route::post('comments/{comment}/like', [CommentController::class, 'like']);
+    Route::delete('comments/{comment}/like', [CommentController::class, 'unlike']);
+    Route::delete('comments/{comment}', [CommentController::class, 'destroy']);
 
     Route::prefix('articles/{article}')->group(function () {
         Route::get('reactions', [ArticleController::class, 'userReactions']);

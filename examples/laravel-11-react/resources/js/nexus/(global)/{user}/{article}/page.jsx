@@ -25,6 +25,7 @@ import { useEffect } from "react";
 import LoadingButton from "@/components/LoadingButton";
 import SecondaryButton from "@/components/SecondaryButton";
 import { set } from "lodash";
+import Comment from "@/components/Article/Comment";
 
 export default () => {
     const { article, latest_articles_from_user } = nexusProps();
@@ -204,6 +205,15 @@ export default () => {
 
         return;
     };
+
+    const commentWasDeleted = (comment) => {
+        setCommentsPagination((prevState) => ({
+            ...prevState,
+            data: prevState.data.filter((c) => c.id !== comment.id),
+        }));
+
+        setCommentsCount(commentsCount - 1);
+    }
 
     const reactToArticle = (reaction) => {
         setReactionsCount(reactionsCount + 1);
@@ -790,77 +800,7 @@ export default () => {
                                         className="flex justify-start "
                                         key={comment.id}
                                     >
-                                        <span className="w-12">
-                                            <img
-                                                src={
-                                                    comment.user.avatar_url ??
-                                                    "/images/avatars/placeholder.png"
-                                                }
-                                                className="w-10 h-10 rounded-full"
-                                                alt={comment.user.name}
-                                            />
-                                        </span>
-                                        <div className="w-full">
-                                            <div className="flex flex-col w-full px-2 py-1 rounded-lg border-2 items-start">
-                                                <div className="flex justify-between w-full">
-                                                    <span className="">
-                                                        <Link
-                                                            href={route(
-                                                                "user",
-                                                                {
-                                                                    user: comment
-                                                                        .user
-                                                                        .username,
-                                                                }
-                                                            )}
-                                                            className="text-gray-700 font-semibold"
-                                                        >
-                                                            {comment.user.name}
-                                                        </Link>{" "}
-                                                        •{" "}
-                                                        <span className="text-sm text-gray-500">
-                                                            {moment(
-                                                                comment.created_at
-                                                            )
-                                                                .locale(
-                                                                    i18n.language
-                                                                )
-                                                                .fromNow()}
-                                                        </span>
-                                                    </span>
-                                                    <div>
-                                                        <button className="text-gray-300 hover:bg-red-100 hover:text-red-600 px-1 rounded-lg transition-all">
-                                                            <Fa
-                                                                icon="flag"
-                                                                size="md"
-                                                            />
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                                <p
-                                                    className="text-sm whitespace-pre-wrap py-2 comment-html"
-                                                    dangerouslySetInnerHTML={{
-                                                        __html: comment.html,
-                                                    }}
-                                                ></p>
-                                            </div>
-                                            <div className="flex justify-start mt-2 space-x-6 px-2">
-                                                <span>
-                                                <Fa
-                                                    icon="heart"
-                                                    size="sm"
-                                                    className={"transition-all mr-1 cursor-pointer text-gray-500 " + (comment.user_has_reacted ? "text-red-600" : " hover:text-red-300")}
-                                                /> • {comment.reactions_count} {comment.reactions_like == 1 ? t("like") : t("likes")}
-                                                </span>
-                                                <span>
-                                                    <Fa
-                                                        icon="comment-medical"
-                                                        size="sm"
-                                                        className="transition-all mr-1 cursor-pointer text-gray-500 hover:text-blue-300"
-                                                    /> • {comment.replies_count} {comment.replies_count == 1 ? t("reply") : t("replies")}
-                                                </span>
-                                            </div>
-                                        </div>
+                                        <Comment comment={comment} onDelete={commentWasDeleted} />
                                     </div>
                                 ))}
                             </div>
