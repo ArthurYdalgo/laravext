@@ -21,7 +21,6 @@ class ArticleCommentController extends Controller
         $comments = QueryBuilder::for($article->comments())
             ->allowedIncludes([
                 'user',
-                'tags',
             ])
             ->allowedFilters([
                 AllowedFilter::callback('exclude_ids', function ($query, $ids) {
@@ -31,8 +30,15 @@ class ArticleCommentController extends Controller
                 }),
             ])
             ->withCount(['reactions', 'replies'])
+            ->whereNull('comment_id')
             ->latest()
-            // ->sortBy('reactions_count')   
+            ->orderBy('replies_count', 'desc')   
+            ->orderBy('reactions_count', 'desc')
+            ->when(user(), function ($query) {
+                $query->with(['reactions' => function ($query) {
+                    $query->where('reactions.user_id', user()->id);
+                }]);
+            })
             ->paginate(min(200, $request->query('per_page', 20)))
             ->appends($request->query());
 
@@ -105,13 +111,5 @@ class ArticleCommentController extends Controller
         //
     }
 
-    public function replies(Article $article, Comment $comment)
-    {
-        //
-    }
 
-    public function storeReply(Request $request, Article $article, Comment $comment)
-    {
-        //
-    }
 }

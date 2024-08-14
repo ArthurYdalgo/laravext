@@ -27,7 +27,7 @@
     - [GitHub](https://github.com/ArthurYdalgo/laravext)
     - [YouTube](https://www.youtube.com/@laravext)
     - [Packagist](https://packagist.org/packages/arthurydalgo/laravext)
-    - [NPM @laravext/vue](https://www.npmjs.com/package/@laravext/vue)
+    - [NPM @laravext/vue3](https://www.npmjs.com/package/@laravext/vue3)
     - [NPM @laravext/react](https://www.npmjs.com/package/@laravext/react)
     - [Buy me a coffee](https://www.buymeacoffee.com/arthurydalgo)
 

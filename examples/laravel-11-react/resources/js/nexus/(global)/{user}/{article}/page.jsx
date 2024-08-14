@@ -25,6 +25,7 @@ import { useEffect } from "react";
 import LoadingButton from "@/components/LoadingButton";
 import SecondaryButton from "@/components/SecondaryButton";
 import { set } from "lodash";
+import Comment from "@/components/Article/Comment";
 
 export default () => {
     const { article, latest_articles_from_user } = nexusProps();
@@ -55,7 +56,7 @@ export default () => {
             include: "user",
             filter: {
                 exclude_ids: recentlyCreatedCommentIds.join(","),
-            }
+            },
         };
 
         axios
@@ -141,7 +142,6 @@ export default () => {
                     timer: 2000,
                     timerProgressBar: true,
                 });
-
             })
             .catch((error) => {
                 console.error(error);
@@ -151,7 +151,6 @@ export default () => {
                 });
             });
     };
-
 
     const [newComment, setNewComment] = useStateRef({
         content: "",
@@ -169,11 +168,10 @@ export default () => {
         return;
     };
 
-
     const previewNewComment = () => {
         setNewComment((prevState) => ({
             ...prevState,
-            mode: 'preview',
+            mode: "preview",
             loadingPreview: true,
         }));
 
@@ -195,7 +193,9 @@ export default () => {
                 }));
 
                 Swal.fire({
-                    title: t("An error occurred while trying to preview the markdown"),
+                    title: t(
+                        "An error occurred while trying to preview the markdown"
+                    ),
                     icon: "error",
                     confirmButtonText: t("OK"),
                 });
@@ -205,6 +205,15 @@ export default () => {
 
         return;
     };
+
+    const commentWasDeleted = (comment) => {
+        setCommentsPagination((prevState) => ({
+            ...prevState,
+            data: prevState.data.filter((c) => c.id !== comment.id),
+        }));
+
+        setCommentsCount(commentsCount - 1);
+    }
 
     const reactToArticle = (reaction) => {
         setReactionsCount(reactionsCount + 1);
@@ -591,14 +600,14 @@ export default () => {
                             <span className="text-sm text-gray-500">
                                 {moment(article.published_at)
                                     .locale(i18n.language)
-                                    .format("LL")}
+                                    .format("LLL")}
                                 {article.updated_at > article.published_at && (
                                     <span className="text-xs text-gray-500">
                                         {" "}
                                         - {t("Updated on")}{" "}
                                         {moment(article.updated_at)
                                             .locale(i18n.language)
-                                            .format("LL")}
+                                            .format("LLL")}
                                     </span>
                                 )}
                             </span>
@@ -684,59 +693,68 @@ export default () => {
                                         alt={user?.name}
                                     />
                                 </span>
-                                {newComment.mode == 'edit' && <textarea
-                                    className="w-full h-32 border max-h-[250px] min-h-12 border-gray-300 rounded-lg"
-                                    value={newComment.content}
-                                    maxLength={5000}
-                                    placeholder="Write a comment... You can use markdown here, _italic_ (or other *italic*), **bold**, [links](https://example.com), and more."
-                                    onClick={(e) => {
-                                        if (!user) {
-                                            e.preventDefault();
-                                            Swal.fire({
-                                                title: t(
-                                                    "You must be logged in to comment on articles"
-                                                ),
-                                                icon: "info",
-                                                showCancelButton: true,
-                                                confirmButtonText: t("Login"),
-                                                cancelButtonText: t("Cancel"),
-                                            }).then(({ isConfirmed }) => {
-                                                if (isConfirmed) {
-                                                    visit(route("login"));
-                                                }
-                                            });
-                                        }
-                                    }}
-                                    onChange={(e) => {
-                                        if (!user) {
-                                            Swal.fire({
-                                                title: t(
-                                                    "You must be logged in to comment on articles"
-                                                ),
-                                                icon: "info",
-                                                showCancelButton: true,
-                                                confirmButtonText: t("Login"),
-                                                cancelButtonText: t("Cancel"),
-                                            }).then(({ isConfirmed }) => {
-                                                if (isConfirmed) {
-                                                    visit(route("login"));
-                                                }
-                                            });
+                                {newComment.mode == "edit" && (
+                                    <textarea
+                                        className="w-full h-32 border max-h-[250px] min-h-12 border-gray-300 rounded-lg"
+                                        value={newComment.content}
+                                        maxLength={5000}
+                                        placeholder="Write a comment... You can use markdown here, _italic_ (or other *italic*), **bold**, [links](https://example.com), and more..."
+                                        onClick={(e) => {
+                                            if (!user) {
+                                                e.preventDefault();
+                                                Swal.fire({
+                                                    title: t(
+                                                        "You must be logged in to comment on articles"
+                                                    ),
+                                                    icon: "info",
+                                                    showCancelButton: true,
+                                                    confirmButtonText:
+                                                        t("Login"),
+                                                    cancelButtonText:
+                                                        t("Cancel"),
+                                                }).then(({ isConfirmed }) => {
+                                                    if (isConfirmed) {
+                                                        visit(route("login"));
+                                                    }
+                                                });
+                                            }
+                                        }}
+                                        onChange={(e) => {
+                                            if (!user) {
+                                                Swal.fire({
+                                                    title: t(
+                                                        "You must be logged in to comment on articles"
+                                                    ),
+                                                    icon: "info",
+                                                    showCancelButton: true,
+                                                    confirmButtonText:
+                                                        t("Login"),
+                                                    cancelButtonText:
+                                                        t("Cancel"),
+                                                }).then(({ isConfirmed }) => {
+                                                    if (isConfirmed) {
+                                                        visit(route("login"));
+                                                    }
+                                                });
 
-                                            return;
-                                        }
-                                        setNewComment({
-                                            ...newComment,
-                                            content: e.target.value,
-                                        });
-                                    }}
-                                ></textarea>}
-                                {newComment.mode == 'preview' && !newComment.loadingPreview && <div
-                                    className="w-full comment-html px-3 py-2 h-32 border max-h-[250px] min-h-12 border-gray-300 rounded-lg"
-                                    dangerouslySetInnerHTML={{
-                                        __html: newComment.preview,
-                                    }}
-                                ></div>}
+                                                return;
+                                            }
+                                            setNewComment({
+                                                ...newComment,
+                                                content: e.target.value,
+                                            });
+                                        }}
+                                    ></textarea>
+                                )}
+                                {newComment.mode == "preview" &&
+                                    !newComment.loadingPreview && (
+                                        <div
+                                            className="w-full whitespace-pre-wrap comment-html px-3 py-2 h-32 border max-h-[250px] min-h-12 border-gray-300 rounded-lg"
+                                            dangerouslySetInnerHTML={{
+                                                __html: newComment.preview,
+                                            }}
+                                        ></div>
+                                    )}
                                 {newComment.loadingPreview && (
                                     <div className="w-full h-32 border max-h-[250px] min-h-12 border-gray-300 rounded-lg">
                                         <div className="flex justify-center items-center h-full">
@@ -744,80 +762,49 @@ export default () => {
                                         </div>
                                     </div>
                                 )}
-                                    
                             </div>
                             <div className="flex justify-end mt-2 space-x-2">
                                 <SecondaryButton
-                                    disabled={!user || newComment.content.length <= 0}
-
-                                onClick={() => {
-                                    if (newComment.mode === "edit") {
-                                        previewNewComment();
-                                    } else {
-                                        editNewComment();
+                                    disabled={
+                                        !user || newComment.content.length <= 0
                                     }
-                                }}>
+                                    onClick={() => {
+                                        if (newComment.mode === "edit") {
+                                            previewNewComment();
+                                        } else {
+                                            editNewComment();
+                                        }
+                                    }}
+                                >
                                     {newComment.mode === "edit"
                                         ? t("Preview")
                                         : t("Edit")}
                                 </SecondaryButton>
                                 <PrimaryButton
                                     onClick={submitNewComment}
-                                    disabled={!user || newComment.content.length <= 0}
-                                >{t("Submit")}</PrimaryButton>
+                                    disabled={
+                                        !user || newComment.content.length <= 0
+                                    }
+                                >
+                                    {t("Submit")}
+                                </PrimaryButton>
                             </div>
                         </div>
-
                         {commentsCount > 0 && (
-                            <div className=" border-b border-gray-200 w-full"></div>
+                            <div className="border-b border-gray-200 w-full"></div>
                         )}
-
-                        <div className="felx-col space-y-3 ">
-                            {commentsPagination.data.map((comment) => (
-                                <div key={comment.id} className="border-2 border-gray-200 p-1 rounded-lg">
-                                    <div className="flex items-center space-x-2">
-                                        <Link
-                                            
-                                            href={route("user", {
-                                                user: comment.user.username,
-                                            })}
-                                        >
-                                            <img
-                                                src={
-                                                    comment.user.avatar_url ??
-                                                    "/images/avatars/placeholder.png"
-                                                }
-                                                className="w-10 h-10 rounded-full"
-                                                alt={comment.user.name}
-                                            />
-                                        </Link>
-                                        <span className="flex text-md font-semibold flex-col">
-                                            <Link
-                                                className="hover:underline"
-                                                href={route("user", {
-                                                    user: comment.user.username,
-                                                })}
-                                            >
-                                                {comment.user.name}
-                                            </Link>
-                                            <span className="text-xs text-gray-500">
-                                                {moment(comment.created_at)
-                                                    .locale(i18n.language)
-                                                    .format("LLL")}
-                                            </span>
-                                        </span>
+                        {commentsCount > 0 && (
+                            <div className="flex flex-col space-y-4">
+                                {commentsPagination.data.map((comment) => (
+                                    <div
+                                        className="flex justify-start "
+                                        key={comment.id}
+                                    >
+                                        <Comment comment={comment} onDelete={commentWasDeleted} />
                                     </div>
-                                    <div className="flex flex-col py-2">
-                                        <p
-                                            className="text-sm px-2 comment-html"
-                                            dangerouslySetInnerHTML={{
-                                                __html: comment.html,
-                                            }}
-                                        />
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
+                                ))}
+                            </div>
+                        )}
                         <div className="flex justify-center mt-4">
                             {(commentsPagination.meta?.current_page <
                                 commentsPagination.meta?.last_page ||

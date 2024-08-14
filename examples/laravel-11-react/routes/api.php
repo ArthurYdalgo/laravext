@@ -7,6 +7,7 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\CommentAbuseReportController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CurrentUserController;
 use App\Http\Controllers\FollowerController;
@@ -38,8 +39,6 @@ Route::group([
     Route::apiResource('articles', ArticleController::class)->only(['store', 'update', 'destroy']);
 
     Route::apiResource('articles.comments', ArticleCommentController::class)->only(['store', 'index'])->withoutMiddleware('auth');
-    Route::get('articles/{article}/comments/{comment}/replies', [ArticleCommentController::class, 'replies'])->withoutMiddleware('auth');
-    Route::post('articles/{article}/comments/{comment}/replies', [ArticleCommentController::class, 'storeReply']);
 
     Route::prefix('articles/{article}')->group(function () {
         Route::get('reactions', [ArticleController::class, 'userReactions']);
@@ -59,16 +58,16 @@ Route::group([
 
     
     Route::prefix('comments/{comment}')->group(function () {
-        Route::get('reactions', [CommentController::class, 'userReactions']);
-        Route::get('replies', [CommentController::class, 'replies']);
+        Route::get('replies', [CommentController::class, 'replies'])->withoutMiddleware('auth');
+        Route::post('abuse-reports', [CommentAbuseReportController::class, 'store']);
         
-        Route::post('reactions', [CommentController::class, 'react']);
+        Route::post('like', [CommentController::class, 'like']);
         Route::post('replies', [CommentController::class, 'reply']);
         
         Route::put('', [CommentController::class, 'update']);
         
+        Route::delete('like', [CommentController::class, 'unlike']);
         Route::delete('', [CommentController::class, 'destroy']);
-        Route::delete('reactions', [CommentController::class, 'unreact']);
     });
 
     Route::post('users/{user}/abuse-reports', [UserAbuseReportController::class, 'store']);

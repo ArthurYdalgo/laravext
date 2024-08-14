@@ -63,7 +63,7 @@ export default () => {
     return (
         <div className="flex justify-center items-center min-h-[70vh] mt-6">
             <form onSubmit={submit} className="w-96">
-                <h3 className="mt-6 justify-center text-2xl font-extrabold text-gray-900 dark:text-white text-center">Register</h3>
+                <h3 className="mt-6 justify-center text-2xl font-bold text-gray-900 dark:text-white text-center">{t("Register")}</h3>
 
                 <div>
                     <InputLabel htmlFor="email" value="Email" />

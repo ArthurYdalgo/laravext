@@ -130,7 +130,7 @@ export default () => {
 
 ```vue
 <script setup>
-import { laravext, nexus, nexusProps, queryParams, routeParams, sharedProps } from '@laravext/vue'
+import { laravext, nexus, nexusProps, queryParams, routeParams, sharedProps } from '@laravext/vue3'
 <script setup>
 </script>
 <template>
