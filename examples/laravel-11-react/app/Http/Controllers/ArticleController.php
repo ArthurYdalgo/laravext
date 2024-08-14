@@ -46,7 +46,9 @@ class ArticleController extends Controller
                 AllowedFilter::callback('relevance', new RelevanceFilter),
                 AllowedFilter::callback('tags', function ($query, $tags) {
                     $query->whereHas('tags', function ($query) use ($tags) {
-                        $query->whereIn('slug', explode(',', $tags));
+                        $tags = is_array($tags) ? $tags : explode(',', $tags);
+
+                        $query->whereIn('slug', $tags);
                     });
                 }),
             ])

@@ -28,9 +28,8 @@ export default ({ children, ...props }) => {
 
     return (
         <div {...props}>
-            
-                {tags.length > 0 && (
-                    <div className="">
+            {tags.length > 0 && (
+                <div className="mt-2">
                     <div className="flex justify-between items-center mb-2">
                         <span className="text-lg font-bold">
                             {t("Search Tags")}
@@ -42,21 +41,20 @@ export default ({ children, ...props }) => {
                             const color = tagHexColor(tag);
 
                             return (
-                                <div key={`search_tag_${tag}`} className="" >
-                                    <span className="bg-white cursor-pointer rounded-lg px-2 py-1 text-sm"
-                                    onClick={() => {
-                                        removeTag(tag);
-                                    }}
+                                <div key={`search_tag_${tag}`} className="">
+                                    <span
+                                        className="bg-white cursor-pointer rounded-lg px-2 py-1 text-sm"
+                                        onClick={() => {
+                                            removeTag(tag);
+                                        }}
                                     >
                                         <span className="text-sm">
                                             <span style={{ color: color }}>
                                                 #
                                             </span>
-                                            {tag}</span>
-                                        <span
-                                            className="ml-1 "
-                                            
-                                        >
+                                            {tag}
+                                        </span>
+                                        <span className="ml-1 ">
                                             <Fa icon="times" />
                                         </span>
                                     </span>
@@ -64,9 +62,9 @@ export default ({ children, ...props }) => {
                             );
                         })}
                     </div>
-                    </div>
-                )}
-            
+                </div>
+            )}
+
             {user && (
                 <div className="mt-2">
                     <div className="flex justify-between items-center mb-2">
@@ -97,7 +95,12 @@ export default ({ children, ...props }) => {
                                                 onClick={() => {
                                                     addTag(tag.slug);
                                                 }}
-                                                className={"bg-white hover:underline cursor-pointer rounded-lg px-2 py-1 text-sm " + (tags.includes(tag.slug) ? "bg-gray-200" : "")}
+                                                className={
+                                                    "bg-white hover:underline cursor-pointer rounded-lg px-2 py-1 text-sm " +
+                                                    (tags.includes(tag.slug)
+                                                        ? "bg-gray-200"
+                                                        : "")
+                                                }
                                             >
                                                 <span
                                                     style={{
@@ -133,7 +136,12 @@ export default ({ children, ...props }) => {
                                         onClick={() => {
                                             addTag(tag.slug);
                                         }}
-                                        className={"bg-white hover:underline cursor-pointer rounded-lg px-2 py-1 text-sm " + (tags.includes(tag.slug) ? "bg-gray-200" : "")}
+                                        className={
+                                            "bg-white hover:underline cursor-pointer rounded-lg px-2 py-1 text-sm " +
+                                            (tags.includes(tag.slug)
+                                                ? "bg-gray-200"
+                                                : "")
+                                        }
                                     >
                                         <span
                                             style={{

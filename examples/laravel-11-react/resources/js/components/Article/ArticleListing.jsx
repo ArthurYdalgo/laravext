@@ -13,7 +13,7 @@ import LoadingButton from "../LoadingButton";
 
 export default ({ queryParams = {} }) => {
     const { t } = useTranslation();
-    const { text } = useSearch();
+    const { text, tags } = useSearch();
 
     const [pagination, setPagination, paginationRef] = useStateRef({
         data: [],
@@ -25,13 +25,20 @@ export default ({ queryParams = {} }) => {
 
     const [filters, setFilters, filtersRef] = useStateRef({
         search: text,
+        tags: [],
     });
 
     useEffect(() => {
-        // setFilters((prevState) => ({ ...prevState, search: text }));
+        setFilters((prevState) => ({ ...prevState, search: text }));
         setPagination((prevState) => ({ ...prevState, page: 1 }));
         debouncedFetchResources();
     }, [text]);
+
+    useEffect(() => {
+        setFilters((prevState) => ({ ...prevState, tags: tags }));
+        setPagination((prevState) => ({ ...prevState, page: 1 }));
+        debouncedFetchResources();
+    }, [tags]);
 
     const paginateTo = ({ page, perPage, clearData = true }) => {
         setPagination((prevState) => ({
@@ -44,13 +51,21 @@ export default ({ queryParams = {} }) => {
 
     const fetchResources = (clearData = true) => {
         setPagination((prevState) => ({ ...prevState, loading: true }));
+        
+        let filter = {}
+
+        if (filtersRef.current.search) {
+            filter.search = filtersRef.current.search;
+        }
+
+        if (filtersRef.current.tags.length) {
+            filter.tags = filtersRef.current.tags.join(",");
+        }
 
         let params = {
             page: paginationRef.current.page,
             per_page: paginationRef.current.per_page,
-            filter: {
-                search: filtersRef.current.search ?? "",
-            },
+            filter: filter,
             include: "user,commentsCount,tags,reactionsCount",
         };
 
