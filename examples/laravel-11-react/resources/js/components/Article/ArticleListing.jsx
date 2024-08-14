@@ -28,7 +28,7 @@ export default ({ queryParams = {} }) => {
     });
 
     useEffect(() => {
-        setFilters((prevState) => ({ ...prevState, search: text }));
+        // setFilters((prevState) => ({ ...prevState, search: text }));
         setPagination((prevState) => ({ ...prevState, page: 1 }));
         debouncedFetchResources();
     }, [text]);
