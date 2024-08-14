@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import Modal from "../Modal";
 import PrimaryButton from "../PrimaryButton";
+import DangerButton from "../DangerButton";
 
 
 export default ({ reply , onDelete = (reply) => {}}) => {
@@ -34,7 +35,7 @@ export default ({ reply , onDelete = (reply) => {}}) => {
     const editReplyContent = (content) => {
         setEditReply((prevState) => ({
             ...prevState,
-            content,
+            mode: 'edit'
         }));
     };
 
@@ -64,7 +65,7 @@ export default ({ reply , onDelete = (reply) => {}}) => {
                     })
                     .then((response) => {
                         setReplyContent(editReply.content);
-                        setReplyHtml(response.data.html);
+                        setReplyHtml(response.data.data.html);
                         setEditReply((prevState) => ({
                             ...prevState,
                             mode: null,
@@ -88,15 +89,16 @@ export default ({ reply , onDelete = (reply) => {}}) => {
         setEditReply((prevState) => ({
             ...prevState,
             loadingPreview: true,
+            mode: "preview",
         }));
         axios
-            .post(`/api/tools/markdown/preview`, {
+            .post(`/api/tools/markdown-preview`, {
                 markdown: editReply.content,
             })
             .then((response) => {
                 setEditReply((prevState) => ({
                     ...prevState,
-                    preview: response.data.html,
+                    preview: response.data.data.html,
                     loadingPreview: false,
                 }));
             })
@@ -293,7 +295,9 @@ export default ({ reply , onDelete = (reply) => {}}) => {
                             )}
                             {user && user?.id == reply.user_id && (
                                 <div className="flex space-x-2">
-                                    <button className="transition-all px-1 text-blue-500 hover:bg-blue-500 hover:text-white rounded-md">
+                                    <button
+                                        onClick={editReplyContent}
+                                     className="transition-all px-1 text-blue-500 hover:bg-blue-500 hover:text-white rounded-md">
                                         <Fa
                                             icon="edit"
                                             
@@ -309,12 +313,80 @@ export default ({ reply , onDelete = (reply) => {}}) => {
                             )}
                         </div>
                     </div>
-                    <p
-                        className="text-sm whitespace-pre-wrap py-2 comment-html"
-                        dangerouslySetInnerHTML={{
-                            __html: reply.html,
-                        }}
-                    ></p>
+                    {["edit", "preview"].includes(editReply.mode) ? (
+                        <div className="w-full">
+                            {editReply.mode === "edit" && (
+                                <textarea
+                                    className="w-full border border-gray-300 rounded-lg max-h-[300px] h-32 min-h-12"
+                                    value={editReply.content}
+                                    maxLength={5000}
+                                    onChange={(e) => {
+                                        setEditReply((prevState) => ({
+                                            ...prevState,
+                                            content: e.target.value,
+                                        }));
+                                    }}
+                                />
+                            )}
+                            {editReply.mode === "preview" &&
+                                !editReply.loadingPreview && (
+                                    <div
+                                        className="w-full whitespace-pre-wrap comment-html px-3 py-2 mb-1.5 border max-h-[250px] h-32 min-h-12 border-gray-300 rounded-lg"
+                                        dangerouslySetInnerHTML={{
+                                            __html: editReply.preview,
+                                        }}
+                                    ></div>
+                                )}
+                            {editReply.mode === "preview" &&
+                                editReply.loadingPreview && (
+                                    <div className="w-full h-32 border border-gray-300 rounded-lg items-center justify-center flex mb-1.5">
+                                        <div className="mini-loader"></div>
+                                    </div>
+                                )}
+                            <div className="flex justify-between">
+                                <div>
+                                    <DangerButton onClick={cancelEditReply}>
+                                        {t("Cancel")}
+                                    </DangerButton>
+                                </div>
+                                <div className="flex space-x-2">
+                                    <SecondaryButton
+                                        disabled={
+                                            !user ||
+                                            editReply.content.length <= 0
+                                        }
+                                        onClick={() => {
+                                            if (editReply.mode === "edit") {
+                                                previewEditReply();
+                                            } else {
+                                                editReplyContent();
+                                            }
+                                        }}
+                                    >
+                                        {editReply.mode === "edit"
+                                            ? t("Preview")
+                                            : t("Edit")}
+                                    </SecondaryButton>
+                                    <PrimaryButton
+                                        onClick={submitEditReply}
+                                        disabled={
+                                            !user ||
+                                            editReply.content.length <= 0
+                                        }
+                                    >
+                                        {t("Submit")}
+                                    </PrimaryButton>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <p
+                            className="text-sm whitespace-pre-wrap py-2 comment-html"
+                            dangerouslySetInnerHTML={{
+                                __html: replyHtml,
+                            }}
+                        ></p>
+                    )}
                 </div>
                 <div className="flex justify-start mt-2 space-x-6 px-2">
                     <button onClick={liked ? unlikeComment : likeComment}>
