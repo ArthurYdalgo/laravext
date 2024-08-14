@@ -3,17 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Comment\DestroyRequest;
+use App\Http\Requests\Comment\ReplyRequest;
+use App\Http\Requests\Comment\UpdateRequest;
 use App\Http\Resources\CommentResource;
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class CommentController extends Controller
 {
     public function replies(Comment $comment)
     {
-        $replies = $comment->replies()
+        $replies = QueryBuilder::for($comment->replies())
             ->with('user')
             ->withCount(['reactions'])
+            ->allowedFilters([
+                AllowedFilter::callback('exclude_ids', function ($query, $ids) {
+                    $ids = is_array($ids) ? $ids : explode(',', $ids);
+
+                    $query->whereNotIn('comments.id', $ids);
+                }),
+            ])
             ->latest()
             ->when(user(), function ($query) {
                 $query->with(['reactions' => function ($query) {
@@ -30,9 +41,17 @@ class CommentController extends Controller
         return CommentResource::collection($replies);
     }
 
-    public function storeReply(Comment $comment)
+    public function reply(ReplyRequest $request, Comment $comment)
     {
-        //
+        $reply = $comment->replies()->create([
+            'user_id' => user()->id,
+            'content' => $request->validated('content'),
+        ]);
+
+        $reply->load('user');
+        $reply->append('html');
+
+        return $this->successResponse(new CommentResource($reply));
     }
 
     public function like(Comment $comment)
@@ -53,7 +72,18 @@ class CommentController extends Controller
     {
         $comment->delete();
 
-        return $this->successResponse();
-        
+        return $this->successResponse();   
+    }
+
+    public function update(UpdateRequest $request, Comment $comment)
+    {
+        $comment->update([
+            'content' => scriptStripper($request->content),
+        ]);
+
+        $comment->append('html');
+        $comment->load('user');
+
+        return $this->successResponse(new CommentResource($comment));
     }
 }

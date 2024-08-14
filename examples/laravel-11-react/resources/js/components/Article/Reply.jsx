@@ -7,14 +7,115 @@ import { useTranslation } from "react-i18next";
 import SecondaryButton from "../SecondaryButton";
 import LoadingButton from "../LoadingButton";
 import { nexusProps, sharedProps } from "@laravext/react";
+import {visit} from "@laravext/react/router";
 import Swal from "sweetalert2";
 import axios from "axios";
+import Modal from "../Modal";
+import PrimaryButton from "../PrimaryButton";
+
 
 export default ({ reply , onDelete = (reply) => {}}) => {
     const { user } = sharedProps().auth;
     const { t, i18n } = useTranslation();
+    const { available_abuse_report_types } = sharedProps();
     const [liked, setLiked] = useState(reply.reactions?.length > 0);
     const [likesCount, setLikesCount] = useState(reply.reactions_count);
+
+    const [replyHtml, setReplyHtml] = useState(reply.html);
+    const [replyContent, setReplyContent] = useState(reply.content);
+
+    const [editReply, setEditReply] = useState({
+        mode: null,
+        content: replyContent,
+        preview: "",
+        loadingPreview: false,
+    });
+
+    const editReplyContent = (content) => {
+        setEditReply((prevState) => ({
+            ...prevState,
+            content,
+        }));
+    };
+
+    const cancelEditReply = () => {
+        setEditReply((prevState) => ({
+            ...prevState,
+            mode: null,
+            content: replyContent,
+            preview: "",
+            loadingPreview: false,
+        }));
+    };
+
+    const submitEditReply = () => {
+        Swal.fire({
+            title: t("Are you sure?"),
+            text: t("Do you really want to update this reply?"),
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: t("Yes"),
+            cancelButtonText: t("No"),
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios
+                    .put(`/api/comments/${reply.id}`, {
+                        content: editReply.content,
+                    })
+                    .then((response) => {
+                        setReplyContent(editReply.content);
+                        setReplyHtml(response.data.html);
+                        setEditReply((prevState) => ({
+                            ...prevState,
+                            mode: null,
+                            preview: "",
+                            loadingPreview: false,
+                        }));
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                        Swal.fire({
+                            title: t("Failed to update reply"),
+                            text: error.response?.data?.message,
+                            icon: "error",
+                        });
+                    });
+            }
+        });
+    };
+
+    const previewEditReply = () => {
+        setEditReply((prevState) => ({
+            ...prevState,
+            loadingPreview: true,
+        }));
+        axios
+            .post(`/api/tools/markdown/preview`, {
+                markdown: editReply.content,
+            })
+            .then((response) => {
+                setEditReply((prevState) => ({
+                    ...prevState,
+                    preview: response.data.html,
+                    loadingPreview: false,
+                }));
+            })
+            .catch((error) => {
+                console.error(error);
+                Swal.fire({
+                    title: t("Failed to preview reply"),
+                    text: error.response?.data?.message,
+                    icon: "error",
+                });
+                setEditReply((prevState) => ({
+                    ...prevState,
+                    loadingPreview: false,
+                }));
+            });
+    };
+
+
+
 
     const deleteReply = () => {
         Swal.fire({
@@ -48,6 +149,51 @@ export default ({ reply , onDelete = (reply) => {}}) => {
             }
         });               
     }
+
+    const submitAbuseReport = () => {
+        setAbuseReportModal((prevState) => ({
+            ...prevState,
+            submitting: true,
+        }));
+        axios
+            .post(`/api/comments/${reply.id}/abuse-reports`, {
+                message: abuseReportModal.message,
+                type: abuseReportModal.type,
+            })
+            .then((response) => {
+                setAbuseReportModal((prevState) => ({
+                    ...prevState,
+                    show: false,
+                    submitting: false,
+                    message: "",
+                    type: "",
+                }));
+                Swal.fire({
+                    title: t("Reply reported successfully"),
+                    icon: "success",
+                });
+            })
+            .catch((error) => {
+                console.error(error);
+                setAbuseReportModal((prevState) => ({
+                    ...prevState,
+                    submitting: false,
+                }));
+                let message = error.response?.data?.message ?? null;
+                Swal.fire({
+                    title: t("Failed to report reply"),
+                    text: message,
+                    icon: "error",
+                });
+            });
+    };
+
+    const [abuseReportModal, setAbuseReportModal] = useStateRef({
+        show: false,
+        submitting: false,
+        message: "",
+        type: "",
+    });
 
     const likeComment = () => {
         setLiked(true);
@@ -114,7 +260,34 @@ export default ({ reply , onDelete = (reply) => {}}) => {
                         </span>
                         <div>
                         {(!user || user?.id != reply.user_id) && (
-                                <button className="transition-all px-1 text-red-500  hover:bg-red-500 hover:text-white rounded-md">
+                                <button
+                                onClick={() => {
+                                    if (!user) {
+                                        Swal.fire({
+                                            title: t(
+                                                "You must be logged in to report this reply"
+                                            ),
+                                            icon: "info",
+                                            showCancelButton: true,
+                                            confirmButtonText:
+                                                t("Login"),
+                                            cancelButtonText:
+                                                t("Cancel"),
+                                        }).then(({ isConfirmed }) => {
+                                            if (isConfirmed) {
+                                                visit(route("login"));
+                                            }
+                                        });
+                                        return;
+                                    }
+                                    setAbuseReportModal(
+                                        (prevState) => ({
+                                            ...prevState,
+                                            show: true,
+                                        })
+                                    );
+                                }}
+                                className="transition-all px-1 text-red-500  hover:bg-red-500 hover:text-white rounded-md">
                                     <Fa icon="flag" size="xs" />
                                 </button>
                             )}
@@ -158,6 +331,116 @@ export default ({ reply , onDelete = (reply) => {}}) => {
                     </button>
                 </div>
             </div>
+            <Modal
+                show={abuseReportModal.show}
+                onClose={() =>
+                    setAbuseReportModal((prevState) => ({
+                        ...prevState,
+                        show: false,
+                        message: "",
+                        type: "",
+                        submitting: false,
+                    }))
+                }
+            >
+                <div className="p-4">
+                    <h2 className="text-xl font-bold">{t("Report Abuse")}</h2>
+                    <div className="border-b border-gray-200 my-2 w-full"></div>
+                    <p className="text-sm text-gray-500">
+                        {t(
+                            "Please select the type of abuse you are reporting."
+                        )}
+                    </p>
+                    <select
+                        className="w-full border border-gray-300 rounded-lg"
+                        value={abuseReportModal.type}
+                        onChange={(e) => {
+                            setAbuseReportModal((prevState) => ({
+                                ...prevState,
+                                type: e.target.value,
+                            }));
+                        }}
+                    >
+                        <option value="">{t("Select a type")}</option>
+                        {Object.keys(available_abuse_report_types).map(
+                            (key) => (
+                                <option key={key} value={key}>
+                                    {available_abuse_report_types[key]}
+                                </option>
+                            )
+                        )}
+                    </select>
+                    {abuseReportModal.type === "" && (
+                        <span>
+                            <small className="text-red-500">
+                                {t("Please select a type")}
+                            </small>
+                        </span>
+                    )}
+                    <p className="text-sm text-gray-500 mt-2">
+                        {t(
+                            "Please provide a detailed description of what you believe should be reported about this article."
+                        )}
+                    </p>
+                    <textarea
+                        className="w-full h-32 border max-h-[500px] min-h-12 border-gray-300 rounded-lg"
+                        value={abuseReportModal.message}
+                        minLength={10}
+                        maxLength={2000}
+                        onChange={(e) => {
+                            setAbuseReportModal((prevState) => ({
+                                ...prevState,
+                                message: e.target.value,
+                            }));
+                        }}
+                    />
+                    {abuseReportModal.message.length < 10 && (
+                        <span>
+                            <small className="text-red-500">
+                                {t("Please enter at least 10 characters")}
+                            </small>
+                        </span>
+                    )}
+                    {abuseReportModal.message.length > 2000 && (
+                        <span>
+                            <small className="text-red-500">
+                                {t("Please enter at most 2000 characters")}
+                            </small>
+                        </span>
+                    )}
+                    <div className=" text-gray-500 mt-2 flex flex-row justify-end w-full">
+                        <PrimaryButton
+                            onClick={() => {
+                                Swal.fire({
+                                    title: t("Are you sure?"),
+                                    text: t(
+                                        "Do you really want to report this reply?"
+                                    ),
+                                    icon: "warning",
+                                    showCancelButton: true,
+                                    confirmButtonText: t("Yes"),
+                                    cancelButtonText: t("No"),
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        submitAbuseReport();
+                                    }
+                                });
+                            }}
+                            disabled={
+                                abuseReportModal.submitting ||
+                                abuseReportModal.message.length < 10 ||
+                                abuseReportModal.message.length > 2000 ||
+                                abuseReportModal.type === ""
+                            }
+                        >
+                            {abuseReportModal.submitting && (
+                                <div className="mini-loader mr-2"></div>
+                            )}
+                            {t("Submit")}
+                        </PrimaryButton>
+                    </div>
+                </div>
+            </Modal>
         </>
     );
 };

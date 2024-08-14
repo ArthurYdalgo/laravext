@@ -21,7 +21,6 @@ class ArticleCommentController extends Controller
         $comments = QueryBuilder::for($article->comments())
             ->allowedIncludes([
                 'user',
-                'tags',
             ])
             ->allowedFilters([
                 AllowedFilter::callback('exclude_ids', function ($query, $ids) {
