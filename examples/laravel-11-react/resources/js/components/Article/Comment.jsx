@@ -433,7 +433,7 @@ export default ({ comment, onDelete = (comment) => {} }) => {
                             <span className="text-sm text-gray-500">
                                 {moment(comment.created_at)
                                     .locale(i18n.language)
-                                    .fromNow()}
+                                    .format("lll")}
                             </span>
                         </span>
                         <div>

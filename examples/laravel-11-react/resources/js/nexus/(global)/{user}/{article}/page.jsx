@@ -561,7 +561,7 @@ export default () => {
                     </div>
                 </div>
                 <div className="lg:w-[65.5%] rounded-md bg-white mx-1 lg:mx-2">
-                    {/* {article.banner_url && (
+                    {article.banner_url && (
                         <p align="center">
                             <img
                                 src={article.banner_url}
@@ -569,7 +569,7 @@ export default () => {
                                 alt={article.title}
                             />
                         </p>
-                    )} */}
+                    )}
                     <div className="flex justify-start px-8 mt-4 space-x-2">
                         <div className="flex items-center space-x-2">
                             <Link
@@ -600,14 +600,14 @@ export default () => {
                             <span className="text-sm text-gray-500">
                                 {moment(article.published_at)
                                     .locale(i18n.language)
-                                    .format("LL")}
+                                    .format("LLL")}
                                 {article.updated_at > article.published_at && (
                                     <span className="text-xs text-gray-500">
                                         {" "}
                                         - {t("Updated on")}{" "}
                                         {moment(article.updated_at)
                                             .locale(i18n.language)
-                                            .format("LL")}
+                                            .format("LLL")}
                                     </span>
                                 )}
                             </span>
@@ -670,7 +670,7 @@ export default () => {
                     </div>
 
                     <div className="article pre-wrap break-words ">
-                        {/* <Article html={article.html} /> */}
+                        <Article html={article.html} />
                     </div>
 
                     <div className="px-4">

@@ -257,7 +257,7 @@ export default ({ reply , onDelete = (reply) => {}}) => {
                             <span className="text-sm text-gray-500">
                                 {moment(reply.created_at)
                                     .locale(i18n.language)
-                                    .fromNow()}
+                                    .format('lll')}
                             </span>
                         </span>
                         <div>
