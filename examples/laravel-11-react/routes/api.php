@@ -14,7 +14,11 @@ use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\Tools\MarkdownPreviewController;
 use App\Http\Controllers\UserAbuseReportController;
 use App\Http\Controllers\UserAvatarController;
+use App\Models\Tag;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Route;
+
+Route::get('tags', fn () => JsonResource::collection(Tag::orderBy('slug')->get()));
 
 Route::group([
     'prefix' => 'auth'

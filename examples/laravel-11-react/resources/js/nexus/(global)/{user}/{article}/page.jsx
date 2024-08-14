@@ -648,12 +648,8 @@ export default () => {
                                     .substring(1)}`;
 
                                 return (
-                                    <Link
+                                    <span
                                         key={tag.slug}
-                                        href={route("search", {
-                                            tags: tag.slug,
-                                        })}
-                                        params={{ tags: tag.slug }}
                                         className="flex row hover:underline cursor-pointer"
                                     >
                                         <span
@@ -664,7 +660,7 @@ export default () => {
                                             #
                                         </span>
                                         {tag.slug}
-                                    </Link>
+                                    </span>
                                 );
                             })}
                     </div>

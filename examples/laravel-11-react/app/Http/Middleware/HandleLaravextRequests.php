@@ -19,7 +19,9 @@ class HandleLaravextRequests extends Middleware
         $user = $request->user();
 
         if($user){
-            $user->loadMissing(['roles', 'tags']);
+            $user->loadMissing(['roles', 'tags' => function($query){
+                $query->orderBy('slug');
+            }]);
         }
 
         return array_merge(parent::share($request), [

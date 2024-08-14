@@ -4,34 +4,80 @@ import Cog from "@/components/Icons/Cog";
 import Home from "@/components/Icons/Home";
 import Tag from "@/components/Icons/Tag";
 import Link from "@/components/Link";
+import useSearch from "@/hooks/useSearch";
 import { sharedProps } from "@laravext/react";
 import { useTranslation } from "react-i18next";
 import { route } from "ziggy-js";
+import { visit } from "@laravext/react/router";
+import { useEffect, useState } from "react";
+import { add } from "lodash";
+import { tagHexColor } from "@/tools/helpers";
 
 export default ({ children, ...props }) => {
     const { user } = sharedProps().auth;
     const { t } = useTranslation();
+    const { addTag, removeTag, tags } = useSearch();
+
+    const [availableTags, setAvailableTags] = useState([]);
+
+    useEffect(() => {
+        axios.get("/api/tags").then((response) => {
+            setAvailableTags(response.data.data);
+        });
+    }, []);
 
     return (
         <div {...props}>
-            <div className="flex flex-col space-y-2">
-                <Link routeName={"home"} className="flex row hover:underline">
-                    <Home className="mr-1" />
-                    {t("Home")}
-                </Link>
-                <Link routeName={"tags"} className="flex row hover:underline">
-                    <Tag className="mr-1" />
-                    {t("Tags")}
-                </Link>
-            </div>
+            
+                {tags.length > 0 && (
+                    <div className="">
+                    <div className="flex justify-between items-center mb-2">
+                        <span className="text-lg font-bold">
+                            {t("Search Tags")}
+                        </span>
+                    </div>
+
+                    <div className="flex flex-col space-y-2">
+                        {tags.map((tag) => {
+                            const color = tagHexColor(tag);
+
+                            return (
+                                <div key={`search_tag_${tag}`} className="" >
+                                    <span className="bg-white cursor-pointer rounded-lg px-2 py-1 text-sm"
+                                    onClick={() => {
+                                        removeTag(tag);
+                                    }}
+                                    >
+                                        <span className="text-sm">
+                                            <span style={{ color: color }}>
+                                                #
+                                            </span>
+                                            {tag}</span>
+                                        <span
+                                            className="ml-1 "
+                                            
+                                        >
+                                            <Fa icon="times" />
+                                        </span>
+                                    </span>
+                                </div>
+                            );
+                        })}
+                    </div>
+                    </div>
+                )}
+            
             {user && (
-                <div className="mt-6">
+                <div className="mt-2">
                     <div className="flex justify-between items-center mb-2">
                         <span className="text-lg font-bold">
                             {t("Your Tags")}
                         </span>
-                        <Link routeName={"dashboard.following.tags"} className="flex row hover:bg-gray-300 rounded-full p-[5px] transition duration-300">
-                        <Cog />
+                        <Link
+                            routeName={"dashboard.following.tags"}
+                            className="flex row hover:bg-gray-300 rounded-full p-[5px] transition duration-300"
+                        >
+                            <Cog />
                         </Link>
                     </div>
                     {user.tags?.length == 0 ? (
@@ -39,33 +85,71 @@ export default ({ children, ...props }) => {
                             {t("You do not follow any tags yet")}
                         </span>
                     ) : (
-                    <div className="flex flex-col space-y-2">
-                        {user.tags.sort((a, b) => a.slug.localeCompare(b.slug)).map((tag) => {
-                            const hash = tag.slug.split("").reduce((acc, char) => {
-                                return char.charCodeAt(0) + ((acc << 5) - acc);
-                            }, 0);
+                        <div className="flex flex-col space-y-2">
+                            {user.tags
+                                // .sort((a, b) => a.slug.localeCompare(b.slug))
+                                .map((tag) => {
+                                    const color = tagHexColor(tag);
 
-                            const color = `#${((hash & 0x00FFFFFF) | 0x1000000).toString(16).substring(1)}`;
-
-                            return (
-                            <Link
-                                key={tag.id}
-                                href={route ("search", { tags: tag.slug })}
-                                params={{ tags: tag.slug }}
-                                className="flex row hover:underline cursor-pointer"
-                            >
-                                <span className="bg-white rounded-lg px-2 py-1 text-sm">
-                                    <span
-                                     style={{
-                                        color: color,
-                                    }}
-                                    >#</span>
-                                    {tag.slug}</span>
-                            </Link>
-                        )})}
-                    </div>)}
+                                    return (
+                                        <div key={`user_tags_${tag.slug}`}>
+                                            <span
+                                                onClick={() => {
+                                                    addTag(tag.slug);
+                                                }}
+                                                className={"bg-white hover:underline cursor-pointer rounded-lg px-2 py-1 text-sm " + (tags.includes(tag.slug) ? "bg-gray-200" : "")}
+                                            >
+                                                <span
+                                                    style={{
+                                                        color: color,
+                                                    }}
+                                                >
+                                                    #
+                                                </span>
+                                                {tag.slug}
+                                            </span>
+                                        </div>
+                                    );
+                                })}
+                        </div>
+                    )}
                 </div>
             )}
+            {
+                <div className="mt-6">
+                    <div className="flex justify-between items-center mb-2">
+                        <span className="text-lg font-bold">
+                            {t("All Tags")}
+                        </span>
+                    </div>
+
+                    <div className="flex flex-col space-y-2">
+                        {availableTags.map((tag) => {
+                            const color = tagHexColor(tag);
+
+                            return (
+                                <div key={`user_tags_${tag.slug}`}>
+                                    <span
+                                        onClick={() => {
+                                            addTag(tag.slug);
+                                        }}
+                                        className={"bg-white hover:underline cursor-pointer rounded-lg px-2 py-1 text-sm " + (tags.includes(tag.slug) ? "bg-gray-200" : "")}
+                                    >
+                                        <span
+                                            style={{
+                                                color: color,
+                                            }}
+                                        >
+                                            #
+                                        </span>
+                                        {tag.slug}
+                                    </span>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            }
             <div className="flex row mt-6">
                 <a
                     href={"https://youtube.com/@laravext"}

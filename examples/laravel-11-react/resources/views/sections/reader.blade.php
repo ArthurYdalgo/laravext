@@ -14,15 +14,14 @@
                         </a>
 
                         <div class="relative w-full">
-                            <a href="https://laravel-11-react.test/search?q="
-                                class="absolute p-0.5 top-1/2 transform -translate-y-1/2 text-gray-500 text-xs "><svg
+                            <svg
                                     aria-hidden="true" focusable="false" data-prefix="fas" data-icon="magnifying-glass"
                                     class="svg-inline--fa fa-magnifying-glass fa-lg m-2 ml-3 w-[15px] -translate-y-[1px]"
                                     role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                     <path fill="currentColor"
                                         d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z">
                                     </path>
-                                </svg></a>
+                                </svg>
                             <input type="text" placeholder="{{ __('Search') }}..."
                                 class="w-full md:pr-36 pl-10 py-1.5 rounded-md border border-gray-300 transition duration-300 focus:outline-none"
                                 value="">

@@ -43,7 +43,12 @@ class ArticleController extends Controller
             ->allowedFilters([
                 AllowedFilter::scope('search', 'whereScout'),
                 AllowedFilter::exact('user_id'),
-                AllowedFilter::callback('relevance', new RelevanceFilter)
+                AllowedFilter::callback('relevance', new RelevanceFilter),
+                AllowedFilter::callback('tags', function ($query, $tags) {
+                    $query->whereHas('tags', function ($query) use ($tags) {
+                        $query->whereIn('slug', explode(',', $tags));
+                    });
+                }),
             ])
             ->allowedSorts([
                 AllowedSort::custom('top_week', new TopWeek),
