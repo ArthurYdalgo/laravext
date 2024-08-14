@@ -1,5 +1,5 @@
 <script setup>
-import { Head } from '@laravext/vue'
+import { Head } from '@laravext/vue3'
 import axios from 'axios';
 import { reactive, onMounted } from 'vue'
 

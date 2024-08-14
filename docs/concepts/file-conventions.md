@@ -28,7 +28,7 @@ There's no need to include the `page` convention, as it's filtered out before th
 
 ```javascript
 // For Vue
-import { createLaravextApp, resolveComponent } from "@laravext/vue"
+import { createLaravextApp, resolveComponent } from "@laravext/vue3"
 
 // For React
 import { createLaravextApp, resolveComponent } from "@laravext/react"

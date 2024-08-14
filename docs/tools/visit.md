@@ -36,7 +36,7 @@ export default  ({ routeName, href, className = '', children }) => {
 
 ```vue
 <script setup>
-import { visit } from '@laravext/vue/router';
+import { visit } from '@laravext/vue3/router';
 
 const props = defineProps({
     routeName: {

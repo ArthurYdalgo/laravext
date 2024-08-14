@@ -5,7 +5,7 @@ import InputLabel from '@/components/InputLabel.vue';
 import Link from '@/components/Link.vue';
 import PrimaryButton from '@/components/PrimaryButton.vue';
 import TextInput from '@/components/TextInput.vue';
-import { Head } from '@laravext/vue';
+import { Head } from '@laravext/vue3';
 import { reactive } from 'vue'
 
 let form = reactive({

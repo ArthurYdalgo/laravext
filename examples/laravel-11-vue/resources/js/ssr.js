@@ -6,9 +6,9 @@ import { plugin as fkPluging, defaultConfig as fkDefaultConfig } from '@formkit/
 import VueSweetalert2 from 'vue-sweetalert2';
 import fkConfig from './../../formkit.theme.js'
 import 'sweetalert2/dist/sweetalert2.min.css';
-import { resolveComponent } from '@laravext/vue/tools';
-import { serve } from "@laravext/vue/server"
-import { createLaravextSsrApp } from '@laravext/vue';
+import { resolveComponent } from '@laravext/vue3/tools';
+import { serve } from "@laravext/vue3/server"
+import { createLaravextSsrApp } from '@laravext/vue3';
 import { route } from '../../vendor/tightenco/ziggy/src/js';
 
 

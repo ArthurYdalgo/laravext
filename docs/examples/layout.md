@@ -41,7 +41,7 @@ import Link from '@/components/Link.vue';
 import ResponsiveNavLink from '@/components/ResponsiveNavLink.vue';
 import axios from 'axios';
 
-import { sharedProps } from '@laravext/vue';
+import { sharedProps } from '@laravext/vue3';
 
 const {user} = sharedProps().auth;
 

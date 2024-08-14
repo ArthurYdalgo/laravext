@@ -3,7 +3,7 @@ import InputLabel from '@/components/InputLabel.vue';
 import PrimaryButton from '@/components/PrimaryButton.vue';
 import TextArea from '@/components/TextArea.vue';
 import TextInput from '@/components/TextInput.vue';
-import { Head } from '@laravext/vue'
+import { Head } from '@laravext/vue3'
 import { reactive, inject } from 'vue'
 import axios from 'axios'
 const swal = inject('$swal')

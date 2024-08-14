@@ -43,7 +43,7 @@ npm install @vitejs/plugin-react
 or
 
 ```bash
-npm install @laravext/vue
+npm install @laravext/vue3
 
 # Additionally, you should have the following package installed, if you haven't already
 npm install @vitejs/plugin-vue
@@ -121,8 +121,8 @@ document.addEventListener('DOMContentLoaded', function () {
 ```js
 import './bootstrap';
 import '../css/app.css';
-import { createLaravextApp } from "@laravext/vue"
-import { resolveComponent } from '@laravext/vue/tools';
+import { createLaravextApp } from "@laravext/vue3"
+import { resolveComponent } from '@laravext/vue3/tools';
 
 // Other imports for the Vue.js example
 import { createI18n } from 'vue-i18n'

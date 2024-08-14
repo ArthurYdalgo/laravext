@@ -1,6 +1,6 @@
 import './bootstrap';
 import '../css/app.css';
-import { createLaravextApp } from "@laravext/vue"
+import { createLaravextApp } from "@laravext/vue3"
 
 import VueCookies from 'vue-cookies'
 
@@ -11,7 +11,7 @@ import { plugin as fkPluging, defaultConfig as fkDefaultConfig } from '@formkit/
 import VueSweetalert2 from 'vue-sweetalert2';
 import fkConfig from './../../formkit.theme.js'
 import 'sweetalert2/dist/sweetalert2.min.css';
-import { resolveComponent } from '@laravext/vue/tools';
+import { resolveComponent } from '@laravext/vue3/tools';
 import { color } from '@formkit/icons';
 import Cookies from 'js-cookie';
 

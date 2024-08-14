@@ -40,7 +40,7 @@ export default ({laravext}) => {
 
 ```vue
 <script setup>
-import { sharedProps } from '@laravext/vue';
+import { sharedProps } from '@laravext/vue3';
 
 if (!sharedProps().auth?.user) {
   window.location.href = '/'

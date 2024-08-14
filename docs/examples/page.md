@@ -32,7 +32,7 @@ export default ({laravext}) => {
 
 ```vue
 <script setup>
-import { Head } from '@laravext/vue'
+import { Head } from '@laravext/vue3'
 import axios from 'axios';
 import { reactive, onMounted } from 'vue'
 
@@ -105,7 +105,7 @@ export default ({laravext}) => {
 
 ```vue
 <script setup>
-import { Head, nexusProps } from '@laravext/vue'
+import { Head, nexusProps } from '@laravext/vue3'
 
 const { teams } = nexusProps();
 
