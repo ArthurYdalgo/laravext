@@ -260,6 +260,10 @@ class ResponseFactory
             $path .= '?' . http_build_query($query_params);
         }
 
+        if(!str($path)->startsWith('/')){
+            $path = "/{$path}";
+        }
+
         return response()->json([
             'action' => 'render',
             'laravext_page_data' => $laravext_page_data,
