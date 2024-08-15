@@ -174,8 +174,11 @@ export function clientRender(pageData = null, scrollState = null) {
                             });
                         }
 
+                        let laravext = window.__laravext;
+                        laravext.page_data = laravextPageData;
+
                         nexus = (
-                            <LaravextContext.Provider value={window.__laravext}>
+                            <LaravextContext.Provider value={laravext}>
                                 {nexus}
                             </LaravextContext.Provider>
                         );
@@ -256,8 +259,11 @@ export function clientRender(pageData = null, scrollState = null) {
                             });
                         }
 
+                        let laravext = window.__laravext;
+                        laravext.page_data = laravextPageData;
+
                         strand = (
-                            <LaravextContext.Provider value={window.__laravext}>
+                            <LaravextContext.Provider value={laravext}>
                                 {strand}
                             </LaravextContext.Provider>
                         );
@@ -266,6 +272,8 @@ export function clientRender(pageData = null, scrollState = null) {
 
                         window.__laravext.app.react_strand_roots[strandId] =
                             strandRoot;
+
+                        window.__laravext.page_data = laravextPageData;
                     })
                     .catch((error) => {
                         console.error(
