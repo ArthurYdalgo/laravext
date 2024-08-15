@@ -244,10 +244,6 @@ export default () => {
                             <Fa icon="comment" /> {pageUser.comments_count}{" "}
                             {t("comment(s) written")}
                         </span>
-                        <span className="block pl-4 font-medium text-sm">
-                            <Fa icon="hashtag" /> {pageUser.tags_count}{" "}
-                            {t("tag(s) followed")}
-                        </span>
                     </div>
                 </div>
 

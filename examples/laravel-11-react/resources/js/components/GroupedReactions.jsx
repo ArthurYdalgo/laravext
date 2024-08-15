@@ -24,7 +24,8 @@ export default ({ groupedReactions, compressed = false, fontSize = "sm", include
     if (compressed) {
         return (
             <div className="flex items-center">
-                {groupedReactions.map((reaction, index) => (
+                {groupedReactions
+                .map((reaction, index) => (
                     <div
                         key={reaction.reaction}
                         className={`flex items-center relative justify-center transition-all ${index !== 0 ? '-ml-4' : ''}`}
@@ -44,7 +45,8 @@ export default ({ groupedReactions, compressed = false, fontSize = "sm", include
 
     return (
         <div className="flex items-center space-x-3">
-            {groupedReactions.map((reaction) => {
+            {groupedReactions
+            .map((reaction) => {
                 
                 return (
                     <div

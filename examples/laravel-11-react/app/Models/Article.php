@@ -124,7 +124,7 @@ class Article extends Model
     {
         return $query->with(['reactions' => function ($query) {
             $query->select('reactionable_id', 'reaction', DB::raw('count(*) as count'))
-                ->groupBy('reactionable_id', 'reaction')->orderBy('count', 'desc');
+                ->groupBy('reactionable_id', 'reaction')->orderBy('count', 'desc')->orderBy('reaction');
         }]);
     }
 

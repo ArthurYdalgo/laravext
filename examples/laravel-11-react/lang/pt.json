@@ -235,7 +235,17 @@
     
     "No more articles to load": "Não há mais artigos para carregar",
     "Load More": "Carregar Mais",
+    "All Tags": "Todas as Tags",
+    "Search Tags": "Buscar Tags",  
+    "More from": "Mais de",
+    "Follow": "Seguir",
+    "Unfollow": "Deixar de seguir",
+    "articles(s) published": "artigo(s) publicado(s)",
+    "comment(s) written": "comentário(s) escrito(s)",
+    "Articles": "Artigos",
+    "Users": "Usuários",
 
+    "Report Abuse": "Denunciar Abuso",
     "Copy": "Copiar",
 
     "No more comments to load": "Não há mais comentários para carregar"

@@ -81,8 +81,8 @@ export default ({ children }) => {
 
                                 <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                     <NavLink routeName="admin.dashboard">Dashboard</NavLink>
-                                    <NavLink routeName="admin.teams">{t('Teams')}</NavLink>
-                                    <NavLink routeName="admin.companies">{t('Companies')}</NavLink>
+                                    <NavLink routeName="admin.teams">{t('Articles')}</NavLink>
+                                    <NavLink routeName="admin.companies">{t('Users')}</NavLink>
                                 </div>
                             </div>
 

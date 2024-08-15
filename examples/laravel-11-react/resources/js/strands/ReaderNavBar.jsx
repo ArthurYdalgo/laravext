@@ -15,6 +15,8 @@ import Cookies from 'js-cookie';
 export default () => {
     const { t, i18n } = useTranslation();
     const { user } = sharedProps().auth;
+
+    console.log({user});
     const { text, tags, setText } = useSearch();
 
     const locales = {
@@ -216,18 +218,18 @@ export default () => {
                                             <p>@{user?.username}</p>
                                         </Dropdown.Link>
                                         <div className="border-t border-gray-200 dark:border-gray-700"></div>
-                                        <Dropdown.Link routeName="dashboard">
+                                        {/* <Dropdown.Link routeName="dashboard">
                                             {t("Dashboard")}
-                                        </Dropdown.Link>
+                                        </Dropdown.Link> */}
                                         <Dropdown.Link routeName="new">
                                             {t("Create Post")}
                                         </Dropdown.Link>
                                         <Dropdown.Link routeName={'bookmarks'}>
                                             {t("Bookmarks")}
                                         </Dropdown.Link>
-                                        <Dropdown.Link>
+                                        {/* <Dropdown.Link>
                                             {t("Settings")}
-                                        </Dropdown.Link>
+                                        </Dropdown.Link> */}
                                         <RoleCheck allowedRoles={["admin"]}>
                                             <div className="border-t border-gray-200 dark:border-gray-700"></div>
                                             <Dropdown.Link routeName="admin.dashboard">

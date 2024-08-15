@@ -105,8 +105,8 @@ export default ({ followee , disabled = false}) => {
         disabled={disabled} onClick={() => {
             followingStatus.value ? unfollow() : follow();
         }}>
-            {followingStatus.loading && <div className="mini-loader mr-3 ml-[-5px]"></div>}
-            {!followingStatus.loading && (followingStatus.value && user ? 'Unfollow' : 'Follow')}
+            {followingStatus.loading && '...'}
+            {!followingStatus.loading && (followingStatus.value && user ? t('Unfollow') : t('Follow'))}
         </SecondaryButton>
 
     )
