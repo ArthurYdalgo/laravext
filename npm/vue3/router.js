@@ -67,13 +67,11 @@ export function visit(
 
             let currentScroll = { x: window.scrollX, y: window.scrollY };
 
-            window.__laravext.page_data = data.laravext_page_data;
-
             try {
                 if (!laravext.app.disablePushedStateData()) {
                     let currentState = {
                         ...history.state,
-                        laravext_page_data: laravext.page_data,
+                        laravext_page_data: window.__laravext.page_data,
                         scroll_state: options?.preserveScroll
                             ? currentScroll
                             : { x: 0, y: 0 },
@@ -85,6 +83,8 @@ export function visit(
                         window.location.href
                     );
                 }
+
+                window.__laravext.page_data = data.laravext_page_data;
 
                 clientRender({ x: 0, y: 0 });
 
