@@ -22,13 +22,9 @@ export function visit(
 
     const laravext = window.__laravext;
 
-    console.log({url});
-
     if (options?.redirectToUrlIntended) {
         url = laravext.page_data.url_intended ?? url;
     }
-
-    console.log({url});
 
     axios
         .get(url, {
@@ -93,7 +89,7 @@ export function visit(
                 };
 
                 history.pushState(
-                    laravext.app.disablePushedStateData() ? {} : newState,
+                    window.__laravext.app.disablePushedStateData() ? {} : newState,
                     "",
                     location
                 );
