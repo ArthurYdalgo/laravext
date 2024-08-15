@@ -5,6 +5,7 @@ namespace Laravext;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Traits\Macroable;
 
@@ -181,6 +182,7 @@ class ResponseFactory
             'query_params' => $this->query_params,
             'route_name' => $this->route_name,
             'version' => Router::version(),
+            'url_intended' => config('laravext.router_url_intended_is_enabled') ? Session::pull('url.intended') : null,
         ];
     }
 
@@ -257,8 +259,6 @@ class ResponseFactory
         if ($query_params) {
             $path .= '?' . http_build_query($query_params);
         }
-
-        unset($laravext_page_data['server_skeleton']);
 
         return response()->json([
             'action' => 'render',

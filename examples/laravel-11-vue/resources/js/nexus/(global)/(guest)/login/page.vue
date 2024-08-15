@@ -7,6 +7,7 @@ import PrimaryButton from '@/components/PrimaryButton.vue';
 import TextInput from '@/components/TextInput.vue';
 import { Head } from '@laravext/vue3';
 import { reactive } from 'vue'
+import { visit } from '@laravext/vue3/router';
 
 let form = reactive({
     email: '',
@@ -32,7 +33,7 @@ const submit = async () => {
     });
 
     if (response.ok) {
-        window.location.href = route('admin.dashboard');
+        visit('/')
     } else {
         form.response = await response.json();
         form.processing = false;

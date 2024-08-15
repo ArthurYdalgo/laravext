@@ -62,7 +62,7 @@ export function Head({ title }) {
     return null;
 }
 
-export function Link({ href, preserveScroll = false, children, ...props }) {
+export function Link({ href, preserveScroll = false, redirectToUrlIntended = true, children, ...props }) {
     return (
       <a
         href={href}
@@ -71,6 +71,7 @@ export function Link({ href, preserveScroll = false, children, ...props }) {
             event.preventDefault();
             visit(href, {
                 preserveScroll,
+                redirectToUrlIntended
             });
           }
         }}

@@ -24,14 +24,19 @@ return [
     'router_cache_driver' => env('LARAVEXT_ROUTER_CACHE_DRIVER', env('CACHE_DRIVER', 'file')),
 
     /**
-     * Wheter or not the router cacher is enabled.
+     * Whether or not the router cacher is enabled.
      */
     'router_cache_is_enabled' => env('LARAVEXT_ROUTER_CACHE_IS_ENABLED', !in_array(env('APP_ENV'), ['local', 'testing'])),
 
     /**
-     * Wheter ot not the routes should be automagically named.
+     * Whether ot not the routes should be automagically named.
      */
     'router_route_naming_is_enabled' => env('LARAVEXT_ROUTER_ROUTE_NAMING_IS_ENABLED', true),
+
+    /**
+     * Whether or not the url.intended should be pulled from the session.
+     */
+    'router_url_intended_is_enabled' => env('LARAVEXT_ROUTER_URL_INTENDED_IS_ENABLED', true),
 
     /**
      * The length of the strand id. Honestly these ids are not used for anything, but I did it just in case.

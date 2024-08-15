@@ -38,16 +38,30 @@ export const Head = defineComponent({
 
 export const Link = defineComponent({
     props: {
-        href: String,
-        preserveScroll: Boolean,
-        onClick: Function
+        href: {
+            type: String,
+            required: true
+        },
+        preserveScroll: {
+            type: Boolean,
+            default: false
+        },
+        redirectToUrlIntended: {
+            type: Boolean,
+            default: true
+        },
+        onClick: {
+            type: Function,
+            default: null
+        }
     },
     setup(props) {
         const handleClick = (event) => {
             if (shouldLinkClickEventBeIntercepted(event)) {
                 event.preventDefault();
                 visit(props.href, {
-                    preserveScroll: props.preserveScroll
+                    preserveScroll: props.preserveScroll,
+                    redirectToUrlIntended: props.redirectToUrlIntended
                 });
             }
         }

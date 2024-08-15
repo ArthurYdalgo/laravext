@@ -18,6 +18,8 @@ class HandleLaravextRequests extends Middleware
         $now = now();
         $user = $request->user();
 
+        info(session('url.intended'));
+
         if($user){
             $user->loadMissing(['roles', 'tags' => function($query){
                 $query->orderBy('slug');

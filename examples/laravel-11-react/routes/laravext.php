@@ -54,7 +54,7 @@ Route::get('{user:username}/{article:slug}', function (User $user, Article $arti
         ->withViewSkeleton('partials.article')
         ->withHeadTitle($article->title)
         ->render();
-})->name('user.article');
+})->name('user.article')->middleware('auth');
 
 
 /**
