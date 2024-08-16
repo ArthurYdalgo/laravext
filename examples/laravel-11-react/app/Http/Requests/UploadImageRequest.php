@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Article;
+namespace App\Http\Requests;
 
-use App\Http\Rules\ArticleTagsExist;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreRequest extends FormRequest
+class UploadImageRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,11 +22,7 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'max:255'],
-            'language' => ['required', 'string', 'in:en,pt'],
-            'reading_time' => ['required', 'integer'],
-            'markdown' => ['required', 'string'],
-            'tags' => [new ArticleTagsExist],
+            //
         ];
     }
 }

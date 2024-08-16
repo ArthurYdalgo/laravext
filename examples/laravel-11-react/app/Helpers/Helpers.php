@@ -79,6 +79,11 @@ if (!function_exists('scoutIsAvailable')) {
 }
 
 if (!function_exists('scriptStripper')) {
+    /**
+     * Remove script tags from the input
+     * 
+     * @see https://laracasts.com/discuss/channels/laravel/how-to-remove-script-tags-from-the-markdown-input-by-the-user
+     */
     function scriptStripper($input)
     {
         return preg_replace('#<script(.*?)>(.*?)</script>#is', '', $input);

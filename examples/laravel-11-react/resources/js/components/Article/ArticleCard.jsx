@@ -83,12 +83,7 @@ export default ({ article }) => {
                                 <p className="text-xs text-gray-500">
                                     {moment(article.published_at)
                                         .locale(i18n.language)
-                                        .format("LL")}{" "}
-                                    (
-                                    {moment(article.published_at)
-                                        .locale(i18n.language)
-                                        .fromNow()}
-                                    )
+                                        .format("LLL")}
                                 </p>
                             </div>
                         </div>
@@ -104,12 +99,6 @@ export default ({ article }) => {
                     <h2 className="text-2xl px-3 antialiased font-semibold mt-2 hover:underline">
                         {article.title}
                     </h2>
-                    {(article.metadata?.display_subtitle_in_listing ?? false) &&
-                        article.subtitle?.length > 0 && (
-                            <h3 className="text-base px-3 antialiased mb-4 hover:underline">
-                                {article.subtitle}
-                            </h3>
-                        )}
                 </Link>
                 {/* tags */}
                 <div className="flex space-x-2 px-3 mt-2">
@@ -174,7 +163,7 @@ export default ({ article }) => {
                                 </div>
                             )}
                             {article.comments_count > 0 && (
-                                <div className="space-x-3 flex items-center">
+                                <div className="p-1  space-x-3 flex items-center">
                                     <div className="text-sm text-gray-500">
                                         <Fa icon="comment" className="mr-1" />
                                         {article.comments_count}{" "}

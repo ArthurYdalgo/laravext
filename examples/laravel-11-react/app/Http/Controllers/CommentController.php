@@ -50,6 +50,7 @@ class CommentController extends Controller
 
         $reply->load('user');
         $reply->append('html');
+        $reply->loadCount(['reactions', 'replies']);
 
         return $this->successResponse(new CommentResource($reply));
     }
@@ -83,6 +84,7 @@ class CommentController extends Controller
 
         $comment->append('html');
         $comment->load('user');
+        $comment->loadCount(['reactions', 'replies']);
 
         return $this->successResponse(new CommentResource($comment));
     }

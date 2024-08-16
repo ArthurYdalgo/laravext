@@ -259,9 +259,6 @@ export default ({ comment, onDelete = (comment) => {} }) => {
 
         axios
             .post(`/api/comments/${comment.id}/like`)
-            .then((response) => {
-                console.log(response);
-            })
             .catch((error) => {
                 console.error(error);
                 setLiked(false);
@@ -275,9 +272,6 @@ export default ({ comment, onDelete = (comment) => {} }) => {
 
         axios
             .delete(`/api/comments/${comment.id}/like`)
-            .then((response) => {
-                console.log(response);
-            })
             .catch((error) => {
                 console.error(error);
                 setLiked(true);

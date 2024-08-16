@@ -13,12 +13,11 @@ if (typeof window !== 'undefined') {
         }
 
         try {
-            console.log(event.state.scroll_state);
             clientRender(event.state.laravext_page_data, event.state.scroll_state ?? 0);
 
         } catch (error) {
             console.error('Error updating page data:', error);
-            // window.location.href = window.location.href;
+            window.location.href = window.location.href;
         }
     });
 }

@@ -77,7 +77,7 @@ return [
 
         /**
          * You can also set as 'only' or 'except' to specify the URIs that should(n't) be SSR'd, if for some reason you need this
-         * kind of control.
+         * kind of control. In this specific example, a markdown editor looks glitchy when SSR'd, so I'm setting it to except.
          */
         // 'enabled' => 'only',
         'enabled' => 'except',
@@ -108,7 +108,7 @@ return [
          * Internally this is checked using the request()->routeIs(config('laravext.ssr.route_names', []))
          */
         'route_names' => [
-            'editor',
+            'new',
 
             // 'route.name',
             // 'route.name_pattern.*'

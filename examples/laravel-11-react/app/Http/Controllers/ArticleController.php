@@ -81,12 +81,31 @@ class ArticleController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        /** @todo  @see https://laracasts.com/discuss/channels/laravel/how-to-remove-script-tags-from-the-markdown-input-by-the-user */
+        $data = collect($request->validated())->only([
+            'title', 'reading_time', 'language',
+        ])->toArray();
 
-        // function scriptStripper($input)
-        // {
-        //     return preg_replace('#<script(.*?)>(.*?)</script>#is', '', $input);
-        // }
+        $data['content'] = $request->markdown;
+
+        $banner = $request->file('banner')?->get();
+
+        if($banner){
+            $banner_media = user()->addMediaFromContent($banner, path_suffix: 'articles');
+
+            $data['banner_url'] = $banner_media->url;
+        }
+
+        $data['published_at'] = now();
+        $data['slug'] = str($data['title'])->slug() . "-" . str()->random(6);
+        $data['short_link_code'] = str()->random(16);
+
+        $article = user()->articles()->create($data);
+
+        $tags = is_array($request->tags) ? $request->tags : explode(',', $request->tags);
+
+        $article->tags()->sync($tags);
+
+        return $this->successResponse($article);
     }
 
     /**

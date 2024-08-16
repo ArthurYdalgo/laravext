@@ -85,6 +85,14 @@
     @apply shadow-md;
 }
 
+.article > div> div > img {
+    /* center image horizontally */
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 80%;
+    @apply shadow-md;
+}
+
 .article > div > p > img {
     /* center image horizontally */
     margin-left: auto;

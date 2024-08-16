@@ -15,6 +15,8 @@ Route::laravext();
 
 Route::nexus('')->name('home');
 
+Route::nexus('new')->middleware('auth')->name('new');
+
 // For simplicity reasons, I won't be using a controller for some of these routes
 Route::get('{user:username}', function (User $user) {
     $user->loadCount(['articles', 'comments', 'followers', 'following', 'tags']);
@@ -54,8 +56,7 @@ Route::get('{user:username}/{article:slug}', function (User $user, Article $arti
         ->withViewSkeleton('partials.article')
         ->withHeadTitle($article->title)
         ->render();
-})->name('user.article')->middleware('auth');
-
+})->name('user.article');
 
 /**
  * You could also make it so that any child route of admin will require the user to be authenticated, and also

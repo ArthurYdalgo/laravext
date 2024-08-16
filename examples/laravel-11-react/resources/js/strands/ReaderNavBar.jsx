@@ -16,7 +16,6 @@ export default () => {
     const { t, i18n } = useTranslation();
     const { user } = sharedProps().auth;
 
-    console.log({user});
     const { text, tags, setText } = useSearch();
 
     const locales = {

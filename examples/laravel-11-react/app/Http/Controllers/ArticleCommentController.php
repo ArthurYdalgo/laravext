@@ -70,6 +70,7 @@ class ArticleCommentController extends Controller
 
             $comment->load('user');
             $comment->append('html');
+            $comment->loadCount(['reactions', 'replies']);
 
             return new CommentResource($comment);
         } catch (\Throwable $th) {

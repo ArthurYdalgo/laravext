@@ -12,6 +12,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CurrentUserController;
 use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\Tools\MarkdownPreviewController;
+use App\Http\Controllers\UploadImageController;
 use App\Http\Controllers\UserAbuseReportController;
 use App\Http\Controllers\UserAvatarController;
 use App\Models\Tag;
@@ -60,6 +61,7 @@ Route::group([
         Route::post('abuse-reports', [ArticleAbuseReportController::class, 'store']);
     });
 
+    Route::post("images", UploadImageController::class);
     
     Route::prefix('comments/{comment}')->group(function () {
         Route::get('replies', [CommentController::class, 'replies'])->withoutMiddleware('auth');
