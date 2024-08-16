@@ -9,14 +9,17 @@ Much like the [Head Component from Inertia.js](https://inertiajs.com/title-and-m
 `page.jsx`:
 
 ```jsx
-// @todo
-export default ({laravext}) => {
-    console.log(laravext);
+import { Head, nexusProps } from "@laravext/react";
+
+export default () => {
+    
+    const { teams } = nexusProps();
 
     return (
         <div>
-            - Hello, there...
-            - General Kenoby!
+            <Head>Our Teams</Head>
+
+            {/* The Rest of your component */}
         </div>
     )
 }
@@ -28,7 +31,8 @@ export default ({laravext}) => {
 
 ```vue
 <script setup>
-import { Head, nexusProps } from '@laravext/vue3'
+import { Head } from '@laravext/vue3'
+const nexusProps = inject('$nexusProps');
 
 const {teams} = nexusProps();
 

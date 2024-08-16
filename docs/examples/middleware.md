@@ -10,7 +10,7 @@ Route::laravext("admin",  route_group_attributes: [
 ], root_view: 'sections.app');
 ```
 
-but for now, let's assume it's not there. 
+but for now, let's assume it's not there.
 
 If a user tries to access a `/admin/dashboard` route (created by `./resources/js/nexus/(global)/(auth)/admin/dashboard/page.(jsx|tsx|js|ts|vue)`), the middleware cascaded down will be surrouding the page component, so if the user is not authenticated, they will be redirected to the login page.
 
@@ -21,17 +21,28 @@ If a user tries to access a `/admin/dashboard` route (created by `./resources/js
 `middleware.jsx`:
 
 ```jsx
-// @todo
-export default ({laravext}) => {
-    console.log(laravext);
+import { sharedProps } from "@laravext/react";
+import { visit } from "@laravext/react/router";
 
-    return (
-        <div>
-            - Hello, there...
-            - General Kenoby!
-        </div>
-    )
-}
+export default ({ children }) => {
+    if (!sharedProps().auth.user) {
+        visit("/");
+        return (
+            <div v-else>
+                <div className="flex justify-center items-center h-[75vh]">
+                    <div className="flex flex-col items-center">
+                        <h1 className="text-xl font-bold mb-4">
+                            I'm sorry Dave, I'm afraid I can't let you do that...
+                        </h1>
+                        <div className="loader"></div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    return children;
+};
 ```
 
 #### **Vue**
@@ -40,26 +51,27 @@ export default ({laravext}) => {
 
 ```vue
 <script setup>
-import { sharedProps } from '@laravext/vue3';
+const sharedProps = inject('$sharedProps');
 
 if (!sharedProps().auth?.user) {
-  window.location.href = '/'
+    window.location.href = "/";
 }
 </script>
 <template>
-  <slot v-if="sharedProps().auth?.user"></slot>
-  <div v-else>
-    <div class="flex justify-center items-center h-[75vh]">
-      <div class="flex flex-col items-center">
-        <h1 class="text-xl font-bold mb-4">I'm sorry Dave, I'm afraid I can't let you do that...</h1>
-        <div class="loader"></div>
-      </div>
+    <slot v-if="sharedProps().auth?.user"></slot>
+    <div v-else>
+        <div class="flex justify-center items-center h-[75vh]">
+            <div class="flex flex-col items-center">
+                <h1 class="text-xl font-bold mb-4">
+                    I'm sorry Dave, I'm afraid I can't let you do that...
+                </h1>
+                <div class="loader"></div>
+            </div>
+        </div>
     </div>
-  </div>
 </template>
-
 ```
 
 <!-- tabs:end -->
 
-⚠️Important note⚠️: remember that this middleware will be executed on the client side and is meant for non-sensitive scenarios, so be aware of any data that should be present in the client. If a middleware is of uttermoust importance, you should use a standard middleware.
+⚠️Important note⚠️: remember that this middleware will be executed on the client side and is meant for non-sensitive scenarios, so be aware of any data that should be present in the client. If a middleware is of uttermoust importance, you should use a standard [Laravel middleware](https://laravel.com/docs/11.x/middleware).

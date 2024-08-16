@@ -100,8 +100,11 @@ Route::get('{article:slug}', function (Article $article) {
 
     $article->append(['user_has_bookmarked', 'user_reactions']);
 
-    return nexus(props: compact('article'))
-        ->withViewSkeleton('partials.article') // the $article variable will be available in the view by default
+    return nexus(props: compact('article')) // this prop will be available in the 'partials.article' view mentioned below
+        ->withViewSkeleton('partials.article', [
+            'other' => 'props' // just an example
+            'you_might' => 'need'
+        ]) // the $article variable will be available in the view by default
         ->withHeadTitle($article->title)
         ->render();
 

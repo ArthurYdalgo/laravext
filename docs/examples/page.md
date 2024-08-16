@@ -13,16 +13,57 @@ This is a rather simple example on how to create a page that fetches data from a
 `page.jsx`:
 
 ```jsx
-// @todo
-export default ({laravext}) => {
-    console.log(laravext);
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Head } from "@laravext/react";
+
+export default () => {
+    const [data, setData] = useState({
+        projects: [],
+        loading: true,
+    });
+
+    useEffect(() => {
+        axios.get('/api/projects')
+            .then(response => {
+                setData({
+                    projects: response.data.data,
+                    loading: false,
+                });
+            })
+            .catch(error => {
+                console.error(error);
+                setData({
+                    projects: [],
+                    loading: false,
+                });
+            });
+    }, []);
 
     return (
         <div>
-            - Hello, there...
-            - General Kenoby!
+            <Header>Our Projects</Header>
+
+            {data.loading ? (
+                <div className="flex justify-center items-center min-h-[70vh] mt-6">
+                    Loading...
+                </div>
+            ) : (
+                <div className="flex justify-center items-center min-h-[70vh] mt-6">
+                    <div>
+                        <h3 className="text-2xl mb-2">Our projects...</h3>
+                        <ul>
+                            {data.projects.map(project => (
+                                <li key={project.id}>
+                                    {project.name}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            )}
         </div>
-    )
+    );
 }
 ```
 
@@ -87,13 +128,28 @@ This is a rather simple example on how to create a page that renders data that w
 `page.jsx`:
 
 ```jsx
-export default ({laravext}) => {
-    console.log(laravext);
+import { Head, nexusProps } from "@laravext/react";
+
+export default () => {
+    
+    const { teams } = nexusProps();
 
     return (
         <div>
-            - Hello, there...
-            - General Kenoby!
+            <Head>Our Teams</Head>
+
+            <div className="flex justify-center items-center min-h-[70vh] mt-6">
+                <div>
+                    <h3 className="text-2xl mb-2">Our teams...</h3>
+                    <ul>
+                        {teams.map((team) => (
+                            <li key={team.id}>
+                                {team.name}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            </div>
         </div>
     )
 }
@@ -105,7 +161,8 @@ export default ({laravext}) => {
 
 ```vue
 <script setup>
-import { Head, nexusProps } from '@laravext/vue3'
+import { Head } from '@laravext/vue3'
+const nexusProps = inject('$nexusProps');
 
 const { teams } = nexusProps();
 

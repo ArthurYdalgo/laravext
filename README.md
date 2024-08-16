@@ -49,9 +49,9 @@ Well, yes... Moving on.
 
 ## Why does it exist?
 
-First things first: I don't claim that this is supposed to replace or be better than Next.js/Inertia.js, as each project may have different kind of needs and it's team might have it's preference, and maybe just using blade files with [Laravel Folio](https://laravel.com/docs/10.x/folio) to automagically create routes from them could be enough for you, or maybe the [TALL](https://tallstack.dev/) stack is the right choice for you, or maybe [Nuxt.js](https://nuxtjs.org/) is the way to go for you.
+First things first: I don't claim that this is supposed to replace or be better than Next.js/Inertia.js, as each project may have different kind of needs and it's team might have it's preference, and maybe just using blade files with [Laravel Folio](https://laravel.com/docs/11.x/folio) to automagically create routes from them could be enough for you, or maybe you'll better of with the [TALL](https://tallstack.dev/) stack, or perhaps [Nuxt.js](https://nuxtjs.org/). In the end, it's your choice.
 
-I wanted to get what I (personally) considered the best parts of Inertia.js and Next.js, and put them together. This was going to be inside a project of mine, but then I realized I could actually try to make a package for other people to use, and I would try to learn something along the way about how to build composer and npm packages.
+I wanted to get what I (personally) considered the best parts of Inertia.js and Next.js, and put them together. This was going to be inside a project of mine, but then I realized I could actually try to make a package for other people (and myself) to use, and I would try to learn something along the way about how to build composer and npm packages.
 
 Additionally, you might be asking yourself:
 
@@ -59,9 +59,9 @@ Additionally, you might be asking yourself:
 
 ![image](/docs/images/memes/i-dont-like-nextjs-mard-crowd-with-forks-meme.jpg)
 
-Before somebody light up their torches or grab their forks: the following points are my opinion only, based on my personal (in)experiences and troubles. You may disagree with them, and that's fine. Feel free to skip this section.
+Before somebody light up their torches or grab their forks: the following points are my opinions only, based on my personal (in)experiences and troubles. You may disagree with them, and that's fine. Feel free to skip this section.
 
-Inertia.js doesn't have an out-of-the-box file-based routing system like the one Next.js offers. (To the best of my knowledge, at the time of writting). If you want to make it SEO friendly you need to have some kind of access to higher privilages so you can keep a `php artisan inertia:start-ssr` artisan command running through supervisor or something similar, which may not be available in a shared environment (which, although less common, is still a thing). Laravext offers, [along with the Inertia.js style](https://laravext.dev/#/server-side-rendering/javascript-runtime), two [other ways](https://laravext.dev/#/server-side-rendering/blade-based-engine) to create server-side rendered pages based on you SEO needs.
+Inertia.js doesn't have an out-of-the-box file-based routing system like the one Next.js offers. (To the best of my knowledge, at the time of writting). If you want to make it SEO friendly you need to have some kind of access to higher privilages so you can keep a `php artisan inertia:start-ssr` artisan command running through supervisor or something similar, which may not be available in a shared environment (which, although less common, is still a thing). Laravext offers, [along with the Inertia.js style](https://laravext.dev/#/server-side-rendering/javascript-runtime), two [other ways](https://laravext.dev/#/server-side-rendering/blade-engine-based) to create server-side rendered pages based on you SEO needs.
 
 Next.js offers server-side rendering of React components, and a great routing system, but I (personally) don't like their caching strategy, and for my use cases there was the need to slap a `"use client"` for nearly all pages. I felt a really degraded developer experience while using it, so for me it'd make sense to have a way of being 'use client' by default, and 'use server' when needed. I have other points about it, but I feel that the ["Why I Won't Use Next.js" article](https://www.epicweb.dev/why-i-wont-use-nextjs) from Kent C. Dodds summarizes most of what I mean way better than I could. It's a good reading if you're interested. 
 

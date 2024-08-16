@@ -112,11 +112,14 @@ There're also other ways to access any data from the laravext prop:
 import { laravext, nexus, nexusProps, queryParams, routeParams, sharedProps } from '@laravext/react'
 
 export default () => {
+  
+  const {droids} = nexusProps();.
+
   return (
     <div>
       These...
       <ul>
-        {nexusProps().droids.map(droid => (
+        {droids.map(droid => (
           <li key={droid.id}>{droid.name}</li>
         ))}
       </ul>
@@ -130,13 +133,21 @@ export default () => {
 
 ```vue
 <script setup>
-import { laravext, nexus, nexusProps, queryParams, routeParams, sharedProps } from '@laravext/vue3'
+const laravext = inject("$laravext");
+const nexus = inject("$nexus");
+const nexusProps = inject('$nexusProps');
+const queryParams = inject('$queryParams');
+const routeParams = inject('$routeParams');
+const sharedProps = inject('$sharedProps');
+
+const { droids } = nexusPros().
+
 <script setup>
 </script>
 <template>
   These...
   <ul>
-    <li v-for="droid in nexusProps().droids" :key="droid.id">
+    <li v-for="droid in droids" :key="droid.id">
       {{ droid.name }}
     </li>
   </ul>

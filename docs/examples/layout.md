@@ -12,17 +12,34 @@ If a user tries to access a `/admin/dashboard` route (created by `./resources/js
 `layout.jsx`:
 
 ```jsx
-// @todo
-export default ({laravext}) => {
-    console.log(laravext);
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { sharedProps } from '@laravext/react';
+
+export default ({ children }) => {
+    const { user } = sharedProps().auth;
+    
+    const logout = async () => {
+        await axios.post('/api/auth/logout');
+        window.location.href = '/';
+    };
+
+    const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
     return (
         <div>
-            - Hello, there...
-            - General Kenoby!
+            <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
+                <nav className="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+                    {/* Your navbar */}
+                </nav>
+
+                {/* Page Content */}
+                <main>{children}</main>{/* This is where the page component will be rendered (which might be surrouded by a error file convention) */}
+                
+            </div>
         </div>
-    )
-}
+    );
+};
 ```
 
 #### **Vue**
@@ -32,16 +49,8 @@ export default ({laravext}) => {
 ```vue
 <script setup>
 import { ref } from 'vue';
-import ApplicationLogo from '@/components/ApplicationLogo.vue';
-import Dropdown from '@/components/Dropdown.vue';
-import DropdownLink from '@/components/DropdownLink.vue';
-import DropdownButton from '@/components/DropdownButton.vue';
-import NavLink from '@/components/NavLink.vue';
-import Link from '@/components/Link.vue';
-import ResponsiveNavLink from '@/components/ResponsiveNavLink.vue';
 import axios from 'axios';
-
-import { sharedProps } from '@laravext/vue3';
+const sharedProps = inject('$sharedProps');
 
 const {user} = sharedProps().auth;
 
@@ -72,5 +81,3 @@ const showingNavigationDropdown = ref(false);
 ```
 
 <!-- tabs:end -->
-
-⚠️Important note⚠️: remember that this middleware will be executed on the client side and is meant for non-sensitive scenarios, so be aware of any data that should be present in the client. If a middleware is of uttermoust importance, you should use a standard middleware.
