@@ -1,8 +1,19 @@
 # The visit(url) function
 
-Much like [Inertia.js' Protocol](https://inertiajs.com/the-protocol), you can use the `visit(url)` function to navigate to a new page that uses Laravext. This creates a smooth SPA experience, as it doesn't reload the page. If the version of the application changes between visits, or if the view set for that route is different from the one that was previously loaded, an usual page visit will happen.
+Much like [Inertia.js' Protocol](https://inertiajs.com/the-protocol), you can use the `visit(url, options = { ... })` function to navigate to a new page that uses Laravext. This creates a smooth SPA experience, as it doesn't reload the page. If the version of the application changes between visits, or if the view set for that route is different from the one that was previously loaded, an usual page visit will happen.
 
-Here's an example on how you could use it, which are used in the [example projects](/before-you-start?id=the-example-projects) inside a `<Link />` component:
+Here's an example on how you could use it, which are used in the [example projects](/before-you-start?id=the-example-projects) inside a `<Link />` component (additionally, you can check the [Link Component](/tools/link-component)), which itself uses the visit function.
+
+The options parameter is an object that defaults to:
+
+```javascript
+{
+  preserveScroll: false, // This is used to keep the scroll position of the page when navigating back to it
+  redirectToUrlIntended: true, // This is used to redirect a intended url that was stored in the session when being redirected by a middleware, such as the auth middleware
+}
+```
+
+<sup>⚠️Important note⚠️: the `redirectToUrlIntended` will not work if the [router_url_intended_is_enabled config](/configuration?id=router-url-intended-is-enabled-router_url_intended_is_enabled) is disabled, as the client side will not receive it.</sup>
 
 <!-- tabs:start -->
 

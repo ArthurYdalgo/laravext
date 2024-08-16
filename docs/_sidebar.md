@@ -14,7 +14,11 @@
     - [Nexus Response](tools/nexus-response.md)
     - [Shared Props](tools/shared-props.md)
     - [Head Component](tools/head-component.md)
+    - [Link Component](tools/link-component.md)
     - [The `visit(url)` function](tools/visit.md)
+- Server Side Rendering
+    - [Javascript Runtime](server-side-rendering/javascript-runtime.md)
+    - [Blade Engine Based](server-side-rendering/blade-engine-based.md)
 - [Examples](examples.md)
     - [Page](examples/page.md)
     - [Middleware](examples/middleware.md)

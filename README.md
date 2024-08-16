@@ -84,7 +84,7 @@ My take is that you might be interested in using Laravext if you fall into one o
 
 I'll try to be as less biased as possible, but you might not be interested in using Laravext if you fall into one or more of the following categories:
 
-- you have a simple static page that Next.js could handle just fine
+- you have a simple static page that Next.js (or anything else) could handle just fine
 - you don't like the idea of having a file-based routing system (or don't want to have to follow the page conventions)
 - you don't want to risk using a new package that may not be as stable as you'd like, or runs the risk of being abandoned
 - you want to keep your frontend and backend in separate projects
