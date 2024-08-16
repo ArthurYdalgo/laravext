@@ -124,7 +124,7 @@ class Router
     }
 
     /**
-     * Get the Nexus directories. This method will recursively parse the directories and their files, and return a tree of the directories.
+     * This method will recursively parse the directories and their files, and return a tree of the directories.
      * These directories will contain the name, path, relative path, conventions, whether it is a group, and its children.
      * For efficiency, the result will be cached.
      * 
