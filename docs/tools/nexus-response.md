@@ -69,7 +69,7 @@ This method is used to define the shared props that will be passed to the view. 
 
 ## withHtmlSkeleton($html_skeleton)
 
-This method is used to define the html skeleton that will be used to render the view. It can be used in place of the `html_skeleton` parameter. It'll override any previously defined html skeleton from the router.
+This method is used to define the html skeleton that will be used to render the view while the javascript is loading up. It'll override any previously defined html skeleton from a file convention.
 
 ```php
 use App\Models\Article;

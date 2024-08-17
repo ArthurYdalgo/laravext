@@ -54,7 +54,7 @@ By default Laravext behaves an SPA, when possible, so for each link there is no 
 
 ## SSR (ssr) <!-- {docsify-ignore} -->
 
-This is an array containing some configurations in case you want to use a javascript runtime to server side render your javascript. Check the [Server Side Rendering/Javascript Runtime](/server-side-rendering/javascript-runtime) page for more details.
+This is an array containing some configurations in case you want to use a javascript runtime to server side render your javascript. Check the [Server Side Rendering/Javascript Runtime](/server-side-rendering?id=javascript-runtime) page for more details.
 
 Here's the default configuration:
 

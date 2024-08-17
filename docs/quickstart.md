@@ -282,3 +282,11 @@ then, assuming you have a `./resources/views/sections/app.blade.php` (or any oth
 By default, the nexus directory is set as `./resources/js/nexus`. So this is where you should start placing the files that will be used by [Laravext's Router](/router). You may change this in the `./config/laravext.php` file, assuming you've published the config file.
 
 You're now ready to start creating your project using the laravext router
+
+## Looking for server side rendering? 
+
+![Our princess is in another castle!](/images/memes/our-princess-is-in-another-castle.png)
+
+<sup>**Credits**: By Nintendo - <a rel="nofollow" class="external free" href="https://www.mariowiki.com/File:Mushroom_Retainer_SMB1_W1-4_rescued.png">https://www.mariowiki.com/File:Mushroom_Retainer_SMB1_W1-4_rescued.png</a>, <a href="//en.wikipedia.org/wiki/File:Super_Mario_Bros_Princess_Is_In_Another_Castle_Quote.png" title="Fair use of copyrighted material in the context of Our princess is in another castle!">Fair use</a>, <a href="https://en.wikipedia.org/w/index.php?curid=76055658">Link</a><sub>
+
+Check the [Server Side Rendering](/server-side-rendering) section for more details on how to use it.
