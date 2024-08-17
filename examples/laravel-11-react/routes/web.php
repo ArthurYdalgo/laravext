@@ -1,23 +1,9 @@
 <?php
 
-use App\Enums\DeveloperRole;
-use App\Models\AbuseReport;
 use App\Models\Article;
-use App\Models\Developer;
-use App\Models\Reaction;
-use App\Models\Read;
 use App\Models\Share;
-use App\Models\Team;
-use App\Models\User;
-use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
-/**
- * Nothing stops you from creating your own custom routes, like this one.
- * 
- * @see https://laravel.com/docs/11.x/routing#view-routes for more details
- */
 Route::view('about-this-project', 'sections.about-this-project')->name('about-this-project');
 
 // Redirect article short link codes to the article

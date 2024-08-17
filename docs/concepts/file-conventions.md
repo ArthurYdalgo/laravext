@@ -232,3 +232,5 @@ Because using only html can limit how complex your skeleton can be, you can call
 ```
 
 Anything between them will be server-side rendered and displayed to the user until the javascript is loaded. Remember that anything in between those two directives will be cleared when the content of the page component is loaded.
+
+You can check more about the conventions in the [Blade Directives section of the documentation](/tools/blade-directives).

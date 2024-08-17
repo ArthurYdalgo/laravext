@@ -34,11 +34,11 @@ By default this is set to `env('LARAVEXT_ROUTER_ROUTE_NAMING_IS_ENABLED', true)`
 
 ## Router url intended is enabled (router_url_intended_is_enabled) <!-- {docsify-ignore} -->
 
-By default this is set to `env('LARAVEXT_ROUTER_URL_INTENDED_IS_ENABLED', true)`. This is used to set wether or not this will be included in the laravext prop. This can be used by the [visit function](/tools/visit) in the client to redirect the user to the intended url after a successful login. You can change this to `true` or `false` if you want to enable or disable the url intended. Additionally, the `visit` function will also accept a `options.redirectToUrlIntended` to define wether or not the user should be redirected to the intended url after a successful login (by default, this is set to `true`).
+By default this is set to `env('LARAVEXT_ROUTER_URL_INTENDED_IS_ENABLED', true)`. This is used to set wether or not the `url.intended` value from the session will be pulled from the session and included in the laravext prop. This can be used by the [visit function](/tools/visit) in the client to redirect the user to the intended url after a successful login. You can change this to `true` or `false` if you want to enable or disable the url intended. Additionally, the `visit` function will also accept a `options.redirectToUrlIntended` to define wether or not the user should be redirected to the intended url after a successful login (by default, this is set to `true`).
 
 ## Strand id length (strand_id_length) <!-- {docsify-ignore} -->
 
-By default this is set to `64`. This is used to generate the a random id for each strand section that is rendered in the blade view. Honestly, I did this out of paranoia, because it's not used for anything whatsoever at the moment. You can change this to any number you want, as long as it's a valid integer.
+By default this is set to `64`. This is used to generate the a random id for each strand section that is rendered in the blade view, this is used internally for hydration purposes. You can change this to any number you want, as long as it's a valid number, just make sure it's long enough to avoid collisions.
 
 ## File extensions (file_extensions) <!-- {docsify-ignore} -->
 
@@ -46,15 +46,17 @@ By default this is set to `['jsx', 'tsx', 'js', 'ts', 'vue']`. This is used to d
 
 ## Version (version) <!-- {docsify-ignore} -->
 
-By default Laravext generates a version based on either the `config('app.asset_url')`, a `mix-manifest.json` file, or a `build/manifest.json` file. If you want to set a custom version, you can set it here. This is used in the cache key for the routing tree. If the version changes, the user's browser is refreshed to get the new version of the application. You probably don't need to change this, but it's here in case you want to. This config is commented in the published config file.
+By default this is set to `in_array(env('APP_ENV'), ['local']) ? 'fixed-local-version' : env('LARAVEXT_VERSION')`. Assuming that you didn't define a version, Laravext tries to generate a version based on either the `config('app.asset_url')`, a `mix-manifest.json` file, or a `build/manifest.json` file. If you want to set a custom version, you can set it here. 
+
+This is used in the cache key for the routing tree. If the version changes, the user's browser is refreshed to get the new version of the application. You probably don't need to change this, but it's here in case you want to. If you're in a local environment, considering that the cache is disabled by default, this won't be used at all, and it's meant for non-local environments.
 
 ## Force Page Visit (force_page_visit) <!-- {docsify-ignore} -->
 
-By default Laravext behaves an SPA, when possible, so for each link there is no page reload, unless the route is set to use a different view file than the one that was previously loaded, or if the version changed (see the `version` config). If you want to force a page visit on each link click, you can set this to `true`. This will only take effect if you're using the `visit` helper function in the client side.
+By default Laravext behaves an SPA, when possible, so for each link there is no page reload, unless the route is set to use a different view file than the one that was previously loaded, or if the version changed (see the `version` config above). If you want to force a page visit on each link click, you can set this to `true`.
 
 ## SSR (ssr) <!-- {docsify-ignore} -->
 
-This is an array containing some configurations in case you want to use a javascript runtime to server side render your javascript. Check the [Server Side Rendering/Javascript Runtime](/server-side-rendering?id=javascript-runtime) page for more details.
+This is an array containing some configurations in case you want to use a javascript runtime to server side render your javascript. This configuration has some comments to briefly explain everything, but for more details, check the [Server Side Rendering/Javascript Runtime](/server-side-rendering?id=javascript-runtime) section of this documentation.
 
 Here's the default configuration:
 
@@ -64,13 +66,14 @@ Here's the default configuration:
  */
 'ssr' => [
     /**
-     * If set to true, the server will attempt to server side render your javascript, and if set to false, it won't.
+     * If set to true, the server will attempt to server side 
+     * render your javascript, and if set to false, it won't.
      */
     'enabled' => env('LARAVEXT_JAVASCRIPT_SERVER_SIDE_RENDERING_ENABLED', false),
 
     /**
-     * You can also set as 'only' or 'except' to specify the URIs that should(n't) be SSR'd, if for some reason you need this
-     * kind of control.
+     * You can also set it as 'only' or 'except' to specify the URIs that should(n't) be SSR'd, 
+     * if for some reason you need this kind of control.
      */
     // 'enabled' => 'only',
     // 'enabled' => 'except',

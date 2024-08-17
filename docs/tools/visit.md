@@ -9,7 +9,7 @@ The options parameter is an object that defaults to:
 ```javascript
 {
   preserveScroll: false, // This is used to keep the scroll position of the page when navigating back to it
-  redirectToUrlIntended: true, // This is used to redirect a intended url that was stored in the session when being redirected by a middleware, such as the auth middleware
+  redirectToUrlIntended: true, // This is used to a url that was stored in the session when being redirected by a middleware, such as the auth middleware
 }
 ```
 
@@ -19,7 +19,7 @@ The options parameter is an object that defaults to:
 
 #### **React**
 
-`Link.jsx`:
+`Link.jsx` (this is an example of a custom Link component that uses the `visit(url)` function, and not the actual implementation of the [Link component from Laravext](/tools/link-component)):
 
 ```jsx
 import { visit } from '@laravext/react/router';
@@ -43,7 +43,7 @@ export default  ({ routeName, href, className = '', children }) => {
 
 #### **Vue**
 
-`Link.vue`:
+`Link.vue` (this is an example of a custom Link component that uses the `visit(url)` function, and not the actual implementation of the [Link component from Laravext](/tools/link-component)):
 
 ```vue
 <script setup>

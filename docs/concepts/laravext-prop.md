@@ -64,7 +64,7 @@ You'd get something similar to
 
 ## Nexus
 
-The `laravext.nexus` property will contain informations about your rendered nexus, the most useful one is going to be the `props`, which contains any prop that was sent to it that was pre-fetched before the page was loaded. There're two ways to do this, either using a [Nexus Response](/tools/nexus-response.md) or creating a [Nexus Route](/tools/routing?id=nexus).
+The `laravext.nexus` property will contain informations about your rendered nexus, the most useful one is going to be the `props`, which contains any prop that was sent to it that was pre-fetched before the page was loaded.
 
 Other than that, there're also other props which are related to the [File Conventions](/concepts/file-conventions.md), which are used by the `createLaravextApp` to actually render the nexus.
 
@@ -109,6 +109,7 @@ There're also other ways to access any data from the laravext prop:
 #### **React**
 
 ```jsx
+// I've exemplified how to import all of them, but you can import them individually as needed
 import { laravext, nexus, nexusProps, queryParams, routeParams, sharedProps } from '@laravext/react'
 
 export default () => {
@@ -133,6 +134,7 @@ export default () => {
 
 ```vue
 <script setup>
+// I've exemplified how to import all of them, but you can import them individually as needed
 const laravext = inject("$laravext");
 const nexus = inject("$nexus");
 const nexusProps = inject('$nexusProps');

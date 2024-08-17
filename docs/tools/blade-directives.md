@@ -4,7 +4,7 @@ Laravext offers some blade directives to be used in your project.
 
 ## @nexus
 
-The `@nexus` directive is used to define where the content of the `page.(jsx|tsx|js|ts|vue)` files (an all the outer file conventions) will be rendered. Assuming you have a `./resources/views/layouts/app.blade.php` blade view (with a `@yield('content')` inside it), inside a `./resources/views/sections/app.blade.php` you should use the `@nexus` directive like this:
+The `@nexus` directive is used to define where the content of the `page.(jsx|tsx|js|ts|vue)` files (an all the outer file conventions) will be rendered. Assuming you have a `./resources/views/layouts/app.blade.php` blade view (with a `@yield('content')` inside it), and a `./resources/views/sections/app.blade.php` you should use the `@nexus` directive like this:
 
 ```html
 @extends('layouts.app')
@@ -17,7 +17,7 @@ The `@nexus` directive is used to define where the content of the `page.(jsx|tsx
 
 ## @startNexus and @endNexus
 
-As mentioned before in the [Concepts/File Conventions/Loading](/concepts/file-conventions?id=loading) section of this documentation, you might need more complex server side skeletons to be rendered while the javascript is being loaded, so you can use the `@startNexus` and `@endNexus` directives to define where the content of the `page.(jsx|tsx|js|ts|vue)` files (an all the outer file conventions) will be rendered. Assuming you have a `./resources/views/layouts/app.blade.php` blade view (with a `@yield('content')` inside it), inside a `./resources/views/sections/app.blade.php` you should use the `@startNexus` and `@endNexus` directives like this:
+As mentioned before in the [Concepts/File Conventions/Loading](/concepts/file-conventions?id=loading) section of this documentation, you might need more complex server side skeletons to be rendered while the javascript is being loaded, so you can use the `@startNexus` and `@endNexus` directives to define where the content of the `page.(jsx|tsx|js|ts|vue)` files (an all the outer file conventions) will be rendered. Assuming you have a `./resources/views/layouts/app.blade.php` blade view (with a `@yield('content')` inside it), and a `./resources/views/sections/app.blade.php` you should use the `@startNexus` and `@endNexus` directives like this:
 
 ```html
 @extends('layouts.app')

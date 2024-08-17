@@ -2,17 +2,13 @@ import './bootstrap';
 import '../css/app.css';
 import { createLaravextApp } from "@laravext/vue3"
 
-import VueCookies from 'vue-cookies'
-
 import { createI18n } from 'vue-i18n'
 import pt from './../../lang/pt.json'
-import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import { plugin as fkPluging, defaultConfig as fkDefaultConfig } from '@formkit/vue'
 import VueSweetalert2 from 'vue-sweetalert2';
 import fkConfig from './../../formkit.theme.js'
 import 'sweetalert2/dist/sweetalert2.min.css';
 import { resolveComponent } from '@laravext/vue3/tools';
-import { color } from '@formkit/icons';
 import Cookies from 'js-cookie';
 
 

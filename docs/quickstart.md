@@ -18,15 +18,25 @@ php artisan vendor:publish --tag=laravext-config
 
 By default, the `root_view` is set as `sections.app`, which means you should either have that view file, or change the config to fit your needs.
 
-on your `./routes/web.php`, insert the following to automagically generate your routes:
+The next step can be done at the end of your `./routes/web.php` file, or in a separated file, such as a `./routes/laravext.php`, for example, and then you can include it at the end of your `./routes/web.php` file. This is recommended, and is explained a little further in the [Tools/Routing](/tools/routing?id=route-priority) section of this documentation.
 
 ```php
+// ./routes/web.php
+
+// Any other routes you might have
+
+require __DIR__.'/laravext.php';
+```
+
+```php
+// ./routes/laravext.php
+
+use Illuminate\Support\Facades\Route;
+
 Route::laravext();
 ```
 
-It is recomended that you put it in the beggining of the file, so you can overwrite any created route to fit your needs. For more details, check the [router section](/concepts/router).
-
-This technically optional, as there're other ways to generate your routes in a more granular way (which you can check at [Tools/Routing](/tools/routing.md)), but it's entirely up to you on how you want to use it.
+This technically optional, as there're other ways to generate your routes in a more granular way (which you can check at [Tools/Routing](/tools/routing)), but it's entirely up to you on how you want to use it.
 
 ## NPM      
 
@@ -61,40 +71,49 @@ Now, make sure that you have an `app.(js|jsx|ts|tsx)` in your `./resources/js` d
 
 
 ```jsx
-import { createLaravextApp, resolveComponent, sharedProps } from "@laravext/react"
 import './bootstrap';
 import '../css/app.css';
-import pt from './../../lang/pt.json'
-
 import i18n from "i18next";
+import Cookies from "js-cookie";
+import pt from './../../lang/pt.json'
+import mdxeditor from './../../lang/pt/mdxeditor.json'
 import { initReactI18next } from "react-i18next";
-
-const user = sharedProps()?.auth?.user;
-
-// This is just for example purposes, using i18n is not a requirement
-i18n
-    .use(initReactI18next)
-    .init({
-        resources: {
-            pt: {
-                translation: pt
-            }
-        },
-        fallbackLng: "en",
-        interpolation: {
-            escapeValue: false
-        }
-    });
-
-i18n.changeLanguage(user?.locale || 'en')
+import { createLaravextApp } from "@laravext/react"
+import { resolveComponent } from "@laravext/react/tools"
+import moment from 'moment/min/moment-with-locales';
 
 document.addEventListener('DOMContentLoaded', function () {
     createLaravextApp({
-        // Remember to change this path if you've modified the default path in the ./config/laravext.php file
         nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
-
-        // Remember to change this path if you're using another path to store your strands
         strandsResolver: (name) => resolveComponent(`./strands/${name}.jsx`, import.meta.glob('./strands/**/*.jsx')),
+        progress: {
+            color: '#ff0000CC',
+        },
+        // The beforeSetup function is executed once, before any of the setups. 
+        // You can use this to set something up, such as internationalization.
+        beforeSetup: ({ laravext }) => {
+            const user = laravext.page_data.shared_props?.auth?.user;
+            
+            // This is just for example purposes, using i18n is not a requirement
+            i18n
+            .use(initReactI18next)
+            .init({
+                resources: {
+                    pt: {
+                        translation: { ...pt, ...mdxeditor }
+                    }
+                },
+                fallbackLng: "en",
+                interpolation: {
+                    escapeValue: false
+                }
+            });
+
+            let locale = user?.locale ?? Cookies.get('locale') ?? 'en';
+            
+            i18n.changeLanguage(locale);
+            moment.locale(locale);
+        },
 
         // Like Inertia, there's a wrapper for the https://ricostacruz.com/nprogress library.
         // You don't have to declare this, while using the createLaravextApp, but so
@@ -109,6 +128,38 @@ document.addEventListener('DOMContentLoaded', function () {
         // or, if you don't want it at all:
         // progress: false,
 
+        // This setup is applied to all components, including nexus and strands
+        // setup: ({ component, laravext }) => {
+        //     return <AnyComponentOrProvider>
+        //         {component}
+        //     </AnyComponentOrProvider>
+        // },
+
+        /// The setupNexus function is applied only to the nexus component, after the 'setup' 
+        // function, unless reverseSetupOrder is true
+        // setupNexus: ({ nexus, laravext }) => {
+        // return <AnyComponentOrProvider>{nexus}</AnyComponentOrProvider>;
+        // },
+
+        // The setupStrand function is applied only to the strand components, after the 'setup' function, 
+        // unless reverseSetupOrder is true.
+        // The 'strandData' parameter is the data passed to the strand component from the blade 
+        // where it was located, if applicable.
+        // setupStrand: ({strand, laravext, strandData}) => {
+        //     return <AnyComponentOrProvider>{strand}</AnyComponentOrProvider>
+        // },
+
+        // If you want to reverse the order of the setup functions, set this to true
+        // reverseSetupOrder: true,
+
+        // If for some reason you must disable the pushState of the laravext client router, you can do
+        // so here. Be aware that this will disable the back navigation, and you're user will endup 
+        // going back to the previous non-laravext page.
+        // disablePushedStateData: () => {
+        //    // Your logic here, such as detecting browsers, etc.
+        //    let logicResult = true
+        //    return logicResult
+        // },
     })
 }, false);
 ```
@@ -122,36 +173,45 @@ document.addEventListener('DOMContentLoaded', function () {
 import './bootstrap';
 import '../css/app.css';
 import { createLaravextApp } from "@laravext/vue3"
-import { resolveComponent } from '@laravext/vue3/tools';
-
-// Other imports for the Vue.js example
 import { createI18n } from 'vue-i18n'
 import pt from './../../lang/pt.json'
-import VueCookies from 'vue-cookies'
+import { plugin as fkPluging, defaultConfig as fkDefaultConfig } from '@formkit/vue'
+import VueSweetalert2 from 'vue-sweetalert2';
+import fkConfig from './../../formkit.theme.js'
+import 'sweetalert2/dist/sweetalert2.min.css';
+import { resolveComponent } from '@laravext/vue3/tools';
+import Cookies from 'js-cookie';
 
-document.addEventListener('DOMContentLoaded', function() {
+
+document.addEventListener('DOMContentLoaded', function () {
     createLaravextApp({
-        // Remember to change this path if you've modified the default path in the ./config/laravext.php file
         nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
-
-        // Remember to change this path if you're using another path to store your strands
         strandsResolver: (name) => resolveComponent(`./strands/${name}.vue`, import.meta.glob('./strands/**/*.vue')),
-
-        // If you're using Vue.js and you want to set the uses of your Vue app, you can do it here.
-        uses: () => {
+        // The beforeSetup function is executed once, before any of the setups. 
+        // You can use this to set something up, such as internationalization.
+        beforeSetup: ({ laravext }) => {
+            let user = laravext.page_data?.shared_props?.auth?.user;
+    
+            let locale = user?.locale ?? Cookies.get('locale') ?? 'en';
+    
             const i18n = createI18n({
                 legacy: false,
-                locale: window.__laravext?.page_data?.shared_props?.auth?.user?.locale || 'en',
+                locale: locale,
                 fallbackLocale: 'en',
                 messages: {
                     pt
                 }
             })
+    
+            laravext.app.i18n = i18n;
+        },
+        // This setup is applied to all components, including nexus and strands
+        setup: ({ app, laravext }) => {
+            app.use(laravext.app.i18n);
+            app.use(VueSweetalert2);
+            app.use(fkPluging, fkDefaultConfig(fkConfig));
 
-            return [
-                { plugin: VueCookies, options: { expires: '7d' } },
-                { plugin: i18n }
-            ]
+            return app;
         },
 
         // Like Inertia, there's a wrapper for the https://ricostacruz.com/nprogress library.
@@ -166,8 +226,39 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // or, if you don't want it at all:
         // progress: false,
+
+        // The setupNexus function is applied only to the nexus component, after the 'setup' 
+        // function, unless reverseSetupOrder is true
+        // setupNexus: ({ nexus, laravext }) => {
+        //     // Anything you want to do with the nexus app instance
+        //     nexus.use(Something)
+
+        //     return nexus;
+        // },
+
+        // The setupStrand function is applied only to the strand components, after the 'setup' function, 
+        // unless reverseSetupOrder is true.
+        // The 'strandData' parameter is the data passed to the strand component from the blade 
+        // where it was located, if applicable.
+        // setupStrand: ({strand, laravext, strandData}) => {
+        //     // Anything you want to do with the strand app instance
+        //     strand.use(SomethingElse)
+        //     return strand
+        // },
+
+        // If you want to reverse the order of the setup functions (for some reason), set this to true
+        // reverseSetupOrder: true,
+
+        // If for some reason you must disable the pushState of the laravext client router, you can do
+        // so here. Be aware that this will disable the back navigation, and you're user will endup 
+        // going back to the previous non-laravext page.
+        // disablePushedStateData: () => {
+        //    // Your logic here, such as detecting browsers, etc.
+        //    let logicResult = true
+        //    return logicResult
+        // },
     })
- }, false);
+}, false);
 ```
 
 <!-- tabs:end -->
@@ -287,6 +378,6 @@ You're now ready to start creating your project using the laravext router
 
 ![Our princess is in another castle!](/images/memes/our-princess-is-in-another-castle.png)
 
-<sup>**Credits**: By Nintendo - <a rel="nofollow" class="external free" href="https://www.mariowiki.com/File:Mushroom_Retainer_SMB1_W1-4_rescued.png">https://www.mariowiki.com/File:Mushroom_Retainer_SMB1_W1-4_rescued.png</a>, <a href="//en.wikipedia.org/wiki/File:Super_Mario_Bros_Princess_Is_In_Another_Castle_Quote.png" title="Fair use of copyrighted material in the context of Our princess is in another castle!">Fair use</a>, <a href="https://en.wikipedia.org/w/index.php?curid=76055658">Link</a><sub>
+<sup>**Credits**: By Nintendo - <a rel="nofollow" class="external free" href="https://www.mariowiki.com/File:Mushroom_Retainer_SMB1_W1-4_rescued.png">https://www.mariowiki.com/File:Mushroom_Retainer_SMB1_W1-4_rescued.png</a>, <a href="//en.wikipedia.org/wiki/File:Super_Mario_Bros_Princess_Is_In_Another_Castle_Quote.png" title="Fair use of copyrighted material in the context of Our princess is in another castle!">Fair use</a>, <a href="https://en.wikipedia.org/w/index.php?curid=76055658">Link</a> (if any of Nintendo's lawyer end up here, please just let me know that I'll remove this image, no need to sue me)<sub>
 
 Check the [Server Side Rendering](/server-side-rendering) section for more details on how to use it.
