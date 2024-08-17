@@ -21,7 +21,7 @@ Here are some useful links:
 - [Packagist](https://packagist.org/packages/arthurydalgo/laravext)
 - [NPM @laravext/vue3](https://www.npmjs.com/package/@laravext/vue3)
 - [NPM @laravext/react](https://www.npmjs.com/package/@laravext/react)
-- [YouTube](https://www.youtube.com/@laravext)
+- [Youtube](https://www.youtube.com/@laravext)
 - [Discord](https://dsc.gg/laravext)
 
 ## Documentation
