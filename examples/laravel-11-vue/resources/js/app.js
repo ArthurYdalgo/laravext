@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
         nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
         strandsResolver: (name) => resolveComponent(`./strands/${name}.vue`, import.meta.glob('./strands/**/*.vue')),
         // The beforeSetup function is executed once, before any of the setups. 
-        // You can use this to set something up, such as localization.
+        // You can use this to set something up, such as internationalization.
         beforeSetup: ({ laravext }) => {
             let user = laravext.page_data?.shared_props?.auth?.user;
     

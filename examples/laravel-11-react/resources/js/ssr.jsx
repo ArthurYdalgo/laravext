@@ -5,8 +5,6 @@ import { route } from '../../vendor/tightenco/ziggy/src/js';
 import i18n from "i18next";
 import { initReactI18next, I18nextProvider  } from "react-i18next";
 import pt from '../../lang/pt.json'
-import { renderToString } from 'react-dom/server';
-import Cookies from 'js-cookie';
 
 // Change this to what you see fit
 const errorMessageShouldBeLogged = (message) => {
@@ -33,7 +31,7 @@ serve(({ window, cookies }) => createLaravextSsrApp({
     nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
     strandsResolver: (name) => resolveComponent(`./strands/${name}.jsx`, import.meta.glob('./strands/**/*.jsx')),
     // The beforeSetup function is executed once, before any of the setups. 
-    // You can use this to set up global variables or anything else, such as localization, cookies, etc.
+    // You can use this to set up global variables or anything else, such as internationalization, cookies, etc.
     beforeSetup: ({ laravext }) => {
         if(laravext?.page_data?.shared_props?.ziggy){
             global.route = (name, params, absolute) =>

@@ -5,7 +5,7 @@ import { faBookmark as faRegularBookmark} from '@fortawesome/free-regular-svg-ic
 import { faDiscord, faGithub, faYoutube, faXTwitter, faTwitter, faFacebook, faLinkedin } from '@fortawesome/free-brands-svg-icons'
 
 // Add all solid icons to the library so they can be used
-library.add(faPlus, faTrash, faEye, faEyeSlash,faCopy,faTimes, faShareAlt, faXTwitter,faCommentMedical,faEdit, faFlag,faHeart, faLinkedin, faTwitter, faHeartCirclePlus, faLink,faFacebook, faYoutube,faDiscord,faGraduationCap,faSuitcase,faLocationDot,faBirthdayCake, faGithub,faNewspaper, faHashtag, faComment, faCheckCircle, faClock, faSearch, faSolidBookmark, faRegularBookmark )
+library.add(faPlus, faTrash, faEye,faXTwitter, faEyeSlash,faCopy,faTimes, faShareAlt, faXTwitter,faCommentMedical,faEdit, faFlag,faHeart, faLinkedin, faTwitter, faHeartCirclePlus, faLink,faFacebook, faYoutube,faDiscord,faGraduationCap,faSuitcase,faLocationDot,faBirthdayCake, faGithub,faNewspaper, faHashtag, faComment, faCheckCircle, faClock, faSearch, faSolidBookmark, faRegularBookmark )
 
 export default function Fa({ icon, className='', size = '1x', ...props }) {
   return <FontAwesomeIcon className={className} size={size} icon={icon} {...props} />;

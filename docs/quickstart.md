@@ -295,7 +295,7 @@ export default function ({ mode }) {
             laravel({
                 input: [
                     'resources/css/app.css',
-                    'resources/js/app.js',
+                    'resources/js/app.(js|jsx|ts|tsx)', // change the extension to fit your needs
                 ],
                 refresh: [...refreshPaths, "resources/js/**", "app/**"],
             }),

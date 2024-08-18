@@ -67,7 +67,7 @@ return [
     /**
      * This config is used to determine if the server should render the javascript or not.
      * 
-     * @see https://laravext.dev/#/server-side-rendering/javascript-runtime
+     * @see https://laravext.dev/#/server-side-rendering?id=javascript-runtime
      */
     'ssr' => [
         /**

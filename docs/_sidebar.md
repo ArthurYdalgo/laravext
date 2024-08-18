@@ -29,6 +29,7 @@
     - [Discord](https://dsc.gg/laravext)
     - [GitHub](https://github.com/ArthurYdalgo/laravext)
     - [Youtube](https://www.youtube.com/@laravext)
+    - [Twitter/X](https://www.x.com/laravext_dev)
     - [Packagist](https://packagist.org/packages/arthurydalgo/laravext)
     - [NPM @laravext/vue3](https://www.npmjs.com/package/@laravext/vue3)
     - [NPM @laravext/react](https://www.npmjs.com/package/@laravext/react)

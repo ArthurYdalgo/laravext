@@ -37,8 +37,6 @@ console.error = (message, ...args) => {
     }
 };
 
-// Change this to what you see fit
-
 const originalWarn = console.warn;
 console.warn = (message, ...args) => {
     if(warnLogShouldBeLogged(message)) {
@@ -54,7 +52,7 @@ serve(({ window, cookies }) => createLaravextSsrApp({
     strandsResolver: (name) => resolveComponent(`./strands/${name}.vue`, import.meta.glob('./strands/**/*.vue')),
 
     // The beforeSetup function is executed once, before any of the setups.
-    // You can use this to set up global variables or anything else, such as localization, cookies, etc.
+    // You can use this to set up global variables or anything else, such as internationalization, cookies, etc.
     beforeSetup: ({ laravext }) => {
         if(laravext?.page_data?.shared_props?.ziggy){
 

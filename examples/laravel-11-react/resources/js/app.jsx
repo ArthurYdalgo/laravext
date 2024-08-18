@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
             color: '#ff0000CC',
         },
         // The beforeSetup function is executed once, before any of the setups. 
-        // You can use this to set something up, such as localization.
+        // You can use this to set something up, such as internationalization.
         beforeSetup: ({ laravext }) => {
             const user = laravext.page_data.shared_props?.auth?.user;
             

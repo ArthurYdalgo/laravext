@@ -145,6 +145,13 @@ export default ({ children, ...props }) => {
                     <Fa icon="fa-brands fa-discord" className="ml-0.5 mr-1" />
                 </a>
                 <a
+                    href="https://x.com/laravext_dev"
+                    target="_blank"
+                    className="mr-1"
+                >
+                    <Fa icon="fa-brands fa-x-twitter" className="ml-0.5 mr-1" />
+                </a>
+                <a
                     href="https://github.com/ArthurYdalgo/laravext/tree/main/examples/laravel-11-react"
                     target="_blank"
                     className="mr-1"

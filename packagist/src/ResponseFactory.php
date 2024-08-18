@@ -186,6 +186,26 @@ class ResponseFactory
         ];
     }
 
+    private function responseShouldBeServerSideRendered($request)
+    {
+        // If SSR is disabled
+        if (!config('laravext.ssr.enabled')) {
+            return false;
+        }
+
+        // If SSR is enabled only for specific URIs, check if the current URI is in the list
+        if (config('laravext.ssr.enabled') === 'only' && !($request->is(config('laravext.ssr.uris', [])) || $request->routeIs(config('laravext.ssr.route_names', [])))) {
+            return false;
+        }
+
+        // If SSR is enabled except for specific URIs, check if the current URI is in the list
+        if (config('laravext.ssr.enabled') === 'except' && ($request->is(config('laravext.ssr.uris', [])) || $request->routeIs(config('laravext.ssr.route_names', [])))) {
+            return false;
+        }
+
+        return true;
+    }
+
     public function render()
     {
         $laravext_page_data = $this->page_data();
@@ -202,34 +222,21 @@ class ResponseFactory
 
             $view = view($root_view);
 
-            // If SSR is disabled, return the view
-            if(!config('laravext.ssr.enabled')){
-                return $view;
-            }
-            
-            // If SSR is enabled only for specific URIs, check if the current URI is in the list
-            if(config('laravext.ssr.enabled') === 'only' && (!$request->is(config('laravext.ssr.uris', [])) && !$request->routeIs(config('laravext.ssr.route_names', [])))) {
+            // Check if this request should be server side rendered
+            if (!$this->responseShouldBeServerSideRendered($request)) {
                 return $view;
             }
 
-            // If SSR is enabled except for specific URIs, check if the current URI is in the list
-            if(config('laravext.ssr.enabled') === 'except' && ($request->is(config('laravext.ssr.uris', [])) || $request->routeIs(config('laravext.ssr.route_names', [])))) {
-                return $view;
-            }
-            
             $rendered_view = $view->render();
 
             try {
-                return Http::withOptions([
-                    'http_errors' => true,
-                ])
-                ->withHeaders($request->headers->all())
-                ->post("http://localhost:13714/render", [
-                    'html' => $rendered_view,
-                ])->body();
+                return Http::withHeaders($request->headers->all())
+                    ->post(config("laravext.ssr.url", 'http://localhost:13714/render'), [
+                        'html' => $rendered_view,
+                    ])->body();
             } catch (\Throwable $th) {
                 report($th);
-                
+
                 return $rendered_view;
             }
         }
@@ -260,7 +267,7 @@ class ResponseFactory
             $path .= '?' . http_build_query($query_params);
         }
 
-        if(!str($path)->startsWith('/')){
+        if (!str($path)->startsWith('/')) {
             $path = "/{$path}";
         }
 
