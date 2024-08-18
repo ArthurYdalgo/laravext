@@ -1,10 +1,11 @@
 ```mermaid
 sequenceDiagram
     Browser->>Laravel: I want to visit this route '/{user:username}'
-    Laravel->>Browser: Here's the HTML of this page
 
-    Laravel->>Node Process: I need this SSRd!
+    Laravel->>Node Process: I need this Javascript SSRd!
     Node Process->>Laravel: Here's the SSRd HTML of this page
+
+    Laravel->>Browser: Here's the HTML of this page
 
     Browser->>Browser: .js files are loaded
     Browser->>Browser: Javascript kicks in

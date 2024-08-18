@@ -15,7 +15,6 @@ The blade engine based methods you can use are througly explained in the [Tools/
 ## Javascript Runtime
 
 
-
 <!-- tabs:start -->
 
 #### **React**

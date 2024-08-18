@@ -1,4 +1,4 @@
-# The visit(url) function
+# The visit function
 
 Much like [Inertia.js' Protocol](https://inertiajs.com/the-protocol), you can use the `visit(url, options = { ... })` function to navigate to a new page that uses Laravext. This creates a smooth SPA experience, as it doesn't reload the page. If the version of the application changes between visits, or if the view set for that route is different from the one that was previously loaded, an usual page visit will happen.
 
@@ -19,7 +19,7 @@ The options parameter is an object that defaults to:
 
 #### **React**
 
-`Link.jsx` (this is an example of a custom Link component that uses the `visit(url)` function, and not the actual implementation of the [Link component from Laravext](/tools/link-component)):
+`Link.jsx` (this is an example of a custom Link component that uses the `visit` function, and not the actual implementation of the [Link component from Laravext](/tools/link-component)):
 
 ```jsx
 import { visit } from '@laravext/react/router';
@@ -43,7 +43,7 @@ export default  ({ routeName, href, className = '', children }) => {
 
 #### **Vue**
 
-`Link.vue` (this is an example of a custom Link component that uses the `visit(url)` function, and not the actual implementation of the [Link component from Laravext](/tools/link-component)):
+`Link.vue` (this is an example of a custom Link component that uses the `visit` function, and not the actual implementation of the [Link component from Laravext](/tools/link-component)):
 
 ```vue
 <script setup>
@@ -79,4 +79,4 @@ let classes = props.classes ?? '';
 
 <!-- tabs:end -->
 
-<sup>⚠️Important note⚠️: it's not recomendable to use the `visit(url)` function to navigate to a page that doesn't use Laravext. This is due to the function first checking if the page is a Laravext page, and if it's not, it'll do a redirect. As a side effect this will cause a double page visit (the first when the function makes a get request, then the actual redirect), which could degrade the user experience, so you should use a standard anchor tag (`<a href="...">`) instead if you know it's an external link or a non-Laravext page.</sup>
+<sup>⚠️Important note⚠️: it's not recomendable to use the `visit` function to navigate to a page that doesn't use Laravext. This is due to the function first checking if the page is a Laravext page, and if it's not, it'll do a redirect. As a side effect this will cause a double page visit (the first when the function makes a get request, then the actual redirect), which could degrade the user experience, so you should use a standard anchor tag (`<a href="...">`) instead if you know it's an external link or a non-Laravext page.</sup>

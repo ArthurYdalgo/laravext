@@ -378,6 +378,6 @@ You're now ready to start creating your project using the laravext router
 
 ![Our princess is in another castle!](/images/memes/our-princess-is-in-another-castle.png)
 
-<sup>**Credits**: By Nintendo - <a rel="nofollow" class="external free" href="https://www.mariowiki.com/File:Mushroom_Retainer_SMB1_W1-4_rescued.png">https://www.mariowiki.com/File:Mushroom_Retainer_SMB1_W1-4_rescued.png</a>, <a href="//en.wikipedia.org/wiki/File:Super_Mario_Bros_Princess_Is_In_Another_Castle_Quote.png" title="Fair use of copyrighted material in the context of Our princess is in another castle!">Fair use</a>, <a href="https://en.wikipedia.org/w/index.php?curid=76055658">Link</a> (if any of Nintendo's lawyer end up here, please just let me know that I'll remove this image, no need to sue me)<sub>
+<sup>**Credits**: By Nintendo - <a rel="nofollow" class="external free" href="https://www.mariowiki.com/File:Mushroom_Retainer_SMB1_W1-4_rescued.png">https://www.mariowiki.com/File:Mushroom_Retainer_SMB1_W1-4_rescued.png</a>, <a href="//en.wikipedia.org/wiki/File:Super_Mario_Bros_Princess_Is_In_Another_Castle_Quote.png" title="Fair use of copyrighted material in the context of Our princess is in another castle!">Fair use</a>, <a href="https://en.wikipedia.org/w/index.php?curid=76055658">Link</a> (if any of Nintendo's lawyers end up here, please just let me know that I'll remove this image, no need to sue me)<sub>
 
 Check the [Server Side Rendering](/server-side-rendering) section for more details on how to use it.
