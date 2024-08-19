@@ -1,6 +1,6 @@
 {
   "name": "@laravext/vue3",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Laravext for Vue3",
   "main": "index.js",
   "private": false,
