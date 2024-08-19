@@ -2,6 +2,12 @@
   "name": "@laravext/react",
   "version": "0.0.2",
   "description": "Laravext for React",
+  "homepage": "https://laravext.dev/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arthurydalgo/laravext",
+    "directory": "npm/react"
+  },
   "main": "index.jsx",
   "private": false,
   "scripts": {
