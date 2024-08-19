@@ -5,8 +5,8 @@
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
-        "php": "^8.1",
-        "arthurydalgo/laravext": "dev-main",
+        "php": "^8.2",
+        "arthurydalgo/laravext": "^1.0",
         "erusev/parsedown": "^1.7",
         "guzzlehttp/guzzle": "^7.2",
         "http-interop/http-factory-guzzle": "^1.2",
@@ -58,20 +58,6 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ]
-    },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../../packagist",
-            "options": {
-                "symlink": true
-            }
-        }
-    ],
-    "extra": {
-        "laravel": {
-            "dont-discover": []
-        }
     },
     "config": {
         "optimize-autoloader": true,

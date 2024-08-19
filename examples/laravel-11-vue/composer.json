@@ -57,25 +57,6 @@
             "@php artisan key:generate --ansi"
         ]
     },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../../packagist",
-            "options": {
-                "symlink": true
-            }
-        }
-    ],
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Laravext\\LaravextServiceProvider"
-            ],
-            "aliases": {
-                "Laravext": "Laravext\\LaravextFacade"
-            }
-        }
-    },
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",

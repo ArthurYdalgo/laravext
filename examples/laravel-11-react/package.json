@@ -14,6 +14,7 @@
         "@fortawesome/free-solid-svg-icons": "^6.5.2",
         "@fortawesome/react-fontawesome": "^0.2.2",
         "@headlessui/react": "^1.4.2",
+        "@laravext/react": "^1.0.0",
         "@mdx-js/mdx": "^3.0.1",
         "@mdxeditor/editor": "^3.7.0",
         "@tailwindcss/forms": "^0.5.2",
