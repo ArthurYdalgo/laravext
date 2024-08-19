@@ -4,7 +4,7 @@ This section will explain how the lifecycle of a Laravel application using Larav
 
 ## First Visit
 
-This is the first visit to your application, and it can be divided into two scenarios: with and without Javascript Runtime SSR. Laravel will return a blade view that contains a `@nexus`/`@[start/end]Nexus`/`@strand`/`@[start/end]Strand` directive, which will be replaced by that URI's component.
+This is the first visit to your application, and it can be divided into two scenarios: with and without [Javascript Runtime SSR](/server-side-rendering?id=javascript-runtime). Laravel will return a blade view that contains a `@nexus`/`@[start/end]Nexus`/`@strand`/`@[start/end]Strand` directive, which will be replaced by that URI's component.
 
 ### First Visit without Javascript Runtime SSR
 

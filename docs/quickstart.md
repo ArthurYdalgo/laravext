@@ -1,6 +1,6 @@
-# Quickstart Installation <!-- {docsify-ignore} -->
+# Quick Start Installation <!-- {docsify-ignore} -->
 
-This tutorial assumes that you already have a Laravel 10+ project up and running with PHP 8.2, and that you use the vite bundler. These instructions are based on the [examples provided in the laravext repository](https://github.com/ArthurYdalgo/laravext/tree/main/examples).
+This tutorial assumes that you already have a Laravel 10 (or later) project up and running with PHP 8.2, and that you use the vite bundler. These instructions are based on the [examples provided in the laravext repository](https://github.com/ArthurYdalgo/laravext/tree/main/examples).
 
 ## Composer
 
@@ -10,7 +10,7 @@ First, install the composer package:
 composer require arthurydalgo/laravext
 ```
 
-you can also publish the config file to make changes such as default root view, nexus/strands directory, etc:
+you can also publish the config file to make changes such as default root view, nexus/strands directory, server side rendering, etc:
 
 ```bash
 php artisan vendor:publish --tag=laravext-config
@@ -18,7 +18,7 @@ php artisan vendor:publish --tag=laravext-config
 
 By default, the `root_view` is set as `sections.app`, which means you should either have that view file, or change the config to fit your needs.
 
-The next step can be done at the end of your `./routes/web.php` file, or in a separated file, such as a `./routes/laravext.php`, for example, and then you can include it at the end of your `./routes/web.php` file. This is recommended, and is explained a little further in the [Tools/Routing](/tools/routing?id=route-priority) section of this documentation.
+The next step can be done at the end of your `./routes/web.php` file, or in a separated file, such as a `./routes/laravext.php`, for example, and then you can require it at the end of your `./routes/web.php` file. This is recommended, and is explained a little further in the [Tools/Routing/Route Priority](/tools/routing?id=route-priority) section of this documentation.
 
 ```php
 // ./routes/web.php
@@ -61,7 +61,14 @@ npm install @vitejs/plugin-vue
 
 This example also assumes that you have a `bootstrap.js` at `./resources/js` and an `app.css` in you `./resources/css` directory. You might or not have any need for those.
 
-Now, make sure that you have an `app.(js|jsx|ts|tsx)` in your `./resources/js` directory, with the following:
+Now, you'll need to create an `app.(js|jsx|ts|tsx)` in your `./resources/js` directory. The example below makes use of some npm packages such as i18n, moment, etc. You can remove them and the setup methods if you're not going to use them.
+
+You'll then need to declare a `createLaravextApp` function, and pass an object with (at least) the following properties (assuming you'll make use of the `@nexus` and `@strand` [blade directives](/tools/blade-directives)):
+
+- `nexusResolver`: A function that resolves the nexus components. You can use the `resolveComponent` function from the `@laravext/react/tools` or `@laravext/vue3/tools` package to do so.
+- `strandsResolver`: A function that resolves the strand components. You can use the `resolveComponent` function mentioned above to do so.
+
+There're some optional attributes included in the examples below that either commented or have comments explaining what they do. You can use them to set up global variables, internationalization, cookies, etc.
 
 <!-- tabs:start -->
 
@@ -86,15 +93,13 @@ document.addEventListener('DOMContentLoaded', function () {
     createLaravextApp({
         nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
         strandsResolver: (name) => resolveComponent(`./strands/${name}.jsx`, import.meta.glob('./strands/**/*.jsx')),
-        progress: {
-            color: '#ff0000CC',
-        },
+
         // The beforeSetup function is executed once, before any of the setups. 
         // You can use this to set something up, such as internationalization.
         beforeSetup: ({ laravext }) => {
             const user = laravext.page_data.shared_props?.auth?.user;
             
-            // This is just for example purposes, using i18n is not a requirement
+            // This is just for example purposes, using i18n/moment is not a requirement
             i18n
             .use(initReactI18next)
             .init({
@@ -152,6 +157,15 @@ document.addEventListener('DOMContentLoaded', function () {
         // If you want to reverse the order of the setup functions, set this to true
         // reverseSetupOrder: true,
 
+        // If for some reason you to change the order of the file conventions, you can do so here.
+        // It'll be applied to the nexus components, from a first to last basis, encapsulating
+        // the page component. Check the File Conventions section for more details.
+        // conventions: [
+        //    'error',
+        //    'layout',
+        //    'middleware',
+        // ],
+
         // If for some reason you must disable the pushState of the laravext client router, you can do
         // so here. Be aware that this will disable the back navigation, and you're user will endup 
         // going back to the previous non-laravext page.
@@ -187,6 +201,7 @@ document.addEventListener('DOMContentLoaded', function () {
     createLaravextApp({
         nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
         strandsResolver: (name) => resolveComponent(`./strands/${name}.vue`, import.meta.glob('./strands/**/*.vue')),
+
         // The beforeSetup function is executed once, before any of the setups. 
         // You can use this to set something up, such as internationalization.
         beforeSetup: ({ laravext }) => {
@@ -194,6 +209,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
             let locale = user?.locale ?? Cookies.get('locale') ?? 'en';
     
+            // This is just for example purposes, using i18n is not a requirement
             const i18n = createI18n({
                 legacy: false,
                 locale: locale,
@@ -205,6 +221,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
             laravext.app.i18n = i18n;
         },
+
         // This setup is applied to all components, including nexus and strands
         setup: ({ app, laravext }) => {
             app.use(laravext.app.i18n);
@@ -248,6 +265,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // If you want to reverse the order of the setup functions (for some reason), set this to true
         // reverseSetupOrder: true,
+
+        // If for some reason you to change the order of the file conventions, you can do so here.
+        // It'll be applied to the nexus components, from a first to last basis, encapsulating
+        // the page component. Check the File Conventions section for more details.
+        // conventions: [
+        //    'error',
+        //    'layout',
+        //    'middleware',
+        // ],
 
         // If for some reason you must disable the pushState of the laravext client router, you can do
         // so here. Be aware that this will disable the back navigation, and you're user will endup 

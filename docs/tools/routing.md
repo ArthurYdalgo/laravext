@@ -4,7 +4,7 @@ In order to declare routes in a project with Laravext, you'll have to use some o
 
 ## Route::laravext(...)
 
-This method is responsible for automagically declaring routes for the project based on the structure of your nexus directory (check [Configuration/Nexus Directory](/configuration.md?id=nexus-directory) for more details on how to change it, if needed), and can be used in the plain way in your `routes/web.php` file, like this:
+This method is responsible for automagically declaring routes for the project based on the structure of your nexus directory (check [Configuration/Nexus Directory](/configuration.md?id=nexus-directory) for more details on how to change it, if needed), and can be used in the plain way in your `routes/web.php` file (or in a separate `./routes/laravext.php`, as suggested in the [Quick Start Installation](/quickstart)), like this:
 
 ```php
 use Illuminate\Support\Facades\Route;
@@ -48,27 +48,26 @@ Route::laravext('dashboard', route_group_attributes: [
 ]);
 ```
 
-As mentioned before, in the [Quickstart](/quickstart.md) section, this is technically optional, as there're other ways to generate your routes in a more granular way, but it's entirely up to you on how you want to use it. (Although I think that if you are using Laravext and came all the way here, you probably want to use it).
+As mentioned before, in the [Quick Start Installation](/quickstart.md) section, this is technically optional, as there're other ways to generate your routes in a more granular way, but it's entirely up to you on how you want to use it. (Although I think that if you are using Laravext and came all the way here, you probably want to use it).
 
 <sup>⚠️Important note⚠️: as exemplified in [examples/laravel-11-vue/routes/laravext.php #L48](https://github.com/ArthurYdalgo/laravext/blob/main/examples/laravel-11-vue/routes/laravext.php#L48), if you redeclare any other route that would be a subroute of '/dashboard', like '/dashboard/teams/1/edit', any middleware or other attributes set in the route_group_attributes will not be used in this new route declaration. So if any important middleware is needed, you'll have to redeclare it in the new route declaration, or create a `Route::group([...], function() {...})` that would contain both routes so you don't have to redeclare that middleware.</sub>
 
 ## Route::nexus(...)
 
-Similar to [Inertia.js' Shorthand Routes](https://inertiajs.com/routing), you can manually set a route to a specific nexus component using the `Route::nexus` method. This method is useful when you want to create a route that doesn't follow the file-based route structure of Laravext, or when you want to pass specific props, set a specific file convention (see [FileConvention](/concepts/file-conventions) for more details), root view, etc.
+Similar to [Inertia.js' Shorthand Routes](https://inertiajs.com/routing), you can manually set a route to a specific nexus component using the `Route::nexus` method. This method is useful when you want to create a route that doesn't follow the file-based route structure of Laravext, or when you want to set a specific file convention (see [FileConvention](/concepts/file-conventions) for more details), root view, etc.
 
 `Route::nexus($uri = '{nexusSlug?}', $page = null, $root_view = null, ...$parameters)`
 
 The (named) parameters:
 - `uri`: is used to define the url that will be matched to this route declaration. If nothing is set, then it'll apply to all the routes created by the Laravext router. Unlike the `Route::laravext` method, this parameter does not affect any subroute.
 - `page`: is used to define the nexus component that will be rendered. If nothing is set, it'll use any previously `page` file convention that was detected for that path.
-- `props`: is used to define the properties that will be passed to the component. This is useful when you need to do some server-side data fetching.
 - `root_view`: is used to define the root view that will be used to render the component. This will override the default root view [defined in the configuration file](/configuration.md?id=root-view). If nothing is set, the default root view will be used.
 - `parameters`: is a variadic parameter that can be used to pass one or more of the following parameters:
   - `merge_with_existing_route`: wether or not this nexus declaration will be merged to any automagically created route before it by a `Route::laravext()`. This is so that you don't have to redeclare every file convention for that route, and define only those that you want to to override. This defaults to true, but you can set it to false if you want to completely override the automagically generated route.
   - `middleware`: the path to the `middleware.(jsx|tsx|js|ts|vue)` file that will be used to this route.
   - `layout`: the path to the `layout.(jsx|tsx|js|ts|vue)` file that will be used to this route.
   - `error`: the path to the `error.(jsx|tsx|js|ts|vue)` file that will be used to this route.
-  - `server_skeleton`: the ⚠️**html content**⚠️ of a skeleton that will be server-side rendered. See [FileConvention/Server Side (Basic HTML)](/concepts/file-conventions?id=server-side-basic-html) for more details.
+  - `server_skeleton`: the ⚠️**html content**⚠️ of a skeleton that will be server-side rendered. See [FileConvention/Server Side (Basic HTML)](/concepts/file-conventions?id=basic-html) for more details.
 
 You can also chain methods such as `->middleware('auth')`, `->withoutMiddleware('verified')` or `->name('admin.dashboard')` to the route declaration, as you would with a common route declaration.
 
@@ -86,7 +85,7 @@ Route::nexus('dashboard/settings')->middleware([
 ])->name('admin.dashboard.settings');
 ```
 
-As mentioned before, you can override the page component, root view, other file conventions or pass props to it, like:
+As mentioned before, you can override the page component, root view or other file conventions like:
 
 ```php
 use Illuminate\Support\Facades\Route;
@@ -102,7 +101,7 @@ Route::nexus('orders/{order}', layout: '(app)/layout.jsx')->middleware([
 ])->name('admin.orders.order');
 ```
 
-Once again, this declaration will already know the page file conventions to use because it was already found before to this uri before. If you want to completely override the automagically generated route's file conventions, you can set the `merge_with_existing_route` parameter to `false`:
+Once again, this declaration will already know the page file conventions to use because it was already found before to this uri before (because of the `Route::laravext` above it). If you want to completely override the automagically generated route's file conventions, you can set the `merge_with_existing_route` parameter to `false`:
 
 ```php
 use Illuminate\Support\Facades\Route;
@@ -125,9 +124,9 @@ On both previous examples, the `order` route param would be available in the `la
 
 ## Route priority
 
-As mentioned in the [Quickstart](/quickstart.md) section, the `Route::laravext()` should be the last route declaration after any other route that is not a `Route::laravext()` or `Route::nexus()`. This is to ensure that it doesn't mess with any other route declaration that you might have in your `routes/web.php` file. That's why it's recommended you separate any `Route::laravext()` or `Route::nexus()` declaration in another file, like `routes/laravext.php` or `routes/nexus.php` (name it as you see fit), and include it at the end of your `routes/web.php` file, like this example taken from the [React example project](https://github.com/ArthurYdalgo/laravext/tree/main/examples/laravel-11-react). 
+As mentioned in the [Quick Start Installation](/quickstart.md) section, the `Route::laravext()` should be the last route declaration after any other route that is not a `Route::laravext('...')` or `Route::nexus()`. This is to ensure that it doesn't mess with any other route declaration that you might have in your `routes/web.php` file. That's why it's recommended you separate any `Route::laravext()` or `Route::nexus()` declaration in another file, like `routes/laravext.php` or `routes/nexus.php` (name it as you see fit), and include it at the end of your `routes/web.php` file, like the example ahead taken from the [React example project](https://github.com/ArthurYdalgo/laravext/tree/main/examples/laravel-11-react). 
 
-This is completely optional, but I'd recommend it if you have any route that is not a `Route::laravext()` or `Route::nexus()` in your `routes/web.php` file, to prevent accidently causing unexpected behavior, as I did myself while creating the [React example project](https://github.com/ArthurYdalgo/laravext/tree/main/examples/laravel-11-react) and noticed that the short link was being caught by the `user.article` route, and not the `article.short-link` route, as I expected.
+This is completely optional, but I'd recommend it if you have any route that is not a `Route::laravext()` or `Route::nexus()` in your `routes/web.php` file to prevent accidently causing unexpected behavior, as I did myself while creating the [React example project](https://github.com/ArthurYdalgo/laravext/tree/main/examples/laravel-11-react) and noticed that the short link was being caught by the `user.article` route, and not the `article.short-link` route, as I expected.
 
 As you can see in the example below, this prevents, for example, that the `user.article` route is not cought by either the `article.short-link` or `share` routes, as they are declared before it, and could be mistaken for a `user.article` route.
 

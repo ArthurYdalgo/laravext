@@ -12,9 +12,9 @@ File conventions are special files that are used when rendering a nexus, and the
 </Middleware>
 ```
 
-Most of these are client-side rendered, except for the [Loading/Server Side](/concepts/file-conventions?id=server-side-basic-html)
+Most of these are client-side rendered, except for the [Loading/Server Side](/concepts/file-conventions?id=loading)
 
-You can modify this hierarchy by sending the list of conventions when calling the `createLaravextApp`. The list of the conventions should be an array of strings, and should be in order that you want to be rendered from the inside out after the page. The default list of conventions is:
+As mentioned in the example at the [Quick Start Installation](/quickstart), you can modify this hierarchy by sending the list of conventions when calling the `createLaravextApp`/`createLaravextSsrApp`. The list of the conventions should be an array of strings, and should be in order that you want to be rendered from the inside out after the page. The default list of conventions is:
 
 ```javascript
 [
@@ -212,7 +212,7 @@ Loading UI for a segment and its children. This can be defined in two different 
 
 ### Basic HTML
 
-Defining a `loading.html` will make it's content be used by the [nexus directive](/tools/blade-directives?id=nexus), and it'll be rendered server side (this will be passed in the `server_skeleton` property of the [laravext's nexus property](/concepts/laravext-prop)). This is useful to show something to your user while the javascript assets are being loaded to improve the UX.
+Defining a `loading.html` will make it's content be used by the [nexus directive](/tools/blade-directives?id=nexus), and it'll be rendered server side (this will be passed in the `server_skeleton` property of the [laravext's nexus property](/concepts/laravext-prop) in a first visit). This is useful to show something to your user while the javascript assets are being loaded to improve the UX.
 
 ```html
 <div class="your-really-cool-spinner"></div>
@@ -220,7 +220,7 @@ Defining a `loading.html` will make it's content be used by the [nexus directive
 
 ### Blade Template
 
-Because using only html can limit how complex your skeleton can be, you can call the `@startNexus` and `@endNexus` in your `resouces/views/sections/app.blade.php`, like the example below:
+Because using only html can limit how complex your skeleton can be, you can call the `@startNexus` and `@endNexus` in your `resouces/views/sections/app.blade.php` (or use the [Javascript Runtime server side rendering](/server-side-rendering?id=javascript-runtime)), like the example below:
 
 ```php
 @extends('layouts.app')

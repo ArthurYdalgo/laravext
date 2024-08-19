@@ -72,7 +72,7 @@ You'll then need to create a file, like `ssr.(js|jsx|ts|tsx)` in your `resources
 
 The `window` object will contain the `__laravext` object, which will contain all the attributes mentioned in the [Concepts/Laravext Prop](/concepts/laravext-prop) section of this doc, such as the file conventions, props, etc. The `cookies` object will contain the cookies sent by the client, so if you use it for something, like for example to keep track of unauthenticated users' language preference, you can use it here (the examples below show how to use it for internationalization using the `i18next`/`vue-i18n` libraries).
 
-The `createLaravextSsrApp` function will receive an object with the following mandatory attributes:
+The `createLaravextSsrApp` function will receive an object with the following mandatory attributes (assuming you'll make use of the `@nexus` and `@strand` [blade directives](/tools/blade-directives)):
 
 -   `nexusResolver`: A function that will receive the name of the nexus component and must return the component. You can use the `resolveComponent` function from the `@laravext/react/tools` or `@laravext/vue3/tools` to help you with that.
 -   `strandsResolver`: A function that will receive the name of the strand component and must return the component. You should use the same `resolveComponent` function as above.

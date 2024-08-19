@@ -271,6 +271,9 @@ class ResponseFactory
             $path = "/{$path}";
         }
 
+        // This is not needed if it's a visit with a render action
+        unset($laravext_page_data['server_skeleton']);
+
         return response()->json([
             'action' => 'render',
             'laravext_page_data' => $laravext_page_data,

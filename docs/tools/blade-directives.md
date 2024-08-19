@@ -17,7 +17,7 @@ The `@nexus` directive is used to define where the content of the `page.(jsx|tsx
 
 ## @startNexus and @endNexus
 
-As mentioned before in the [Concepts/File Conventions/Loading](/concepts/file-conventions?id=loading) section of this documentation, you might need more complex server side skeletons to be rendered while the javascript is being loaded, so you can use the `@startNexus` and `@endNexus` directives to define where the content of the `page.(jsx|tsx|js|ts|vue)` files (an all the outer file conventions) will be rendered. Assuming you have a `./resources/views/layouts/app.blade.php` blade view (with a `@yield('content')` inside it), and a `./resources/views/sections/app.blade.php` you should use the `@startNexus` and `@endNexus` directives like this:
+As mentioned before in the [Concepts/File Conventions/Loading](/concepts/file-conventions?id=loading) section of this documentation, you might need more complex server side skeletons to be rendered while the javascript is being loaded (assuming you don't want to use [the Javascript Runtime SSR](/server-side-rendering?id=javascript-runtime)), so you can use the `@startNexus` and `@endNexus` directives to define where the content of the `page.(jsx|tsx|js|ts|vue)` files (an all the outer file conventions) will be rendered. Assuming you have a `./resources/views/layouts/app.blade.php` blade view (with a `@yield('content')` inside it), and a `./resources/views/sections/app.blade.php` you should use the `@startNexus` and `@endNexus` directives like this:
 
 ```html
 @extends('layouts.app')
@@ -38,7 +38,7 @@ Once again... Remember that anything in between those two directives will be cle
 
 ## @strand
 
-You can use the @strand('Path/To/Component') directive alongside a @nexus, which will use the name as a path to find a React/Vue component inside the resources/js/strands (which is customizable). The first parateters is the `path/to/the/component`, and the second one is `['any' => 'data', 'you' => 'might need']`
+You can use the @strand('Path/To/Component') directive alongside a @nexus, which will use the name as a path to find a React/Vue component inside the resources/js/strands (which is customizable at the `createLaravextApp`/`createLaravextSsrApp` functions). The first parameter is the `path/to/the/component`, and the second one is `['any' => 'data', 'you' => 'might need']`
 
 ```html
 @extends('layouts.app')
@@ -163,7 +163,7 @@ export const privacy = reactive({
 
 ## @startStrand and @endStrand
 
-Similar to `@strand` and `@startNexus` and `@endNexus`, you can use the `@startStrand` and `@endStrand` directives to create a section where it will render  a React/Vue component inside the resources/js/strands (which is customizable). The first parateters is the `path/to/the/component`, and the second one is `['any' => 'data', 'you' => 'might need']`, just like the `@strand` directive. The difference is that you can use the `@startStrand` and `@endStrand` directives to insert a more complex server skeleton that will be displayed while the javascript is loading.
+Similar to `@strand` and `@startNexus` and `@endNexus`, you can use the `@startStrand` and `@endStrand` directives to create a section where it will render  a React/Vue component inside the resources/js/strands (which is customizable at the `createLaravextApp`/`createLaravextSsrApp` functions). The first parameter is the `path/to/the/component`, and the second one is `['any' => 'data', 'you' => 'might need']`, just like the `@strand` directive. The difference is that you can use the `@startStrand` and `@endStrand` directives to insert a more complex server skeleton that will be displayed while the javascript is loading.
 
 ```html
 @extends('layouts.app')

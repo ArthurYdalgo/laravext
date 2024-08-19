@@ -1,9 +1,9 @@
 
-This documentation assumes that you have some experience with PHP, Laravel and Javascript, and also that you already have a development environment that meets the requirements to run a Laravel 11 project using Vite as your bundler, and PHP 8.2 or higher.
+This documentation assumes that you have some experience with PHP, Laravel and Javascript, and also that you already have a development environment that meets the requirements to run a Laravel 10 (or later) project using Vite as your bundler, and PHP 8.2 or higher.
 
 ## Disclaimer
 
-I'm not an experienced front-end developer. I'm a back-end developer with some-what basic experience with front-end and in my projects I would only be responsible for making any front-end if it was for internal use only, so the looks were not important. 
+I'm not an experienced front-end developer. I'm a back-end developer with a somewhat basic experience with front-end and in my projects I would only be responsible for making any front-end if it was for internal use only, so the looks were not important. 
 
 With that in mind: the examples I might give in this documentation might cringe you a little bit, or just straight up look bad. I'm just trying to show you how to use Laravext. If you have any suggestions, please let me know by submitting a PR or opening an issue. Please be kind.
 
@@ -16,9 +16,9 @@ With that in mind: the examples I might give in this documentation might cringe 
 
 ## Example Standards
 
-Because this set of tools is meant to be used with React/Vue, you should be aware of some standards...
+Because Laravext is meant to be used with React/Vue, you should be aware of some standards...
 
-I might use `.jsx` as an extension for most files, or something like `.(jsx|tsx|js|ts|vue)`, assuming that you'll know that it may change depending on what you're using or what you're using it for (that means changing to `.vue`, `.tsx`, etc).
+I might use `.jsx` as an extension for some or most files, or something like `.(jsx|tsx|js|ts|vue)`, assuming that you'll know that it may change depending on what you're using or what you're using it for (that means changing to `.vue`, `.tsx`, etc).
 
 If I'm showing some code that wouldn't vary much betweem those libraries/frameworks (one or two lines), I might just show how it's be done for each one of them in the surrouding lines.
 

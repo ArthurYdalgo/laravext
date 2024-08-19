@@ -62,7 +62,7 @@ Additionally, you might be asking yourself:
 
 Before somebody light up their torches or grab their forks: the following points are my opinions only, based on my personal (in)experiences and troubles. You may disagree with them, and that's fine. Feel free to skip this section.
 
-Inertia.js doesn't have an out-of-the-box file-based routing system like the one Next.js offers. (To the best of my knowledge, at the time of writting). If you want to make it SEO friendly you need to have some kind of access to higher privilages so you can keep a `php artisan inertia:start-ssr` artisan command running through supervisor or something similar, which may not be available in a shared environment (which, although less common, is still a thing). Laravext offers, [along with the Inertia.js style](https://laravext.dev/#/server-side-rendering?id=javascript-runtime), two [other ways](https://laravext.dev/#/server-side-rendering?id=blade-engine-based) to create server-side rendered pages based on you SEO needs.
+Inertia.js doesn't have an out-of-the-box file-based routing system like the one Next.js offers. (To the best of my knowledge, at the time of writting). If you want to make it SEO friendly you need to have some kind of access to higher privilages so you can keep a `php artisan inertia:start-ssr` artisan command running through supervisor or something similar (and so does Laravext, by there's also another approach that you can easily use, if needed. Check the "Server Side Rendering" section of the docs for more informations), which may not be available in a shared environment (which, although less common, is still a thing). Laravext offers, [along with the Inertia.js style](https://laravext.dev/#/server-side-rendering?id=javascript-runtime), two [other ways](https://laravext.dev/#/server-side-rendering?id=blade-engine-based) to create server-side rendered pages based on you SEO needs.
 
 Next.js offers server-side rendering of React components, and a great routing system, but I (personally) don't like their caching strategy, and for my use cases there was the need to slap a `"use client"` for a lot of your pages. I felt a really degraded developer experience while using it, so for me it'd make sense to have a way of being 'use client' by default, and 'use server' when needed. I have other points about it, but I feel that the ["Why I Won't Use Next.js" article](https://www.epicweb.dev/why-i-wont-use-nextjs) from Kent C. Dodds summarizes most of what I mean way better than I could. It's a good reading if you're interested. 
 
@@ -91,7 +91,7 @@ I'll try to be as less biased as possible, but you might not be interested in us
 - you want to keep your frontend and backend in separate projects
 - you didn't like it (to each their own)
 
-Remember, this is just my opinion, and you should use whatever suits your needs the best, and there're plenty of tools available for you to use, such as the aforementioned Next.js, Inertia.js, Nuxt.js, TALL stack, Blade Components with Folio, etc.
+Remember, this is just my opinion, and you should use whatever suits your needs the best, and there're plenty of tools available for you to use, such as the aforementioned Next.js, Inertia.js, Nuxt.js, TALL stack, Blade Components with Folio, [Livewire](https://livewire.laravel.com/), etc.
 
 ## What does it do?
 
@@ -161,9 +161,9 @@ and inserting the following inside the `routes/web.php`:
 Route::laravext();
 ```
 
-Automagically registers the routes of your application (the resulting URIs are displayed next to each page.jsx as example). [Next.js' file conventions](https://nextjs.org/docs/app/building-your-application/routing#file-conventions) can also be applied, such as middlewares, layouts, error, etc. You can have granular control about what happens before a route is rendered, if needed (check the []() documentation section for more details).
+automagically registers the routes of your application (the resulting URIs are displayed next to each page.jsx as example). [Next.js' file conventions](https://nextjs.org/docs/app/building-your-application/routing#file-conventions) can also be applied, such as middlewares, layouts, error, etc. You can have granular control in a Inertia-styled approach about what happens before a route is rendered, if needed (check the [Tools/Nexus Response](/tools/nexus-response) documentation section for more details).
 
-A blade view (either the default one set in the config or specified one when the `Route::laravext()` is called and a `root_view` parameter is sent) is then rendered by the blade template engine. This view must contain what is called a `@nexus` blade directive, where the react component will be rendered. There're other ways render a nexus that are covered in the docs, more specifically in the [Tools/Routing](https://laravext.dev/#/tools/rountings) and [Tools/Nexus Response](https://laravext.dev/#/tools/nexus-response).
+A blade view (either the default one set in the config or specified one when the `Route::laravext()` is called and a `root_view` parameter is sent) is then rendered by the blade template engine. This view must contain what is called a `@nexus` blade directive (which you can read about at [Tools/Blade Directives](/tools/blade-directives)), where the react component will be rendered. There're other ways render a nexus that are covered in the docs, more specifically in the [Tools/Routing](https://laravext.dev/#/tools/rountings) and [Tools/Nexus Response](https://laravext.dev/#/tools/nexus-response).
 
 Additionally, in case you have components that are common to multiple pages, such as navbars, you can use the `@strand('Path/To/NavBar')` directive alongside a `@nexus`, which will use the name as a path to find a react component inside the `resources/js/strands` (which is customizable). The previous example would load a `NavBar.jsx` from the `resources/js/strands/Path/To` directory.
 
