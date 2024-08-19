@@ -1,5 +1,6 @@
+import React from "react";
 import { setupProgress } from './progress.jsx';
-import { clientRender, findNexus, findStrands, isEnvProduction, shouldLinkClickEventBeIntercepted } from './tools.jsx';
+import { clientRender, findNexus, findStrands, shouldLinkClickEventBeIntercepted } from './tools.jsx';
 import { renderToString } from 'react-dom/server';
 import laravext from './laravext';
 import LaravextContext from './LaravextContext';
@@ -130,13 +131,8 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, con
 
             if (nexusComponentPath) {
                 let NexusModule = await nexusResolver(nexusComponentPath)
-                if (!isEnvProduction()) {
-                    console.debug(`Loading page at ${nexusComponentPath}`);
-                }
+                
                 let nexus = <NexusModule.default laravext={laravext} />
-                if (!isEnvProduction()) {
-                    console.debug(`Page at ${nexusComponentPath} loaded successfully`);
-                }
 
                 conventions = conventions.filter(convention => convention !== 'page');
 
@@ -144,13 +140,7 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, con
                     if (laravext?.page_data?.nexus?.[conventions[i]]) {
                         try {
 
-                            if (!isEnvProduction()) {
-                                console.debug(`Loading convention ${conventions[i]} at ${laravext?.page_data?.nexus?.[conventions[i]]}`)
-                            };
                             let Convention = await nexusResolver(laravext?.page_data?.nexus?.[conventions[i]]);
-                            if (!isEnvProduction()) {
-                                console.debug(`Convention ${conventions[i]} at ${laravext?.page_data?.nexus?.[conventions[i]]} loaded successfully`);
-                            }
 
                             nexus = <Convention.default laravext={laravext}>{nexus}</Convention.default>;
                         } catch (error) {

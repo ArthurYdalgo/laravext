@@ -30,10 +30,6 @@ export async function resolveComponent(path, pages) {
     return typeof page === 'function' ? page() : page;
 }
 
-export function isEnvProduction(){
-    return !['development', 'local'].includes(import.meta.env.VITE_APP_ENV ?? 'production');
-}
-
 export function shouldLinkClickEventBeIntercepted(event) {
     const isLink = event.currentTarget.tagName.toLowerCase() === "a";
 
@@ -86,11 +82,6 @@ export function clientRender(scrollState = null) {
         nexusTags.forEach((nexusElement) => {
             if (nexusComponentPath) {
                 nexusResolver(nexusComponentPath).then(async (NexusComponent) => {
-                    if (!isEnvProduction()) {
-                        console.debug(`Loading page at ${nexusComponentPath}`);
-                        console.debug(`Page at ${nexusComponentPath} loaded successfully`);
-                    }
-
                     let pageComponent = NexusComponent.default
 
                     let renderer = () => h(pageComponent, {
@@ -104,13 +95,7 @@ export function clientRender(scrollState = null) {
                     for (let i = 0; i < conventions.length; i++) {
                         if (laravext?.page_data?.nexus?.[conventions[i]]) {
                             try {
-                                if (!isEnvProduction()) {
-                                    console.debug(`Loading convention ${conventions[i]} at ${laravext?.page_data?.nexus?.[conventions[i]]}`)
-                                };
                                 let conventionComponent = (await nexusResolver(laravext?.page_data?.nexus?.[conventions[i]])).default;
-                                if (!isEnvProduction()) {
-                                    console.debug(`Convention ${conventions[i]} at ${laravext?.page_data?.nexus?.[conventions[i]]} loaded successfully`);
-                                }
 
                                 const previousRenderer = renderer;
                                 renderer = () => h(conventionComponent, { }, {

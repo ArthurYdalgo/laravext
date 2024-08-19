@@ -1,4 +1,5 @@
 import NProgress from 'nprogress'
+import React from "react";
 
 /**
  * This is basically the same that Inertia.js uses, with some minor tweaks 

@@ -1,5 +1,6 @@
 import { createRoot } from "react-dom/client";
 import LaravextContext from "./LaravextContext";
+import React from "react";
 
 export function findNexus(doc = null) {
     if (typeof window !== "undefined") {
@@ -30,12 +31,6 @@ export async function resolveComponent(path, pages) {
     }
 
     return typeof page === "function" ? page() : page;
-}
-
-export function isEnvProduction() {
-    return !["development", "local"].includes(
-        import.meta.env.VITE_APP_ENV ?? "production"
-    );
 }
 
 export function shouldLinkClickEventBeIntercepted(event) {
@@ -80,19 +75,10 @@ export function clientRender(pageData = null, scrollState = null) {
             if (nexusComponentPath) {
                 nexusResolver(nexusComponentPath)
                     .then(async (NexusModule) => {
-                        if (!isEnvProduction()) {
-                            console.debug(
-                                `Loading page at ${nexusComponentPath}`
-                            );
-                        }
+
                         let nexus = (
                             <NexusModule.default laravext={laravextPageData} />
                         );
-                        if (!isEnvProduction()) {
-                            console.debug(
-                                `Page at ${nexusComponentPath} loaded successfully`
-                            );
-                        }
 
                         conventions = conventions.filter(
                             (convention) => convention !== "page"
@@ -101,31 +87,11 @@ export function clientRender(pageData = null, scrollState = null) {
                         for (let i = 0; i < conventions.length; i++) {
                             if (laravextPageData?.nexus?.[conventions[i]]) {
                                 try {
-                                    if (!isEnvProduction()) {
-                                        console.debug(
-                                            `Loading convention ${
-                                                conventions[i]
-                                            } at ${
-                                                laravextPageData?.nexus?.[
-                                                    conventions[i]
-                                                ]
-                                            }`
-                                        );
-                                    }
                                     let Convention = await nexusResolver(
                                         laravextPageData?.nexus?.[
                                             conventions[i]
                                         ]
                                     );
-                                    if (!isEnvProduction()) {
-                                        console.debug(
-                                            `Convention ${conventions[i]} at ${
-                                                laravextPageData?.nexus?.[
-                                                    conventions[i]
-                                                ]
-                                            } loaded successfully`
-                                        );
-                                    }
 
                                     nexus = (
                                         <Convention.default

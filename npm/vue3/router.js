@@ -1,4 +1,4 @@
-import { isEnvProduction, clientRender } from "./tools";
+import { clientRender } from "./tools";
 import { endProgress, startProgress } from "./progress";
 import axios from "axios";
 
@@ -12,10 +12,6 @@ export function visit(
     if (!history?.pushState) {
         window.location.href = url;
         return;
-    }
-
-    if (!isEnvProduction()) {
-        console.debug(`Visiting page at ${url}`);
     }
 
     startProgress();
@@ -41,20 +37,11 @@ export function visit(
         })
         .then(async ({ data, headers }) => {
             if (!headers["x-laravext"]) {
-                if (!isEnvProduction()) {
-                    console.debug(
-                        "Laravext header not found in response. Redirecting"
-                    );
-                }
                 window.location.href = url;
                 return;
             }
 
             let location = data.path ?? url;
-
-            if (!isEnvProduction()) {
-                console.debug(`Loading page at ${url}`, data);
-            }
 
             if (data.action == "redirect") {
                 window.location.href = data.url;

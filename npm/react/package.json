@@ -1,6 +1,6 @@
 {
     "name": "@laravext/react",
-    "version": "0.0.5",
+    "version": "0.0.9",
     "description": "Laravext for React",
     "homepage": "https://laravext.dev/",
     "repository": {
@@ -8,33 +8,35 @@
         "url": "https://github.com/arthurydalgo/laravext",
         "directory": "npm/react"
     },
-    "main": "./dist/cjs/index.cjs.js",
-    "module": "./dist/esm/index.esm.js",
+    "type": "module",
+    "main": "./dist/index.js",
+    "module": "./dist/index.esm.js",
     "exports": {
         ".": {
-            "import": "./dist/esm/index.esm.js",
-            "require": "./dist/cjs/index.cjs.js"
+            "import": "./dist/index.esm.js",
+            "require": "./dist/index.js"
         },
         "./server": {
-            "import": "./dist/esm/server.esm.js",
-            "require": "./dist/cjs/server.cjs.js"
+            "import": "./dist/server.esm.js",
+            "require": "./dist/server.js"
         },
         "./tools": {
-            "import": "./dist/esm/tools.esm.js",
-            "require": "./dist/cjs/tools.cjs.js"
+            "import": "./dist/tools.esm.js",
+            "require": "./dist/tools.js"
         },
         "./router": {
-            "import": "./dist/esm/router.esm.js",
-            "require": "./dist/cjs/router.cjs.js"
+            "import": "./dist/router.esm.js",
+            "require": "./dist/router.js"
         },
         "./progress": {
-            "import": "./dist/esm/progress.esm.js",
-            "require": "./dist/cjs/progress.cjs.js"
+            "import": "./dist/progress.esm.js",
+            "require": "./dist/progress.js"
         }
     },
     "private": false,
     "scripts": {
-        "build": "rollup -c",
+        "clean": "rm -rf dist",
+        "build": "npm run clean && ./build.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "Arthur Ydalgo",
@@ -47,14 +49,8 @@
         "react-dom": "^18.2.0"
     },
     "devDependencies": {
-        "@babel/core": "^7.20.0",
-        "@babel/preset-env": "^7.20.0",
-        "@babel/preset-react": "^7.20.0",
-        "@rollup/plugin-commonjs": "^21.0.0",
-        "@rollup/plugin-json": "^4.1.0",
-        "@rollup/plugin-node-resolve": "^13.0.0",
-        "@rollup/plugin-terser": "^0.4.4",
-        "rollup-plugin-babel": "^4.4.0",
-        "rollup-plugin-terser": "^7.0.2"
+        "esbuild": "^0.23.1",
+        "esbuild-node-externals": "^1.14.0",
+        "react": "^16.9.0 || ^17.0.0 || ^18.0.0"
     }
 }

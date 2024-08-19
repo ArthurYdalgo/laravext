@@ -1,7 +1,7 @@
 import { defineComponent, createSSRApp, h } from 'vue';
 import { renderToString } from '@vue/server-renderer';
 import { setupProgress } from './progress';
-import { clientRender, findNexus, findStrands, isEnvProduction, shouldLinkClickEventBeIntercepted } from './tools';
+import { clientRender, findNexus, findStrands, shouldLinkClickEventBeIntercepted } from './tools';
 import { visit } from './router';
 
 if (typeof window !== 'undefined') {
@@ -138,11 +138,6 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, con
             if (nexusComponentPath) {
                 let NexusComponent = await nexusResolver(nexusComponentPath);
 
-                if (!isEnvProduction()) {
-                    console.debug(`Loading page at ${nexusComponentPath}`);
-                    console.debug(`Page at ${nexusComponentPath} loaded successfully`);
-                }
-
                 let pageComponent = NexusComponent.default
 
                 let renderer = () => h(pageComponent, { laravext: laravext.page_data }, {
@@ -156,13 +151,7 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, con
                 for (let i = 0; i < conventions.length; i++) {
                     if (laravext.page_data?.nexus?.[conventions[i]]) {
                         try {
-                            if (!isEnvProduction()) {
-                                console.debug(`Loading convention ${conventions[i]} at ${laravext.page_data?.nexus?.[conventions[i]]}`)
-                            };
                             let conventionComponent = (await nexusResolver(laravext.page_data?.nexus?.[conventions[i]])).default;
-                            if (!isEnvProduction()) {
-                                console.debug(`Convention ${conventions[i]} at ${laravext.page_data?.nexus?.[conventions[i]]} loaded successfully`);
-                            }
 
                             const previousRenderer = renderer;
                             renderer = () => h(conventionComponent, { laravext }, {
