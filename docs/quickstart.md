@@ -394,6 +394,14 @@ then, assuming you have a `./resources/views/sections/app.blade.php` (or any oth
 @endsection
 ```
 
+Now if you run 
+
+```
+npm run dev
+```
+
+Everything should be up and running.
+
 ## Nexus Directory
 
 By default, the nexus directory is set as `./resources/js/nexus`. So this is where you should start placing the files that will be used by [Laravext's Router](/router). You may change this in the `./config/laravext.php` file, assuming you've published the config file.

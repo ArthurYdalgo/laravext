@@ -1,5 +1,5 @@
-import { clientRender, isEnvProduction } from "./tools";
-import { endProgress, startProgress } from "./progress";
+import { clientRender, isEnvProduction } from "./tools.jsx";
+import { endProgress, startProgress } from "./progress.jsx";
 import axios from "axios";
 
 export function visit(

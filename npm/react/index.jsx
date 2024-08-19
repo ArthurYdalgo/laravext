@@ -1,9 +1,9 @@
-import { setupProgress } from './progress';
-import { clientRender, findNexus, findStrands, isEnvProduction, shouldLinkClickEventBeIntercepted } from './tools';
+import { setupProgress } from './progress.jsx';
+import { clientRender, findNexus, findStrands, isEnvProduction, shouldLinkClickEventBeIntercepted } from './tools.jsx';
 import { renderToString } from 'react-dom/server';
 import laravext from './laravext';
 import LaravextContext from './LaravextContext';
-import { visit } from './router';
+import { visit } from './router.jsx';
 
 if (typeof window !== 'undefined') {
     window.addEventListener("popstate", function (event) {

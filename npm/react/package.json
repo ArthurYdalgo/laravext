@@ -1,26 +1,38 @@
 {
-  "name": "@laravext/react",
-  "version": "0.0.3",
-  "description": "Laravext for React",
-  "homepage": "https://laravext.dev/",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/arthurydalgo/laravext",
-    "directory": "npm/react"
-  },
-  "main": "index.jsx",
-  "private": false,
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Arthur Ydalgo",
-  "license": "ISC",
-  "dependencies": {
-    "axios": "^1.7.4",
-    "jsdom": "^24.1.0",
-    "nprogress": "^0.2.0",
-    "querystring": "^0.2.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
-  }
+    "name": "@laravext/react",
+    "version": "0.0.3",
+    "description": "Laravext for React",
+    "homepage": "https://laravext.dev/",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/arthurydalgo/laravext",
+        "directory": "npm/react"
+    },
+    "main": "dist/index.cjs.js",
+    "module": "dist/index.esm.js",
+    "private": false,
+    "scripts": {
+        "build": "rollup -c",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Arthur Ydalgo",
+    "license": "ISC",
+    "dependencies": {
+        "axios": "^1.7.4",
+        "jsdom": "^24.1.0",
+        "nprogress": "^0.2.0",
+        "querystring": "^0.2.1",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.25.2",
+        "@babel/preset-env": "^7.25.3",
+        "@babel/preset-react": "^7.24.7",
+        "@rollup/plugin-commonjs": "^26.0.1",
+        "@rollup/plugin-json": "^6.1.0",
+        "@rollup/plugin-node-resolve": "^15.2.3",
+        "rollup": "^2.79.1",
+        "rollup-plugin-babel": "^4.4.0"
+    }
 }
