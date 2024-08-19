@@ -1,25 +1,55 @@
 {
-  "name": "@laravext/vue3",
-  "version": "0.0.3",
-  "description": "Laravext for Vue3",
-  "homepage": "https://laravext.dev/",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/arthurydalgo/laravext",
-    "directory": "npm/vue3"
-  },
-  "main": "index.js",
-  "private": false,
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Arthur Ydalgo",
-  "license": "ISC",
-  "dependencies": {
-    "@vue/server-renderer": "^3.4.31",
-    "axios": "^1.7.4",
-    "jsdom": "^24.1.0",
-    "nprogress": "^0.2.0",
-    "vue": "^3.4.23"
-  }
+    "name": "@laravext/vue3",
+    "version": "0.0.4",
+    "description": "Laravext for Vue3",
+    "homepage": "https://laravext.dev/",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/arthurydalgo/laravext",
+        "directory": "npm/vue3"
+    },
+    "type": "module",
+    "main": "./dist/index.js",
+    "module": "./dist/index.esm.js",
+    "exports": {
+        ".": {
+            "import": "./dist/index.esm.js",
+            "require": "./dist/index.js"
+        },
+        "./server": {
+            "import": "./dist/server.esm.js",
+            "require": "./dist/server.js"
+        },
+        "./tools": {
+            "import": "./dist/tools.esm.js",
+            "require": "./dist/tools.js"
+        },
+        "./router": {
+            "import": "./dist/router.esm.js",
+            "require": "./dist/router.js"
+        },
+        "./progress": {
+            "import": "./dist/progress.esm.js",
+            "require": "./dist/progress.js"
+        }
+    },
+    "private": false,
+    "scripts": {
+        "clean": "rm -rf dist",
+        "build": "npm run clean && ./build.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Arthur Ydalgo",
+    "license": "ISC",
+    "dependencies": {
+        "@vue/server-renderer": "^3.4.31",
+        "axios": "^1.7.4",
+        "jsdom": "^24.1.0",
+        "nprogress": "^0.2.0",
+        "vue": "^3.4.23"
+    },
+    "devDependencies": {
+        "esbuild": "^0.23.1",
+        "esbuild-node-externals": "^1.14.0"
+    }
 }
