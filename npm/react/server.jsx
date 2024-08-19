@@ -1,7 +1,6 @@
 import { createServer } from 'http'
 import * as process from 'process'
 import { JSDOM } from 'jsdom';
-import { parse } from 'querystring';
 
 async function parsedRequestBody(request) {
     let body = await new Promise((resolve, reject) => {
@@ -18,7 +17,8 @@ async function parsedRequestBody(request) {
     try {
         return JSON.parse(body);
     } catch (error) {
-        return parse(body);
+        const params = new URLSearchParams(body);
+        return Object.fromEntries(params.entries());  // Convert to plain object
     }
 }
 

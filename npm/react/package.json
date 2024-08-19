@@ -1,6 +1,6 @@
 {
     "name": "@laravext/react",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "Laravext for React",
     "homepage": "https://laravext.dev/",
     "repository": {
@@ -8,8 +8,30 @@
         "url": "https://github.com/arthurydalgo/laravext",
         "directory": "npm/react"
     },
-    "main": "dist/index.cjs.js",
-    "module": "dist/index.esm.js",
+    "main": "./dist/cjs/index.cjs.js",
+    "module": "./dist/esm/index.esm.js",
+    "exports": {
+        ".": {
+            "import": "./dist/esm/index.esm.js",
+            "require": "./dist/cjs/index.cjs.js"
+        },
+        "./server": {
+            "import": "./dist/esm/server.esm.js",
+            "require": "./dist/cjs/server.cjs.js"
+        },
+        "./tools": {
+            "import": "./dist/esm/tools.esm.js",
+            "require": "./dist/cjs/tools.cjs.js"
+        },
+        "./router": {
+            "import": "./dist/esm/router.esm.js",
+            "require": "./dist/cjs/router.cjs.js"
+        },
+        "./progress": {
+            "import": "./dist/esm/progress.esm.js",
+            "require": "./dist/cjs/progress.cjs.js"
+        }
+    },
     "private": false,
     "scripts": {
         "build": "rollup -c",
@@ -21,18 +43,18 @@
         "axios": "^1.7.4",
         "jsdom": "^24.1.0",
         "nprogress": "^0.2.0",
-        "querystring": "^0.2.1",
         "react": "^18.2.0",
         "react-dom": "^18.2.0"
     },
     "devDependencies": {
-        "@babel/core": "^7.25.2",
-        "@babel/preset-env": "^7.25.3",
-        "@babel/preset-react": "^7.24.7",
-        "@rollup/plugin-commonjs": "^26.0.1",
-        "@rollup/plugin-json": "^6.1.0",
-        "@rollup/plugin-node-resolve": "^15.2.3",
-        "rollup": "^2.79.1",
-        "rollup-plugin-babel": "^4.4.0"
+        "@babel/core": "^7.20.0",
+        "@babel/preset-env": "^7.20.0",
+        "@babel/preset-react": "^7.20.0",
+        "@rollup/plugin-commonjs": "^21.0.0",
+        "@rollup/plugin-json": "^4.1.0",
+        "@rollup/plugin-node-resolve": "^13.0.0",
+        "@rollup/plugin-terser": "^0.4.4",
+        "rollup-plugin-babel": "^4.4.0",
+        "rollup-plugin-terser": "^7.0.2"
     }
 }
