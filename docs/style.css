@@ -2,3 +2,20 @@
     width: 100px; /* or any other width */
     height: auto; /* preserve the aspect ratio */
 }
+
+/*
+https://github.com/docsifyjs/docsify/issues/396#issuecomment-2081198884
+*/
+.sidebar-toggle {
+	background-color: unset;
+	position: fixed !important;
+	top: 0 !important;
+	bottom: auto !important;
+	padding: 10px 10px 10px 10px !important;
+}
+
+@media screen and (max-width: 768px) {
+	.markdown-section {
+		padding: 16px 16px 16px 36px !important;
+	}
+}
