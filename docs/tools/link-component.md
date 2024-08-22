@@ -18,7 +18,7 @@ export default () => {
 
     return (
         <div>
-            <Head>Our Teams</Head>
+            <Head title="Our Teams" />
 
             <nav className="some-cool-classes">
                 <Link href="/">Home</Link>

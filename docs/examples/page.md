@@ -136,7 +136,7 @@ export default () => {
 
     return (
         <div>
-            <Head>Our Teams</Head>
+            <Head title="Our Teams" />
 
             <div className="flex justify-center items-center min-h-[70vh] mt-6">
                 <div>

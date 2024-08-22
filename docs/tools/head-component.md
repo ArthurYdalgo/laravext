@@ -17,7 +17,7 @@ export default () => {
 
     return (
         <div>
-            <Head>Our Teams</Head>
+            <Head title="Our Teams" />
 
             {/* The Rest of your component */}
         </div>
