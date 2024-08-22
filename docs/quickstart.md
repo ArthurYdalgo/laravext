@@ -42,13 +42,17 @@ This technically optional, as there're other ways to generate your routes in a m
 
 Install the npm module:
 
+<sup>**Note**: the additional instructions to use Typescript are at the end of this section</sup>
+
 ```bash
 npm install @laravext/react
 
 # Additionally, you should have the following package installed, if you haven't already
 npm install @vitejs/plugin-react
-```
 
+# If you're planning to use typescript, you should also install the following packages
+npm install --save-dev typescript @types/react @types/react-dom
+```
 
 or
 
@@ -57,9 +61,12 @@ npm install @laravext/vue3
 
 # Additionally, you should have the following package installed, if you haven't already
 npm install @vitejs/plugin-vue
+
+# If you're planning to use typescript, you should also install the following packages
+npm install --save-dev typescript vue-tsc
 ```
 
-This example also assumes that you have a `bootstrap.js` at `./resources/js` and an `app.css` in you `./resources/css` directory. You might or not have any need for those.
+This example also assumes that you have a `bootstrap.(js|ts)` at `./resources/js` and an `app.css` in you `./resources/css` directory. You might or not have any need for those.
 
 Now, you'll need to create an `app.(js|jsx|ts|tsx)` in your `./resources/js` directory. The example below makes use of some npm packages such as i18n, moment, etc. You can remove them and the setup methods if you're not going to use them.
 
@@ -342,7 +349,6 @@ export default function ({ mode }) {
     })
 };
 
-
 ```
 
 ## Blade
@@ -407,6 +413,186 @@ Everything should be up and running.
 By default, the nexus directory is set as `./resources/js/nexus`. So this is where you should start placing the files that will be used by [Laravext's Router](/router). You may change this in the `./config/laravext.php` file, assuming you've published the config file.
 
 You're now ready to start creating your project using the laravext router
+
+## Typescript
+
+If you want to use Typescript, you might need to add some files to your project, and also install the NPM packages mentioned by the `# If you're planning to use typescript [...]` comments above in the NPM section.
+
+First, you'll need a `tsconfig.json` file in your project root directory. Here's an example (your needs may vary, so feel free to change it):
+
+<!-- tabs:start -->
+
+#### **React**
+
+`tsconfig.json`:
+
+
+```json
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+        "jsx": "react-jsx",
+        "strict": true,
+        "isolatedModules": true,
+        "target": "ESNext",
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "noEmit": true,
+        "paths": {
+            "@/*": ["./resources/js/*"],
+        }
+    },
+    "include": ["resources/js/**/*.ts", "resources/js/**/*.tsx", "resources/js/**/*.d.ts"]
+}
+
+```
+
+#### **Vue**
+
+`tsconfig.json`:
+
+
+```json
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+        "jsx": "preserve",
+        "strict": true,
+        "isolatedModules": true,
+        "target": "ESNext",
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "noEmit": true,
+        "skipLibCheck": true,
+        "paths": {
+            "@/*": ["./resources/js/*"],
+        }
+    },
+    "include": ["resources/js/**/*.ts", "resources/js/**/*.d.ts", "resources/js/**/*.vue"]
+}
+```
+
+
+<!-- tabs:end -->
+
+Now you'll need to define your types. Create a `types` directory in your `./resources/js` directory, and create a `laravext.d.ts` file in it. Here's what needs to be inside of it:
+
+<!-- tabs:start -->
+
+#### **React**
+
+`laravext.d.ts`:
+
+```ts
+declare module "@laravext/react" {
+    export const createLaravextApp: any;
+    export const createLaravextSsrApp: any;
+    export const Head: any;
+    export const Link: any;
+}
+
+declare module "@laravext/react/server" {
+    export const serve: any;
+}
+
+declare module "@laravext/react/tools" {
+    export const resolveComponent: any;
+}
+
+declare module "@laravext/react/router" {
+    export const visit: any;
+}
+
+declare module "@laravext/react/progress" {
+  export const injectCSS: any;
+  export const setupProgress: any;
+  export const startProgress: any;
+  export const moveProgress: any;
+  export const endProgress: any;
+}
+```
+
+#### **Vue**
+
+`laravext.d.ts`:
+
+
+```ts
+declare module "@laravext/vue3" {
+    export const createLaravextApp: any;
+    export const createLaravextSsrApp: any;
+    export const Head: any;
+    export const Link: any;
+}
+
+declare module "@laravext/vue3/server" {
+    export const serve: any;
+}
+
+declare module "@laravext/vue3/tools" {
+    export const resolveComponent: any;
+}
+
+declare module "@laravext/vue3/router" {
+    export const visit: any;
+}
+
+declare module "@laravext/vue3/progress" {
+  export const injectCSS: any;
+  export const setupProgress: any;
+  export const startProgress: any;
+  export const moveProgress: any;
+  export const endProgress: any;
+}
+```
+
+
+<!-- tabs:end -->
+
+If you haven't already, you might need to declare a `./resouces/js/types/vite-env.d.ts` file, with the following content:
+
+```ts
+/// <reference types="vite/client" />
+```
+
+and you might also need a `./resources/js/types/global.d.ts` file, to set up stuff you might be using, like Axios, for example:
+
+```ts
+import { AxiosInstance } from 'axios';
+
+declare global {
+    interface Window {
+        axios: AxiosInstance;
+    }
+}
+```
+
+Needless to say, some of the examples from the NPM section above might need to be changed to fit your needs, like declaring the type of the `name` parameter in the `nexusResolver` and `strandsResolver` functions, for example:
+
+```ts
+import './bootstrap';
+import '../css/app.css';
+
+// For React
+import { createLaravextApp } from "@laravext/react"
+import { resolveComponent } from "@laravext/react/tools"
+
+// For Vue
+import { createLaravextApp } from "@laravext/vue3"
+import { resolveComponent } from "@laravext/vue3/tools"
+
+createLaravextApp({
+    // Added the 'string' type here
+    nexusResolver: (name: string) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
+
+    // The rest of the code, which might also need some changes
+});
+
+```
 
 ## Looking for server side rendering? 
 
