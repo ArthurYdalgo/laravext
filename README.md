@@ -208,4 +208,4 @@ But hey, this is open-source, so you have my blessing (not that you need it anyw
 
 ### Side note
 
-The domain [laravext.com](https://laravext.com) is just a redirect to [laravext.dev](https://laravext.dev)
+The domain [laravext.com](http://laravext.com) is just a redirect to [laravext.dev](https://laravext.dev)
