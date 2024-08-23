@@ -493,6 +493,14 @@ declare module "@laravext/react" {
     export const createLaravextSsrApp: any;
     export const Head: any;
     export const Link: any;
+    export const laravextPageData: any;
+    export const version: any;
+    export const nexus: any;
+    export const nexusProps: any;
+    export const sharedProps: any;
+    export const routeParams: any;
+    export const routeName: any;
+    export const queryParams: any;
 }
 
 declare module "@laravext/react/server" {
@@ -527,6 +535,14 @@ declare module "@laravext/vue3" {
     export const createLaravextSsrApp: any;
     export const Head: any;
     export const Link: any;
+    export const laravextPageData: any;
+    export const version: any;
+    export const nexus: any;
+    export const nexusProps: any;
+    export const sharedProps: any;
+    export const routeParams: any;
+    export const routeName: any;
+    export const queryParams: any;
 }
 
 declare module "@laravext/vue3/server" {
