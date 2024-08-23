@@ -2,7 +2,7 @@
 
 Similar to the [Inertia.js devtools](https://chromewebstore.google.com/detail/inertiajs-devtools/golilfffgehhabacoaoilfgjelagablo?hl=en), there's also a Chrome extension that can be used to debug the data that is being passed to the client.
 
-It displayed the content of the `__laravext.page_data` variable for debugging purposes. The extension is available in the [chrome-extension directory](https://github.com/ArthurYdalgo/laravext/tree/main/chrome-extension) of the Laravext Repository.
+It displays the content of the `__laravext.page_data` variable for debugging purposes, and it makes use of the JSON Viewer by Roman Makudera, you can check his repo at https://github.com/LorDOniX/json-viewer. The extension is available in the [chrome-extension directory](https://github.com/ArthurYdalgo/laravext/tree/main/chrome-extension) of the Laravext Repository.
 
 To install it, go to `chrome://extensions/`, enable Developer mode, click on Load unpacked and select the `devtools-extension` folder.
 
