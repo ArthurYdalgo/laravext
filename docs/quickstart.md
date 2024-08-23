@@ -479,7 +479,7 @@ First, you'll need a `tsconfig.json` file in your project root directory. Here's
 
 <!-- tabs:end -->
 
-Now you'll need to define your types. Create a `types` directory in your `./resources/js` directory, and create a `laravext.d.ts` file in it. Here's what needs to be inside of it:
+Now you'll need to define your types. Create a `@types` directory in your `./resources/js` directory, and create a `laravext.d.ts` file in it. Here's what needs to be inside of it:
 
 <!-- tabs:start -->
 
@@ -569,13 +569,13 @@ declare module "@laravext/vue3/progress" {
 
 <!-- tabs:end -->
 
-If you haven't already, you might need to declare a `./resouces/js/types/vite-env.d.ts` file, with the following content:
+If you haven't already, you might need to declare a `./resouces/js/@types/vite-env.d.ts` file, with the following content:
 
 ```ts
 /// <reference types="vite/client" />
 ```
 
-and you might also need a `./resources/js/types/global.d.ts` file, to set up stuff you might be using, like Axios, for example:
+and you might also need a `./resources/js/@types/global.d.ts` file, to set up stuff you might be using, like Axios, for example:
 
 ```ts
 import { AxiosInstance } from 'axios';
@@ -585,6 +585,24 @@ declare global {
         axios: AxiosInstance;
     }
 }
+```
+
+and maybe a `./resources/js/@types/index.d.ts` file, to export all the types you might have:
+
+```ts
+export interface User {
+    id: number;
+    name: string;
+    email: string;
+    email_verified_at?: string;
+}
+
+export type sharedProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
+    auth: {
+        user: User;
+    };
+    motivation: string;
+};
 ```
 
 Needless to say, some of the examples from the NPM section above might need to be changed to fit your needs, like declaring the type of the `name` parameter in the `nexusResolver` and `strandsResolver` functions, for example:
