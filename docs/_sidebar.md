@@ -17,6 +17,7 @@
     - [Head Component](tools/head-component.md)
     - [Link Component](tools/link-component.md)
     - [The `visit` function](tools/visit.md)
+    - [Chrome extension for debugging](tools/chrome-extension.md)
 - [Server Side Rendering](server-side-rendering.md)
 - [Examples](examples.md)
     - [Page](examples/page.md)

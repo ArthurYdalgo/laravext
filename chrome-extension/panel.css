@@ -1,0 +1,9 @@
+body.dark-theme {
+  background-color: #333;
+  color: #fff;
+}
+
+body.dark-theme pre {
+  background-color: #444;
+  border-color: #555;
+}
