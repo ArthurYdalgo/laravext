@@ -159,7 +159,7 @@ If you intend to use a Inertia.js style of SSR, you might get a ```[DEP0040] Dep
 
 ### Route Caching
 
-If you run the `php artisan optimize` or the `php artisan route:cache` command, the conventions will not be loaded, and might end up with missing components from your page, such as your layout (this bug was identified by [SyntaxLexx](https://github.com/syntaxlexx)). As of now, you should avoid using the `route:cache` command, or run the `php artisan route:clear` command after running the `route:cache`/`optimize` commands.
+If you run the `php artisan optimize` or the `php artisan route:cache` command, the conventions will not be loaded, and might end up with missing components from your page, such as your layout (this bug was identified by [SyntaxLexx](https://github.com/syntaxlexx)). As of now, you should avoid using the `route:cache`/`optimize` command, or run the `route:clear` command after running either of them.
 
 ## Legal Disclaimer
 
