@@ -4,7 +4,7 @@ This is a Chrome extension that displays the contents of the __laravext.page_dat
 
 It makes use of the JSON Viewer by Roman Makudera, you can check his repo at https://github.com/LorDOniX/json-viewer
 
-To install it, go to `chrome://extensions/`, enable Developer mode, click on Load unpacked and select the `devtools-extension` folder.
+To install it, go to `chrome://extensions/`, enable Developer mode, click on Load unpacked and select the `chrome-extension` folder.
 
 After that, you might need to click on the extension to grant it permissions to access the page data. Then open your developer tools and you should see a new tab called "Laravext Page Data" (you might need to click in the `>>` to see it).
 
