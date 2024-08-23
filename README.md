@@ -19,6 +19,7 @@ Welcome to the Laravext repo!
 Here are some useful links:
 - [Documentation](https://laravext.dev)
 - [Packagist](https://packagist.org/packages/arthurydalgo/laravext)
+- [Packagist Repo](https://github.com/ArthurYdalgo/laravext-packagist)
 - [NPM @laravext/vue3](https://www.npmjs.com/package/@laravext/vue3)
 - [NPM @laravext/react](https://www.npmjs.com/package/@laravext/react)
 - [Youtube](https://www.youtube.com/@laravext)
