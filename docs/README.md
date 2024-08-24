@@ -157,10 +157,6 @@ The NavBar component will be rendered and receive the props sent to it in the di
 
 If you intend to use a Inertia.js style of SSR, you might get a ```[DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.``` warning in your console because of JSDom, which is used to render the React/Vue components. You can read more details in this [JSDom issue #3613](https://github.com/jsdom/jsdom/issues/3613)
 
-### Route Caching
-
-If you run the `php artisan optimize` or the `php artisan route:cache` command, the conventions will not be loaded, and might end up with missing components from your page, such as your layout (this bug was identified by [SyntaxLexx](https://github.com/syntaxlexx)). As of now, you should avoid using the `route:cache`/`optimize` command, or run the `route:clear` command after running either of them.
-
 ## Legal Disclaimer
 
 This project has no financial intent, and is meerly a Frankenstein of Inertia.js and Next.js. I fully disclose that it may contain code that is straight up ~~copied from~~ inspired by the [inertiajs/inertia](https://github.com/inertiajs/inertia/), [inertiajs/inertia-laravel](https://github.com/inertiajs/inertia-laravel) and [laravel/folio](https://github.com/laravel/folio) repos ~~, and changed to fit my needs~~.
