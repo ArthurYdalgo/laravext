@@ -6,7 +6,7 @@ I'd like to thank the following people who have contributed to the development o
 
 The following people gave some ideas that were implemented in Laravext:
 
-- [Felipe Eufrasio](https://github.com/garumam) gave the ideia to: 
+- [Felipe Eufrasio](https://github.com/garumam): 
     - [withHeadTitle](/tools/nexus-response?id=withheadtitletitle-and-withheaddescriptiondescription) method
     - [withViewSkeleton](/tools/nexus-response?id=withviewskeletonview-props-) method
 
