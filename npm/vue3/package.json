@@ -1,6 +1,6 @@
 {
     "name": "@laravext/vue3",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Laravext for Vue3",
     "homepage": "https://laravext.dev/",
     "repository": {
@@ -23,10 +23,6 @@
         "./tools": {
             "import": "./dist/tools.esm.js",
             "require": "./dist/tools.js"
-        },
-        "./router": {
-            "import": "./dist/router.esm.js",
-            "require": "./dist/router.js"
         },
         "./progress": {
             "import": "./dist/progress.esm.js",
