@@ -11,7 +11,7 @@ import { nexusProps, sharedProps } from "@laravext/react";
 import Swal from "sweetalert2";
 import Modal from "../Modal";
 import PrimaryButton from "../PrimaryButton";
-import { visit } from "@laravext/react/router";
+import { visit } from "@laravext/react";
 import DangerButton from "../DangerButton";
 
 export default ({ comment, onDelete = (comment) => {} }) => {

@@ -8,7 +8,7 @@ import useSearch from "@/hooks/useSearch";
 import { sharedProps } from "@laravext/react";
 import { useTranslation } from "react-i18next";
 import { route } from "ziggy-js";
-import { visit } from "@laravext/react/router";
+import { visit } from "@laravext/react";
 import { useEffect, useState } from "react";
 import { add } from "lodash";
 import { tagHexColor } from "@/tools/helpers";

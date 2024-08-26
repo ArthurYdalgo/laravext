@@ -10,7 +10,7 @@ import PrimaryButton from "@/components/PrimaryButton";
 import ProfileLink from "@/components/ProfileLink";
 import SecondaryButton from "@/components/SecondaryButton";
 import { sharedProps, nexusProps } from "@laravext/react";
-import { visit } from "@laravext/react/router";
+import { visit } from "@laravext/react";
 import moment from "moment/min/moment-with-locales";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";

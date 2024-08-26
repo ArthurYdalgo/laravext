@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import SecondaryButton from "../SecondaryButton";
 import LoadingButton from "../LoadingButton";
 import { nexusProps, sharedProps } from "@laravext/react";
-import {visit} from "@laravext/react/router";
+import {visit} from "@laravext/react";
 import Swal from "sweetalert2";
 import axios from "axios";
 import Modal from "../Modal";

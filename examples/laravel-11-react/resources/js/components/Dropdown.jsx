@@ -1,7 +1,7 @@
 import { useState, createContext, useContext, Fragment } from "react";
 import { Transition } from "@headlessui/react";
 import DropdownButton from "./DropdownButton";
-import { visit } from "@laravext/react/router";
+import { visit } from "@laravext/react";
 
 const DropDownContext = createContext();
 

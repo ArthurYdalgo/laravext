@@ -6,7 +6,7 @@ import Link from '@/components/Link';
 import PrimaryButton from '@/components/PrimaryButton';
 import TextInput from '@/components/TextInput';
 import { useTranslation } from 'react-i18next';
-import { visit } from '@laravext/react/router';
+import { visit } from '@laravext/react';
 
 
 export default () => {

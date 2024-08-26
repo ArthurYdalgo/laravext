@@ -1,5 +1,5 @@
 import moment from "moment/min/moment-with-locales";
-import { visit } from "@laravext/react/router";
+import { visit } from "@laravext/react";
 import GroupedReactions from "@/components/GroupedReactions";
 import { useTranslation } from "react-i18next";
 import Fa from "@/components/Fa";

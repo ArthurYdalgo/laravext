@@ -1,7 +1,7 @@
 import Bookmark from "@/components/Bookmark";
 import Tooltip from "@/components/Tooltip";
 import { nexusProps, sharedProps } from "@laravext/react";
-import { visit } from "@laravext/react/router";
+import { visit } from "@laravext/react";
 import useStateRef from "react-usestateref";
 import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";

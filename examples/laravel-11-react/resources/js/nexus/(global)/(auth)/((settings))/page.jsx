@@ -1,4 +1,4 @@
-import { visit } from '@laravext/react/router';
+import { visit } from '@laravext/react';
 
 export default () => {
     visit(route('settings.profile'));

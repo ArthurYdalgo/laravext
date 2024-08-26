@@ -1,5 +1,5 @@
 import {sharedProps} from '@laravext/react';
-import {visit} from '@laravext/react/router';
+import {visit} from '@laravext/react';
 import SecondaryButton from './SecondaryButton';
 import LoadingButton from './LoadingButton';
 import { useEffect, useState } from 'react';
