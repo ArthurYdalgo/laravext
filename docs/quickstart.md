@@ -501,6 +501,7 @@ declare module "@laravext/react" {
     export const routeParams: any;
     export const routeName: any;
     export const queryParams: any;
+    export const visit: any;
 }
 
 declare module "@laravext/react/server" {
@@ -509,10 +510,6 @@ declare module "@laravext/react/server" {
 
 declare module "@laravext/react/tools" {
     export const resolveComponent: any;
-}
-
-declare module "@laravext/react" {
-    export const visit: any;
 }
 
 declare module "@laravext/react/progress" {
@@ -543,6 +540,7 @@ declare module "@laravext/vue3" {
     export const routeParams: any;
     export const routeName: any;
     export const queryParams: any;
+    export const visit: any;
 }
 
 declare module "@laravext/vue3/server" {
@@ -551,10 +549,6 @@ declare module "@laravext/vue3/server" {
 
 declare module "@laravext/vue3/tools" {
     export const resolveComponent: any;
-}
-
-declare module "@laravext/vue3" {
-    export const visit: any;
 }
 
 declare module "@laravext/vue3/progress" {
