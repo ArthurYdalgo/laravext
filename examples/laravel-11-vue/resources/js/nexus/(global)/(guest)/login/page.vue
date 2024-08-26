@@ -7,7 +7,7 @@ import PrimaryButton from '@/components/PrimaryButton.vue';
 import TextInput from '@/components/TextInput.vue';
 import { Head } from '@laravext/vue3';
 import { reactive } from 'vue'
-import { visit } from '@laravext/vue3/router';
+import { visit } from '@laravext/vue3';
 
 let form = reactive({
     email: '',
