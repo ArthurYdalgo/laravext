@@ -2,7 +2,6 @@ import { defineComponent, createSSRApp, h } from 'vue';
 import { renderToString } from '@vue/server-renderer';
 import { setupProgress } from './progress';
 import { clientRender, findNexus, findStrands, shouldLinkClickEventBeIntercepted } from './tools';
-import { visit } from './router';
 import { endProgress, startProgress } from "./progress";
 import axios from "axios";
 
