@@ -511,7 +511,7 @@ declare module "@laravext/react/tools" {
     export const resolveComponent: any;
 }
 
-declare module "@laravext/react/router" {
+declare module "@laravext/react" {
     export const visit: any;
 }
 
@@ -553,7 +553,7 @@ declare module "@laravext/vue3/tools" {
     export const resolveComponent: any;
 }
 
-declare module "@laravext/vue3/router" {
+declare module "@laravext/vue3" {
     export const visit: any;
 }
 

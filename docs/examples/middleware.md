@@ -22,7 +22,7 @@ If a user tries to access a `/admin/dashboard` route (created by `./resources/js
 
 ```jsx
 import { sharedProps } from "@laravext/react";
-import { visit } from "@laravext/react/router";
+import { visit } from "@laravext/react";
 
 export default ({ children }) => {
     if (!sharedProps().auth.user) {

@@ -22,7 +22,7 @@ The options parameter is an object that defaults to:
 `Link.jsx` (this is an example of a custom Link component that uses the `visit` function, and not the actual implementation of the [Link component from Laravext](/tools/link-component)):
 
 ```jsx
-import { visit } from '@laravext/react/router';
+import { visit } from '@laravext/react';
 
 export default  ({ routeName, href, className = '', children }) => {
   let resolvedHref = href ? href : (routeName != null && route().has(routeName) ? route(routeName) : '');
@@ -47,7 +47,7 @@ export default  ({ routeName, href, className = '', children }) => {
 
 ```vue
 <script setup>
-import { visit } from '@laravext/vue3/router';
+import { visit } from '@laravext/vue3';
 
 const props = defineProps({
     routeName: {
