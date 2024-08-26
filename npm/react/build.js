@@ -19,8 +19,6 @@ const builds = [
   { entryPoints: ['server.jsx'], format: 'cjs', outfile: 'dist/server.js', platform: 'node' },
   { entryPoints: ['tools.jsx'], format: 'esm', outfile: 'dist/tools.esm.js', platform: 'browser' },
   { entryPoints: ['tools.jsx'], format: 'cjs', outfile: 'dist/tools.js', platform: 'browser' },
-  { entryPoints: ['router.jsx'], format: 'esm', outfile: 'dist/router.esm.js', platform: 'browser' },
-  { entryPoints: ['router.jsx'], format: 'cjs', outfile: 'dist/router.js', platform: 'browser' },
   { entryPoints: ['progress.jsx'], format: 'esm', outfile: 'dist/progress.esm.js', platform: 'browser' },
   { entryPoints: ['progress.jsx'], format: 'cjs', outfile: 'dist/progress.js', platform: 'browser' },
 ]
