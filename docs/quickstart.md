@@ -48,7 +48,7 @@ Install the npm module:
 npm install @laravext/react
 
 # Additionally, you should have the following package installed, if you haven't already
-npm install @vitejs/plugin-react
+npm install @vitejs/plugin-react laravel-vite-plugin
 
 # If you're planning to use typescript, you should also install the following packages
 npm install --save-dev typescript @types/react @types/react-dom
@@ -60,7 +60,7 @@ or
 npm install @laravext/vue3
 
 # Additionally, you should have the following package installed, if you haven't already
-npm install @vitejs/plugin-vue
+npm install @vitejs/plugin-vue laravel-vite-plugin
 
 # If you're planning to use typescript, you should also install the following packages
 npm install --save-dev typescript vue-tsc
