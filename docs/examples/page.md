@@ -161,6 +161,7 @@ export default () => {
 
 ```vue
 <script setup>
+import { inject } from 'vue';
 import { Head } from '@laravext/vue3'
 const nexusProps = inject('$nexusProps');
 

@@ -26,7 +26,7 @@ import { visit } from "@laravext/react";
 
 export default ({ children }) => {
     if (!sharedProps().auth.user) {
-        visit("/");
+        visit('/');
         return (
             <div v-else>
                 <div className="flex justify-center items-center h-[75vh]">
@@ -51,10 +51,12 @@ export default ({ children }) => {
 
 ```vue
 <script setup>
+import { inject } from 'vue';
+import { visit } from '@laravext/vue3';
 const sharedProps = inject('$sharedProps');
 
 if (!sharedProps().auth?.user) {
-    window.location.href = "/";
+    visit('/');
 }
 </script>
 <template>

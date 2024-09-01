@@ -40,7 +40,7 @@ This technically optional, as there're other ways to generate your routes in a m
 
 ## NPM      
 
-Install the npm module:
+Install the npm modules:
 
 <sup>**Note**: the additional instructions to use Typescript are at the end of this section</sup>
 

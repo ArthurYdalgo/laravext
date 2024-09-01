@@ -134,6 +134,7 @@ export default () => {
 
 ```vue
 <script setup>
+import { inject } from 'vue';
 // I've exemplified how to import all of them, but you can import them individually as needed
 const laravext = inject("$laravext");
 const nexus = inject("$nexus");

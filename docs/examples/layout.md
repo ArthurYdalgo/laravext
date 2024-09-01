@@ -48,7 +48,7 @@ export default ({ children }) => {
 
 ```vue
 <script setup>
-import { ref } from 'vue';
+import { ref, inject } from 'vue';
 import axios from 'axios';
 const sharedProps = inject('$sharedProps');
 
