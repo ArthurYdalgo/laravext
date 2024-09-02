@@ -15,7 +15,7 @@ npm run build
 composer install
 
 php artisan migrate --seed
-php artisan serve
+php artisan serve # or use Laravel Herd, or whatever you prefer
 ```
 
 You should now be able to access the application at [http://localhost:8000](http://localhost:8000).
