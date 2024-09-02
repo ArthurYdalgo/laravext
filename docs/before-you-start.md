@@ -67,6 +67,10 @@ Please submit a PR if you think that an example is not clear enough and you thin
 
 The examples are meant to help you understand how to use these tools, and are not meant to reflect how a real world application would be designed, so everything will be as simple as possible.
 
+## Starter Kits
+
+Much like when you run a `laravel new` and get the option to scaffold a new project with some basic configurations, Laravext has some starter kits that you can use to start a new project. They are available at the laravext repository, [in the starter-kits](https://github.com/ArthurYdalgo/laravext/tree/main/starter-kits) directory, and there's one for each of the supported front-end libraries/frameworks, which at the moment are [React](https://github.com/ArthurYdalgo/laravext/tree/main/starter-kits/react) and [Vue](https://github.com/ArthurYdalgo/laravext/tree/main/starter-kits/vue).
+
 ## The Example Project(s)
 
 Some code or file structures in this documentation might (or not) be derived from the [laravext examples available at GitHub](https://github.com/ArthurYdalgo/laravext/tree/main/examples), and it'll be either the [laravel-11-react](https://github.com/ArthurYdalgo/laravext/tree/main/examples/laravel-11-react) or [laravel-11-vue](https://github.com/ArthurYdalgo/laravext/tree/main/examples/laravel-11-vue). The Vue.js example is a basic developer team manager, where teams have developers and projects, and these projects belong to companies (needless to say that this does not reflect how a real world application of this kind would be designed). The React example, on the other hand, is an articles platform, where users can create articles and comment on them, much like a [Dev.to](https://dev.to) clone.

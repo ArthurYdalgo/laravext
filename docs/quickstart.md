@@ -2,6 +2,8 @@
 
 This tutorial assumes that you already have a Laravel 10 (or later) project up and running with PHP 8.2, and that you use the vite bundler. These instructions are based on the [examples provided in the laravext repository](https://github.com/ArthurYdalgo/laravext/tree/main/examples).
 
+You can also check the starter kits available at the laravext repository, [in the starter-kits](https://github.com/ArthurYdalgo/laravext/tree/main/starter-kits) directory.
+
 ## Composer
 
 First, install the composer package:
