@@ -35,7 +35,7 @@ export default () => {
         Cookies.set("locale", locale);
 
         if (user) {
-            axios.put("/api/auth/user", {
+            axios.post("/api/auth/user", {
                 locale,
             });
         }
@@ -218,9 +218,9 @@ export default () => {
                                         <Dropdown.Link routeName={'bookmarks'}>
                                             {t("Bookmarks")}
                                         </Dropdown.Link>
-                                        {/* <Dropdown.Link>
+                                        <Dropdown.Link routeName="settings.profile">
                                             {t("Settings")}
-                                        </Dropdown.Link> */}
+                                        </Dropdown.Link>
                                         <RoleCheck allowedRoles={["admin"]}>
                                             <div className="border-t border-gray-200 dark:border-gray-700"></div>
                                             <Dropdown.Link routeName="admin.dashboard">

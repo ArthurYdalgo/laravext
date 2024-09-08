@@ -95,15 +95,17 @@ class ArticleController extends Controller
             $data['banner_url'] = $banner_media->url;
         }
 
-        $data['published_at'] = now();
+        $data['published_at'] = $request->validated('publishing_datetime') ?? now();
         $data['slug'] = str($data['title'])->slug() . "-" . str()->random(6);
         $data['short_link_code'] = str()->random(16);
 
         $article = user()->articles()->create($data);
 
-        $tags = is_array($request->tags) ? $request->tags : explode(',', $request->tags);
+        if($request->tags){
+            $tags = is_array($request->tags) ? $request->tags : explode(',', $request->tags);
 
-        $article->tags()->sync($tags);
+            $article->tags()->sync($tags);
+        }
 
         return $this->successResponse($article);
     }

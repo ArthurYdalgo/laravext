@@ -22,7 +22,7 @@ class ArticleTagsExist implements DataAwareRule, ValidationRule
             $value = explode(',', $value);
         }
         
-        if(!Tag::whereIn('slug', $value)->count() === count($value)){
+        if($value && !Tag::whereIn('slug', $value)->count() === count($value)){
             $fail(__("The tags submitted do not exist."));
         }
          

@@ -25,6 +25,7 @@ class User extends Authenticatable
         'password',
         'theme',
         'avatar_url',
+        'pronouns',
         'banner_hex_color',
         'privacy',
         'locale',
@@ -144,11 +145,7 @@ class User extends Authenticatable
     public function addMediaFromContent($content, $path_prefix = 'media', $path_suffix = null)
     {
         $hash = hash('sha256', $content);
-
-        if ($media = $this->media()->where('hash', $hash)->first()) {
-            return $media;
-        }
-
+        
         $uuid = str()->uuid()->toString();
 
         $extension = getMimeFromBinary($content, true);

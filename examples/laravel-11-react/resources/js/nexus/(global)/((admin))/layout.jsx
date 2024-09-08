@@ -40,7 +40,7 @@ export default ({ children }) => {
         let state = privacyIsActive;
         togglePrivacy();
 
-        axios.put('/api/auth/user', {
+        axios.post('/api/auth/user', {
             privacy: !state
         });
     };
@@ -50,7 +50,7 @@ export default ({ children }) => {
 
         Cookies.set('locale', locale);
 
-        axios.put('/api/auth/user', {
+        axios.post('/api/auth/user', {
             locale
         });
     };

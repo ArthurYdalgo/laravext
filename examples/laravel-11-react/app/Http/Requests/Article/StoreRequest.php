@@ -26,6 +26,7 @@ class StoreRequest extends FormRequest
             'title' => ['required', 'string', 'max:255'],
             'language' => ['required', 'string', 'in:en,pt'],
             'reading_time' => ['required', 'integer'],
+            'publishing_datetime' => ['nullable', 'date'],
             'markdown' => ['required', 'string'],
             'tags' => [new ArticleTagsExist],
         ];

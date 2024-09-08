@@ -17,7 +17,7 @@ return new class extends Migration
 
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->string('disk')->index();
-            $table->string('hash')->index()->unique();
+            $table->string('hash')->index();
             $table->string('path', 512)->nullable();
             $table->string('url', 2048);
 

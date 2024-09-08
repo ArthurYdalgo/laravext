@@ -11,7 +11,7 @@ class StoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,7 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'avatar' => ['required', 'image', 'max:2048', 'dimensions:max_width=3000,max_height=3000'],
         ];
     }
 }

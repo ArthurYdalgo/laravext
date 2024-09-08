@@ -25,7 +25,7 @@ Route::group([
     'prefix' => 'auth'
 ], function () {
     Route::get("user", [CurrentUserController::class, 'show'])->middleware('auth');
-    Route::put("user", [CurrentUserController::class, 'update'])->middleware('auth');
+    Route::post("user", [CurrentUserController::class, 'store'])->middleware('auth');
 
     Route::post("user/avatar", [UserAvatarController::class, 'store'])->middleware('auth');
     Route::delete("user/avatar", [UserAvatarController::class, 'destroy'])->middleware('auth');

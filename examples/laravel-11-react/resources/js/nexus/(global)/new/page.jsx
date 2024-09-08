@@ -204,6 +204,7 @@ export default () => {
                                 type="button"
                                 onClick={() => {
                                     setBanner(null);
+                                    document.getElementById("banner").value = "";
                                 }}
                             >
                                 <Fa icon="trash" className="mr-2" />
@@ -244,6 +245,7 @@ export default () => {
                     />
                 </div>
 
+
                 <div className="mb-2">
                     <InputLabel>{t("Language")}</InputLabel>
                     <select
@@ -265,6 +267,17 @@ export default () => {
                         className="w-full border border-gray-300 rounded-lg"
                         required
                         min={1}
+                    />
+                </div>
+
+
+
+                <div className="mb-2">
+                    <InputLabel>{t("Publishing Date and Time")} ({t("optional")})</InputLabel>
+                    <input
+                        type="datetime-local"
+                        name="publishing_datetime"
+                        className="w-full border border-gray-300 rounded-lg"
                     />
                 </div>
 
@@ -559,6 +572,8 @@ export default () => {
                         </div>
                     )}
                 </div>
+
+                
                 <div className="mt-2 flex justify-end">
                     <PrimaryButton disabled={imageIsUploading}>
                         {t("Save")}

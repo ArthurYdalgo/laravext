@@ -1,7 +1,8 @@
 import { useState, createContext, useContext, Fragment } from "react";
 import { Transition } from "@headlessui/react";
 import DropdownButton from "./DropdownButton";
-import { visit } from "@laravext/react";
+import { visit, Link as LaravextLink } from "@laravext/react";
+import { shouldLinkClickEventBeIntercepted } from "@laravext/react/tools";
 
 const DropDownContext = createContext();
 
@@ -47,13 +48,13 @@ const Link = ({ children, href = null, routeName = null, ...props }) => {
 
     return (
         <DropdownButton
-            onClick={(e) => {
-                e.preventDefault();
-                visit(resolvedHref);
+            onClick={(event) => {
                 setOpen(false);
             }}
         >
-            {children}
+            <LaravextLink href={resolvedHref} className="block w-full">
+                {children}
+            </LaravextLink>
         </DropdownButton>
     );
 };

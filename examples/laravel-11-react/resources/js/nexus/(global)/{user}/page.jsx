@@ -87,7 +87,7 @@ export default () => {
                 >
                     <div className="p-4 py-6">
                         <img
-                            className="h-32 w-32 shadow-lg rounded-full border-gray-200 border-2"
+                            className="h-32 w-32 shadow-lg rounded-full border-gray-200 border-2 bg-white"
                             src={
                                 pageUser?.avatar_url ??
                                 "/images/avatars/placeholder.png"

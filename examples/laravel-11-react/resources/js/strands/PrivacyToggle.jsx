@@ -15,7 +15,7 @@ export default ({ laravext, initialState }) => {
         // This is done like this because the active wouldn't always be updated immediately
         let currentState = active;
         toggle();
-        axios.put('/api/auth/user', { privacy: !currentState })
+        axios.post('/api/auth/user', { privacy: !currentState })
     }
 
     return (
