@@ -1,6 +1,6 @@
 # Laravext Example - Laravel 11 with React
 
-⚠️This example is still under development, so some pages are fully finished⚠️
+⚠️This example is still under development, so some pages are not fully finished⚠️
 
 ## Introduction
 
