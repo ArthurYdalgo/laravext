@@ -1,5 +1,7 @@
 # Laravext Example - Laravel 11 with React
 
+⚠️This example is still under development, so some pages are fully finished⚠️
+
 ## Introduction
 
 This is an example of a Laravel 11 application with React that makes use of the [Laravext package](laravext.dev).
