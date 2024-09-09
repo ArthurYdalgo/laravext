@@ -89,6 +89,23 @@ export default () => {
             });
     };
 
+    const destroyAvatar = () => {
+        axios
+            .delete("/api/auth/user/avatar")
+            .then(() => {
+                setAvatar(null);
+            })
+            .catch(() => {
+                Swal.fire({
+                    title: t(
+                        "An error occurred while trying to delete your avatar"
+                    ),
+                    icon: "error",
+                    confirmButtonText: t("OK"),
+                });
+            });
+    }
+
     return (
         <form onSubmit={submit}>
             <div className="flex flex-col space-y-4">
@@ -175,10 +192,27 @@ export default () => {
                                         <DangerButton
                                             type="button"
                                             onClick={() => {
-                                                setAvatar(null);
-                                                document.getElementById(
-                                                    "avatar"
-                                                ).value = "";
+                                                Swal.fire({
+                                                    title: t("Are you sure?"),
+                                                    text: t(
+                                                        "This action cannot be undone"
+                                                    ),
+                                                    icon: "warning",
+                                                    showCancelButton: true,
+                                                    confirmButtonText: t(
+                                                        "Yes, delete it"
+                                                    ),
+                                                    cancelButtonText: t("Cancel"),
+                                                }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                        destroyAvatar();
+                                                        setAvatar(null);
+                                                        document.getElementById(
+                                                            "avatar"
+                                                        ).value = "";
+                                                    }
+                                                });
+                                                
                                             }}
                                         >
                                             <Fa icon="trash" />
