@@ -1,11 +1,10 @@
 import Fa from "./Fa";
 
 export default ({ link }) => {
-    const { type, href, display_mode = 'link' } = link;
+    const { type, url, icon} = link;
 
-    return <a href={href} className="hover:text-blue-500">
-        {display_mode === 'icon' && <Fa icon={`fa-${type}` + (type != 'link' ? ' fa-brands' : '')} />}
-        {display_mode === 'link' && (<><Fa className="mr-2" icon={`fa-${type}` + (type != 'link' ? ' fa-brands' : '')} />{href}</>)}
-        {display_mode === 'short_link' && (<><Fa className="mr-2" icon={`fa-${type}` + (type != 'link' ? ' fa-brands' : '')} />{href.replace(/^https?:\/\//, '')}</>)}
+    return <a href={url} target="_blank" className="hover:text-blue-500 cursor:pointer">
+        {type === 'icon' && <Fa icon={`fa-${icon} fa-brands`} size='xl'  />}
+        {type === 'short_link' && (<><Fa className="mr-2" icon={`link`} />{href.replace(/^https?:\/\//, '')}</>)}
     </a>;
 };

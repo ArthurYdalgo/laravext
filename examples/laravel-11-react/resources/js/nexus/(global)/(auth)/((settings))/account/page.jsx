@@ -50,13 +50,14 @@ export default () => {
                         @{user?.username}
                     </h2>
                     <div className="bg-white px-7 py-8 rounded-md shadow flex flex-col space-y-2">
-                        <h3 className="font-bold mb-2">User</h3>
+                        <h3 className="font-bold mb-2">{t('User')}</h3>
                         <div className="flex flex-col space-y-2">
                             <InputLabel fontSizeClass="text-lg">
                                 {t("Name")}
                             </InputLabel>
                             <TextInput
                                 name="name"
+                                maxLength={255}
                                 initialValue={user?.name}
                             ></TextInput>
                         </div>
@@ -66,6 +67,7 @@ export default () => {
                             </InputLabel>
                             <TextInput
                                 name="username"
+                                maxLength={20}
                                 initialValue={user?.username}
                             ></TextInput>
                         </div>
@@ -75,69 +77,9 @@ export default () => {
                             </InputLabel>
                             <TextInput
                                 name="email"
+                                maxLength={200}
                                 initialValue={user?.email}
                             ></TextInput>
-                        </div>
-                        <div className="flex flex-col space-y-2">
-                            <InputLabel fontSizeClass="text-lg">
-                                {t("Profile Image")}
-                            </InputLabel>
-                            <div className="flex items-center">
-                                <div className="flex items-center justify-center">
-                                    <img
-                                        src={
-                                            avatar
-                                                ? URL.createObjectURL(avatar)
-                                                : user?.avatar_url ??
-                                                  "/images/avatars/placeholder.png"
-                                        }
-                                        alt="avatar"
-                                        className="min-w-12 w-12 rounded-full"
-                                    />
-                                </div>
-                                <div className="border p-1 ml-2 rounded-md w-full border-gray-200 flex justify-between">
-                                    <div className="flex space-x-2">
-                                        <PrimaryButton
-                                            as="label"
-                                            htmlFor="avatar"
-                                            type="button"
-                                            className="cursor-pointer h-8"
-                                            onClick={() => {
-                                                // simulate click on the file input
-                                                document
-                                                    .getElementById("avatar")
-                                                    .click();
-                                            }}
-                                        >
-                                            {t("Change")}
-                                        </PrimaryButton>
-                                        <input
-                                            type="file"
-                                            id="avatar"
-                                            className="hidden"
-                                            accept="image/*"
-                                            onChange={(e) => {
-                                                console.log(e.target.files[0]);
-                                                setAvatar(e.target.files[0]);
-                                            }}
-                                        />
-                                    </div>
-
-                                    {avatar && (
-                                        <DangerButton
-                                            type="button"
-                                            onClick={() => {
-                                                setAvatar(null);
-                                                document.getElementById(
-                                                    "avatar"
-                                                ).value = "";
-                                            }}
-                                        >
-                                            <Fa icon="trash" />
-                                        </DangerButton>
-                                    )}
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>

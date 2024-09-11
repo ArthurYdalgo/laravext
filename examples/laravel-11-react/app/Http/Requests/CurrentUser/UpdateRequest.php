@@ -33,6 +33,11 @@ class UpdateRequest extends FormRequest
             'education' => 'nullable|string|max:255',
             'work' => 'nullable|string|max:255',
             'pronouns' => 'nullable|string|max:20',
+            'links' => 'nullable|array',
+            'links.*.type' => 'required|string|max:255',
+            'links.*.url' => 'required|url|max:2000',
+            'links.*.icon' => 'nullable|string|max:255',
+
             'avatar' => [
                 'exclude_if:avatar,null',
                 'image',

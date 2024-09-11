@@ -2,13 +2,15 @@ import Dropdown from "@/components/Dropdown";
 import Link from "@/components/Link";
 
 import { laravextPageData } from "@laravext/react";
+import { useTranslation } from "react-i18next";
 
 export default ({ children }) => {
     const { route_name } = laravextPageData();
+    const { t } = useTranslation();
 
     const routeLabels = {
-        "settings.profile": "Profile",
-        "settings.account": "Account",
+        "settings.profile": t("Profile"),
+        "settings.account": t("Account"),
     };
 
     return (

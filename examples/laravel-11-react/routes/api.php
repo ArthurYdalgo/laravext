@@ -11,6 +11,7 @@ use App\Http\Controllers\CommentAbuseReportController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CurrentUserController;
 use App\Http\Controllers\FollowerController;
+use App\Http\Controllers\ImageAverageColorController;
 use App\Http\Controllers\Tools\MarkdownPreviewController;
 use App\Http\Controllers\UploadImageController;
 use App\Http\Controllers\UserAbuseReportController;
@@ -87,6 +88,7 @@ Route::group([
     'prefix' => 'tools'
 ], function () {
     Route::post('markdown-preview', MarkdownPreviewController::class)->middleware('auth');
+    Route::post('image-average-color', ImageAverageColorController::class)->middleware('auth');
 
     Route::group([
         'prefix' => 'users'
