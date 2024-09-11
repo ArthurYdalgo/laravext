@@ -1,6 +1,7 @@
 import DangerButton from "@/components/DangerButton";
 import Fa from "@/components/Fa";
 import InputLabel from "@/components/InputLabel";
+import Link from "@/components/Link";
 import PrimaryButton from "@/components/PrimaryButton";
 import TextInput from "@/components/TextInput";
 import { sharedProps } from "@laravext/react";
@@ -47,10 +48,15 @@ export default () => {
             <div className="flex flex-col space-y-4">
                 <div>
                     <h2 className="font-semibold text-blue-700">
-                        @{user?.username}
+                        <Link
+                            className="hover:underline"
+                            href={route("user", { user: user?.username })}
+                        >
+                            @{user?.username}
+                        </Link>
                     </h2>
                     <div className="bg-white px-7 py-8 rounded-md shadow flex flex-col space-y-2">
-                        <h3 className="font-bold mb-2">{t('User')}</h3>
+                        <h3 className="font-bold mb-2">{t("User")}</h3>
                         <div className="flex flex-col space-y-2">
                             <InputLabel fontSizeClass="text-lg">
                                 {t("Name")}
@@ -83,8 +89,6 @@ export default () => {
                         </div>
                     </div>
                 </div>
-
-                
 
                 <div className="bg-white px-4 py-4 rounded-md shadow sticky bottom-0">
                     <PrimaryButton
