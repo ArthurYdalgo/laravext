@@ -4,8 +4,11 @@ use App\Http\Controllers\AbuseReportController;
 use App\Http\Controllers\ArticleAbuseReportController;
 use App\Http\Controllers\ArticleCommentController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\Auth\DeleteUserController;
+use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CommentAbuseReportController;
 use App\Http\Controllers\CommentController;
@@ -20,7 +23,7 @@ use App\Models\Tag;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Route;
 
-Route::get('tags', fn () => JsonResource::collection(Tag::orderBy('slug')->get()));
+Route::get('tags', fn() => JsonResource::collection(Tag::orderBy('slug')->get()));
 
 Route::group([
     'prefix' => 'auth'
@@ -30,6 +33,17 @@ Route::group([
 
     Route::post("user/avatar", [UserAvatarController::class, 'store'])->middleware('auth');
     Route::delete("user/avatar", [UserAvatarController::class, 'destroy'])->middleware('auth');
+
+    Route::delete('user', DeleteUserController::class)
+        ->middleware(['auth', 'verified']);
+
+    Route::put('password', [PasswordController::class, 'update'])
+        ->middleware(['auth', 'verified'])
+        ->name('password.update');
+
+    Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
+        ->middleware(['auth', 'throttle:6,1'])
+        ->name('verification.send');
 
     Route::post('login', LoginController::class);
     Route::post('register', RegisterController::class)->middleware('guest');
@@ -63,16 +77,16 @@ Route::group([
     });
 
     Route::post("images", UploadImageController::class);
-    
+
     Route::prefix('comments/{comment}')->group(function () {
         Route::get('replies', [CommentController::class, 'replies'])->withoutMiddleware('auth');
         Route::post('abuse-reports', [CommentAbuseReportController::class, 'store']);
-        
+
         Route::post('like', [CommentController::class, 'like']);
         Route::post('replies', [CommentController::class, 'reply']);
-        
+
         Route::put('', [CommentController::class, 'update']);
-        
+
         Route::delete('like', [CommentController::class, 'unlike']);
         Route::delete('', [CommentController::class, 'destroy']);
     });
@@ -80,8 +94,6 @@ Route::group([
     Route::post('users/{user}/abuse-reports', [UserAbuseReportController::class, 'store']);
 
     Route::apiResource('abuse-reports', AbuseReportController::class)->except(['store'])->middleware('admin');
-
-
 });
 
 Route::group([

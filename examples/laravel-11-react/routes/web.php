@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Models\Article;
 use App\Models\Share;
 use Illuminate\Support\Facades\Route;
@@ -15,5 +16,9 @@ Route::get('sl/{article:short_link_code}', function (Article $article) {
 Route::get('s/{share:code}', function (Share $share) {
     return redirect()->route('user.article', ['article' => $share->article->slug, 'user' => $share->article->user->username, 'sid' => $share->id]);
 })->name('share');
+
+Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
+->middleware(['auth:sanctum', 'signed', 'throttle:6,1'])
+->name('verification.verify');
 
 require __DIR__ . '/laravext.php';
