@@ -15,6 +15,7 @@ import Tooltip from "@/components/Tooltip";
 import Dropdown from "@/components/Dropdown";
 import DropdownButton from "@/components/DropdownButton";
 import SecondaryButton from "@/components/SecondaryButton";
+import InputError from "@/components/InputError";
 
 export default () => {
     const { user } = sharedProps().auth;
@@ -24,6 +25,8 @@ export default () => {
         displayColorPicker: false,
         color: user?.banner_hex_color ?? "#000000",
     });
+
+    const [errors, setErrors] = useState({});
 
     const icons = [
         "linkedin",
@@ -199,7 +202,12 @@ export default () => {
                     confirmButtonText: t("OK"),
                 });
             })
-            .catch(() => {
+            .catch((error) => {
+                setErrors((prevState) => ({
+                    ...prevState,
+                    ...error.response.data.errors,
+                }));
+                
                 Swal.fire({
                     title: t(
                         "An error occurred while trying to save your profile"
@@ -260,6 +268,7 @@ export default () => {
                                 maxLength={20}
                                 initialValue={user?.username}
                             ></TextInput>
+                            <InputError message={errors.username} />
                         </div>
                         <div className="flex flex-col space-y-2">
                             <InputLabel fontSizeClass="text-lg">
@@ -270,6 +279,7 @@ export default () => {
                                 maxLength={200}
                                 initialValue={user?.email}
                             ></TextInput>
+                            <InputError message={errors.email} />
                         </div>
                         <div className="flex flex-col space-y-2">
                             <InputLabel fontSizeClass="text-lg">

@@ -8,7 +8,9 @@ use App\Http\Controllers\Auth\DeleteUserController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CommentAbuseReportController;
 use App\Http\Controllers\CommentController;
@@ -41,9 +43,17 @@ Route::group([
         ->middleware(['auth', 'verified'])
         ->name('password.update');
 
+    Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
+        ->middleware('guest:sanctum')
+        ->name('password.email');
+
     Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
         ->middleware(['auth', 'throttle:6,1'])
         ->name('verification.send');
+
+    Route::post('reset-password', [NewPasswordController::class, 'store'])
+        ->middleware('guest:sanctum')
+        ->name('password.store');
 
     Route::post('login', LoginController::class);
     Route::post('register', RegisterController::class)->middleware('guest');

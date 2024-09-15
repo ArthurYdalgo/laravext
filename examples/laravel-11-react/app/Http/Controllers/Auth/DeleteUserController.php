@@ -16,12 +16,12 @@ class DeleteUserController extends Controller
 
         $user = $request->user();
 
-        // $user->delete();
+        $user->delete();
 
-        // Auth::guard('web')->logout();
+        Auth::guard('web')->logout();
 
-        // $request->session()->invalidate();
-        // $request->session()->regenerateToken();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         return response()->noContent();
     }
