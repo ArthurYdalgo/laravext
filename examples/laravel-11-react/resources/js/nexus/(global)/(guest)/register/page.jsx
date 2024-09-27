@@ -5,6 +5,7 @@ import PrimaryButton from "@/components/PrimaryButton";
 import TextInput from "@/components/TextInput";
 import { Head, Link, visit } from "@laravext/react";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 export default () => {
     const [data, setData] = useState({
@@ -13,6 +14,8 @@ export default () => {
         password: "",
         password_confirmation: "",
     });
+
+    const { t } = useTranslation();
 
     const [errors, setErrors] = useState({});
     const [processing, setProcessing] = useState(false);
@@ -41,6 +44,10 @@ export default () => {
             <Head title="Register" />
 
             <form onSubmit={submit}>
+                <h3 className="mt-6 justify-center text-2xl font-semibold text-gray-900 dark:text-white text-center">
+                    {t('Register')}
+                </h3>
+
                 <div>
                     <InputLabel htmlFor="name" value="Name" />
 

@@ -11,6 +11,7 @@ import Dropdown from "@/components/Dropdown";
 import DropdownButton from "@/components/DropdownButton";
 import useSearch from "@/hooks/useSearch";
 import Cookies from 'js-cookie';
+import { useEffect } from "react";
 
 export default () => {
     const { t, i18n } = useTranslation();
@@ -28,6 +29,12 @@ export default () => {
             flag: "/images/flags/br.svg",
         },
     };
+
+    useEffect(() => {
+        if(user) {
+            i18n.changeLanguage(user.locale);
+        }
+    }, [user]);
 
     const handleLocaleChange = (locale) => {
         i18n.changeLanguage(locale);
@@ -209,9 +216,9 @@ export default () => {
                                             <p>@{user?.username}</p>
                                         </Dropdown.Link>
                                         <div className="border-t border-gray-200 dark:border-gray-700"></div>
-                                        {/* <Dropdown.Link routeName="dashboard">
+                                        <Dropdown.Link routeName="dashboard">
                                             {t("Dashboard")}
-                                        </Dropdown.Link> */}
+                                        </Dropdown.Link>
                                         <Dropdown.Link routeName="new">
                                             {t("Create Post")}
                                         </Dropdown.Link>

@@ -55,7 +55,7 @@ export default () => {
                 type: "icon",
                 icon: "linkedin",
                 url: "https://www.linkedin.com/in/arthur-ydalgo-7b4b3b1b9/",
-            }
+            },
         ]
     );
 
@@ -83,16 +83,16 @@ export default () => {
             return;
         }
 
-        let link = {...currentLinks[index]};
-        currentLinks[index] = {...currentLinks[newIndex]};
+        let link = { ...currentLinks[index] };
+        currentLinks[index] = { ...currentLinks[newIndex] };
         currentLinks[newIndex] = link;
 
         setLinks(currentLinks);
     };
 
     const addLink = () => {
-        let newLinks = [...links, {...newLink}];
-        
+        let newLinks = [...links, { ...newLink }];
+
         setLinks(newLinks);
 
         setNewLink({
@@ -207,7 +207,7 @@ export default () => {
                     ...prevState,
                     ...error.response.data.errors,
                 }));
-                
+
                 Swal.fire({
                     title: t(
                         "An error occurred while trying to save your profile"
@@ -248,7 +248,7 @@ export default () => {
                         </Link>
                     </h2>
                     <div className="bg-white px-7 py-8 rounded-md shadow flex flex-col space-y-2">
-                        <h3 className="font-bold mb-2">{t('User')}</h3>
+                        <h3 className="font-bold mb-2">{t("User")}</h3>
                         <div className="flex flex-col space-y-2">
                             <InputLabel fontSizeClass="text-lg">
                                 {t("Name")}
@@ -358,7 +358,7 @@ export default () => {
                 </div>
 
                 <div className="bg-white px-7 py-8 rounded-md shadow flex flex-col space-y-2">
-                    <h3 className="font-bold mb-2">{t('Basic Information')}</h3>
+                    <h3 className="font-bold mb-2">{t("Basic Information")}</h3>
                     <div className="flex flex-col space-y-2">
                         <InputLabel fontSizeClass="text-lg">
                             {t("Biography")}
@@ -403,7 +403,7 @@ export default () => {
                 </div>
 
                 <div className="bg-white px-7 py-8 rounded-md shadow flex flex-col space-y-2">
-                    <h3 className="font-bold mb-2">{t('Personal')}</h3>
+                    <h3 className="font-bold mb-2">{t("Personal")}</h3>
                     <div className="flex flex-col space-y-2">
                         <InputLabel fontSizeClass="text-lg">
                             {t("Pronouns")}
@@ -441,12 +441,18 @@ export default () => {
                                     className="flex space-x-2 items-center"
                                 >
                                     <div className="flex flex-col">
-                                        <button type="button" disabled={index == 0} onClick={() => moveLink(index, -1)}>
+                                        <button
+                                            type="button"
+                                            disabled={index == 0}
+                                            onClick={() => moveLink(index, -1)}
+                                        >
                                             <Fa icon="arrow-up" size="xs" />
                                         </button>
-                                        <button type="button" disabled={index == links.length - 1}
-                                        
-                                        onClick={() => moveLink(index, 1)}>
+                                        <button
+                                            type="button"
+                                            disabled={index == links.length - 1}
+                                            onClick={() => moveLink(index, 1)}
+                                        >
                                             <Fa icon="arrow-down" size="xs" />
                                         </button>
                                     </div>
@@ -519,51 +525,52 @@ export default () => {
                                                 }}
                                             ></TextInput>
                                             {link.type == "icon" && (
-                                        <div className="flex items-center">
-                                            <Dropdown>
-                                                <Dropdown.Trigger>
-                                                    <SecondaryButton type="button">
-                                                        <Fa
-                                                            icon={`fa-brands fa-${link.icon}`}
-                                                            size="xl"
-                                                            className="w-6"
-                                                        />
-                                                    </SecondaryButton>
-                                                </Dropdown.Trigger>
+                                                <div className="flex items-center">
+                                                    <Dropdown>
+                                                        <Dropdown.Trigger>
+                                                            <SecondaryButton type="button">
+                                                                <Fa
+                                                                    icon={`fa-brands fa-${link.icon}`}
+                                                                    size="xl"
+                                                                    className="w-6"
+                                                                />
+                                                            </SecondaryButton>
+                                                        </Dropdown.Trigger>
 
-                                                <Dropdown.Content align="right">
-                                                    {icons.map((icon) => (
-                                                        <DropdownButton
-                                                            key={`listed-link-${index}-${icon}`}
-                                                            type="button"
-                                                            onClick={() =>
-                                                                updateLink(
-                                                                    index,
-                                                                    "icon",
-                                                                    icon
+                                                        <Dropdown.Content align="right">
+                                                            {icons.map(
+                                                                (icon) => (
+                                                                    <DropdownButton
+                                                                        key={`listed-link-${index}-${icon}`}
+                                                                        type="button"
+                                                                        onClick={() =>
+                                                                            updateLink(
+                                                                                index,
+                                                                                "icon",
+                                                                                icon
+                                                                            )
+                                                                        }
+                                                                        className={
+                                                                            icon ==
+                                                                            link.icon
+                                                                                ? "bg-blue-200"
+                                                                                : ""
+                                                                        }
+                                                                    >
+                                                                        <Fa
+                                                                            icon={`fa-brands fa-${icon}`}
+                                                                            size="lg"
+                                                                            className="mr-2"
+                                                                        />
+                                                                        {icon}
+                                                                    </DropdownButton>
                                                                 )
-                                                            }
-                                                            className={
-                                                                icon ==
-                                                                link.icon
-                                                                    ? "bg-blue-200"
-                                                                    : ""
-                                                            }
-                                                        >
-                                                            <Fa
-                                                                icon={`fa-brands fa-${icon}`}
-                                                                size="lg"
-                                                                className="mr-2"
-                                                            />
-                                                            {icon}
-                                                        </DropdownButton>
-                                                    ))}
-                                                </Dropdown.Content>
-                                            </Dropdown>
+                                                            )}
+                                                        </Dropdown.Content>
+                                                    </Dropdown>
+                                                </div>
+                                            )}
                                         </div>
-                                    )}
-                                        </div>
-                                        
                                     </div>
 
                                     <DangerButton
@@ -576,6 +583,22 @@ export default () => {
                             </div>
                         ))}
                         <div className="flex space-x-2 items-center">
+                            <div className="flex flex-col">
+                                <button type="button" disabled={true}>
+                                    <Fa
+                                        icon="arrow-up"
+                                        className="text-gray-400"
+                                        size="xs"
+                                    />
+                                </button>
+                                <button type="button" disabled={true}>
+                                    <Fa
+                                        icon="arrow-down"
+                                        className="text-gray-400"
+                                        size="xs"
+                                    />
+                                </button>
+                            </div>
                             {newLink.type == "short_link" && (
                                 <div className="flex items-center">
                                     <Tooltip
@@ -625,7 +648,7 @@ export default () => {
                                         value={newLink.url}
                                         onChange={(e) => {
                                             let link = e.target.value;
-                                            
+
                                             setNewLink((prevState) => ({
                                                 ...prevState,
                                                 url: link,
@@ -634,7 +657,6 @@ export default () => {
                                     ></TextInput>
                                     {newLink.type == "icon" && (
                                         <div className="flex items-center">
-                                           
                                             <Dropdown>
                                                 <Dropdown.Trigger>
                                                     <SecondaryButton type="button">
@@ -690,7 +712,7 @@ export default () => {
                 </div>
 
                 <div className="bg-white px-7 py-8 rounded-md shadow flex flex-col space-y-2">
-                    <h3 className="font-bold mb-2">{t('Customization')}</h3>
+                    <h3 className="font-bold mb-2">{t("Customization")}</h3>
                     <div className="flex flex-col space-y-2">
                         <InputLabel fontSizeClass="text-lg">
                             {t("Your Color")}
@@ -704,7 +726,7 @@ export default () => {
                             ></div>
                             {banner.displayColorPicker && (
                                 <div className="ml-1 text-gray-600">
-                                    ({t('Click again to close')})
+                                    ({t("Click again to close")})
                                 </div>
                             )}
                         </div>
@@ -723,7 +745,7 @@ export default () => {
                         type="submit"
                         className="w-full flex justify-center"
                     >
-                        {t('Save')}
+                        {t("Save")}
                     </PrimaryButton>
                 </div>
             </div>
