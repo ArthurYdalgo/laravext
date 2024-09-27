@@ -7,8 +7,12 @@ import axios from "axios";
 
 if (typeof window !== 'undefined') {
     window.addEventListener("popstate", function (event) {
+        if (window.__laravext.app.ignorePopStateEvent(event)) {
+            return;
+        }
+
         if(window.__laravext.app.disablePushedStateData()){
-            window.location.href = window.location.href;
+            window.location.reload();
             return;
         }
         
@@ -18,7 +22,6 @@ if (typeof window !== 'undefined') {
             clientRender();
         } catch (error) {
             console.error('Error updating page data:', error);
-            window.location.href = window.location.href;
         }
     });
 }
@@ -170,7 +173,7 @@ export function createLaravextApp({ nexusResolver, strandsResolver, conventions 
     'error',
     'layout',
     'middleware',
-], progress = {}, beforeSetup = null, setup = null, setupNexus = null, setupStrand = null, reverseSetupOrder = false, disablePushedStateData = () => false}) {
+], progress = {}, beforeSetup = null, setup = null, setupNexus = null, setupStrand = null, reverseSetupOrder = false, disablePushedStateData = () => false, ignorePopStateEvent = (event) => event.state === null}) {
     window.__laravext.app = {
         nexusResolver,
         strandsResolver,
@@ -180,7 +183,8 @@ export function createLaravextApp({ nexusResolver, strandsResolver, conventions 
         setupNexus,
         setupStrand,
         reverseSetupOrder,
-        disablePushedStateData
+        disablePushedStateData,
+        ignorePopStateEvent
     }
 
     if (progress) {

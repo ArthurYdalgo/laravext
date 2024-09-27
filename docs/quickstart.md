@@ -183,6 +183,13 @@ document.addEventListener('DOMContentLoaded', function () {
         //    let logicResult = true
         //    return logicResult
         // },
+
+        // By default, the popstate event registered by laravext will ignore the event if the state is null.
+        // If you want to change this behavior, you can do so here.
+        // ignorePopStateEvent: (event) => {
+        //    let logicResult = event.state === null;
+        //    return logicResult;
+        // },
     })
 }, false);
 ```
@@ -291,6 +298,13 @@ document.addEventListener('DOMContentLoaded', function () {
         //    // Your logic here, such as detecting browsers, etc.
         //    let logicResult = true
         //    return logicResult
+        // },
+
+        // By default, the popstate event registered by laravext will ignore the event if the state is null.
+        // If you want to change this behavior, you can do so here.
+        // ignorePopStateEvent: (event) => {
+        //    let logicResult = event.state === null;
+        //    return logicResult;
         // },
     })
 }, false);
