@@ -1,19 +1,17 @@
-const { API_BUTTON } = require("./src/constants");
-
 const editUrl = "https://github.com/yewstack/yew/blob/master/website/";
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
-    title: "Yew",
+    title: "Laravext",
     tagline:
-        "A framework for creating reliable and efficient web applications.",
-    url: "https://yew.rs",
+        "File-based routing system with file conventions from Next.js for an Inertia-styled monolith",
+    url: "https://laravext.dev",
     baseUrl: "/",
     onBrokenLinks: "throw",
     onBrokenMarkdownLinks: "warn",
-    favicon: "img/logo.svg",
-    organizationName: "yewstack", // Usually your GitHub org/user name.
-    projectName: "yew", // Usually your repo name.
+    favicon: "img/favicon.ico",
+    organizationName: "arthurydalgo", // Usually your GitHub org/user name.
+    projectName: "laravext", // Usually your repo name.
     themeConfig: {
         docs: {
             sidebar: {
@@ -21,16 +19,12 @@ module.exports = {
             },
         },
         navbar: {
-            title: "Yew",
+            title: "Laravext",
             logo: {
-                alt: "Yew Logo",
-                src: "img/logo.svg",
+                alt: "Laravext Logo",
+                src: "img/logo.png",
             },
             items: [
-                {
-                    type: "docsVersionDropdown",
-                    position: "left",
-                },
                 {
                     type: "doc",
                     position: "left",
@@ -60,11 +54,19 @@ module.exports = {
             style: "dark",
             links: [
                 {
-                    title: "Support",
+                    title: "Links",
                     items: [
                         {
-                            label: "Buy me a coffee",
-                            href: "https://opencollective.com/yew",
+                            label: "Packagist",
+                            href: "https://packagist.org/packages/arthurydalgo/laravext",
+                        },
+                        {
+                            label: "NPM @laravext/react",
+                            href: "https://www.npmjs.com/package/@laravext/react",
+                        },
+                        {
+                            label: "NPM @laravext/vue3",
+                            href: "https://www.npmjs.com/package/@laravext/vue3",
                         },
                     ],
                 },
@@ -72,16 +74,20 @@ module.exports = {
                     title: "Participate",
                     items: [
                         {
-                            label: "GitHub",
-                            href: "https://github.com/yewstack/yew",
+                            label: "GitHub (Docs and NPM packages)",
+                            href: "https://github.com/ArthurYdalgo/laravext",
+                        },
+                        {
+                            label: "GitHub (Packagist)",
+                            href: "https://github.com/ArthurYdalgo/laravext-packagist",
                         },
                         {
                             label: "Discord",
-                            href: "https://discord.gg/VQck8X4",
+                            href: "https://dsc.gg/laravext",
                         },
                         {
-                            label: "Twitter",
-                            href: "https://twitter.comddd/yewstack",
+                            label: "Twitter/X",
+                            href: "https://twitter.com/laravext_dev",
                         },
                     ],
                 },
@@ -89,8 +95,8 @@ module.exports = {
                     title: "More",
                     items: [
                         {
-                            label: "Yew Awesome",
-                            href: "https://github.com/jetli/awesome-yew",
+                            label: "Buy me a coffee",
+                            href: "https://buymeacoffee.com/arthurydalgo",
                         },
                     ],
                 },
