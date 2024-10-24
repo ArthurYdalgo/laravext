@@ -62,7 +62,7 @@ const FEATURES = [
     {
         header: 'Server Side Rendering',
         body: 'Make your application SEO-friendly by using server-side rendering of your pages',
-        to: '/docs/next/advanced-topics/server-side-rendering',
+        to: '/docs/advanced-topics/server-side-rendering',
     },
 ]
 

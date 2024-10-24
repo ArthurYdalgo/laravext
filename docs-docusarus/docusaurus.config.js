@@ -1,4 +1,4 @@
-const editUrl = "https://github.com/yewstack/yew/blob/master/website/";
+const editUrl = "https://github.com/ArthurYdalgo/laravext/blob/master/docs/";
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
@@ -35,7 +35,7 @@ module.exports = {
                     docsPluginId: "community",
                     type: "doc",
                     position: "right",
-                    docId: "awesome",
+                    docId: "contributors",
                     label: "Community",
                 },
                 {
@@ -44,7 +44,7 @@ module.exports = {
                     label: "Blog",
                 },
                 {
-                    href: "https://github.com/yewstack/yew",
+                    href: "https://github.com/ArthurYdalgo/laravext",
                     label: "GitHub",
                     position: "right",
                 },
@@ -131,14 +131,10 @@ module.exports = {
                 },
                 blog: {
                     path: "blog",
-                    blogTitle: "Yew Blog",
+                    blogTitle: "Laravext Blog",
                     editUrl,
                 },
                 pages: {},
-                gtag: {
-                    trackingID: "G-DENCL8P4YP",
-                    anonymizeIP: true,
-                },
             },
         ],
     ],
