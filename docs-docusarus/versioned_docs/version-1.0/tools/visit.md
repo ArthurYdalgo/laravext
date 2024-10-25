@@ -2,7 +2,7 @@
 
 Much like [Inertia.js' Protocol](https://inertiajs.com/the-protocol), you can use the `visit(url, options = { ... })` function to navigate to a new page that uses Laravext. This creates a smooth SPA experience, as it doesn't reload the page. If the version of the application changes between visits, or if the view set for that route is different from the one that was previously loaded, an usual page visit will happen.
 
-Here's an example on how you could use it, which are used in the [example projects](/before-you-start?id=the-example-projects) inside a `<Link />` component (additionally, you can check the [Link Component](/tools/link-component)), which itself uses the visit function.
+Here's an example on how you could use it, which are used in the [example projects](/docs/before-you-start#the-example-projects) inside a `<Link />` component (additionally, you can check the [Link Component](/docs/tools/link-component)), which itself uses the visit function.
 
 The options parameter is an object that defaults to:
 
@@ -13,13 +13,13 @@ The options parameter is an object that defaults to:
 }
 ```
 
-<sub>⚠️Important note⚠️: the `redirectToUrlIntended` will not work if the [router_url_intended_is_enabled config](/configuration?id=router-url-intended-is-enabled-router_url_intended_is_enabled) is disabled, as the client side will not receive it.</sub>
+<sub>⚠️Important note⚠️: the `redirectToUrlIntended` will not work if the [router_url_intended_is_enabled config](/docs/configuration#router-url-intended-is-enabled-router_url_intended_is_enabled-) is disabled, as the client side will not receive it.</sub>
 
 <!-- tabs:start -->
 
 #### **React**
 
-`Link.jsx` (this is an example of a custom Link component that uses the `visit` function, and not the actual implementation of the [Link component from Laravext](/tools/link-component)):
+`Link.jsx` (this is an example of a custom Link component that uses the `visit` function, and not the actual implementation of the [Link component from Laravext](/docs/tools/link-component)):
 
 ```jsx
 import { visit } from '@laravext/react';
@@ -43,7 +43,7 @@ export default  ({ routeName, href, className = '', children }) => {
 
 #### **Vue**
 
-`Link.vue` (this is an example of a custom Link component that uses the `visit` function, and not the actual implementation of the [Link component from Laravext](/tools/link-component)):
+`Link.vue` (this is an example of a custom Link component that uses the `visit` function, and not the actual implementation of the [Link component from Laravext](/docs/tools/link-component)):
 
 ```vue
 <script setup>

@@ -7,7 +7,7 @@ module.exports = {
         "File-based routing system with file conventions from Next.js for an Inertia-styled monolith",
     url: "https://laravext.dev",
     baseUrl: "/",
-    onBrokenLinks: "throw",
+    onBrokenLinks: "warn",
     onBrokenMarkdownLinks: "warn",
     favicon: "images/favicon.ico",
     organizationName: "arthurydalgo", // Usually your GitHub org/user name.

@@ -10,7 +10,7 @@ The blade engine based is quite similar to how you'd traditionally render a blad
 
 ## Blade Engine Based
 
-The blade engine based methods you can use are througly explained in the [Tools/Blade Directives/@startNexus and @endNexus](/docs/tools/blade-directives?id=startnexus-and-endnexus), [Tools/Blade Directives/@startStrand and @endStrand](/docs/tools/blade-directives?id=startstrand-and-endstrand), [Tools/Nexus Response/withViewSkeleton](/tools/nexus-response?id=withviewskeletonview-props-) and [Tools/Nexus Response/withHtmlSkeleton](/tools/nexus-response?id=withhtmlskeletonhtml_skeleton) sections of this documentation.
+The blade engine based methods you can use are througly explained in the [Tools/Blade Directives/@startNexus and @endNexus](/docs/tools/blade-directives?id=startnexus-and-endnexus), [Tools/Blade Directives/@startStrand and @endStrand](/docs/tools/blade-directives?id=startstrand-and-endstrand), [Tools/Nexus Response/withViewSkeleton](/docs/tools/nexus-response#withviewskeletonview-props--) and [Tools/Nexus Response/withHtmlSkeleton](/docs/tools/nexus-response#withhtmlskeletonhtml_skeleton) sections of this documentation.
 
 ## Javascript Runtime
 

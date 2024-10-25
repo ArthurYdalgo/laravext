@@ -312,7 +312,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <!-- tabs:end -->
 
-You can change the nexus and strands' locations if you want to. Make sure to change the nexus directory in the `./config/laravext.php` file. For more details on how the router works, check the [router section](/router).
+You can change the nexus and strands' locations if you want to. Make sure to change the nexus directory in the `./config/laravext.php` file. For more details on how the router works, check the [router section](/docs/concepts/router).
 
 ## Vite Configuration
 
@@ -371,7 +371,7 @@ export default function ({ mode }) {
 
 Assuming you have a `./resources/views/layouts/app.blade.php` file, where a section is inserted, you'll need to insert some blade directives in it.
 
-(The following code contains a `$head` variable that is described in the [Tools/Nexus Response/withHead](/tools/nexus-response?id=withheadstringintarray-name-value-null) section. You can remove it if you're not going to use it)
+(The following code contains a `$head` variable that is described in the [Tools/Nexus Response/withHead](/docs/tools/nexus-response#withheadstringintarray-name-value--null) section. You can remove it if you're not going to use it)
 
 ```html
 <!DOCTYPE html>
@@ -426,7 +426,7 @@ Everything should be up and running.
 
 ## Nexus Directory
 
-By default, the nexus directory is set as `./resources/js/nexus`. So this is where you should start placing the files that will be used by [Laravext's Router](/router). You may change this in the `./config/laravext.php` file, assuming you've published the config file.
+By default, the nexus directory is set as `./resources/js/nexus`. So this is where you should start placing the files that will be used by [Laravext's Router](/docs/concepts/router). You may change this in the `./config/laravext.php` file, assuming you've published the config file.
 
 You're now ready to start creating your project using the laravext router
 
@@ -644,4 +644,4 @@ createLaravextApp({
 
 <sub>**Credits**: By Nintendo - <a rel="nofollow" class="external free" href="https://www.mariowiki.com/File:Mushroom_Retainer_SMB1_W1-4_rescued.png">https://www.mariowiki.com/File:Mushroom_Retainer_SMB1_W1-4_rescued.png</a>, <a href="//en.wikipedia.org/wiki/File:Super_Mario_Bros_Princess_Is_In_Another_Castle_Quote.png" title="Fair use of copyrighted material in the context of Our princess is in another castle!">Fair use</a>, <a href="https://en.wikipedia.org/w/index.php?curid=76055658">Link</a> (if any of Nintendo's lawyers end up here, please just let me know that I'll remove this image, no need to sue me)</sub>
 
-Check the [Server Side Rendering](/server-side-rendering) section for more details on how to use it.
+Check the [Server Side Rendering](/docs/server-side-rendering) section for more details on how to use it.

@@ -71,17 +71,17 @@ const FEATURES = [
     {
         header: "Monolithic",
         body: "Laravext sits inside your Laravel application, so no worries about setting up a separate project for your frontend.",
-        to: "/docs/quick-start-installation",
+        to: "/docs/quickstart",
     },
     {
         header: "File-based Routing System",
         body: "Laravext creates a file-based routing system just like you do with Next.js, and also uses (most of) the same file conventions.",
-        to: "/docs/next/concepts/html",
+        to: "/docs/concepts/router",
     },
     {
         header: "Server-Side Rendering",
         body: "Make your application SEO-friendly by using server-side rendering of your pages.",
-        to: "/docs/advanced-topics/server-side-rendering",
+        to: "/docs/server-side-rendering",
     },
 ];
 

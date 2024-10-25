@@ -65,7 +65,7 @@ This method is used to define the props that will be passed to the view. It can 
 
 ## withSharedProps($props = [])
 
-This method is used to define the shared props that will be passed to the view. It'll be merged with any previously defined shared props. Check [Tools/Shared Props](/tools/shared-props) for more information.
+This method is used to define the shared props that will be passed to the view. It'll be merged with any previously defined shared props. Check [Tools/Shared Props](/docs/tools/shared-props) for more information.
 
 ## withHtmlSkeleton($html_skeleton)
 

@@ -22,7 +22,7 @@ By default, the router is case insensitive (`env('LARAVEXT_ROUTER_IS_CASE_SENSIT
 
 ## Route cache driver (route_cache_driver) <!-- {docsify-ignore} -->
 
-By default the route cache driver is set to `env('LARAVEXT_ROUTER_CACHE_DRIVER', env('CACHE_DRIVER', 'file'))`. This is used to cache the directory structure, and also data about the URIs (conventions, root views, etc) so you [don't have to repeat yourself](/tools/nexus-response?id=no-need-to-repeat-yourself). You can change it to any cache driver you want, as long as IT'S NOT `array`, as the conventions will be lost if you cache the routes using the `php artisan optimize` or the `php artisan route:cache`.
+By default the route cache driver is set to `env('LARAVEXT_ROUTER_CACHE_DRIVER', env('CACHE_DRIVER', 'file'))`. This is used to cache the directory structure, and also data about the URIs (conventions, root views, etc) so you [don't have to repeat yourself](/docs/tools/nexus-response#no-need-to-repeat-yourself). You can change it to any cache driver you want, as long as IT'S NOT `array`, as the conventions will be lost if you cache the routes using the `php artisan optimize` or the `php artisan route:cache`.
 
 ## Route cacher is enabled (route_cacher_is_enabled) <!-- {docsify-ignore} -->
 
