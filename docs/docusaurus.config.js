@@ -12,12 +12,14 @@ module.exports = {
     favicon: "images/favicon.ico",
     organizationName: "ArthurYdalgo", // Usually your GitHub org/user name.
     projectName: "laravext", // Usually your repo name.
+    
     themeConfig: {
         docs: {
             sidebar: {
                 hideable: true,
             },
         },
+        metadata: [{ name: 'og:image', content: 'https://laravext.dev/images/og_image.png' }],
         colorMode: {
             defaultMode: 'dark',
             disableSwitch: false,
