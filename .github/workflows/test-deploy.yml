@@ -21,8 +21,8 @@ jobs:
       - name: Install dependencies
         run: |
           cd docs-docusarus
-          yarn install --frozen-lockfile
+          npm install
       - name: Test build website
         run: |
           cd docs-docusarus
-          yarn build
+          npm run build
