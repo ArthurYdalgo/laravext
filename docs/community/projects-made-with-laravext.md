@@ -5,4 +5,4 @@ description: 'Community projects built using Laravext'
 
 ## Starter-Kits
 
--   [Laranext](https://github.com/syntaxlexx/laranext) - A ShadCN Starter-Kit based on Laravel, Postgre, React, with file-based routing powered by Laravext - A Laravel plugin. [/SyntaxLexx](https://github.com/syntaxlexx).
+- [Laranext](https://github.com/syntaxlexx/laranext) - A ShadCN Starter-Kit built by [/SyntaxLexx](https://github.com/syntaxlexx).
