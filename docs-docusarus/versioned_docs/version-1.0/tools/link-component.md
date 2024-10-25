@@ -1,4 +1,4 @@
-# Head Component
+# Link Component
 
 Much like the [Link Component from Inertia.js](https://inertiajs.com/links), Laravext has its own `Link` component, which is a wrapper around the `a` tag and the [visit function](/docs/tools/visit)  that allows you to navigate between pages without a full page reload. It accepts two props: `preserveScroll` (defaults to `false`) and a `redirectToUrlIntended` (defaults to `true`).
 
