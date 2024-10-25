@@ -1,174 +1,81 @@
-# Laravext
+# Website
 
-## What is it Laravext?
+This website is built using [Docusaurus 2](https://docusaurus.io/), a modern static website generator.
 
-Laravext is a set of tools aimed to assist the development of [Laravel](https://laravel.com/) applications with [React](https://react.dev/) or [Vue](https://vuejs.org/). It's name is (just in case you didn't get it) a mix of Laravel and [Next.js](https://nextjs.org/), although not affiliated or endorsed by any of them. I tried to fit in something that also sounded like "Vue" or "[Inertia.js](https://inertiajs.com/)" in the name, but "Laravext" sounded the better, of all the options I thought of. Not that creative, I know. Sue me (just kidding, don't).
+Most of the content sits inside the [docs](docs) folder and the [versioned_docs](versioned_docs) folder in the form of
+markdown.
 
-You may think of it as a Next.js' file based router inside your Laravel project. There're some methods that slightly remember Inertia.js as well. It offers 3 ways to [dinamically create server-side rendered pages](/server-side-rendering) based on your needs so your application is SEO friendly, one of them in the Inertia.js style, and two of them in the Blade style.
+## Installation
 
-![image](/images/memes/rick-morty-blade-meme.jpg)
-
-<sup>**Credits: Rick and Morty - Adult Swim**<sub>
-
-Well, yes... Moving on.
-
-### In case you want to help me...
-
-[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/arthurydalgo)
-
-## Why does it exist?
-
-First things first: I don't claim that this is supposed to replace or be better than Next.js/Inertia.js, as each project may have different kind of needs and it's team might have it's preference, and maybe just using blade files with [Laravel Folio](https://laravel.com/docs/11.x/folio) to automagically create routes from them could be enough for you, or maybe you'll better of with the [TALL](https://tallstack.dev/) stack, or perhaps [Nuxt.js](https://nuxtjs.org/). In the end, it's your choice.
-
-I wanted to get what I (personally) considered the best parts of Inertia.js and Next.js, and put them together. This was going to be inside a project of mine, but then I realized I could actually try to make a package for other people (and myself) to use, and I would try to learn something along the way about how to build composer and npm packages.
-
-Additionally, you might be asking yourself:
-
-"Why don't you use Next.js?", or even "Why don't you use Inertia.js?"
-
-![image](/images/memes/i-dont-like-nextjs-mard-crowd-with-forks-meme.jpg)
-
-Before somebody light up their torches or grab their forks: the following points are my opinions only, based on my personal (in)experiences and troubles. You may disagree with them, and that's fine. Feel free to skip this section.
-
-Inertia.js doesn't have an out-of-the-box file-based routing system like the one Next.js offers. (To the best of my knowledge, at the time of writting). If you want to make it SEO friendly you need to have some kind of access to higher privilages so you can keep a `php artisan inertia:start-ssr` artisan command running through supervisor or something similar (and so does Laravext, but there's also another approach that you can easily use, if needed. Check the "Server Side Rendering" section of the docs for more informations), which may not be available in a shared environment (which, although less common, is still a thing). Laravext offers, [along with the Inertia.js style](/server-side-rendering?id=javascript-runtime), two [other ways](server-side-rendering?id=blade-engine-based) to create server-side rendered pages based on you SEO needs.
-
-Next.js offers server-side rendering of React components, and a great routing system, but I (personally) don't like their caching strategy, and for my use cases there was the need to slap a `"use client"` for a lot of your pages. I felt a really degraded developer experience while using it, so for me it'd make sense to have a way of being 'use client' by default, and 'use server' when needed. I have other points about it, but I feel that the ["Why I Won't Use Next.js" article](https://www.epicweb.dev/why-i-wont-use-nextjs) from Kent C. Dodds summarizes most of what I mean way better than I could. It's a good reading if you're interested. 
-
-But, once again, I don't want to trash talk Next.js, or Inertia or any other tool. You should use whatever makes you more productive and pays your bills, and in the end, quoting Kent:
-
-"Whatever you use is probably fine.
-
-Your tool choice matters much less than your skill at using the tool to accomplish your desired outcome (a great user experience)."
-
-## Who is it for?
-
-My take is that you might be interested in using Laravext if you fall into one or more of the following categories:
-- you want to have a file-based routing system like Next.js (because you don't want to use react/vue router, or declare them all in your `web.php` file)
-- you don't want to set up a separate project for your frontend (like Next.js or Nuxt.js)
-- you want some kind of flexibility to sometimes have a partially server-side rendered page for SEO purposes (and don't want to use Inertia.js)
-- you don't like the way Next.js handles their caching strategy
-- you don't want to slap a `"use client"` in nearly every component you have in your app because it becomes cubersome
-
-## Who is it **NOT** for?
-
-I'll try to be as less biased as possible, but you might not be interested in using Laravext if you fall into one or more of the following categories:
-
-- you have a simple static page that Next.js (or anything else) could handle just fine
-- you don't like the idea of having a file-based routing system (or don't want to have to follow the page conventions)
-- you don't want to risk using a new package that may not be as stable as you'd like, or runs the risk of being abandoned
-- you want to keep your frontend and backend in separate projects
-- you didn't like it (to each their own)
-
-Remember, this is just my opinion, and you should use whatever suits your needs the best, and there're plenty of tools available for you to use, such as the aforementioned Next.js, Inertia.js, Nuxt.js, TALL stack, Blade Components with Folio, [Livewire](https://livewire.laravel.com/), etc.
-
-## What does it do?
-
-As mentioned before, Laravext takes a lot of inspiration in how Next.js do things.
-
-Laravext offers a way to automagically create routes based on the file structure of the `resources/js/nexus` (this location is customizable) directory, much like Next.js.
-
-Using the following structure (the example uses .jsx files, but you may also use it with .vue files):
-
-```
-# In a Laravel project
-+ resources/js/nexus
-
-  - page.jsx # your-domain.com/
-
-  + catalog
-    - page.jsx # /catalog
-    + {slug}
-      - page.jsx # /catalog/{slug}
-  
-  + cart
-    - page.jsx # /cart
-    + checkout
-      - middleware.jsx
-      - page.jsx # /cart/checkout
-  
-  + (guest)
-    - middleware.jsx
-    - layout.jsx
-    + login
-      - page.jsx # /login
-    + register
-      - page.jsx # /register
-  
-  + (auth)
-    - middleware.jsx
-    + (author)
-      - layout.jsx
-      - middleware.jsx
-      + books
-        - page.jsx # /books
-        + create
-          - page.jsx # /books/create
-        + {book}
-          - page.jsx # /books/{book}
-          + edit
-            - page.jsx # /books/{book}/edit
-      + orders
-        - page.jsx # /orders
-        + {order}
-          - page.jsx # /orders/{order}
-
-    + (reader)
-      - layout.jsx
-      - middleware.jsx
-      + library
-        - page.jsx # /library
-        + {slug}
-          - page.jsx # /library/{slug}
-    ...
-    # The rest of your pages
+```console
+npm install
 ```
 
-and inserting the following inside the `routes/web.php`:
+## Local Development
 
-```php
-Route::laravext();
+```console
+npm start
 ```
 
-automagically registers the routes of your application (the resulting URIs are displayed next to each page.jsx as example). [Next.js' file conventions](https://nextjs.org/docs/app/building-your-application/routing#file-conventions) can also be applied, such as middlewares, layouts, error, etc. You can have granular control in a Inertia-styled approach about what happens before a route is rendered, if needed (check the [Tools/Nexus Response](/tools/nexus-response) documentation section for more details).
+This command starts a local development server and opens up a browser window. Most changes are reflected live
+without having to restart the server.
+Note this only builds for English locale unlike a production build.
 
-A blade view (either the default one set in the config or specified one when the `Route::laravext()` is called and a `root_view` parameter is sent) is then rendered by the blade template engine. This view must contain what is called a `@nexus` blade directive (which you can read about at [Tools/Blade Directives](/tools/blade-directives)), where the react component will be rendered. There're other ways render a nexus that are covered in the [Tools/Routing](/tools/routing) and [Tools/Nexus Response](/tools/nexus-response).
+> Documentation is written in `mdx`, a superset of markdown empowered with jsx.
+> JetBrains and VSCode both provide MDX plugins.
 
-Additionally, in case you have components that are common to multiple pages, such as navbars, you can use the `@strand('Path/To/NavBar')` directive alongside a `@nexus`, which will use the name as a path to find a react component inside the `resources/js/strands` (which is customizable). The previous example would load a `NavBar.jsx` from the `resources/js/strands/Path/To` directory.
+## Production Build
 
-Here's an example to how you could use it in a `app.blade.php` file:
-
-```php
-<x-guest-layout>
-
-    @strand('NavBar', ['some' => 'data'])
-
-    ...
-
-    @nexus
-
-</x-guest-layout>
+```console
+npm run build
 ```
 
-The NavBar component will be rendered and receive the props sent to it in the directive.
+This command generates static content into the `build` directory and can be served using any static contents hosting service.
 
-## Known Issues
+## Localization
 
-### Deprecation Warning on Node 21+
+Localization is done on [GitLocalize](https://gitlocalize.com/repo/7052/whole_project).
+You can sign in with your GitHub account to start translating.
 
-If you intend to use a Inertia.js style of SSR, you might get a ```[DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.``` warning in your console because of JSDom, which is used to render the React/Vue components. You can read more details in this [JSDom issue #3613](https://github.com/jsdom/jsdom/issues/3613)
+When you add to the docs in the `mdx` files,  
+Contributors on GitLocalize will translate the added content
+and the translation will get dumped under the [i18n](i18n) folder in a later time.
 
-## Legal Disclaimer
+If you are a native speaker of one of the translated languages,
+and you are interested in translating your edits yourself,
+you are welcome to navigate to the folder and do it yourself!
 
-This project has no financial intent, and is meerly a Frankenstein of Inertia.js and Next.js. I fully disclose that it may contain code that is straight up ~~copied from~~ inspired by the [inertiajs/inertia](https://github.com/inertiajs/inertia/), [inertiajs/inertia-laravel](https://github.com/inertiajs/inertia-laravel) and [laravel/folio](https://github.com/laravel/folio) repos ~~, and changed to fit my needs~~.
+### Localizing headings
 
-I'm not responsible for anything you do with this code. I might stop supporting this at any given time, so please be aware of that before using it for anything that might be too important to you.
+If you want to write displayed content in `html/jsx` instead of vanilla markdown,
+You should wrap your text in `<Translate/>` tags.
+It helps docusaurus to extract those texts and compile them to `.json` files to
+get further translated in GitLocalize.
 
-This section is just so I don't get my ass sued by anyone.
+```jsx
+import Translate from '@docusaurus/Translate'
 
-## Final Thoughts
+<h2>
+    <Translate id="header.translation.id" description="the heading description">
+        This heading will be translated
+    </Translate>
+</h2>
+```
 
-This is my first "big" project aimed to be used by the community, and it may contain flaws/bad choices (but who doesn't), or code that may cringe the hell out of you. Use it if you like, ignore it if you hate it.
+If your pull request adds new `<Translation>` tags,
+make sure you do `npm run write-translations` to generate the new stubs for later localization.
+And you are always welcome to add localization yourself in your native languages!
 
-PRs are welcome, but I may ignore them at my disclosure.
+### Common issues in localization
 
-But hey, this is open-source, so you have my blessing (not that you need it anyway) to fork it and to do whatever the hell you want with it.
+Pages (.mdx) are translated one-to-one and the english text is used as fallback if no translation
+exists. Sometimes, when building you might see a warning, and subsequent error,
+like this
+
+> [WARNING] Docs markdown link couldn't be resolved: (../components/refs.mdx) in
+> <omitted>/yew/website/versioned_docs/version-0.18.0/concepts/html/events.mdx for version 0.18.0
+
+This means that the _non-translated_ page at `versioned_docs/version-0.18.0/concepts/html/events.mdx`
+contains a relative link - `../components/refs.mdx` - to a page that _has_ been translated.
+Change the link to be relative to the doc root folder, in this case `concepts/components/res.mdx`, or,
+if you find the time, also translate the offending page.
