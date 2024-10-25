@@ -28,7 +28,7 @@ module.exports = {
                 {
                     type: "doc",
                     position: "left",
-                    docId: "getting-started/introduction",
+                    docId: "laravext",
                     label: "Docs",
                 },
                 {
@@ -103,7 +103,7 @@ module.exports = {
             ],
         },
         prism: {
-            additionalLanguages: ["rust", "php", "toml"],
+            additionalLanguages: ["rust", "php", "toml", 'jsx', 'json'],
         }
     },
     i18n: {

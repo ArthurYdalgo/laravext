@@ -1,70 +1,89 @@
-import React from 'react'
-import Layout from '@theme/Layout'
-import styles from './index.module.scss'
-import { useColorMode } from '@docusaurus/theme-common';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext'
-import clsx from 'clsx'
-import IconExternalLink from '@theme/Icon/ExternalLink'
-import Link from '@docusaurus/Link'
+import React from "react";
+import Layout from "@theme/Layout";
+import styles from "./index.module.scss";
+import { useColorMode } from "@docusaurus/theme-common";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import clsx from "clsx";
+import IconExternalLink from "@theme/Icon/ExternalLink";
+import Link from "@docusaurus/Link";
 
 const Hero = () => {
     const { siteConfig } = useDocusaurusContext();
     const { isDarkTheme } = useColorMode();
 
     return (
-        <div className={clsx('hero shadow--lw', styles.heroHeader)}>
+        <div className={clsx("hero shadow--lw", styles.heroHeader)}>
             <section className={styles.header}>
                 <img src="/images/logo.png" alt="Logo" />
                 <h1 className="hero__title">{siteConfig.title}</h1>
             </section>
-            <section className={clsx('hero__subtitle', styles.heroSubtitle)}>
-                An <span style={{
-                    color: '#8064eb',
-                    fontWeight: 'bold',
-                }}>
-                    Inertia-styled 
-                    </span> monolith with <span style={{
-                    color: isDarkTheme ? '#cccccc' : '#444444',
-                    fontWeight: 'bold',
-                }}>Next.js</span>' file-based rounting system and file conventions for <span
+            <section className={clsx("hero__subtitle", styles.heroSubtitle)}>
+                An{" "}
+                <span
                     style={{
-                        color: '#41B883',
-                        fontWeight: 'bold',
+                        color: "#8064eb",
+                        fontWeight: "bold",
                     }}
-                >Vue</span> and <span style={{
-                    color: isDarkTheme ? '#61dafb' : '#57c0dd',
-                    fontWeight: 'bold',
-                }}>React</span>
+                >
+                    Inertia-styled
+                </span>{" "}
+                monolith with{" "}
+                <span
+                    style={{
+                        color: isDarkTheme ? "#cccccc" : "#444444",
+                        fontWeight: "bold",
+                    }}
+                >
+                    Next.js
+                </span>
+                ' file-based rounting system and file conventions for{" "}
+                <span
+                    style={{
+                        color: "#41B883",
+                        fontWeight: "bold",
+                    }}
+                >
+                    Vue
+                </span>{" "}
+                and{" "}
+                <span
+                    style={{
+                        color: isDarkTheme ? "#61dafb" : "#57c0dd",
+                        fontWeight: "bold",
+                    }}
+                >
+                    React
+                </span>
             </section>
             <section className={styles.callToActions}>
                 <Link
                     className="button button--lg button--outline button--primary margin--lg"
-                    to="/docs/getting-started/introduction"
+                    to="/docs/laravext"
                 >
                     Get Started
                 </Link>
             </section>
         </div>
-    )
-}
+    );
+};
 
 const FEATURES = [
     {
-        header: 'Monolithic',
-        body: 'Laravext sits inside your Laravel application, so no worries about setting up a separate project for your frontend.',
-        to: '/docs/next/concepts/function-components',
+        header: "Monolithic",
+        body: "Laravext sits inside your Laravel application, so no worries about setting up a separate project for your frontend.",
+        to: "/docs/quick-start-installation",
     },
     {
-        header: 'File-based Routing System',
-        body: 'Laravext creates a file-based routing system just like you do with Next.js, and also uses (most of) the same file conventions.',
-        to: '/docs/next/concepts/html',
+        header: "File-based Routing System",
+        body: "Laravext creates a file-based routing system just like you do with Next.js, and also uses (most of) the same file conventions.",
+        to: "/docs/next/concepts/html",
     },
     {
-        header: 'Server Side Rendering',
-        body: 'Make your application SEO-friendly by using server-side rendering of your pages',
-        to: '/docs/advanced-topics/server-side-rendering',
+        header: "Server-Side Rendering",
+        body: "Make your application SEO-friendly by using server-side rendering of your pages.",
+        to: "/docs/advanced-topics/server-side-rendering",
     },
-]
+];
 
 function Feature(props: { feature: (typeof FEATURES)[number] }) {
     return (
@@ -86,12 +105,12 @@ function Feature(props: { feature: (typeof FEATURES)[number] }) {
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
 function Features() {
     return (
-        <article className={clsx('padding--lg', styles.features)}>
+        <article className={clsx("padding--lg", styles.features)}>
             <h2>Features</h2>
             <section className={styles.featuresGrid}>
                 {FEATURES.map((it) => (
@@ -99,15 +118,15 @@ function Features() {
                 ))}
             </section>
         </article>
-    )
+    );
 }
 
 export default function Index() {
-    const { siteConfig } = useDocusaurusContext()
+    const { siteConfig } = useDocusaurusContext();
     return (
         <Layout description={siteConfig.tagline}>
             <Hero />
             <Features />
         </Layout>
-    )
+    );
 }
