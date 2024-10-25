@@ -10,7 +10,7 @@ module.exports = {
     onBrokenLinks: "warn",
     onBrokenMarkdownLinks: "warn",
     favicon: "images/favicon.ico",
-    organizationName: "arthurydalgo", // Usually your GitHub org/user name.
+    organizationName: "ArthurYdalgo", // Usually your GitHub org/user name.
     projectName: "laravext", // Usually your repo name.
     themeConfig: {
         docs: {
