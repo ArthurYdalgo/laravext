@@ -4,7 +4,7 @@ This section will explain how the lifecycle of a Laravel application using Larav
 
 ## First Visit
 
-This is the first visit to your application, and it can be divided into two scenarios: with and without [Javascript Runtime SSR](/server-side-rendering?id=javascript-runtime). Laravel will return a blade view that contains a `@nexus`/`@[start/end]Nexus`/`@strand`/`@[start/end]Strand` directive, which will be replaced by that URI's component.
+This is the first visit to your application, and it can be divided into two scenarios: with and without [Javascript Runtime SSR](/docs/server-side-rendering#javascript-runtime). Laravel will return a blade view that contains a `@nexus`/`@[start/end]Nexus`/`@strand`/`@[start/end]Strand` directive, which will be replaced by that URI's component.
 
 ### First Visit without Javascript Runtime SSR
 
@@ -18,7 +18,7 @@ In this case, before Laravel returns the HTML, it will make use of a Node Proces
 
 ## Subsequent Visits
 
-After the first visit, whenever a user navigates to another page through the [visit function](/tools/visit) (which cointains headers to indicate that it's a visit request, with the current version and blade view), the response will be a json telling the client either the new component that it should render, or that it's supposed to do a page visit, either because the version is outdated or because the blade view is a different one.
+After the first visit, whenever a user navigates to another page through the [visit function](/docs/tools/visit) (which cointains headers to indicate that it's a visit request, with the current version and blade view), the response will be a json telling the client either the new component that it should render, or that it's supposed to do a page visit, either because the version is outdated or because the blade view is a different one.
 
 ### Render
 

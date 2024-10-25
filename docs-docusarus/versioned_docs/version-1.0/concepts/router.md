@@ -1,6 +1,6 @@
 # Router
 
-The Laravext router follows the same pattern as [Next.js](https://nextjs.org/)' App Router. Each directory will be, in most cases, a url segment that might be a page. For a directory to be a page it must contain a `page.(jsx|tsx|js|ts|vue|ts|js)` file, and [other file conventions from Next.js are available](/concepts/file-conventions). Every time an automagically generated route is accessed, the application will load the default root view (which can be overwritten for a specific route, if necessary). This route view might extend a layout or not, depending on your needs, and must contain a `@nexus` [blade directive](/tools/blade-directives). The `createLaravextApp`/`createLaravextSsrApp` function at the `app.(js/ts/jsx/tsx)`/`ssr.(js/ts/jsx/tsx)` (or whoever you named these files) will then look for every nexus in the DOM (although it'd usually only make sense to have one), and render the page component of that URL path.
+The Laravext router follows the same pattern as [Next.js](https://nextjs.org/)' App Router. Each directory will be, in most cases, a url segment that might be a page. For a directory to be a page it must contain a `page.(jsx|tsx|js|ts|vue|ts|js)` file, and [other file conventions from Next.js are available](/docs/concepts/file-conventions). Every time an automagically generated route is accessed, the application will load the default root view (which can be overwritten for a specific route, if necessary). This route view might extend a layout or not, depending on your needs, and must contain a `@nexus` [blade directive](/docs/tools/blade-directives). The `createLaravextApp`/`createLaravextSsrApp` function at the `app.(js/ts/jsx/tsx)`/`ssr.(js/ts/jsx/tsx)` (or whoever you named these files) will then look for every nexus in the DOM (although it'd usually only make sense to have one), and render the page component of that URL path.
 
 ## Parameters
 
@@ -14,7 +14,7 @@ You can create the directories using the same [naming convention from Laravel](h
       - page.jsx
 ```
 
-When accessing `domain.com/dashboard/orders/12345`, you'd receive a route parameter `"order": "12345"` in your component, which is accessible through the [laravext prop](/concepts/laravext-prop).
+When accessing `domain.com/dashboard/orders/12345`, you'd receive a route parameter `"order": "12345"` in your component, which is accessible through the [laravext prop](/docs/concepts/laravext-prop).
 
 ## Route Groups
 
@@ -63,6 +63,8 @@ That might have been a really confusing paragraph (I got confused while writing 
 ```
 
 So, based on this:
+
+```
 - /login uses:
   - middleware #1
   - layout #2
@@ -84,7 +86,7 @@ So, based on this:
 - /catalog uses:
   - middleware #3
   - layout #4
-
+```
 
 if  you want to set up a route group, and the name to also be considered a segment, you can use two sets of parenthesis, like so:
 
