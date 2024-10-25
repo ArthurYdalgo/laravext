@@ -19,17 +19,17 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd docs-docusarus
+          cd docs
           npm install 
       - name: Build website
         run: |
-          cd docs-docusarus
+          cd docs
           npm run build
 
       - name: Upload Build Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: docs-docusarus/build
+          path: docs/build
 
   deploy:
     name: Deploy to GitHub Pages

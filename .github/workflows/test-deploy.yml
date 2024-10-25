@@ -20,9 +20,9 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd docs-docusarus
+          cd docs
           npm install
       - name: Test build website
         run: |
-          cd docs-docusarus
+          cd docs
           npm run build
