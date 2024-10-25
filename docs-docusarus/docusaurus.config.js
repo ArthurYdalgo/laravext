@@ -124,7 +124,7 @@ module.exports = {
                     routeBasePath: "/docs",
                     versions: {
                         current: {
-                            label: "Latest (1.x)",
+                            label: "Latest (1.0)",
                             path: 'latest'
                         },
                     },
