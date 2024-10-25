@@ -9,7 +9,7 @@ module.exports = {
     baseUrl: "/",
     onBrokenLinks: "throw",
     onBrokenMarkdownLinks: "warn",
-    favicon: "img/favicon.ico",
+    favicon: "images/favicon.ico",
     organizationName: "arthurydalgo", // Usually your GitHub org/user name.
     projectName: "laravext", // Usually your repo name.
     themeConfig: {
@@ -22,7 +22,7 @@ module.exports = {
             title: "Laravext",
             logo: {
                 alt: "Laravext Logo",
-                src: "img/logo.png",
+                src: "images/logo.png",
             },
             items: [
                 {

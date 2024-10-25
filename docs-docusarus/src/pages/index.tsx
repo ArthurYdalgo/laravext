@@ -14,7 +14,7 @@ const Hero = () => {
     return (
         <div className={clsx('hero shadow--lw', styles.heroHeader)}>
             <section className={styles.header}>
-                <img src="/img/logo.png" alt="Logo" />
+                <img src="/images/logo.png" alt="Logo" />
                 <h1 className="hero__title">{siteConfig.title}</h1>
             </section>
             <section className={clsx('hero__subtitle', styles.heroSubtitle)}>
