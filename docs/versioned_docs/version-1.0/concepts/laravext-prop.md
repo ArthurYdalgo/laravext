@@ -2,9 +2,9 @@
 
 Every time a component is rendered by the `createLaravextApp`/`createLaravextSsrApp`, a `laravext` props is passed to it. Considering the previous example from the [Concepts/Router](/docs/concepts/router) page, having a `./resources/js/nexus/dashbord/orders/{order}/page.(jsx|tsx|js|ts|vue)`:
 
-<!-- tabs:start -->
+<Tabs>
 
-#### **React**
+<TabItem value="React" label="React">
 
 ```jsx
 export default ({ laravext }) => {
@@ -17,7 +17,8 @@ export default ({ laravext }) => {
 };
 ```
 
-#### **Vue**
+  </TabItem>
+  <TabItem value="Vue" label="Vue">
 
 ```html
 <script setup>
@@ -31,7 +32,8 @@ const { laravext } = defineProps(["laravext"]);
 </template>
 ```
 
-<!-- tabs:end -->
+  </TabItem>
+</Tabs>
 
 When accessing `/dashboard/orders/12345?foo=bar`
 You'd get something similar to
@@ -104,9 +106,9 @@ Following the previous example, `laravext.query_params` would contain:
 
 There're also other ways to access any data from the laravext prop:
 
-<!-- tabs:start -->
+<Tabs>
 
-#### **React**
+<TabItem value="React" label="React">
 
 ```jsx
 // I've exemplified how to import all of them, but you can import them individually as needed
@@ -130,7 +132,8 @@ export default () => {
 };
 ```
 
-#### **Vue**
+  </TabItem>
+  <TabItem value="Vue" label="Vue">
 
 ```html
 <script setup>
@@ -158,4 +161,5 @@ const { droids } = nexusPros().
 </template>
 ```
 
-<!-- tabs:end -->
+  </TabItem>
+</Tabs>

@@ -14,9 +14,9 @@ but for now, let's assume it's not there.
 
 If a user tries to access a `/admin/dashboard` route (created by `./resources/js/nexus/(global)/(auth)/admin/dashboard/page.(jsx|tsx|js|ts|vue)`), the middleware cascaded down will be surrouding the page component, so if the user is not authenticated, they will be redirected to the login page.
 
-<!-- tabs:start -->
+<Tabs>
 
-#### **React**
+<TabItem value="React" label="React">
 
 `middleware.jsx`:
 
@@ -45,7 +45,8 @@ export default ({ children }) => {
 };
 ```
 
-#### **Vue**
+  </TabItem>
+  <TabItem value="Vue" label="Vue">
 
 `middleware.vue`:
 
@@ -74,6 +75,7 @@ if (!sharedProps().auth?.user) {
 </template>
 ```
 
-<!-- tabs:end -->
+  </TabItem>
+</Tabs>
 
 ⚠️Important note⚠️: remember that this middleware will be executed on the client side and is meant for non-sensitive scenarios, so be aware of any data that should be present in the client. If a middleware is of uttermoust importance, you should use a standard [Laravel middleware](https://laravel.com/docs/11.x/middleware).

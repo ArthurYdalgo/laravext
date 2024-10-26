@@ -6,9 +6,9 @@ These examples will mostly focus on how to use the page [file convention](/docs/
 
 This is a rather simple example on how to create a page that fetches data from an API and renders it on the client side. This file is localed at `.resources/js/nexus/(global)/(guest)/our-projects/page.(jsx|tsx|js|ts|vue)`.
 
-<!-- tabs:start -->
+<Tabs>
 
-#### **React**
+<TabItem value="React" label="React">
 
 `page.jsx`:
 
@@ -67,7 +67,8 @@ export default () => {
 }
 ```
 
-#### **Vue**
+  </TabItem>
+  <TabItem value="Vue" label="Vue">
 
 `page.vue`:
 
@@ -115,15 +116,16 @@ onMounted(async () => {
 
 ```
 
-<!-- tabs:end -->
+  </TabItem>
+</Tabs>
 
 ## Page with Server Side Fetching
 
 This is a rather simple example on how to create a page that renders data that was server-side fetched, and sent as a prop to this page. This file is localed at `.resources/js/nexus/(global)/(guest)/our-teams/page.(jsx|tsx|js|ts|vue)`. This example also includes how you could do it in your `web.php` file. For the sake of simplicity, a closure is being used instead of using a controller, but organize your code as you see fit.
 
-<!-- tabs:start -->
+<Tabs>
 
-#### **React**
+<TabItem value="React" label="React">
 
 `page.jsx`:
 
@@ -155,7 +157,8 @@ export default () => {
 }
 ```
 
-#### **Vue**
+  </TabItem>
+  <TabItem value="Vue" label="Vue">
 
 `page.vue`:
 
@@ -183,7 +186,7 @@ const { teams } = nexusProps();
 </template>
 ```
 
-#### **web.php**
+<TabItem value="web.php" label="web.php">
 
 ```php
 use App\Models\Team;
@@ -198,4 +201,5 @@ Route::get('our-teams', function () {
 })->name('our-teams');
 ```
 
-<!-- tabs:end -->
+  </TabItem>
+</Tabs>

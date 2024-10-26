@@ -4,9 +4,9 @@ Much like the [Link Component from Inertia.js](https://inertiajs.com/links), Lar
 
 The `preserveScroll` prop is used to keep the scroll position of the page when navigating back to it. The `redirectToUrlIntended` prop is used to redirect to a intended url that was stored in the session when being redirected by a middleware, such as the `auth` middleware. This is useful, for example, when you want to redirect the user to the url that was trying to be accessed after a successful login. If the [router_url_intended_is_enabled config](/docs/configuration#router-url-intended-is-enabled-router_url_intended_is_enabled-) is disabled, it won't be used, as the client side will not receive it.
 
-<!-- tabs:start -->
+<Tabs>
 
-#### **React**
+<TabItem value="React" label="React">
 
 `page.jsx`:
 
@@ -30,7 +30,8 @@ export default () => {
 };
 ```
 
-#### **Vue**
+  </TabItem>
+  <TabItem value="Vue" label="Vue">
 
 `page.vue`:
 
@@ -51,4 +52,5 @@ const { teams } = nexusProps();
 </template>
 ```
 
-<!-- tabs:end -->
+  </TabItem>
+</Tabs>

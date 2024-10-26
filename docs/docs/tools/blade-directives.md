@@ -53,13 +53,13 @@ You can use the @strand('Path/To/Component') directive alongside a @nexus, which
 
 For some context, here's the component:
 
-<!-- tabs:start -->
+<Tabs>
 
-#### **React**
+<TabItem value="React" label="React">
 
-<!-- tabs:start -->
+<Tabs>
 
-#### **PrivacyToggle.jsx**
+<TabItem value="PrivacyToggle.jsx" label="PrivacyToggle.jsx">
 
 ```jsx
 import usePrivacy from '@/hooks/usePrivacy'
@@ -90,7 +90,7 @@ export default ({ laravext, initialState }) => {
 }
 ```
 
-#### **usePrivacy.js**
+<TabItem value="usePrivacy.js" label="usePrivacy.js">
 
 ⚠️This example uses the [zustand](https://github.com/pmndrs/zustand) package⚠️
 
@@ -106,13 +106,15 @@ const usePrivacy = create((set) => ({
 export default usePrivacy;
 ```
 
-<!-- tabs:end -->
+  </TabItem>
+</Tabs>
 
-#### **Vue**
+  </TabItem>
+  <TabItem value="Vue" label="Vue">
 
-<!-- tabs:start -->
+<Tabs>
 
-#### **PrivacyToggle.vue**
+<TabItem value="PrivacyToggle.vue" label="PrivacyToggle.vue">
 
 ```vue
 <script setup>
@@ -140,7 +142,7 @@ const handleToggle = () => {
 </template>
 ```
 
-#### **usePrivacy.js**
+<TabItem value="usePrivacy.js" label="usePrivacy.js">
 
 ```js
 import { reactive } from 'vue'
@@ -156,9 +158,11 @@ export const privacy = reactive({
 })
 ```
 
-<!-- tabs:end -->
+  </TabItem>
+</Tabs>
 
-<!-- tabs:end -->
+  </TabItem>
+</Tabs>
 
 
 ## @startStrand and @endStrand

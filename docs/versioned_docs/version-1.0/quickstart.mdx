@@ -79,9 +79,9 @@ You'll then need to declare a `createLaravextApp` function, and pass an object w
 
 There're some optional attributes included in the examples below that either commented or have comments explaining what they do. You can use them to set up global variables, internationalization, cookies, etc.
 
-<!-- tabs:start -->
+<Tabs>
 
-#### **React**
+<TabItem value="React" label="React">
 
 `app.jsx`:
 
@@ -194,7 +194,8 @@ document.addEventListener('DOMContentLoaded', function () {
 }, false);
 ```
 
-#### **Vue**
+  </TabItem>
+  <TabItem value="Vue" label="Vue">
 
 `app.js`:
 
@@ -310,7 +311,8 @@ document.addEventListener('DOMContentLoaded', function () {
 }, false);
 ```
 
-<!-- tabs:end -->
+  </TabItem>
+</Tabs>
 
 You can change the nexus and strands' locations if you want to. Make sure to change the nexus directory in the `./config/laravext.php` file. For more details on how the router works, check the [router section](/docs/concepts/router).
 
@@ -436,9 +438,9 @@ If you want to use Typescript, you might need to add some files to your project,
 
 First, you'll need a `tsconfig.json` file in your project root directory. Here's an example (your needs may vary, so feel free to change it):
 
-<!-- tabs:start -->
+<Tabs>
 
-#### **React**
+<TabItem value="React" label="React">
 
 `tsconfig.json`:
 
@@ -465,7 +467,8 @@ First, you'll need a `tsconfig.json` file in your project root directory. Here's
 
 ```
 
-#### **Vue**
+  </TabItem>
+  <TabItem value="Vue" label="Vue">
 
 `tsconfig.json`:
 
@@ -493,13 +496,14 @@ First, you'll need a `tsconfig.json` file in your project root directory. Here's
 ```
 
 
-<!-- tabs:end -->
+  </TabItem>
+</Tabs>
 
 Now you'll need to define your types. Create a `@types` directory in your `./resources/js` directory, and create a `laravext.d.ts` file in it. Here's what needs to be inside of it:
 
-<!-- tabs:start -->
+<Tabs>
 
-#### **React**
+<TabItem value="React" label="React">
 
 `laravext.d.ts`:
 
@@ -537,7 +541,8 @@ declare module "@laravext/react/progress" {
 }
 ```
 
-#### **Vue**
+  </TabItem>
+  <TabItem value="Vue" label="Vue">
 
 `laravext.d.ts`:
 
@@ -577,7 +582,8 @@ declare module "@laravext/vue3/progress" {
 ```
 
 
-<!-- tabs:end -->
+  </TabItem>
+</Tabs>
 
 If you haven't already, you might need to declare a `./resouces/js/@types/vite-env.d.ts` file, with the following content:
 

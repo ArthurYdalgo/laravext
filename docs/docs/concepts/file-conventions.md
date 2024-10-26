@@ -84,15 +84,15 @@ File name: `error.(jsx|tsx|js|ts|vue)`
 
 Example:
 
-<!-- tabs:start -->
+<Tabs>
 
-#### **React**
+<TabItem value="React" label="React">
 
 You might want to use [react-error-boundary](https://www.npmjs.com/package/react-error-boundary) to handle errors in your components. I wanted to keep external libraries to a minimum in the examples, so I've created a simple error boundary component [based on React's documentation](https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary).
 
-<!-- tabs:start -->
+<Tabs>
 
-#### **error.jsx**
+<TabItem value="error.jsx" label="error.jsx">
 
 ```jsx
 import ErrorBoundary from "@/components/ErrorBoundary"
@@ -111,7 +111,7 @@ export default ({ laravext, children }) => {
 }
 ```
 
-#### **ErrorBoundary.jsx**
+<TabItem value="ErrorBoundary.jsx" label="ErrorBoundary.jsx">
 
 ```jsx
 import React from 'react';
@@ -146,15 +146,17 @@ class ErrorBoundary extends React.Component {
 export default ErrorBoundary;
 ```
 
-<!-- tabs:end -->
+  </TabItem>
+</Tabs>
 
-#### **Vue**
+  </TabItem>
+  <TabItem value="Vue" label="Vue">
 
 You might want to use [vue-error-boundary](https://www.npmjs.com/package/vue-error-boundary) to handle errors in your components. I wanted to keep external libraries to a minimum in the examples, so I've created a simple error boundary component [based on Vue's documentation](https://vuejs.org/error-reference/).
 
-<!-- tabs:start -->
+<Tabs>
 
-#### **error.vue**
+<TabItem value="error.vue" label="error.vue">
 
 ```vue
 <script setup>
@@ -177,7 +179,7 @@ const doSomething = () => {
 </template>
 ```
 
-#### **ErrorBoundary.vue**
+<TabItem value="ErrorBoundary.vue" label="ErrorBoundary.vue">
 
 ```vue
 <script setup>
@@ -202,9 +204,11 @@ onErrorCaptured((error, vm, info) => {
 </template>
 ```
 
-<!-- tabs:end -->
+  </TabItem>
+</Tabs>
 
-<!-- tabs:end -->
+  </TabItem>
+</Tabs>
 
 ## Loading
 

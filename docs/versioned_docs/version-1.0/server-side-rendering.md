@@ -81,9 +81,9 @@ The `createLaravextSsrApp` function will receive an object with the following ma
 
 There're some optional attributes included in the examples below that either commented or have comments explaining what they do. You can use them to set up global variables, internationalization, cookies, etc.
 
-<!-- tabs:start -->
+<Tabs>
 
-#### **React**
+<TabItem value="React" label="React">
 
 `ssr.jsx`:
 
@@ -189,7 +189,8 @@ serve(({ window, cookies }) =>
 );
 ```
 
-#### **Vue**
+  </TabItem>
+  <TabItem value="Vue" label="Vue">
 
 `ssr.js`:
 
@@ -295,7 +296,8 @@ serve(({ window, cookies }) =>
 );
 ```
 
-<!-- tabs:end -->
+  </TabItem>
+</Tabs>
 
 ### Updating you npm script
 

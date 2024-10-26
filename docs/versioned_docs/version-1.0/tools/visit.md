@@ -15,9 +15,9 @@ The options parameter is an object that defaults to:
 
 <sub>⚠️Important note⚠️: the `redirectToUrlIntended` will not work if the [router_url_intended_is_enabled config](/docs/configuration#router-url-intended-is-enabled-router_url_intended_is_enabled-) is disabled, as the client side will not receive it.</sub>
 
-<!-- tabs:start -->
+<Tabs>
 
-#### **React**
+<TabItem value="React" label="React">
 
 `Link.jsx` (this is an example of a custom Link component that uses the `visit` function, and not the actual implementation of the [Link component from Laravext](/docs/tools/link-component)):
 
@@ -41,7 +41,8 @@ export default  ({ routeName, href, className = '', children }) => {
 
 ```
 
-#### **Vue**
+  </TabItem>
+  <TabItem value="Vue" label="Vue">
 
 `Link.vue` (this is an example of a custom Link component that uses the `visit` function, and not the actual implementation of the [Link component from Laravext](/docs/tools/link-component)):
 
@@ -77,6 +78,7 @@ let classes = props.classes ?? '';
 
 ```
 
-<!-- tabs:end -->
+  </TabItem>
+</Tabs>
 
 <sub>⚠️Important note⚠️: it's not recomendable to use the `visit` function to navigate to a page that doesn't use Laravext. This is due to the function first checking if the page is a Laravext page, and if it's not, it'll do a redirect. As a side effect this will cause a double page visit (the first when the function makes a get request, then the actual redirect), which could degrade the user experience, so you should use a standard anchor tag (`<a href="...">`) instead if you know it's an external link or a non-Laravext page.</sub>

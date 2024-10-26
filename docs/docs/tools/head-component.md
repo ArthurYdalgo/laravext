@@ -2,9 +2,9 @@
 
 Much like the [Head Component from Inertia.js](https://inertiajs.com/title-and-meta), Laravext has its own `Head` component that allows you to set the title of the page.
 
-<!-- tabs:start -->
+<Tabs>
 
-#### **React**
+<TabItem value="React" label="React">
 
 `page.jsx`:
 
@@ -25,7 +25,8 @@ export default () => {
 }
 ```
 
-#### **Vue**
+  </TabItem>
+  <TabItem value="Vue" label="Vue">
 
 `page.vue`:
 
@@ -44,5 +45,6 @@ const {teams} = nexusProps();
 </template>
 ```
 
-<!-- tabs:end -->
+  </TabItem>
+</Tabs>
 

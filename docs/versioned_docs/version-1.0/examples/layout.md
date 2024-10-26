@@ -5,9 +5,9 @@ This is an example of a layout [file convention](/docs/concepts/file-conventions
 
 If a user tries to access a `/admin/dashboard` route (created by `./resources/js/nexus/(global)/(auth)/admin/dashboard/page.(jsx|tsx|js|ts|vue)`), the layout cascaded down will be surrouding the page component.
 
-<!-- tabs:start -->
+<Tabs>
 
-#### **React**
+<TabItem value="React" label="React">
 
 `layout.jsx`:
 
@@ -42,7 +42,8 @@ export default ({ children }) => {
 };
 ```
 
-#### **Vue**
+  </TabItem>
+  <TabItem value="Vue" label="Vue">
 
 `layout.vue`:
 
@@ -80,4 +81,5 @@ const showingNavigationDropdown = ref(false);
 
 ```
 
-<!-- tabs:end -->
+  </TabItem>
+</Tabs>
