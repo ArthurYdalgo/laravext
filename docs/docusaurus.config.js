@@ -7,6 +7,7 @@ module.exports = {
         "File-based routing system with file conventions from Next.js for an Inertia-styled monolith",
     url: "https://laravext.dev",
     baseUrl: "/",
+    trailingSlash: false,
     onBrokenLinks: "throw",
     onBrokenMarkdownLinks: "throw",
     favicon: "images/favicon.ico",
