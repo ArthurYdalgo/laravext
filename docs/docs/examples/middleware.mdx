@@ -3,7 +3,7 @@ import TabItem from '@theme/TabItem'
 
 # Middleware
 
-This is an example of a **CLIENT SIDE** middleware [file convention](/docs/concepts/file-conventions.md). These files are located at `./resources/js/nexus/(global)/(auth)/middleware.(jsx|tsx|js|ts|vue)`.
+This is an example of a **CLIENT SIDE** middleware [file convention](/docs/concepts/file-conventions). These files are located at `./resources/js/nexus/(global)/(auth)/middleware.(jsx|tsx|js|ts|vue)`.
 
 Although this is present in the example projects it would not be actually used because there's a middleware that is already present in the `./routes/web.php` that redirects the user to the login page if they're not authenticated, as the following:
 
