@@ -17,33 +17,26 @@ Most of these are client-side rendered, except for the [Loading/Server Side](/do
 As mentioned in the example at the [Quick Start Installation](/docs/quickstart), you can modify this hierarchy by sending the list of conventions when calling the `createLaravextApp`/`createLaravextSsrApp`. The list of the conventions should be an array of strings, and should be in order that you want to be rendered from the inside out after the page. The default list of conventions is:
 
 ```javascript
-[
-  'error',
-  'layout',
-  'middleware',
-]
+["error", "layout", "middleware"];
 ```
 
 There's no need to include the `page` convention, as it's filtered out before the list is used. Here's an example:
 
 ```javascript
 // For Vue
-import { createLaravextApp, resolveComponent } from "@laravext/vue3"
+import { createLaravextApp, resolveComponent } from "@laravext/vue3";
 
 // For React
-import { createLaravextApp, resolveComponent } from "@laravext/react"
+import { createLaravextApp, resolveComponent } from "@laravext/react";
 
 createLaravextApp({
-    nexusResolver: (name) => resolveComponent(`./nexus/${name}`, import.meta.glob('./nexus/**/*')),
+    nexusResolver: (name) =>
+        resolveComponent(`./nexus/${name}`, import.meta.glob("./nexus/**/*")),
 
     // ...
 
-    conventions: [
-        'error',
-        'middleware',
-        'layout',
-    ]
-})
+    conventions: ["error", "middleware", "layout"],
+});
 ```
 
 In this example, the file hierarchy would be:
@@ -95,26 +88,29 @@ You might want to use [react-error-boundary](https://www.npmjs.com/package/react
 <TabItem value="error.jsx" label="error.jsx">
 
 ```jsx
-import ErrorBoundary from "@/components/ErrorBoundary"
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 export default ({ laravext, children }) => {
-
     const doSomething = async () => {
         window.location.reload();
-    }
+    };
 
     return (
-        <ErrorBoundary onError={doSomething} fallback={<div>Something went wrong... Oopsie daisy</div>}>
+        <ErrorBoundary
+            onError={doSomething}
+            fallback={<div>Something went wrong... Oopsie daisy</div>}
+        >
             {children}
         </ErrorBoundary>
-    )
-}
+    );
+};
 ```
 
+</TabItem>
 <TabItem value="ErrorBoundary.jsx" label="ErrorBoundary.jsx">
 
 ```jsx
-import React from 'react';
+import React from "react";
 
 class ErrorBoundary extends React.Component {
     constructor(props) {
@@ -127,9 +123,9 @@ class ErrorBoundary extends React.Component {
     }
 
     componentDidCatch(error, info) {
-        console.log('Error captured in error component: ', error)
-        
-        if(this.props.onError){
+        console.log("Error captured in error component: ", error);
+
+        if (this.props.onError) {
             this.props.onError();
         }
     }
@@ -147,7 +143,7 @@ export default ErrorBoundary;
 ```
 
   </TabItem>
-</Tabs>
+  </Tabs>
 
   </TabItem>
   <TabItem value="Vue" label="Vue">
@@ -163,21 +159,21 @@ You might want to use [vue-error-boundary](https://www.npmjs.com/package/vue-err
 import ErrorBoundary from "@/components/ErrorBoundary.vue";
 
 const doSomething = () => {
-  window.location.reload();
+    window.location.reload();
 };
-
 </script>
 <template>
-  <ErrorBoundary :onError="doSomething">
-    <slot></slot>
+    <ErrorBoundary :onError="doSomething">
+        <slot></slot>
 
-    <template v-slot:fallback>
-      <span>Something went wrong... Oopsie daisy</span>
-    </template>
-    
-  </ErrorBoundary>
+        <template v-slot:fallback>
+            <span>Something went wrong... Oopsie daisy</span>
+        </template>
+    </ErrorBoundary>
 </template>
 ```
+
+</TabItem>
 
 <TabItem value="ErrorBoundary.vue" label="ErrorBoundary.vue">
 
@@ -189,18 +185,18 @@ const { onError } = defineProps(["onError"]);
 let errorWasCaptured = ref(false);
 
 onErrorCaptured((error, vm, info) => {
-  errorWasCaptured.value = true;
+    errorWasCaptured.value = true;
 
-  console.log("Error captured in error component: ", error);
+    console.log("Error captured in error component: ", error);
 
-  if (onError) {
-    onError();
-  }
+    if (onError) {
+        onError();
+    }
 });
 </script>
 <template>
-  <slot name="default" v-if="!errorWasCaptured"></slot>
-  <slot name="fallback" v-else></slot>
+    <slot name="default" v-if="!errorWasCaptured"></slot>
+    <slot name="fallback" v-else></slot>
 </template>
 ```
 

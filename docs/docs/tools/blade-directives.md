@@ -89,7 +89,7 @@ export default ({ laravext, initialState }) => {
     )
 }
 ```
-
+</TabItem>
 <TabItem value="usePrivacy.js" label="usePrivacy.js">
 
 ⚠️This example uses the [zustand](https://github.com/pmndrs/zustand) package⚠️
@@ -141,7 +141,7 @@ const handleToggle = () => {
     </span>
 </template>
 ```
-
+</TabItem>
 <TabItem value="usePrivacy.js" label="usePrivacy.js">
 
 ```js

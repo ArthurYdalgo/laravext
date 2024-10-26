@@ -185,6 +185,7 @@ const { teams } = nexusProps();
     </div>
 </template>
 ```
+</TabItem>
 
 <TabItem value="web.php" label="web.php">
 
@@ -202,4 +203,5 @@ Route::get('our-teams', function () {
 ```
 
   </TabItem>
+  
 </Tabs>
