@@ -50,7 +50,7 @@ export default ({ children }) => {
 
 `middleware.vue`:
 
-```vue
+```html
 <script setup>
 import { inject } from 'vue';
 import { visit } from '@laravext/vue3';

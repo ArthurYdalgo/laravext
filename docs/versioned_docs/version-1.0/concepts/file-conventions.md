@@ -154,7 +154,7 @@ You might want to use [vue-error-boundary](https://www.npmjs.com/package/vue-err
 
 <TabItem value="error.vue" label="error.vue">
 
-```vue
+```html
 <script setup>
 import ErrorBoundary from "@/components/ErrorBoundary.vue";
 
@@ -177,7 +177,7 @@ const doSomething = () => {
 
 <TabItem value="ErrorBoundary.vue" label="ErrorBoundary.vue">
 
-```vue
+```html
 <script setup>
 import { onErrorCaptured, ref } from "vue";
 const { onError } = defineProps(["onError"]);

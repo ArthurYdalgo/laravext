@@ -116,7 +116,7 @@ export default usePrivacy;
 
 <TabItem value="PrivacyToggle.vue" label="PrivacyToggle.vue">
 
-```vue
+```html
 <script setup>
 import { privacy } from '@/composables/usePrivacy'
 import axios from 'axios';

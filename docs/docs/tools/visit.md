@@ -46,7 +46,7 @@ export default  ({ routeName, href, className = '', children }) => {
 
 `Link.vue` (this is an example of a custom Link component that uses the `visit` function, and not the actual implementation of the [Link component from Laravext](/docs/tools/link-component)):
 
-```vue
+```html
 <script setup>
 import { visit } from '@laravext/vue3';
 

@@ -47,7 +47,7 @@ export default ({ children }) => {
 
 `layout.vue`:
 
-```vue
+```html
 <script setup>
 import { ref, inject } from 'vue';
 import axios from 'axios';

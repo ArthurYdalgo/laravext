@@ -1,4 +1,5 @@
 const editUrl = "https://github.com/ArthurYdalgo/laravext/blob/master/docs/";
+import {themes as prismThemes} from 'prism-react-renderer';
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
@@ -13,7 +14,6 @@ module.exports = {
     favicon: "images/favicon.ico",
     organizationName: "ArthurYdalgo", // Usually your GitHub org/user name.
     projectName: "laravext", // Usually your repo name.
-    
     themeConfig: {
         docs: {
             sidebar: {
@@ -111,7 +111,8 @@ module.exports = {
             ],
         },
         prism: {
-            additionalLanguages: ["rust", "php", "toml", 'jsx', 'json'],
+            theme: prismThemes.dracula,
+            additionalLanguages: ["php", "toml", 'jsx', 'json'],
         }
     },
     i18n: {

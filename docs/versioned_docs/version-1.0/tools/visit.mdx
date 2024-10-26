@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
 # The visit function
 
 Much like [Inertia.js' Protocol](https://inertiajs.com/the-protocol), you can use the `visit(url, options = { ... })` function to navigate to a new page that uses Laravext. This creates a smooth SPA experience, as it doesn't reload the page. If the version of the application changes between visits, or if the view set for that route is different from the one that was previously loaded, an usual page visit will happen.
@@ -46,7 +49,7 @@ export default  ({ routeName, href, className = '', children }) => {
 
 `Link.vue` (this is an example of a custom Link component that uses the `visit` function, and not the actual implementation of the [Link component from Laravext](/docs/tools/link-component)):
 
-```vue
+```html
 <script setup>
 import { visit } from '@laravext/vue3';
 

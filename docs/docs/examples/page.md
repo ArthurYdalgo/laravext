@@ -72,7 +72,7 @@ export default () => {
 
 `page.vue`:
 
-```vue
+```html
 <script setup>
 import { Head } from '@laravext/vue3'
 import axios from 'axios';
@@ -162,7 +162,7 @@ export default () => {
 
 `page.vue`:
 
-```vue
+```html
 <script setup>
 import { inject } from 'vue';
 import { Head } from '@laravext/vue3'

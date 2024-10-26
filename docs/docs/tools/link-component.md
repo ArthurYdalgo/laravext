@@ -35,7 +35,7 @@ export default () => {
 
 `page.vue`:
 
-```vue
+```html
 <script setup>
 import { inject } from 'vue';
 import { Head, Link } from "@laravext/vue3";
