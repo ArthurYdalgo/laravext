@@ -2,7 +2,7 @@
 
 <p align="center">
 <a href="https://laravext.dev" target="_blank">
-  <img width="150" src="https://github.com/ArthurYdalgo/laravext/blob/main/docs/images/logo/laravext.png?raw=true"/></a>
+  <img width="150" src="https://github.com/ArthurYdalgo/laravext/blob/main/docs/static/images/logo/laravext.png?raw=true"/></a>
 </p>
 
 <p align="center">
@@ -27,7 +27,7 @@ Here are some useful links:
 
 ## Documentation
 
-The documentation is available at [laravext.dev](https://laravext.dev). It's a work in progress, and I'm trying to make it as complete as possible in a way that makes it as useful and friendly like the [Laravel](https://laravel.com/) docs. If you find any errors, or have any suggestions, feel free to open an issue or a PR.
+The documentation is available at [laravext.dev](https://laravext.dev). It's a constant work in progress, and I'm trying to make it as complete as possible in a way that makes it as useful and friendly like the [Laravel](https://laravel.com/) docs. If you find any errors, or have any suggestions, feel free to open an issue or a PR.
 
 ## Installation
 
@@ -39,7 +39,7 @@ Laravext is a set of tools aimed to assist the development of Laravel applicatio
 
 You may think of it as a Next.js' file based router inside your Laravel project. There're some methods that slightly remember Inertia.js as well. It offers 3 ways to dinamically create server-side rendered pages based on your needs so your application is SEO friendly, one of them in the Inertia.js style, and two of them in the Blade style.
 
-![image](/docs/images/memes/rick-morty-blade-meme.jpg)
+![image](/docs/static/images/memes/rick-morty-blade-meme.jpg)
 
 <sup>**Credits: Rick and Morty - Adult Swim**<sub>
 
@@ -59,7 +59,7 @@ Additionally, you might be asking yourself:
 
 "Why don't you use Next.js?", or even "Why don't you use Inertia.js?"
 
-![image](/docs/images/memes/i-dont-like-nextjs-mard-crowd-with-forks-meme.jpg)
+![image](/docs/static/images/memes/i-dont-like-nextjs-mard-crowd-with-forks-meme.jpg)
 
 Before somebody light up their torches or grab their forks: the following points are my opinions only, based on my personal (in)experiences and troubles. You may disagree with them, and that's fine. Feel free to skip this section.
 
