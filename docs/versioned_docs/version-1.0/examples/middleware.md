@@ -1,3 +1,6 @@
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
 # Middleware
 
 This is an example of a **CLIENT SIDE** middleware [file convention](/docs/concepts/file-conventions.md). These files are located at `./resources/js/nexus/(global)/(auth)/middleware.(jsx|tsx|js|ts|vue)`.
