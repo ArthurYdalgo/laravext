@@ -3,7 +3,7 @@ name: Test deployment
 on:
   pull_request:
     branches:
-      - main
+      - deploy-docs
 
 jobs:
   test-deploy:
