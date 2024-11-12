@@ -71,7 +71,7 @@ async function checkSuperfluousTranslations() {
 
 async function checkWriteTranslations() {
     const temp = await fs.promises.mkdtemp(
-        path.join(os.tmpdir(), 'yew-website-')
+        path.join(os.tmpdir(), 'laravext-website-')
     )
     await new Promise((resolve) => {
         fs.cp('i18n', temp, { recursive: true }, () => {
