@@ -50,7 +50,11 @@ Route::laravext('dashboard', route_group_attributes: [
 
 As mentioned before, in the [Quick Start Installation](/docs/quickstart) section, this is technically optional, as there're other ways to generate your routes in a more granular way, but it's entirely up to you on how you want to use it. (Although I think that if you are using Laravext and came all the way here, you probably want to use it).
 
-<sub>⚠️Important note⚠️: as exemplified in [examples/laravel-11-vue/routes/laravext.php #L48](https://github.com/ArthurYdalgo/laravext/blob/main/examples/laravel-11-vue/routes/laravext.php#L48), if you redeclare any other route that would be a subroute of '/dashboard', like '/dashboard/teams/1/edit', any middleware or other attributes set in the route_group_attributes will not be used in this new route declaration. So if any important middleware is needed, you'll have to redeclare it in the new route declaration, or create a `Route::group([...], function() {...})` that would contain both routes so you don't have to redeclare that middleware.</sub>
+:::warning 
+
+Important note: as exemplified in [examples/laravel-11-vue/routes/laravext.php #L48](https://github.com/ArthurYdalgo/laravext/blob/main/examples/laravel-11-vue/routes/laravext.php#L48), if you redeclare any other route that would be a subroute of '/dashboard', like '/dashboard/teams/1/edit', any middleware or other attributes set in the route_group_attributes will not be used in this new route declaration. So if any important middleware is needed, you'll have to redeclare it in the new route declaration, or create a `Route::group([...], function() {...})` that would contain both routes so you don't have to redeclare that middleware.
+
+:::
 
 ## Route::nexus(...)
 
@@ -71,7 +75,11 @@ The (named) parameters:
 
 You can also chain methods such as `->middleware('auth')`, `->withoutMiddleware('verified')` or `->name('admin.dashboard')` to the route declaration, as you would with a common route declaration.
 
-<sub>⚠️Important note⚠️: if you're declaring a nexus route, it'll not have the name of a previously automagically generated route, as it's a completely new route declaration. If you want to use the same name, you'll have to set it manually.</sub>
+:::warning
+
+Important note: if you're declaring a nexus route, it'll not have the name of a previously automagically generated route, as it's a completely new route declaration. If you want to use the same name, you'll have to set it manually.
+
+:::
 
 ```php
 use Illuminate\Support\Facades\Route;
