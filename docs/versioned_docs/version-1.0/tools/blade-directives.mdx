@@ -54,6 +54,14 @@ You can use the @strand('Path/To/Component') directive alongside a @nexus, which
 @endsection
 ```
 
+
+:::note
+
+While this package was being developed, it was noticed that if a `@strand` directive was placed in a layout blade view, any parameter passed to it was cached, 
+so avoid using it in a layout blade view if you're passing any props to it. An example was that a date would always be "stuck" in the date when the project created cached view files.
+
+:::
+
 For some context, here's the component:
 
 <Tabs>
