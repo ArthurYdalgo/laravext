@@ -97,6 +97,10 @@ module.exports = {
                             label: "Twitter/X",
                             href: "https://twitter.com/laravext_dev",
                         },
+                        {
+                            "label": "YouTube",
+                            "href": "https://youtube.com/@laravext"
+                          }
                     ],
                 },
                 {
