@@ -5,7 +5,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 module.exports = {
     title: "Laravext",
     tagline:
-        "File-based routing system with file conventions from Next.js for an Inertia-styled monolith",
+        "An Inertia-styled monolith with Next.js' file-based routing system and file conventions for Vue and React",
     url: "https://laravext.dev",
     baseUrl: "/",
     trailingSlash: false,
