@@ -1,6 +1,6 @@
 {
     "name": "@laravext/react",
-    "version": "1.0.7",
+    "version": "1.0.7-beta.2",
     "description": "Laravext for React",
     "homepage": "https://laravext.dev/",
     "repository": {
@@ -11,6 +11,7 @@
     "type": "module",
     "main": "./dist/index.js",
     "module": "./dist/index.esm.js",
+    "types": "./laravext.d.ts",
     "exports": {
         ".": {
             "import": "./dist/index.esm.js",
