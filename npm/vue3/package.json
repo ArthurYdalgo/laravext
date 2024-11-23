@@ -1,6 +1,6 @@
 {
     "name": "@laravext/vue3",
-    "version": "1.0.6",
+    "version": "1.0.8",
     "description": "Laravext for Vue3",
     "homepage": "https://laravext.dev/",
     "repository": {
@@ -11,6 +11,7 @@
     "type": "module",
     "main": "./dist/index.js",
     "module": "./dist/index.esm.js",
+    "types": "./laravext.d.ts",
     "exports": {
         ".": {
             "import": "./dist/index.esm.js",
