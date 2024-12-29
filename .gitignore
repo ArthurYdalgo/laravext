@@ -4,3 +4,12 @@ examples/laravel-11-react/.nvmrc
 examples/laravel-11-vue/.nvmrc
 npm/vue/.nvmrc
 npm/react/.nvmrc
+node_modules
+vendor
+.vite
+starter-kits/*/public/build
+starter-kits/*/bootstrap/cache
+starter-kits/*/database/*.sqlite
+starter-kits/*/storage/framework
+starter-kits/*/storage/logs/laravel.log
+.env
