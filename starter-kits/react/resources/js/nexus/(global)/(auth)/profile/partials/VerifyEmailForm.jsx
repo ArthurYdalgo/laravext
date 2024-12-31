@@ -12,19 +12,20 @@ import PrimaryButton from '@/components/PrimaryButton';
 export default ({ className = '' }) => {
     const [processing, setProcessing] = useState(false);
     const [status, setStatus] = useState('');
+    const [error, setError] = useState('');
 
     const submit = (e) => {
         e.preventDefault();
 
         setProcessing(true);
+        
         axios.post('/api/auth/email/verification-notification').then(({data}) => {
             setProcessing(false);
             setStatus(data.status);
         }).catch((error) => {
             setProcessing(false);
             if(error.response.status === 422) {
-                setErrors(error.response.data?.errors);
-                passwordInput.current.focus();
+                setError(error.response.data?.errors);
             }
         });
     };
@@ -39,9 +40,10 @@ export default ({ className = '' }) => {
                 </p>
             </header>
 
-            <PrimaryButton onClick={submit}>Verify Email</PrimaryButton>
+            <PrimaryButton disabled={processing} onClick={submit}>Verify Email</PrimaryButton>
             
             {status && <div className="font-medium text-sm text-green-600">{status}</div>}
+            <InputError message={error} />
            
         </section>
     );

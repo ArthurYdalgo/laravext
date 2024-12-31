@@ -65,7 +65,7 @@ export default ({ children }) => {
 
                                     <Dropdown.Content>
                                         <Dropdown.Link href={route('profile')}>Profile</Dropdown.Link>
-                                        <Dropdown.Link onClick={logout}>
+                                        <Dropdown.Link className='cursor-pointer' onClick={logout}>
                                             Log Out
                                         </Dropdown.Link>
                                     </Dropdown.Content>
