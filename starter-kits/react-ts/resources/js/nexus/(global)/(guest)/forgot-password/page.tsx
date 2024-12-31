@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import InputError from '@/components/InputError';
 import PrimaryButton from '@/components/PrimaryButton';
 import TextInput from '@/components/TextInput';
+import axios from 'axios';
 import { Head, Link } from '@laravext/react';
 
 export default ({ }) => {
@@ -16,7 +17,7 @@ export default ({ }) => {
     const [processing, setProcessing] = useState(false);
     const [status, setStatus] = useState('');
 
-    const submit = (e) => {
+    const submit = (e: FormEvent) => {
         e.preventDefault();
 
         axios.post('/api/auth/forgot-password', {

@@ -4,7 +4,8 @@ import PrimaryButton from '@/components/PrimaryButton';
 import TextInput from '@/components/TextInput';
 import { Head, queryParams, routeParams, visit } from '@laravext/react';
 import axios from 'axios';
-import {useState} from 'react';
+import {FormEvent, useState} from 'react';
+import { route } from 'ziggy-js';
 
 export default ({ }) => {
 
@@ -20,9 +21,13 @@ export default ({ }) => {
 
     const [ processing, setProcessing ] = useState(false);
 
-    const [ errors, setErrors ] = useState({})
+    const [ errors, setErrors ] = useState({
+        email: '',
+        password: '',
+        password_confirmation: '',
+    });
 
-    const submit = (e) => {
+    const submit = (e: FormEvent) => {
         e.preventDefault();
 
         axios.post('/api/auth/reset-password', data)

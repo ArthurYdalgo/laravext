@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import InputError from "@/components/InputError";
 import InputLabel from "@/components/InputLabel";
 import PrimaryButton from "@/components/PrimaryButton";
@@ -15,10 +15,15 @@ export default () => {
         password_confirmation: "",
     });
 
-    const [errors, setErrors] = useState<any>({});
+    const [errors, setErrors] = useState({
+        name: "",
+        email: "",
+        password: "",
+        password_confirmation: "",
+    });
     const [processing, setProcessing] = useState(false);
 
-    const submit = (e: React.FormEvent) => {
+    const submit = (e: FormEvent) => {
         e.preventDefault();
 
         setProcessing(true);

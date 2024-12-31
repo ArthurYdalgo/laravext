@@ -5,7 +5,8 @@ import PrimaryButton from '@/components/PrimaryButton';
 import TextInput from '@/components/TextInput';
 import { Head, Link, visit } from '@laravext/react';
 import axios from 'axios';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
+import { route } from 'ziggy-js';
 
 export default () => {
     const [data, setData] = useState({
@@ -20,7 +21,7 @@ export default () => {
         password: '',
     });
 
-    const submit = (e) => {
+    const submit = (e: FormEvent) => {
         e.preventDefault();
 
         axios.post('/api/auth/login', {
