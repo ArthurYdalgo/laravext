@@ -38,12 +38,15 @@ export default ({ className = '' }) => {
 
     const deleteUser = (e) => {
         e.preventDefault();
+        setProcessing(true);
 
         axios.delete('/api/auth/user', {
             data: data,
         }).then(() => {
+            setProcessing(false);
             visit('/');
         }).catch((error) => {
+            setProcessing(false);
             console.log(error);
             if(error.response.status === 422) {
                 setErrors(error.response.data?.errors);
