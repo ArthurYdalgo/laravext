@@ -3,6 +3,7 @@ import InputError from '@/components/InputError';
 import PrimaryButton from '@/components/PrimaryButton';
 import TextInput from '@/components/TextInput';
 import { Head, Link } from '@laravext/react';
+import axios from 'axios';
 
 export default ({ }) => {
     const [data, setData] = useState({
