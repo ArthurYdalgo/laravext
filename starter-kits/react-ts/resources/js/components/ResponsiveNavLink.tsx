@@ -1,7 +1,7 @@
 import { Link } from '@laravext/react';
 import { PropsWithChildren } from 'react';
 
-export default function ResponsiveNavLink({ active = false, className = '', children, ...props }:PropsWithChildren<{ active?: boolean, className: string }>) {
+export default function ResponsiveNavLink({ href = '', active = false, className = '', children, ...props }:PropsWithChildren<{ href?: string, active?: boolean, className?: string }>) {
     return (
         <Link
             {...props}

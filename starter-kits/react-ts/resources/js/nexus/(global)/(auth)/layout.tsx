@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { PropsWithChildren, useState } from 'react';
 import ApplicationLogo from '@/components/ApplicationLogo';
 import Dropdown from '@/components/Dropdown';
 import NavLink from '@/components/NavLink';
@@ -6,8 +6,9 @@ import ResponsiveNavLink from '@/components/ResponsiveNavLink';
 import { Link, sharedProps, visit } from '@laravext/react';
 import ResponsiveNavButton from '@/components/ResponsiveNavButton';
 import axios from 'axios';
+import { route } from 'ziggy-js';
 
-export default ({ children }) => {
+export default ({ children }: PropsWithChildren) => {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     const { user } = sharedProps().auth;
 
@@ -65,7 +66,7 @@ export default ({ children }) => {
 
                                     <Dropdown.Content>
                                         <Dropdown.Link href={route('profile')}>Profile</Dropdown.Link>
-                                        <Dropdown.Link onClick={logout}>
+                                        <Dropdown.Link className='cursor-pointer' onClick={logout}>
                                             Log Out
                                         </Dropdown.Link>
                                     </Dropdown.Content>

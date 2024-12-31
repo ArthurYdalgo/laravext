@@ -1,7 +1,7 @@
 import { Link } from '@laravext/react';
-import { PropsWithChildren } from 'react';
+import { ButtonHTMLAttributes, HTMLAttributes, PropsWithChildren } from 'react';
 
-export default function ResponsiveNavButton({ active = false, className = '', children, ...props }: PropsWithChildren<{ active?: boolean, className: string }>) {
+export default function ResponsiveNavButton({className = '', children, ...props }: any) {
     return (
         <div
             {...props}

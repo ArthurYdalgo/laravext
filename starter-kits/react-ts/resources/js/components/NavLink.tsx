@@ -1,7 +1,7 @@
 import { Link } from '@laravext/react';
 import { PropsWithChildren } from "react";
 
-export default function NavLink({ active = false, className = '', children, ...props }: PropsWithChildren<{ active?: boolean, className: string }>) {
+export default function NavLink({ active = false, className = '', children, ...props }: any) {
     return (
         <Link
             {...props}

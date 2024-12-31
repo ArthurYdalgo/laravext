@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import DangerButton from '@/components/DangerButton';
 import InputError from '@/components/InputError';
 import InputLabel from '@/components/InputLabel';
@@ -10,7 +10,6 @@ import { visit } from '@laravext/react';
 
 export default ({ className = '' }) => {
     const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
-    const passwordInput = useRef();
 
     const [data, setData] = useState({
         password: '',
@@ -36,18 +35,20 @@ export default ({ className = '' }) => {
         setConfirmingUserDeletion(true);
     };
 
-    const deleteUser = (e) => {
+    const deleteUser = (e: FormEvent) => {
         e.preventDefault();
+        setProcessing(true);
 
         axios.delete('/api/auth/user', {
             data: data,
         }).then(() => {
+            setProcessing(false);
             visit('/');
         }).catch((error) => {
+            setProcessing(false);
             console.log(error);
             if(error.response.status === 422) {
                 setErrors(error.response.data?.errors);
-                passwordInput.current.focus();
             }
         });
     };
@@ -89,7 +90,6 @@ export default ({ className = '' }) => {
                             id="password"
                             type="password"
                             name="password"
-                            ref={passwordInput}
                             value={data.password}
                             onChange={(e) => setData((prev) => ({ ...prev, password: e.target.value }))}
                             className="mt-1 block w-3/4"

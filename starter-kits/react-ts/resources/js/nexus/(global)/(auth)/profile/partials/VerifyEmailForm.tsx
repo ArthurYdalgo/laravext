@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { FormEvent, useRef, useState } from 'react';
 import DangerButton from '@/components/DangerButton';
 import InputError from '@/components/InputError';
 import InputLabel from '@/components/InputLabel';
@@ -12,20 +12,21 @@ import PrimaryButton from '@/components/PrimaryButton';
 export default ({ className = '' }) => {
     const [processing, setProcessing] = useState(false);
     const [status, setStatus] = useState('');
+    const [error, setError] = useState('');
 
-    const submit = (e) => {
+    const submit = (e: FormEvent) => {
         e.preventDefault();
+        setError('');
 
         setProcessing(true);
+
         axios.post('/api/auth/email/verification-notification').then(({data}) => {
             setProcessing(false);
             setStatus(data.status);
         }).catch((error) => {
             setProcessing(false);
-            if(error.response.status === 422) {
-                setErrors(error.response.data?.errors);
-                passwordInput.current.focus();
-            }
+            console.error(error);
+            setError(error.response.data?.message ?? 'An error occurred.');
         });
     };
 
@@ -39,9 +40,10 @@ export default ({ className = '' }) => {
                 </p>
             </header>
 
-            <PrimaryButton onClick={submit}>Verify Email</PrimaryButton>
+            <PrimaryButton disabled={processing} onClick={submit}>Verify Email</PrimaryButton>
             
             {status && <div className="font-medium text-sm text-green-600">{status}</div>}
+            <InputError message={error} />
            
         </section>
     );

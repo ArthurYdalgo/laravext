@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import InputError from '@/components/InputError';
 import InputLabel from '@/components/InputLabel';
 import PrimaryButton from '@/components/PrimaryButton';
@@ -7,8 +7,6 @@ import { Transition } from '@headlessui/react';
 import axios from 'axios';
 
 export default ({ className = '' }) => {
-    const passwordInput = useRef();
-    const currentPasswordInput = useRef();
     
     const [data, setData] = useState({
         current_password: '',
@@ -39,9 +37,8 @@ export default ({ className = '' }) => {
     const [processing, setProcessing] = useState(false);
     const [recentlySuccessful, setRecentlySuccessful] = useState(false);
 
-    const updatePassword = (e) => {
+    const updatePassword = (e: FormEvent) => {
         e.preventDefault();
-
         setProcessing(true);
 
         axios.put('/api/auth/password', data)
@@ -71,7 +68,6 @@ export default ({ className = '' }) => {
 
                     <TextInput
                         id="current_password"
-                        ref={currentPasswordInput}
                         value={data.current_password}
                         onChange={(e) => setData((prev) => ({ ...prev, current_password: e.target.value }))}
                         type="password"
@@ -87,7 +83,6 @@ export default ({ className = '' }) => {
 
                     <TextInput
                         id="password"
-                        ref={passwordInput}
                         value={data.password}
                         onChange={(e) => setData((prev) => ({ ...prev, password: e.target.value }))}
                         type="password"

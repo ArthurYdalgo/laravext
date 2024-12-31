@@ -95,7 +95,7 @@ const Content = ({
     );
 };
 
-const DropdownLink = ({ href, className = "", children, preserveScroll = false, redirectToUrlIntended = true, ...props }: PropsWithChildren<{ href: string, className?: string, preserveScroll?: boolean, redirectToUrlIntended?: boolean }>) => {
+const DropdownLink = ({ href, className = "", children, preserveScroll = false, redirectToUrlIntended = true, ...props }: any) => {
     const { setOpen } = useContext(DropDownContext);
 
     return (

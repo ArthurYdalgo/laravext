@@ -4,7 +4,7 @@ import PrimaryButton from "@/components/PrimaryButton";
 import TextInput from "@/components/TextInput";
 import { Link, sharedProps } from "@laravext/react";
 import { Transition } from "@headlessui/react";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import axios from "axios";
 
 export default ({ className = "" }) => {
@@ -24,7 +24,7 @@ export default ({ className = "" }) => {
     const [recentlySuccessful, setRecentlySuccessful] = useState(false);
 
 
-    const submit = (e) => {
+    const submit = (e: FormEvent) => {
         e.preventDefault();
 
         setProcessing(true);
