@@ -4,6 +4,7 @@ import PrimaryButton from '@/components/PrimaryButton';
 import TextInput from '@/components/TextInput';
 import axios from 'axios';
 import { Head, Link } from '@laravext/react';
+import { route } from 'ziggy-js';
 
 export default ({ }) => {
     const [data, setData] = useState({

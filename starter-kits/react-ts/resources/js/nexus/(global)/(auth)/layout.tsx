@@ -5,12 +5,13 @@ import NavLink from '@/components/NavLink';
 import ResponsiveNavLink from '@/components/ResponsiveNavLink';
 import { Link, sharedProps, visit } from '@laravext/react';
 import ResponsiveNavButton from '@/components/ResponsiveNavButton';
+import axios from 'axios';
 
 export default ({ children }) => {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     const { user } = sharedProps().auth;
 
-    const logout = async (e) => {
+    const logout = async (e: Event) => {
         e.preventDefault();
         await axios.post('/api/auth/logout');
         visit('/');
