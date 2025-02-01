@@ -13,3 +13,4 @@ starter-kits/*/database/*.sqlite
 starter-kits/*/storage/framework
 starter-kits/*/storage/logs/laravel.log
 .env
+starter-kits/react/.nvmrc
