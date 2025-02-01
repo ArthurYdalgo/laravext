@@ -127,9 +127,9 @@ export default ({
             &lt;
           </button>
           <ul className="flex list-none border border-gray-300 rounded overflow-hidden">
-            {pages.map((page) => (
+            {pages.map((page, index) => (
               <li
-                key={page}
+                key={`pagination-${page}-${index}`}
                 className={`px-3 py-2 border-r last:border-r-0 ${page === currentPage ? 'bg-blue-500 text-white cursor-pointer' : 'text-gray-700 cursor-pointer'
                   }`}
                 onClick={() => typeof page === 'number' && setCurrentPage(page)}
