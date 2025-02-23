@@ -1,7 +1,6 @@
 import { createServer } from 'http'
 import * as process from 'process'
 import { JSDOM } from 'jsdom';
-import React from "react";
 
 async function parsedRequestBody(request) {
     let body = await new Promise((resolve, reject) => {
