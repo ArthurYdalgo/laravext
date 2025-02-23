@@ -86,7 +86,7 @@ export function clientRender(scrollState = null) {
 
                     let renderer = () => h(pageComponent, {
                         props: () => ({
-                            // laravext: laravext?.page_data
+                            laravext: laravext?.page_data
                         }),
                     });
 
@@ -101,7 +101,7 @@ export function clientRender(scrollState = null) {
                                 renderer = () => h(conventionComponent, { }, {
                                     default: () => previousRenderer(),
                                     props: () => ({
-                                        // laravext: laravext?.page_data
+                                        laravext: laravext?.page_data
                                     })
                                 });
                             } catch (error) {
