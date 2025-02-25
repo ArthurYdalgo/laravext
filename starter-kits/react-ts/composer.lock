@@ -4,8 +4,71 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6d580901de64f9d577d8c139cea61306",
+    "content-hash": "96f2186606de4933ea7322afb0e99573",
     "packages": [
+        {
+            "name": "arthurydalgo/laravext",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ArthurYdalgo/laravext-packagist.git",
+                "reference": "f000637de36ef3b451eee431a0621c73e65c7076"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ArthurYdalgo/laravext-packagist/zipball/f000637de36ef3b451eee431a0621c73e65c7076",
+                "reference": "f000637de36ef3b451eee431a0621c73e65c7076",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": ">=10",
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Laravext": "Laravext\\LaravextFacade"
+                    },
+                    "providers": [
+                        "Laravext\\LaravextServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "./helpers.php"
+                ],
+                "psr-4": {
+                    "Laravext\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Arthur Ydalgo",
+                    "email": "arthur.ydalgo.dev@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "The Laravext Toolset for Laravel",
+            "homepage": "https://github.com/arthurydalgo/laravext",
+            "keywords": [
+                "arthurydalgo",
+                "laravext"
+            ],
+            "support": {
+                "issues": "https://github.com/ArthurYdalgo/laravext-packagist/issues",
+                "source": "https://github.com/ArthurYdalgo/laravext-packagist/tree/1.0.1"
+            },
+            "time": "2024-08-24T04:12:28+00:00"
+        },
         {
             "name": "brick/math",
             "version": "0.12.1",
