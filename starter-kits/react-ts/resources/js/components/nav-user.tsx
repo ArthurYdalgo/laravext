@@ -5,10 +5,11 @@ import { UserMenuContent } from '@/components/user-menu-content';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { type SharedData } from '@/types';
 import { usePage } from '@inertiajs/react';
+import { sharedProps } from '@laravext/react';
 import { ChevronsUpDown } from 'lucide-react';
 
 export function NavUser() {
-    const { auth } = usePage<SharedData>().props;
+    const { auth } = sharedProps();
     const { state } = useSidebar();
     const isMobile = useIsMobile();
 

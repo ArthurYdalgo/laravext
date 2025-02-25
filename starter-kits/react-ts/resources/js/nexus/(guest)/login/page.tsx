@@ -24,15 +24,9 @@ interface LoginProps {
 }
 
 export default function Login({ status, canResetPassword }: LoginProps) {
-    // const { data, setData, post, processing, errors, reset } = useForm<LoginForm>({
-    //     email: '',
-    //     password: '',
-    //     remember: false,
-    // });
-
     const { data, setData, errors, setErrors, processing, setProcessing } = useForm({
-        email: '',
-        password: '',
+        email: 'test@example.com',
+        password: 'password',
         remember: false,
     });
 
@@ -87,11 +81,11 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             required
                             tabIndex={2}
                             autoComplete="current-password"
-                            // value={data.password}
-                            // onChange={(e) => setData('password', e.target.value)}
+                            value={data.password}
+                            onChange={(e) => setData('password', e.target.value)}
                             placeholder="Password"
                         />
-                        {/* <InputError message={errors.password} /> */}
+                        <InputError message={errors.password} />
                     </div>
 
                     <div className="flex items-center space-x-3">
@@ -99,8 +93,8 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                         <Label htmlFor="remember">Remember me</Label>
                     </div>
 
-                    <Button type="submit" className="mt-4 w-full" tabIndex={4} >
-                        {<LoaderCircle className="h-4 w-4 animate-spin" />}
+                    <Button type="submit" className="mt-4 w-full" tabIndex={4} disabled={processing}>
+                        {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                         Log in
                     </Button>
                 </div>
