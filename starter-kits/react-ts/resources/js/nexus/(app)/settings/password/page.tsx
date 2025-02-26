@@ -24,7 +24,7 @@ export default function Password() {
     const passwordInput = useRef<HTMLInputElement>(null);
     const currentPasswordInput = useRef<HTMLInputElement>(null);
 
-    const { data, setData, errors, setErrors, reset, processing, recentlySuccessful } = useForm({
+    const { data, setData, errors, setErrors, clearErrors, reset, processing, recentlySuccessful } = useForm({
         current_password: '',
         password: '',
         password_confirmation: '',
@@ -33,11 +33,12 @@ export default function Password() {
     const updatePassword: FormEventHandler = (e) => {
         e.preventDefault();
 
-        axios.put(route('password.update'), data).then(() => {
+        axios.put('/api/settings/password', data).then(() => {
             reset();
+            clearErrors();
         }).catch((error) => {
             let responseErrors = error.response.data.errors;
-            
+
             setErrors(responseErrors);
 
             if (responseErrors.password) {
