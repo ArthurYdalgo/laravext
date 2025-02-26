@@ -8,6 +8,7 @@ export const useForm = (initialValues: { [key: string]: any }) => {
     const [formInitialValues, setFormInitialValues] = useState(initialValues);
     const [formData, setFormData] = useState(initialValues);
     const [processing, setProcessing] = useState(false);
+    const [recentlySuccessful, setRecentlySuccessful] = useState(false);
     const [formErrors, setFormErrors] = useState<FormErrors>({});
 
     const setData = (data: string|Object, value:any|Object = null) => {
@@ -41,6 +42,8 @@ export const useForm = (initialValues: { [key: string]: any }) => {
         setErrors,
         processing,
         setProcessing,
+        recentlySuccessful,
+        setRecentlySuccessful,
         reset,
     }
 }

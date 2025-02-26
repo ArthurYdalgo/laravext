@@ -2,7 +2,8 @@ import { DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSep
 import { UserInfo } from '@/components/user-info';
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
 import { type User } from '@/types';
-import { Link } from '@inertiajs/react';
+import { Link, visit } from '@laravext/react';
+import axios from 'axios';
 import { LogOut, Settings } from 'lucide-react';
 
 interface UserMenuContentProps {
@@ -11,6 +12,13 @@ interface UserMenuContentProps {
 
 export function UserMenuContent({ user }: UserMenuContentProps) {
     const cleanup = useMobileNavigation();
+
+    const logout = () => {
+        axios.post('/api/logout').then(() => {
+            cleanup();
+            visit(route('home'));
+        });
+    }
 
     return (
         <>
@@ -22,7 +30,7 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
                 <DropdownMenuItem asChild>
-                    <Link className="block w-full" href={route('profile.edit')} as="button" prefetch onClick={cleanup}>
+                    <Link className="block w-full" href={route('settings.profile')} onClick={cleanup}>
                         <Settings className="mr-2" />
                         Settings
                     </Link>
@@ -30,10 +38,10 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-                <Link className="block w-full" method="post" href={route('logout')} as="button" onClick={cleanup}>
+                <div className="block w-full" onClick={logout}>
                     <LogOut className="mr-2" />
                     Log out
-                </Link>
+                </div>
             </DropdownMenuItem>
         </>
     );
