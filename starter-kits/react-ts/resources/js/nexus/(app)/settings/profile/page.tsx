@@ -1,6 +1,6 @@
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Transition } from '@headlessui/react';
-import { FormEventHandler } from 'react';
+import { FormEventHandler, useState } from 'react';
 
 import DeleteUser from '@/components/delete-user';
 import HeadingSmall from '@/components/heading-small';
@@ -21,13 +21,15 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
+export default function Profile({ mustVerifyEmail }: { mustVerifyEmail: boolean; }) {
     const { auth } = sharedProps();
 
     const { data, setData, errors, setErrors, processing, setProcessing, recentlySuccessful, setRecentlySuccessful } = useForm({
         name: auth.user.name,
         email: auth.user.email,
     });
+
+    const [status, setStatus] = useState(null);
 
     mustVerifyEmail = true;
 
@@ -46,6 +48,9 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
     };
 
     const sendVerificationEmail = () => {
+        axios.post('/api/email/verification-notification').then(({data}) => {
+            setStatus(data.status);
+        });
     }
 
     return (
@@ -106,6 +111,11 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                 {status === 'verification-link-sent' && (
                                     <div className="mt-2 text-sm font-medium text-green-600">
                                         A new verification link has been sent to your email address.
+                                    </div>
+                                )}
+                                {status === 'email-already-verified' && (
+                                    <div className="mt-2 text-sm font-medium text-green-600">
+                                        Your email address is already verified.
                                     </div>
                                 )}
                             </div>
