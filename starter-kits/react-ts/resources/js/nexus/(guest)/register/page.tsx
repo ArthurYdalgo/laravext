@@ -1,4 +1,3 @@
-import { Head, useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
@@ -8,6 +7,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
+import { Head, visit } from '@laravext/react';
+import { useForm } from '@/hooks/useForm';
+import axios from 'axios';
 
 interface RegisterForm {
     name: string;
@@ -17,7 +19,7 @@ interface RegisterForm {
 }
 
 export default function Register() {
-    const { data, setData, post, processing, errors, reset } = useForm<RegisterForm>({
+    const { data, setData, processing, errors, setErrors, reset } = useForm({
         name: '',
         email: '',
         password: '',
@@ -26,8 +28,11 @@ export default function Register() {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        post(route('register'), {
-            onFinish: () => reset('password', 'password_confirmation'),
+
+        axios.post('/api/register', data).then(() => {
+            visit(route('dashboard'));
+        }).catch((error) => {
+            setErrors(error.response.data.errors);
         });
     };
 
