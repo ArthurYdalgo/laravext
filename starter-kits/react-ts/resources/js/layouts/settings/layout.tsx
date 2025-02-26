@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/react';
+import { Link } from '@laravext/react';
 
 const sidebarNavItems: NavItem[] = [
     {
@@ -43,7 +43,7 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
                                     'bg-muted': currentPath === item.url,
                                 })}
                             >
-                                <Link href={item.url} prefetch>
+                                <Link href={item.url}>
                                     {item.title}
                                 </Link>
                             </Button>
