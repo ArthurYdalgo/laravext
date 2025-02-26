@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
-import { Head, nexusProps, sharedProps } from '@laravext/react';
+import { Head, nexusProps, sharedProps, visit } from '@laravext/react';
 import { useForm } from '@/hooks/useForm';
 import axios from 'axios';
 
@@ -40,6 +40,7 @@ export default function Profile() {
 
         axios.patch('/api/settings/profile', data).then(() => {
             setRecentlySuccessful(true);
+            visit('/settings/profile');
         }).catch((error) => {
             setErrors(error.response.data.errors);
         }).finally(() => {
