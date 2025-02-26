@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
-import { Head, sharedProps } from '@laravext/react';
+import { Head, nexusProps, sharedProps } from '@laravext/react';
 import { useForm } from '@/hooks/useForm';
 import axios from 'axios';
 
@@ -21,22 +21,22 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Profile({ mustVerifyEmail }: { mustVerifyEmail: boolean; }) {
+export default function Profile() {
     const { auth } = sharedProps();
+    const { mustVerifyEmail } = nexusProps();
 
-    const { data, setData, errors, setErrors, processing, setProcessing, recentlySuccessful, setRecentlySuccessful } = useForm({
+    const { data, setData, errors, setErrors, processing, setProcessing, recentlySuccessful, setRecentlySuccessful, clearErrors } = useForm({
         name: auth.user.name,
         email: auth.user.email,
     });
 
     const [status, setStatus] = useState(null);
 
-    mustVerifyEmail = true;
-
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         setProcessing(true);
         setRecentlySuccessful(false);
+        clearErrors();
 
         axios.patch('/api/settings/profile', data).then(() => {
             setRecentlySuccessful(true);

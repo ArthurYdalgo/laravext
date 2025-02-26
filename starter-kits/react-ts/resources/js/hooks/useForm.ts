@@ -27,6 +27,10 @@ export const useForm = (initialValues: { [key: string]: any }) => {
         }
     }
 
+    const clearErrors = () => {
+        setFormErrors({});
+    }
+
     const reset = (field: string | null = null) => {
         if(field){
             setFormData({...formData, [field]: formInitialValues[field]});
@@ -40,6 +44,7 @@ export const useForm = (initialValues: { [key: string]: any }) => {
         setData,
         errors: formErrors,
         setErrors,
+        clearErrors,
         processing,
         setProcessing,
         recentlySuccessful,

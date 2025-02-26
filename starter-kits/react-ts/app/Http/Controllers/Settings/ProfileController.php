@@ -16,12 +16,11 @@ class ProfileController extends Controller
     /**
      * Show the user's profile settings page.
      */
-    public function edit(Request $request): Response
+    public function edit(Request $request)
     {
-        return Inertia::render('settings/profile', [
+        return nexus(props: [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
-            'status' => $request->session()->get('status'),
-        ]);
+        ])->render();
     }
 
     /**
@@ -51,7 +50,7 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
-        Auth::logout();
+        auth('web')->logout();
 
         $user->delete();
 

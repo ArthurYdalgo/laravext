@@ -1,5 +1,6 @@
-<?php 
+<?php
 
+use App\Http\Controllers\Settings\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::laravext();
@@ -13,11 +14,12 @@ Route::nexus('')->name('home');
 Route::middleware(['auth'])->group(function () {
     Route::laravext("dashboard");
     Route::laravext('settings');
+    Route::get('settings/profile', [ProfileController::class, 'edit'])->name('settings.profile');
 });
 
 Route::middleware(['guest'])->group(function () {
-    Route::nexus('login');
-    Route::nexus('register');
+    Route::nexus('login')->name('login');
+    Route::nexus('register')->name('register');
 });
 
 

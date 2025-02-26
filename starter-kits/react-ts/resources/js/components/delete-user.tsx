@@ -1,4 +1,3 @@
-import { useForm } from '@inertiajs/react';
 import { FormEventHandler, useRef } from 'react';
 
 // Components...
@@ -10,19 +9,30 @@ import { Label } from '@/components/ui/label';
 import HeadingSmall from '@/components/heading-small';
 
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { useForm } from '@/hooks/useForm';
+import { visit } from '@laravext/react';
+import axios from 'axios';
 
 export default function DeleteUser() {
     const passwordInput = useRef<HTMLInputElement>(null);
-    const { data, setData, delete: destroy, processing, reset, errors, clearErrors } = useForm({ password: '' });
+    const { data, setData, processing, setProcessing, reset, errors, setErrors, clearErrors } = useForm({ password: '' });
 
     const deleteUser: FormEventHandler = (e) => {
         e.preventDefault();
+        clearErrors();
+        setProcessing(true);
 
-        destroy(route('profile.destroy'), {
-            preserveScroll: true,
-            onSuccess: () => closeModal(),
-            onError: () => passwordInput.current?.focus(),
-            onFinish: () => reset(),
+        console.log(data);
+        axios.delete('/api/settings/profile', { data })
+        .then(() => {
+            setProcessing(true);
+            closeModal();
+            visit(route('home'));
+        }).catch((error) => {
+            setProcessing(false);
+            setErrors(error.response.data.errors);
+        }).finally(() => {
+            setProcessing(false);
         });
     };
 
