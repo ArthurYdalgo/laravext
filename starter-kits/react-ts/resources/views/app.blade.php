@@ -16,6 +16,6 @@
         @routes
         @laravextScripts
         @viteReactRefresh
-        @vite(['resources/js/app.tsx']) <!-- In case you're using React -->
+        @vite(['resources/js/app.tsx'])
     </body>
 </html>

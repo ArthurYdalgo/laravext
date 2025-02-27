@@ -16,16 +16,6 @@ use Inertia\Response;
 
 class NewPasswordController extends Controller
 {
-    /**
-     * Show the password reset page.
-     */
-    public function create(Request $request): Response
-    {
-        return Inertia::render('auth/reset-password', [
-            'email' => $request->email,
-            'token' => $request->route('token'),
-        ]);
-    }
 
     /**
      * Handle an incoming new password request.

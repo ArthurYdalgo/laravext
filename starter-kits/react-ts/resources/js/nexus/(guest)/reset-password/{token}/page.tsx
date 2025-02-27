@@ -1,4 +1,3 @@
-import { Head, useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
@@ -6,33 +5,38 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useForm } from '@/hooks/useForm';
 import AuthLayout from '@/layouts/auth-layout';
+import { Head, queryParams, routeParams } from '@laravext/react';
+import axios from 'axios';
 
-interface ResetPasswordProps {
-    token: string;
-    email: string;
-}
+export default function ResetPassword() {
+    const { token } = routeParams();
+    const { email } = queryParams();
 
-interface ResetPasswordForm {
-    token: string;
-    email: string;
-    password: string;
-    password_confirmation: string;
-}
-
-export default function ResetPassword({ token, email }: ResetPasswordProps) {
-    const { data, setData, post, processing, errors, reset } = useForm<ResetPasswordForm>({
+    const { data, setData, processing, setProcessing, errors, setErrors, reset } = useForm({
         token: token,
         email: email,
-        password: '',
-        password_confirmation: '',
+        password: 'password',
+        password_confirmation: 'password',
     });
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        post(route('password.store'), {
-            onFinish: () => reset('password', 'password_confirmation'),
-        });
+        setProcessing(true);
+
+        axios
+            .post('/api/reset-password', data)
+            .then((response) => {
+                reset();
+                setErrors({});
+            })
+            .catch((error) => {
+                setErrors(error.response.data.errors);
+            })
+            .finally(() => {
+                setProcessing(false);
+            });
     };
 
     return (
