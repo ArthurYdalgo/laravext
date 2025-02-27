@@ -14,3 +14,4 @@ starter-kits/*/storage/framework
 starter-kits/*/storage/logs/laravel.log
 .env
 starter-kits/react/.nvmrc
+starter-kits/react-ts/public/hot
