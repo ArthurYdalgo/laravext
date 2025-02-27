@@ -1,5 +1,4 @@
 // Components
-import { Head, useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
@@ -7,19 +6,35 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useForm } from '@/hooks/useForm';
 import AuthLayout from '@/layouts/auth-layout';
+import { Head, urlIntended, visit } from '@laravext/react';
+import axios from 'axios';
 
 export default function ConfirmPassword() {
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const url = urlIntended();
+    console.log(url);
+
+    const { data, setData, processing, setProcessing, errors, setErrors } = useForm({
         password: '',
     });
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
+        setProcessing(true);
 
-        post(route('password.confirm'), {
-            onFinish: () => reset('password'),
-        });
+        axios
+            .post('api/confirm-password', data)
+            .then(() => {
+                visit(url ?? route('home'));
+            })
+            .catch((error) => {
+                console.log(error);
+                setErrors(error.response.data.errors);
+            })
+            .finally(() => {
+                setProcessing(false);
+            });
     };
 
     return (

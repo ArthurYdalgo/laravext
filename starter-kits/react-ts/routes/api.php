@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
@@ -16,7 +17,7 @@ Route::middleware(['guest:sanctum'])->group(function () {
 
     Route::post('/forgot-password', [PasswordResetLinkController::class, 'store']);
 
-    Route::post('reset-password', [NewPasswordController::class, 'store'])
+    Route::post('/reset-password', [NewPasswordController::class, 'store'])
         ->name('password.store');
 });
 
@@ -34,4 +35,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
         ->middleware('throttle:6,1');
+        
+    Route::post('/confirm-password', [ConfirmablePasswordController::class, 'store']);
 });
