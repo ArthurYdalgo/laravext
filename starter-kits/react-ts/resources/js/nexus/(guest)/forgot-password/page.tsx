@@ -1,7 +1,6 @@
 // Components
-import { Head, useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
-import { FormEventHandler } from 'react';
+import { FormEventHandler, useState } from 'react';
 
 import InputError from '@/components/input-error';
 import TextLink from '@/components/text-link';
@@ -9,16 +8,32 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
+import { Head } from '@laravext/react';
+import { useForm } from '@/hooks/useForm';
+import axios from 'axios';
 
-export default function ForgotPassword({ status }: { status?: string }) {
-    const { data, setData, post, processing, errors } = useForm({
+export default function ForgotPassword() {
+    const { data, setData, reset, processing, setProcessing, errors, setErrors, clearErrors } = useForm({
         email: '',
     });
 
+    const [status, setStatus] = useState('');
+
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
+        clearErrors();
+        setProcessing(true);
 
-        post(route('password.email'));
+        axios.post('/api/forgot-password', data).then((response) => {
+            reset();
+            clearErrors();
+
+            setStatus(response.data.status);
+        }).catch((error) => {
+            setErrors(error.response.data.errors);
+        }).finally(() => {
+            setProcessing(false);
+        });
     };
 
     return (
@@ -38,6 +53,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
                             autoComplete="off"
                             value={data.email}
                             autoFocus
+                            required
                             onChange={(e) => setData('email', e.target.value)}
                             placeholder="email@example.com"
                         />

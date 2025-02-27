@@ -8,7 +8,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
-import { Head, visit } from '@laravext/react';
+import { Head, nexusProps, visit } from '@laravext/react';
 import axios from 'axios';
 import { useForm } from '@/hooks/useForm';
 
@@ -18,12 +18,9 @@ interface LoginForm {
     remember: boolean;
 }
 
-interface LoginProps {
-    status?: string;
-    canResetPassword: boolean;
-}
+export default function Login() {
+    const { canResetPassword } = nexusProps();
 
-export default function Login({ status, canResetPassword }: LoginProps) {
     const { data, setData, errors, setErrors, processing, setProcessing } = useForm({
         email: 'test@example.com',
         password: 'password',
@@ -70,7 +67,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                         <div className="flex items-center">
                             <Label htmlFor="password">Password</Label>
                             {canResetPassword && (
-                                <TextLink href={route('password.request')} className="ml-auto text-sm" tabIndex={5}>
+                                <TextLink href={route('forgot-password')} className="ml-auto text-sm" tabIndex={5}>
                                     Forgot password?
                                 </TextLink>
                             )}

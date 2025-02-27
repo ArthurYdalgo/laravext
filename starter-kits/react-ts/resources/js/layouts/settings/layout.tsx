@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { type NavItem } from '@/types';
-import { laravextPageData, Link } from '@laravext/react';
+import { laravextPageData, Link, path } from '@laravext/react';
 
 const sidebarNavItems: NavItem[] = [
     {
@@ -24,8 +24,6 @@ const sidebarNavItems: NavItem[] = [
 ];
 
 export default function SettingsLayout({ children }: { children: React.ReactNode }) {
-    const { path } = laravextPageData();
-
     return (
         <div className="px-4 py-6">
             <Heading title="Settings" description="Manage your profile and account settings" />
@@ -40,7 +38,7 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
                                 variant="ghost"
                                 asChild
                                 className={cn('w-full justify-start', {
-                                    'bg-muted': path === item.url,
+                                    'bg-muted': path() === item.url,
                                 })}
                             >
                                 <Link href={item.url}>

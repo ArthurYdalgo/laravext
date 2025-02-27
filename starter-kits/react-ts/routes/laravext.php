@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -19,7 +21,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::middleware(['guest'])->group(function () {
-    Route::nexus('login')->name('login');
+    Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
     Route::nexus('register')->name('register');
 });
 
