@@ -11,6 +11,9 @@ declare module "@laravext/react" {
     export const routeParams: any;
     export const routeName: any;
     export const queryParams: any;
+    export const path: any;
+    export const url: any;
+    export const urlIntended: any;
     export const visit: any;
 }
 
