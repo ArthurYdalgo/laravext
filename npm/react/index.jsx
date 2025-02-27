@@ -104,12 +104,7 @@ export function visit(
                 "X-Laravext-Root-View": laravext.page_data.root_view,
             },
         })
-        .then(async ({ data, headers, status }) => {
-            if ([301, 302, 303, 307, 308].includes(status) && headers.location) {
-                window.location.href = headers.location;
-                return;
-            }
-
+        .then(async ({ data, headers }) => {
             if (!headers["x-laravext"]) {
                 window.location.href = url;
                 return;
