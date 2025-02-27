@@ -55,6 +55,18 @@ export const routeName = () => {
     return laravextPageData().route_name;
 }
 
+export const path = () => {
+    return laravextPageData().path;
+}
+
+export const url = () => {
+    return laravextPageData().url;
+}
+
+export const urlIntended = () => {
+    return laravextPageData().url_intended;
+}
+
 export const queryParams = () => {
     return laravextPageData().query_params;
 }

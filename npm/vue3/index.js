@@ -218,6 +218,9 @@ export async function createLaravextSsrApp({ nexusResolver, strandsResolver, con
         '$nexusProps': () => laravext.page_data.nexus.props,
         '$routeParams': () => laravext.page_data.route_params,
         '$routeName': () => laravext.page_data.route_name,
+        '$path': () => laravext.page_data.path,
+        '$url': () => laravext.page_data.url,
+        '$urlIntended': () => laravext.page_data.url_intended,
         '$queryParams': () => laravext.page_data.query_params,
     }
 

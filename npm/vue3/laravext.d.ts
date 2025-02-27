@@ -10,6 +10,9 @@ declare module "@laravext/vue3" {
     export const sharedProps: any;
     export const routeParams: any;
     export const routeName: any;
+    export const path: any;
+    export const url: any;
+    export const urlIntended: any;
     export const queryParams: any;
     export const visit: any;
 }
