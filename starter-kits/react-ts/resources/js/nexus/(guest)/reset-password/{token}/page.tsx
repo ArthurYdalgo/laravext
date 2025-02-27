@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useForm } from '@/hooks/useForm';
 import AuthLayout from '@/layouts/auth-layout';
-import { Head, queryParams, routeParams } from '@laravext/react';
+import { Head, queryParams, routeParams, visit } from '@laravext/react';
 import axios from 'axios';
 
 export default function ResetPassword() {
@@ -30,6 +30,7 @@ export default function ResetPassword() {
             .then((response) => {
                 reset();
                 setErrors({});
+                visit(route("login"));
             })
             .catch((error) => {
                 setErrors(error.response.data.errors);
