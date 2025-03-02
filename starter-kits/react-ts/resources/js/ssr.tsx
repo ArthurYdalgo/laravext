@@ -2,7 +2,6 @@
 import { createLaravextSsrApp } from '@laravext/react';
 import { serve } from '@laravext/react/server';
 import { resolveComponent } from '@laravext/react/tools';
-import { AppearanceProvider } from './providers/appearance-provider';
 
 serve(({ window, cookies }: { window: any; cookies: any }) => {
     return createLaravextSsrApp({
@@ -29,13 +28,6 @@ serve(({ window, cookies }: { window: any; cookies: any }) => {
                 /* eslint-enable */
             }
         },
-
-        setup: ({ component, laravext }: { component: any; laravext: any }) => {
-            const initialAppearence = laravext.page_data.shared_props.appearence || 'system';
-
-            return <AppearanceProvider initialAppearance={initialAppearence}>{component}</AppearanceProvider>;
-        },
-
         // Don't forget to pass the window object to the laravext object
         laravext: window.__laravext,
         document: window.document,
