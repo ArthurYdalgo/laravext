@@ -158,7 +158,7 @@ export function visit(
 
 
 export function Head({ title }) {
-    if (title) {
+    if (title && typeof window !== 'undefined') {
         document.title = title;
     }
     return null;

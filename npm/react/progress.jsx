@@ -9,7 +9,12 @@ import React from "react";
 
 let timeout = null;
 
+
 export const injectCSS = (color) => {
+    if(typeof document === 'undefined') {
+        return
+    }
+    
     const element = document.createElement('style')
     element.textContent = `
       #nprogress {

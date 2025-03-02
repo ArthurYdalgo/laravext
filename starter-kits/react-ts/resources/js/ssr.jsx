@@ -3,8 +3,9 @@ import { createLaravextSsrApp } from '@laravext/react';
 import { serve } from '@laravext/react/server';
 import { resolveComponent } from '@laravext/react/tools';
 
-serve(({ window, cookies }) =>
-    createLaravextSsrApp({
+serve(({ window, cookies }) =>{
+
+    return createLaravextSsrApp({
         // This is optional, the default is renderToString from 'react-dom/server', but you can use renderToStaticMarkup if you want
         // render: renderToString,
 
@@ -28,5 +29,5 @@ serve(({ window, cookies }) =>
         // Don't forget to pass the window object to the laravext object
         laravext: window.__laravext,
         document: window.document,
-    }),
-);
+    })
+});
