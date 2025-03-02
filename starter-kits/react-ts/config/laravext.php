@@ -76,7 +76,7 @@ return [
         /**
          * If set to true, the server will attempt to server side render your javascript, and if set to false, it won't.
          */
-        'enabled' => env('LARAVEXT_JAVASCRIPT_SERVER_SIDE_RENDERING_ENABLED', false),
+        'enabled' => true,
 
         /**
          * You can also set as 'only' or 'except' to specify the URIs that should(n't) be SSR'd, if for some reason you need this

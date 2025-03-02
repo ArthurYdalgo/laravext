@@ -1,19 +1,33 @@
 // Components
-import { Head, useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
-import { FormEventHandler } from 'react';
+import { FormEventHandler, useState } from 'react';
 
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
 import AuthLayout from '@/layouts/auth-layout';
+import { Head, nexusProps, visit } from '@laravext/react';
+import axios from 'axios';
+import { useForm } from '@/hooks/useForm';
 
-export default function VerifyEmail({ status }: { status?: string }) {
-    const { post, processing } = useForm({});
+export default function VerifyEmail() {
+    const [status, setStatus] = useState(nexusProps().status);
+    const { processing, setProcessing } = useForm({});
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
+        setProcessing(true);
 
-        post(route('verification.send'));
+        axios.post('/api/email/verification-notification').then((response) => {
+            setStatus(response.data.status);
+        }).finally(() => {
+            setProcessing(false);
+        });
+    };
+
+    const logout = () => {
+        axios.post('/api/logout').then(() => {
+            visit(route('home'));
+        });
     };
 
     return (
@@ -32,7 +46,7 @@ export default function VerifyEmail({ status }: { status?: string }) {
                     Resend verification email
                 </Button>
 
-                <TextLink href={route('logout')} method="post" className="mx-auto block text-sm">
+                <TextLink onClick={logout} className="mx-auto block text-sm">
                     Log out
                 </TextLink>
             </form>

@@ -1,6 +1,5 @@
 import AppLogoIcon from '@/components/app-logo-icon';
-import { type SharedData } from '@/types';
-import { Link, usePage } from '@inertiajs/react';
+import { Link, sharedProps } from '@laravext/react';
 
 interface AuthLayoutProps {
     children: React.ReactNode;
@@ -9,7 +8,7 @@ interface AuthLayoutProps {
 }
 
 export default function AuthSplitLayout({ children, title, description }: AuthLayoutProps) {
-    const { name, quote } = usePage<SharedData>().props;
+    const { name, quote } = sharedProps();
 
     return (
         <div className="relative grid h-dvh flex-col items-center justify-center px-8 sm:px-0 lg:max-w-none lg:grid-cols-2 lg:px-0">

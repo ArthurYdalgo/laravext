@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Models\AbuseReport;
 use App\Models\Reaction;
 use Closure;
+use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Laravext\Middleware;
 use Illuminate\Support\Facades\View;
@@ -15,11 +16,13 @@ class HandleLaravextRequests extends Middleware
 {
     public function share(Request $request)
     {   
-        $user = $request->user();
+        [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
 
         return array_merge(parent::share($request), [
+            'name' => config('app.name'),
+            'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
-                'user' => $user,
+                'user' => $request->user(),
             ],
             'ziggy' => [
                 ...(new Ziggy)->toArray(),
