@@ -30,9 +30,7 @@ export function initializeTheme() {
 }
 
 export function useAppearance() {
-    // access laravext from LaravextContext
-    const { appearance: initialAppearance } = sharedProps()
-    const [appearance, setAppearance] = useState<Appearance>(initialAppearance ?? 'system');
+    const [appearance, setAppearance] = useState<Appearance>('light');
 
     const updateAppearance = (mode: Appearance) => {
         setAppearance(mode);

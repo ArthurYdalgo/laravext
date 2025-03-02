@@ -63,7 +63,11 @@ You'd get something similar to
   "query_params": {
     "foo": "bar"
   },
-  "route_name": "dashboard.orders.order"
+  "route_name": "dashboard.orders.order",
+  "url": "app-domain.com/dashboard/orders/12345?foo=bar",
+  "path": "/dashboard/orders/12345",
+  "version": "some-version",
+  "url_intended": null,
 }
 ```
 
@@ -115,7 +119,7 @@ There're also other ways to access any data from the laravext prop:
 
 ```jsx
 // I've exemplified how to import all of them, but you can import them individually as needed
-import { laravext, nexus, nexusProps, queryParams, routeParams, sharedProps } from '@laravext/react'
+import { laravext, nexus, nexusProps, queryParams, routeParams, sharedProps, url, urlIntended, path } from '@laravext/react'
 
 export default () => {
   
@@ -148,6 +152,9 @@ const nexusProps = inject('$nexusProps');
 const queryParams = inject('$queryParams');
 const routeParams = inject('$routeParams');
 const sharedProps = inject('$sharedProps');
+const url = inject('$url');
+const urlIntended = inject('$urlIntended');
+const path = inject('$path');
 
 const { droids } = nexusPros().
 

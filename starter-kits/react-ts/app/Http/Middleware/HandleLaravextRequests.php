@@ -18,7 +18,7 @@ class HandleLaravextRequests extends Middleware
     {   
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
 
-        $appearance = $request->cookie('appearance', $_COOKIE['appearance'] ?? 'system');
+        $appearance = $request->cookie('appearance', $_COOKIE['appearance'] ?? 'light');
         $sidebar = $request->cookie('sidebar', $_COOKIE['sidebar'] ?? 'true');
 
         return array_merge(parent::share($request), [
