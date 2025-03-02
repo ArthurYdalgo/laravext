@@ -1,22 +1,27 @@
 import { useEffect, useState } from 'react';
+import Cookies from "js-cookie";
+import { laravext } from '@laravext/react';
 
 export type Appearance = 'light' | 'dark' | 'system';
 
 const prefersDark = () => {
+    console.log(laravext().app);
     if (typeof window === 'undefined') {
-        return false;
+        return laravext().app.appearance === 'dark';
     }
 
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
 };
 
 const applyTheme = (appearance: Appearance) => {
+    console.log(laravext().app);
     const isDark = appearance === 'dark' || (appearance === 'system' && prefersDark());
 
     document.documentElement.classList.toggle('dark', isDark);
 };
 
 const mediaQuery = () => {
+    console.log(laravext().app);
     if (typeof window === 'undefined') {
         return null;
     }
@@ -25,12 +30,14 @@ const mediaQuery = () => {
 };
 
 const handleSystemThemeChange = () => {
-    const currentAppearance = localStorage.getItem('appearance') as Appearance;
+    Cookies.set('appearance', prefersDark() ? 'dark' : 'light');
+    const currentAppearance = Cookies.get('appearance') as Appearance;
     applyTheme(currentAppearance || 'system');
 };
 
 export function initializeTheme() {
-    const savedAppearance = (localStorage.getItem('appearance') as Appearance) || 'system';
+    console.log(laravext().app);
+    const savedAppearance = (Cookies.get('appearance') as Appearance) || 'system';
 
     applyTheme(savedAppearance);
 
@@ -41,14 +48,16 @@ export function initializeTheme() {
 export function useAppearance() {
     const [appearance, setAppearance] = useState<Appearance>('system');
 
+    console.log(laravext().app);
+
     const updateAppearance = (mode: Appearance) => {
         setAppearance(mode);
-        localStorage.setItem('appearance', mode);
+        Cookies.set('appearance', mode);
         applyTheme(mode);
     };
 
     useEffect(() => {
-        const savedAppearance = localStorage.getItem('appearance') as Appearance | null;
+        const savedAppearance = Cookies.get('appearance') as Appearance | null;
         updateAppearance(savedAppearance || 'system');
 
         return () => mediaQuery()?.removeEventListener('change', handleSystemThemeChange);

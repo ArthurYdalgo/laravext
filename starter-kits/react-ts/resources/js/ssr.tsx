@@ -27,6 +27,9 @@ serve(({ window, cookies }: { window: any; cookies: any }) => {
                 global.Ziggy = laravext.page_data.shared_props.ziggy;
                 /* eslint-enable */
             }
+            console.log({cookies});
+            laravext.app.sidebar_is_open = (cookies['sidebar'] ?? 'true') === 'true';
+            laravext.app.appearance = cookies['appearance'] ?? 'system';
         },
 
         // Don't forget to pass the window object to the laravext object

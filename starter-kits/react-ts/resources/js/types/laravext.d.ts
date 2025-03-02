@@ -3,6 +3,7 @@ declare module "@laravext/react" {
     export const createLaravextSsrApp: any;
     export const Head: any;
     export const Link: any;
+    export const laravext: any;
     export const laravextPageData: any;
     export const version: any;
     export const nexus: any;

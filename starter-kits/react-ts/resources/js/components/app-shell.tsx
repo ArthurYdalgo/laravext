@@ -1,4 +1,6 @@
 import { SidebarProvider } from '@/components/ui/sidebar';
+import { laravext } from '@laravext/react';
+import Cookies from 'js-cookie';
 import { useState } from 'react';
 
 interface AppShellProps {
@@ -7,13 +9,14 @@ interface AppShellProps {
 }
 
 export function AppShell({ children, variant = 'header' }: AppShellProps) {
-    const [isOpen, setIsOpen] = useState(() => (typeof window !== 'undefined' ? localStorage.getItem('sidebar') !== 'false' : true));
+    const {sidebar_is_open} = laravext().app;
+    const [isOpen, setIsOpen] = useState(() => (typeof window !== 'undefined' ? (Cookies.get('sidebar') ?? 'true') === 'true' : sidebar_is_open));
 
     const handleSidebarChange = (open: boolean) => {
         setIsOpen(open);
 
         if (typeof window !== 'undefined') {
-            localStorage.setItem('sidebar', String(open));
+            Cookies.set('sidebar', String(open));
         }
     };
 
