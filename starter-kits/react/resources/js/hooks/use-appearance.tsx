@@ -30,7 +30,8 @@ export function initializeTheme() {
 }
 
 export function useAppearance() {
-    const [appearance, setAppearance] = useState<Appearance>('light');
+    const { appearance: initialAppearance } = sharedProps()
+    const [appearance, setAppearance] = useState<Appearance>(initialAppearance);
 
     const updateAppearance = (mode: Appearance) => {
         setAppearance(mode);
