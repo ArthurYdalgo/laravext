@@ -1,9 +1,8 @@
-declare module "@laravext/react" {
+declare module "@laravext/vue3" {
     export const createLaravextApp: any;
     export const createLaravextSsrApp: any;
     export const Head: any;
     export const Link: any;
-    export const laravext: any;
     export const laravextPageData: any;
     export const version: any;
     export const nexus: any;
@@ -11,22 +10,23 @@ declare module "@laravext/react" {
     export const sharedProps: any;
     export const routeParams: any;
     export const routeName: any;
-    export const queryParams: any;
-    export const path: any;
     export const url: any;
+    export const path: any;
     export const urlIntended: any;
+    export const queryParams: any;
     export const visit: any;
 }
 
-declare module "@laravext/react/server" {
+declare module "@laravext/vue3/server" {
     export const serve: any;
 }
 
-declare module "@laravext/react/tools" {
+declare module "@laravext/vue3/tools" {
     export const resolveComponent: any;
+    export const shouldLinkClickEventBeIntercepted: any;
 }
 
-declare module "@laravext/react/progress" {
+declare module "@laravext/vue3/progress" {
   export const injectCSS: any;
   export const setupProgress: any;
   export const startProgress: any;

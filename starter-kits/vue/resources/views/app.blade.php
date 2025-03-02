@@ -15,7 +15,6 @@
         @nexus
         @routes
         @laravextScripts
-        @viteReactRefresh
-        @vite(['resources/js/app.tsx'])
+        @vite(['resources/js/app.ts'])
     </body>
 </html>
