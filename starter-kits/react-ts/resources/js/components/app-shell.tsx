@@ -1,5 +1,5 @@
 import { SidebarProvider } from '@/components/ui/sidebar';
-import { laravext } from '@laravext/react';
+import { sharedProps } from '@laravext/react';
 import Cookies from 'js-cookie';
 import { useState } from 'react';
 
@@ -9,8 +9,8 @@ interface AppShellProps {
 }
 
 export function AppShell({ children, variant = 'header' }: AppShellProps) {
-    const {sidebar_is_open} = laravext().app;
-    const [isOpen, setIsOpen] = useState(() => (typeof window !== 'undefined' ? (Cookies.get('sidebar') ?? 'true') === 'true' : sidebar_is_open));
+    const {sidebar} = sharedProps();;
+    const [isOpen, setIsOpen] = useState(() => (sidebar === 'true'));
 
     const handleSidebarChange = (open: boolean) => {
         setIsOpen(open);

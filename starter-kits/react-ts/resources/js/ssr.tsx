@@ -2,6 +2,7 @@
 import { createLaravextSsrApp } from '@laravext/react';
 import { serve } from '@laravext/react/server';
 import { resolveComponent } from '@laravext/react/tools';
+import { AppearanceProvider } from './providers/appearance-provider';
 
 serve(({ window, cookies }: { window: any; cookies: any }) => {
     return createLaravextSsrApp({
@@ -27,9 +28,12 @@ serve(({ window, cookies }: { window: any; cookies: any }) => {
                 global.Ziggy = laravext.page_data.shared_props.ziggy;
                 /* eslint-enable */
             }
-            console.log({cookies});
-            laravext.app.sidebar_is_open = (cookies['sidebar'] ?? 'true') === 'true';
-            laravext.app.appearance = cookies['appearance'] ?? 'system';
+        },
+
+        setup: ({ component, laravext }: { component: any; laravext: any }) => {
+            const initialAppearence = laravext.page_data.shared_props.appearence || 'system';
+
+            return <AppearanceProvider initialAppearance={initialAppearence}>{component}</AppearanceProvider>;
         },
 
         // Don't forget to pass the window object to the laravext object
