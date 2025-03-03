@@ -3,6 +3,8 @@ import UserInfo from '@/components/UserInfo.vue';
 import { DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import type { User } from '@/types';
 import { Link } from '@inertiajs/vue3';
+import { visit } from '@laravext/vue3';
+import axios from 'axios';
 import { LogOut, Settings } from 'lucide-vue-next';
 
 interface Props {
@@ -10,6 +12,13 @@ interface Props {
 }
 
 defineProps<Props>();
+
+const logout = () => {
+    axios.post('/api/logout').then(() => {
+        visit(route('home'));
+    });
+}
+
 </script>
 
 <template>
@@ -21,17 +30,17 @@ defineProps<Props>();
     <DropdownMenuSeparator />
     <DropdownMenuGroup>
         <DropdownMenuItem :as-child="true">
-            <Link class="block w-full" :href="route('profile.edit')" as="button">
-                <Settings class="mr-2 h-4 w-4" />
-                Settings
+            <Link class="block w-full" :href="route('settings.profile')" as="button">
+            <Settings class="mr-2 h-4 w-4" />
+            Settings
             </Link>
         </DropdownMenuItem>
     </DropdownMenuGroup>
     <DropdownMenuSeparator />
     <DropdownMenuItem :as-child="true">
-        <Link class="block w-full" method="post" :href="route('logout')" as="button">
-            <LogOut class="mr-2 h-4 w-4" />
+        <div className="block w-full" @click="logout">
+            <LogOut className="mr-2" />
             Log out
-        </Link>
+        </div>
     </DropdownMenuItem>
 </template>
