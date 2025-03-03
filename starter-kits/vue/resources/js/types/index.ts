@@ -1,9 +1,5 @@
 import type { LucideIcon } from 'lucide-vue-next';
-import { route as routeFn } from 'ziggy-js';
 
-declare global {
-    var route: typeof routeFn;
-}
 
 export interface Auth {
     user: User;
