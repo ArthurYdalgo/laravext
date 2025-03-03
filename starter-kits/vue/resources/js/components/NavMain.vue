@@ -2,14 +2,13 @@
 import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
-import type { Component } from 'vue';
 import { inject } from 'vue';
 const path = inject('$path') as any;
 
 interface NavItem {
     title: string;
     href: string;
-    icon: Component;
+    icon?: any;
 }
 
 defineProps<{
