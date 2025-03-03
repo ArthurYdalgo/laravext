@@ -44,6 +44,8 @@ git checkout main
 shopt -s dotglob nullglob
 mv "$STARTER_KIT_DIR"/* "$STARTER_KIT_DIR"/.* . 2>/dev/null
 
+rm -rf starter-kits
+
 # Clean up Git files
 rm -rf .git "$STARTER_KIT_DIR"
 
