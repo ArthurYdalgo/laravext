@@ -77,6 +77,8 @@ fi
 if command -v npm &>/dev/null; then
     echo "📦 Running npm install..."
     npm install
+    echo "🔨 Running npm build..."
+    npm run build
 else
     echo "⚠️ Skipping npm install (npm not found)"
 fi
@@ -108,3 +110,4 @@ else
 fi
 
 echo "✅ Installation complete!"
+echo "To run the project, just run 'cd $PROJECT_NAME' and execute 'composer run dev'."
