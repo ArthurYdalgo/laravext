@@ -20,17 +20,22 @@ cd "$PROJECT_NAME" || exit
 git init
 git remote add origin "$GIT_REPO"
 
-# Enable sparse-checkout
+# Enable sparse-checkout and allow patterns
 git config core.sparseCheckout true
+git config core.sparseCheckoutCone false  # Disables cone mode to allow specific patterns
 
-# Define the directory to checkout
-echo "$STARTER_KIT_DIR" >> .git/info/sparse-checkout
+# Define the directory to checkout (including hidden files)
+echo "$STARTER_KIT_DIR/*" > .git/info/sparse-checkout
+echo "$STARTER_KIT_DIR/.*" >> .git/info/sparse-checkout  # Include hidden files
 
 # Pull only the required directory
 git pull origin main
 
-# Move files to project root
-mv "$STARTER_KIT_DIR"/* .
+# Move files to project root (including hidden files)
+shopt -s dotglob  # Enable moving hidden files
+mv "$STARTER_KIT_DIR"/* "$STARTER_KIT_DIR"/.* . 2>/dev/null
+
+# Clean up
 rm -rf .git "$STARTER_KIT_DIR"
 
 echo "Starter kit installed successfully in $PROJECT_NAME!"
