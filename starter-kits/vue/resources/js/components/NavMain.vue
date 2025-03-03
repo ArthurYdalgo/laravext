@@ -3,6 +3,8 @@ import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, Sideba
 import { type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
 import type { Component } from 'vue';
+import { inject } from 'vue';
+const path = inject('$path') as any;
 
 interface NavItem {
     title: string;
@@ -24,6 +26,7 @@ const page = usePage<SharedData>();
             <SidebarMenuItem v-for="item in items" :key="item.title">
                 <SidebarMenuButton as-child :is-active="item.url === page.url">
                     <Link :href="item.url">
+                <SidebarMenuButton as-child :is-active="item.href === path()">
                         <component :is="item.icon" />
                         <span>{{ item.title }}</span>
                     </Link>

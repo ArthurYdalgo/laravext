@@ -16,9 +16,13 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import UserMenuContent from '@/components/UserMenuContent.vue';
 import { getInitials } from '@/composables/useInitials';
 import type { BreadcrumbItem, NavItem } from '@/types';
-import { Link, usePage } from '@inertiajs/vue3';
+import { usePage } from '@inertiajs/vue3';
+import { Link } from '@laravext/vue3';
 import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-vue-next';
 import { computed } from 'vue';
+import { inject } from 'vue';
+const sharedProps = inject('$sharedProps') as any;
+const path = inject('$path') as any;
 
 interface Props {
     breadcrumbs?: BreadcrumbItem[];
@@ -28,11 +32,10 @@ const props = withDefaults(defineProps<Props>(), {
     breadcrumbs: () => [],
 });
 
-const page = usePage();
-const auth = computed(() => page.props.auth);
+const {auth} = sharedProps();
 
 const isCurrentRoute = (url: string) => {
-    return page.url === url;
+    return path() === url;
 };
 
 const activeItemStyles = computed(() => (url: string) => (isCurrentRoute(url) ? 'text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100' : ''));
