@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
 import { Head } from '@laravext/react';
-import { useForm } from '@/hooks/useForm';
+import { useForm } from '@/hooks/use-form';
 import axios from 'axios';
 
 export default function ForgotPassword() {

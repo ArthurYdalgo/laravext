@@ -11,7 +11,7 @@ import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { Head, nexusProps, sharedProps, visit } from '@laravext/react';
-import { useForm } from '@/hooks/useForm';
+import { useForm } from '@/hooks/use-form';
 import axios from 'axios';
 
 const breadcrumbs: BreadcrumbItem[] = [

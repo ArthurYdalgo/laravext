@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import HeadingSmall from '@/components/heading-small';
 
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { useForm } from '@/hooks/useForm';
+import { useForm } from '@/hooks/use-form';
 import { visit } from '@laravext/react';
 import axios from 'axios';
 

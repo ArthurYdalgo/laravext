@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import AuthLayout from '@/layouts/auth-layout';
 import { Head, nexusProps, visit } from '@laravext/react';
 import axios from 'axios';
-import { useForm } from '@/hooks/useForm';
+import { useForm } from '@/hooks/use-form';
 
 export default function VerifyEmail() {
     const [status, setStatus] = useState(nexusProps().status);

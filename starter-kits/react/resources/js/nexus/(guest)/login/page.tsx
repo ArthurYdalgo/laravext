@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
 import { Head, nexusProps, visit } from '@laravext/react';
 import axios from 'axios';
-import { useForm } from '@/hooks/useForm';
+import { useForm } from '@/hooks/use-form';
 
 interface LoginForm {
     email: string;

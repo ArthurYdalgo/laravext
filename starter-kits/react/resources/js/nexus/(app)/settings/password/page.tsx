@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Head } from '@laravext/react';
-import { useForm } from '@/hooks/useForm';
+import { useForm } from '@/hooks/use-form';
 import axios from 'axios';
 
 const breadcrumbs: BreadcrumbItem[] = [
