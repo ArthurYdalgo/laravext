@@ -60,8 +60,15 @@ const Hero = () => {
                     className="button button--lg button--outline button--primary margin--lg"
                     to="/docs/laravext"
                 >
-                    Get Started
+                    Check the docs
                 </Link>
+                <Link
+                    className="button button--lg button--outline button--primary margin--lg"
+                    to="/docs/before-you-start#starter-kits"
+                >
+                    Starter Kits
+                </Link>
+
             </section>
         </div>
     );

@@ -5,6 +5,20 @@ import TabItem from '@theme/TabItem'
 
 This documentation assumes that you have some experience with PHP, Laravel and Javascript, and also that you already have a development environment that meets the requirements to run a Laravel 10 (or later) project using Vite as your bundler, and PHP 8.2 or higher.
 
+## Starter Kits
+
+Much like when you run a `laravel new` and get the option to scaffold a new project with some basic configurations, Laravext has some starter kits that you can use to start a new project. You can use one of the following commands, or check them at they are available at the laravext repository, [in the starter-kits](https://github.com/ArthurYdalgo/laravext/tree/main/starter-kits) directory, and there's one for each of the supported front-end libraries/frameworks, which at the moment are [React](https://github.com/ArthurYdalgo/laravext/tree/main/starter-kits/react) and [Vue](https://github.com/ArthurYdalgo/laravext/tree/main/starter-kits/vue).
+
+for React
+```
+curl -s https://laravext.dev/react-starter-kit.sh | bash -s my-app
+```
+
+for Vue
+```
+curl -s https://laravext.dev/vue-starter-kit.sh | bash -s my-app
+```
+
 ## Disclaimer
 
 I'm not an experienced front-end developer. I'm a back-end developer with a somewhat basic experience with front-end and in my projects I would only be responsible for making any front-end if it was for internal use only, so the looks were not important. 
@@ -27,6 +41,7 @@ I might use `.jsx` as an extension for some or most files, or something like `.(
 If I'm showing some code that wouldn't vary much betweem those libraries/frameworks (one or two lines), I might just show how it's be done for each one of them in the surrouding lines.
 
 If the example is **too** specific, such as a component/page/etc, I will show implementations on all of them, like the example below:
+
 
 <Tabs>
   <TabItem value="React" label="React">
@@ -72,10 +87,6 @@ Please submit a PR if you think that an example is not clear enough and you thin
 
 The examples are meant to help you understand how to use these tools, and are not meant to reflect how a real world application would be designed, so everything will be as simple as possible.
 
-## Starter Kits
-
-Much like when you run a `laravel new` and get the option to scaffold a new project with some basic configurations, Laravext has some starter kits that you can use to start a new project. They are available at the laravext repository, [in the starter-kits](https://github.com/ArthurYdalgo/laravext/tree/main/starter-kits) directory, and there's one for each of the supported front-end libraries/frameworks, which at the moment are [React](https://github.com/ArthurYdalgo/laravext/tree/main/starter-kits/react) and [Vue](https://github.com/ArthurYdalgo/laravext/tree/main/starter-kits/vue).
-
 ## The Example Project(s)
 
 Some code or file structures in this documentation might (or not) be derived from the [laravext examples available at GitHub](https://github.com/ArthurYdalgo/laravext/tree/main/examples), and it'll be either the [laravel-11-react](https://github.com/ArthurYdalgo/laravext/tree/main/examples/laravel-11-react) or [laravel-11-vue](https://github.com/ArthurYdalgo/laravext/tree/main/examples/laravel-11-vue). The Vue.js example is a basic developer team manager, where teams have developers and projects, and these projects belong to companies (needless to say that this does not reflect how a real world application of this kind would be designed). The React example, on the other hand, is an articles platform, where users can create articles and comment on them, much like a [Dev.to](https://dev.to) clone.
@@ -95,5 +106,3 @@ In order for you to have some basic comprehension of the project itself, here ar
 ![image](/images/illustrations/example-developer-team-database-diagram.png)
 
 <sub>Database diagram of the Vue.js example project. Designed on [dbdiagram.io](https://dbdiagram.io). The declaration used to create this illustration can be found in the [laravext repository](https://github.com/ArthurYdalgo/laravext/tree/main/docs/images/illustrations/example-developer-team-database-diagram.dbdiagram.io)</sub>
-
-
