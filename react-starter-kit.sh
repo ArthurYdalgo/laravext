@@ -10,32 +10,33 @@ PROJECT_NAME=$1
 GIT_REPO="https://github.com/ArthurYdalgo/laravext.git"
 STARTER_KIT_DIR="starter-kits/react"
 
-echo "Creating project: $PROJECT_NAME"
+echo "🚀 Creating project: $PROJECT_NAME"
 
 # Create the project directory
 mkdir "$PROJECT_NAME"
 cd "$PROJECT_NAME" || exit
 
-# Initialize a git repository
+# Clone only the necessary files (shallow clone for performance)
 git init
 git remote add origin "$GIT_REPO"
+git fetch --depth=1 origin main
 
-# Enable sparse-checkout and allow patterns
+# Enable sparse checkout (to fetch only the starter kit folder)
 git config core.sparseCheckout true
-git config core.sparseCheckoutCone false  # Disable cone mode to allow patterns
+git config core.sparseCheckoutCone false
 
-# Ensure hidden files are included in sparse-checkout
+# Include both normal and hidden files explicitly
 echo "$STARTER_KIT_DIR/*" > .git/info/sparse-checkout
-echo "$STARTER_KIT_DIR/.*" >> .git/info/sparse-checkout  # Force hidden files to be included
+echo "$STARTER_KIT_DIR/.*" >> .git/info/sparse-checkout
 
-# Fetch the required files
-git pull origin main --depth=1
+# Checkout only the required files
+git checkout main
 
-# Move all files (including hidden ones) to the project root
-shopt -s dotglob nullglob  # Enable moving hidden files
+# Move files to the project root, including hidden ones
+shopt -s dotglob nullglob
 mv "$STARTER_KIT_DIR"/* "$STARTER_KIT_DIR"/.* . 2>/dev/null
 
-# Clean up
+# Clean up Git files
 rm -rf .git "$STARTER_KIT_DIR"
 
 echo "✅ Starter kit installed successfully in $PROJECT_NAME!"
