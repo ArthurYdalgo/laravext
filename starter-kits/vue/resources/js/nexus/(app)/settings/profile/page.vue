@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { TransitionRoot } from '@headlessui/vue';
-import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
+import { useForm, usePage } from '@inertiajs/vue3';
+import { Link } from '@laravext/vue3';
 
 import DeleteUser from '@/components/DeleteUser.vue';
 import HeadingSmall from '@/components/HeadingSmall.vue';
@@ -11,6 +12,10 @@ import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { type BreadcrumbItem, type SharedData, type User } from '@/types';
+import { inject } from 'vue';
+const sharedProps = inject('$sharedProps') as any;
+
+const user = sharedProps().auth.user as User;
 
 interface Props {
     mustVerifyEmail: boolean;
@@ -26,9 +31,6 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/settings/profile',
     },
 ];
-
-const page = usePage<SharedData>();
-const user = page.props.auth.user as User;
 
 const form = useForm({
     name: user.name,

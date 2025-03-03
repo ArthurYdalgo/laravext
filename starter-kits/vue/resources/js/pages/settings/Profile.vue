@@ -11,6 +11,9 @@ import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { type BreadcrumbItem, type SharedData, type User } from '@/types';
+import { inject } from 'vue';
+const sharedProps = inject('$sharedProps') as any;
+
 
 interface Props {
     mustVerifyEmail: boolean;
@@ -27,8 +30,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-const page = usePage<SharedData>();
-const user = page.props.auth.user as User;
+const user = sharedProps().auth.user as User;
 
 const form = useForm({
     name: user.name,
