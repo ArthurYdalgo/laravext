@@ -13,7 +13,7 @@ import axios from 'axios';
 
 export default function ConfirmPassword() {
     const url = urlIntended();
-    
+
     const { data, setData, processing, setProcessing, errors, setErrors } = useForm({
         password: '',
     });
@@ -28,7 +28,6 @@ export default function ConfirmPassword() {
                 visit(url ?? route('home'));
             })
             .catch((error) => {
-                console.log(error);
                 setErrors(error.response.data.errors);
             })
             .finally(() => {

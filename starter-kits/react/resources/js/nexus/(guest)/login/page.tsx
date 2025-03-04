@@ -22,8 +22,8 @@ export default function Login() {
     const { canResetPassword } = nexusProps();
 
     const { data, setData, errors, setErrors, processing, setProcessing } = useForm({
-        email: 'test@example.com',
-        password: 'password',
+        email: '',
+        password: '',
         remember: false,
     });
 

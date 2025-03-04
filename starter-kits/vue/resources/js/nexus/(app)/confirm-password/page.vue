@@ -24,7 +24,6 @@ const submit = () => {
             visit(urlIntended() ?? route('home'));
         })
         .catch((error) => {
-            console.log(error);
             setErrors(error.response.data.errors);
         })
         .finally(() => {

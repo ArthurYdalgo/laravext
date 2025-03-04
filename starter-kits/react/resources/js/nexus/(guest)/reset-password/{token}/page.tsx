@@ -17,8 +17,8 @@ export default function ResetPassword() {
     const { data, setData, processing, setProcessing, errors, setErrors, reset } = useForm({
         token: token,
         email: email,
-        password: 'password',
-        password_confirmation: 'password',
+        password: '',
+        password_confirmation: '',
     });
 
     const submit: FormEventHandler = (e) => {

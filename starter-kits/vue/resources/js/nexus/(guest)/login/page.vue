@@ -14,8 +14,8 @@ import {inject} from 'vue';
 const nexusProps = inject('$nexusProps') as any;
 
 const { data , processing, setProcessing, errors, setErrors } = useForm({
-    email: 'arthur@email.com',
-    password: 'password',
+    email: '',
+    password: '',
     remember: false,
 });
 

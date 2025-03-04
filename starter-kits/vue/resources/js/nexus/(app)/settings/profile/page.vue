@@ -18,8 +18,6 @@ const sharedProps = inject('$sharedProps') as any;
 
 const user = sharedProps().auth.user as User;
 
-console.log(user);
-
 interface Props {
     mustVerifyEmail: boolean;
     status?: string;
