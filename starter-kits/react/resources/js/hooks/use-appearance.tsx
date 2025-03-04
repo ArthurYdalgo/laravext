@@ -10,14 +10,6 @@ const applyTheme = (appearance: Appearance) => {
     document.documentElement.classList.toggle('dark', isDark);
 };
 
-const mediaQuery = () => {
-    if (typeof window === 'undefined') {
-        return null;
-    }
-
-    return window.matchMedia('(prefers-color-scheme: dark)');
-};
-
 const getCookieAppearance = () => {
     let cookieAppearance = Cookies.get('appearance') ?? 'dark';
     return cookieAppearance as Appearance;
