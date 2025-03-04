@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { onMounted, ref } from 'vue';
+import Cookies from "js-cookie";
 
 interface Props {
     variant?: 'header' | 'sidebar';
@@ -11,12 +12,12 @@ defineProps<Props>();
 const isOpen = ref(true);
 
 onMounted(() => {
-    isOpen.value = localStorage.getItem('sidebar') !== 'false';
+    isOpen.value = Cookies.get('sidebar') === 'false';
 });
 
 const handleSidebarChange = (open: boolean) => {
     isOpen.value = open;
-    localStorage.setItem('sidebar', String(open));
+    Cookies.set('sidebar', String(open));
 };
 </script>
 
