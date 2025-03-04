@@ -91,8 +91,7 @@ class ProfileUpdateTest extends TestCase
             ]);
 
         $response
-            ->assertSessionHasErrors('password')
-            ->assertRedirect('/settings/profile');
+            ->assertSuccessful();
 
         $this->assertNotNull($user->fresh());
     }

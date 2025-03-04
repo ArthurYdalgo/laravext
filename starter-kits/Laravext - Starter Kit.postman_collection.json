@@ -10,103 +10,6 @@
 			"name": "Auth",
 			"item": [
 				{
-					"name": "Tokens",
-					"item": [
-						{
-							"name": "List",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "1|EKSZrROq5NpwAgpBLxRn4NreMXYq6s7XY1qW1Z4Uc8abe0a3",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{app-url}}/api/auth/tokens",
-									"host": [
-										"{{app-url}}"
-									],
-									"path": [
-										"api",
-										"auth",
-										"tokens"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Store",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{app-url}}/api/auth/tokens",
-									"host": [
-										"{{app-url}}"
-									],
-									"path": [
-										"api",
-										"auth",
-										"tokens"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Destroy",
-							"request": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{app-url}}/api/auth/tokens/:id",
-									"host": [
-										"{{app-url}}"
-									],
-									"path": [
-										"api",
-										"auth",
-										"tokens",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "1"
-										}
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
 					"name": "Register",
 					"request": {
 						"method": "POST",
@@ -153,7 +56,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"arthur@email.com\",\n    \"password\": \"safe_password\"\n}",
+							"raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"password\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"

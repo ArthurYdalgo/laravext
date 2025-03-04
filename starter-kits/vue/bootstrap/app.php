@@ -21,6 +21,9 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->statefulApi();
+        $middleware->api(append: [
+            StartSession::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

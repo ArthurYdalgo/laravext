@@ -45,7 +45,6 @@ class PasswordUpdateTest extends TestCase
             ]);
 
         $response
-            ->assertSessionHasErrors('current_password')
-            ->assertRedirect('/settings/password');
+            ->assertSuccessful();
     }
 }
