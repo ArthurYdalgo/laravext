@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { TransitionRoot } from '@headlessui/vue';
-import { useForm, usePage } from '@inertiajs/vue3';
-import { Link } from '@laravext/vue3';
+import { Link, visit } from '@laravext/vue3';
 
 import DeleteUser from '@/components/DeleteUser.vue';
 import HeadingSmall from '@/components/HeadingSmall.vue';
@@ -13,9 +12,13 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { type BreadcrumbItem, type SharedData, type User } from '@/types';
 import { inject } from 'vue';
+import { useForm } from '@/composables/useForm';
+import axios from 'axios';
 const sharedProps = inject('$sharedProps') as any;
 
 const user = sharedProps().auth.user as User;
+
+console.log(user);
 
 interface Props {
     mustVerifyEmail: boolean;
@@ -32,18 +35,29 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-const form = useForm({
+const { data, processing, setProcessing, errors, setErrors, clearErrors } = useForm({
     name: user.name,
     email: user.email,
 });
 
 const submit = () => {
-    form.patch(route('profile.update'));
+    setProcessing(true);
+    clearErrors();
+
+    axios.patch('/api/settings/profile', data.value).then(() => {
+        visit('/settings/profile');
+    }).catch((error) => {
+        setErrors(error.response.data.errors);
+    }).finally(() => {
+        setProcessing(false);
+    });
 };
+
 </script>
 
 <template>
     <AppLayout :breadcrumbs="breadcrumbs">
+
         <Head title="Profile settings" />
 
         <SettingsLayout>
@@ -53,34 +67,24 @@ const submit = () => {
                 <form @submit.prevent="submit" class="space-y-6">
                     <div class="grid gap-2">
                         <Label for="name">Name</Label>
-                        <Input id="name" class="mt-1 block w-full" v-model="form.name" required autocomplete="name" placeholder="Full name" />
-                        <InputError class="mt-2" :message="form.errors.name" />
+                        <Input id="name" class="mt-1 block w-full" v-model="data.name" required autocomplete="name"
+                            placeholder="Full name" />
+                        <InputError class="mt-2" :message="errors.name" />
                     </div>
 
                     <div class="grid gap-2">
                         <Label for="email">Email address</Label>
-                        <Input
-                            id="email"
-                            type="email"
-                            class="mt-1 block w-full"
-                            v-model="form.email"
-                            required
-                            autocomplete="username"
-                            placeholder="Email address"
-                        />
-                        <InputError class="mt-2" :message="form.errors.email" />
+                        <Input id="email" type="email" class="mt-1 block w-full" v-model="data.email" required
+                            autocomplete="username" placeholder="Email address" />
+                        <InputError class="mt-2" :message="errors.email" />
                     </div>
-
+                    
                     <div v-if="mustVerifyEmail && !user.email_verified_at">
                         <p class="mt-2 text-sm text-neutral-800">
                             Your email address is unverified.
-                            <Link
-                                :href="route('verification.send')"
-                                method="post"
-                                as="button"
-                                class="focus:outline-hidden rounded-md text-sm text-neutral-600 underline hover:text-neutral-900 focus:ring-2 focus:ring-offset-2"
-                            >
-                                Click here to re-send the verification email.
+                            <Link :href="route('verification.send')" method="post" as="button"
+                                class="focus:outline-hidden rounded-md text-sm text-neutral-600 underline hover:text-neutral-900 focus:ring-2 focus:ring-offset-2">
+                            Click here to re-send the verification email.
                             </Link>
                         </p>
 
@@ -90,17 +94,7 @@ const submit = () => {
                     </div>
 
                     <div class="flex items-center gap-4">
-                        <Button :disabled="form.processing">Save</Button>
-
-                        <TransitionRoot
-                            :show="form.recentlySuccessful"
-                            enter="transition ease-in-out"
-                            enter-from="opacity-0"
-                            leave="transition ease-in-out"
-                            leave-to="opacity-0"
-                        >
-                            <p class="text-sm text-neutral-600">Saved.</p>
-                        </TransitionRoot>
+                        <Button :disabled="processing">Save</Button>
                     </div>
                 </form>
             </div>

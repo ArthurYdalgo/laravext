@@ -22,7 +22,7 @@ export default function DeleteUser() {
         clearErrors();
         setProcessing(true);
 
-        console.log(data);
+        
         axios.delete('/api/settings/profile', { data })
         .then(() => {
             setProcessing(true);

@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
-
+import axios from 'axios';
 // Components
 import HeadingSmall from '@/components/HeadingSmall.vue';
 import InputError from '@/components/InputError.vue';
@@ -18,27 +17,35 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useForm } from '@/composables/useForm';
+import { visit } from '@laravext/vue3';
 
 const passwordInput = ref<HTMLInputElement | null>(null);
 
-const form = useForm({
-    password: '',
-});
+const { data, processing, setProcessing, reset, errors, setErrors, clearErrors } = useForm({ password: '' });
 
 const deleteUser = (e: Event) => {
     e.preventDefault();
 
-    form.delete(route('profile.destroy'), {
-        preserveScroll: true,
-        onSuccess: () => closeModal(),
-        onError: () => passwordInput.value?.focus(),
-        onFinish: () => form.reset(),
+    clearErrors();
+    setProcessing(true);
+
+    axios.delete('/api/settings/profile', { data: data.value })
+    .then(() => {
+        setProcessing(true);
+        closeModal();
+        visit(route('home'));
+    }).catch((error) => {
+        setProcessing(false);
+        setErrors(error.response.data.errors);
+    }).finally(() => {
+        setProcessing(false);
     });
 };
 
 const closeModal = () => {
-    form.clearErrors();
-    form.reset();
+    clearErrors();
+    reset();
 };
 </script>
 
@@ -66,8 +73,8 @@ const closeModal = () => {
 
                         <div class="grid gap-2">
                             <Label for="password" class="sr-only">Password</Label>
-                            <Input id="password" type="password" name="password" ref="passwordInput" v-model="form.password" placeholder="Password" />
-                            <InputError :message="form.errors.password" />
+                            <Input id="password" type="password" name="password" ref="passwordInput" v-model="data.password" placeholder="Password" />
+                            <InputError :message="errors.password" />
                         </div>
 
                         <DialogFooter>
@@ -75,7 +82,7 @@ const closeModal = () => {
                                 <Button variant="secondary" @click="closeModal"> Cancel </Button>
                             </DialogClose>
 
-                            <Button variant="destructive" :disabled="form.processing">
+                            <Button variant="destructive" :disabled="processing">
                                 <button type="submit">Delete account</button>
                             </Button>
                         </DialogFooter>
