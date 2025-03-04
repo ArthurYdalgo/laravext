@@ -3,7 +3,7 @@ import Heading from '@/components/Heading.vue';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/vue3';
+import { Link } from '@laravext/vue3';
 
 const sidebarNavItems: NavItem[] = [
     {

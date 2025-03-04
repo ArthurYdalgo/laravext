@@ -32,6 +32,7 @@ export default function Password() {
 
     const updatePassword: FormEventHandler = (e) => {
         e.preventDefault();
+        clearErrors();
 
         axios.put('/api/settings/password', data).then(() => {
             reset();
