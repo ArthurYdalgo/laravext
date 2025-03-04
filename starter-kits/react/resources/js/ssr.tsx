@@ -2,6 +2,7 @@
 import { createLaravextSsrApp } from '@laravext/react';
 import { serve } from '@laravext/react/server';
 import { resolveComponent } from '@laravext/react/tools';
+import { route } from '../../vendor/tightenco/ziggy/src/js';
 
 serve(({ window, cookies }: { window: any; cookies: any }) => {
     return createLaravextSsrApp({

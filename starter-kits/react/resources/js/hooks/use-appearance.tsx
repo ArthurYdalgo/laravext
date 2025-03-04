@@ -16,7 +16,7 @@ const getCookieAppearance = () => {
 }
 
 export function initializeTheme() {
-    const savedAppearance = (getCookieAppearance() as Appearance) || 'system';
+    const savedAppearance = (getCookieAppearance() as Appearance) || 'dark';
 
     applyTheme(savedAppearance);
 }
