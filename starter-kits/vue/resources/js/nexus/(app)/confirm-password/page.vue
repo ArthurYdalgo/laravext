@@ -4,19 +4,32 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/AuthLayout.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head , visit } from '@laravext/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
+import { useForm } from '@/composables/useForm';
+import axios from 'axios';
+import { inject } from 'vue';
+const urlIntended = inject('$urlIntended') as any;
 
-const form = useForm({
+const { data, processing, setProcessing, errors, setErrors } = useForm({
     password: '',
 });
 
 const submit = () => {
-    form.post(route('password.confirm'), {
-        onFinish: () => {
-            form.reset();
-        },
-    });
+    setProcessing(true);
+
+    axios
+        .post('api/confirm-password', data.value)
+        .then(() => {
+            visit(urlIntended() ?? route('home'));
+        })
+        .catch((error) => {
+            console.log(error);
+            setErrors(error.response.data.errors);
+        })
+        .finally(() => {
+            setProcessing(false);
+        });
 };
 </script>
 
@@ -32,18 +45,18 @@ const submit = () => {
                         id="password"
                         type="password"
                         class="mt-1 block w-full"
-                        v-model="form.password"
+                        v-model="data.password"
                         required
                         autocomplete="current-password"
                         autofocus
                     />
 
-                    <InputError :message="form.errors.password" />
+                    <InputError :message="errors.password" />
                 </div>
 
                 <div class="flex items-center">
-                    <Button class="w-full" :disabled="form.processing">
-                        <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" />
+                    <Button class="w-full" :disabled="processing">
+                        <LoaderCircle v-if="processing" class="h-4 w-4 animate-spin" />
                         Confirm Password
                     </Button>
                 </div>

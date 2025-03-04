@@ -13,8 +13,7 @@ import axios from 'axios';
 
 export default function ConfirmPassword() {
     const url = urlIntended();
-    console.log(url);
-
+    
     const { data, setData, processing, setProcessing, errors, setErrors } = useForm({
         password: '',
     });

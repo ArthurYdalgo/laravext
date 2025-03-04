@@ -15,7 +15,7 @@ defineProps<{
     status?: string;
 }>();
 
-const { data, setData, reset, processing, setProcessing, errors, setErrors, clearErrors } = useForm({
+const { data, reset, processing, setProcessing, errors, setErrors, clearErrors } = useForm({
     email: '',
 });
 

@@ -31,7 +31,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
 const passwordInput = ref<HTMLInputElement>();
 const currentPasswordInput = ref<HTMLInputElement>();
 
-const { data, setData, errors, setErrors, clearErrors, reset, processing, recentlySuccessful, setRecentlySuccessful } = useForm({
+const { data, errors, setErrors, clearErrors, reset, processing, recentlySuccessful, setRecentlySuccessful } = useForm({
     current_password: '',
     password: '',
     password_confirmation: '',
