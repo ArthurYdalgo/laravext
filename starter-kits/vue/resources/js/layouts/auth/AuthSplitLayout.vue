@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
-import { usePage } from '@inertiajs/vue3';
 import { Link } from '@laravext/vue3';
+import { inject } from 'vue';
+const sharedProps = inject('$sharedProps') as any;
 
-const page = usePage();
-const name = page.props.name;
-const quote = page.props.quote;
+const { name, quote } = sharedProps();
 
 defineProps<{
     title?: string;
