@@ -7,24 +7,19 @@ export function updateTheme(value: Appearance) {
     document.documentElement.classList.toggle('dark', value === 'dark');
 }
 
-const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-
-const handleSystemThemeChange = () => {
-    const currentAppearance = Cookies.get('appearance') as Appearance | null;
-    updateTheme(currentAppearance || 'light');
-};
-
 export function initializeTheme() {
     // Initialize theme from saved preference or default to system...
     const savedAppearance = Cookies.get('appearance') as Appearance | null;
-    updateTheme(savedAppearance || 'light');
+    updateTheme(savedAppearance || 'dark');
+}
 
-    // Set up system theme change listener...
-    mediaQuery.addEventListener('change', handleSystemThemeChange);
+const getCookieAppearance = () => {
+    let cookieAppearance = Cookies.get('appearance') ?? 'dark';
+    return cookieAppearance as Appearance;
 }
 
 export function useAppearance() {
-    const appearance = ref<Appearance>('light');
+    const appearance = ref<Appearance>(getCookieAppearance());
 
     onMounted(() => {
         initializeTheme();

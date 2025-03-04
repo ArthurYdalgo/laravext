@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { type NavItem } from '@/types';
 import { Link } from '@laravext/vue3';
+import {inject } from 'vue';
+const path = inject('$path') as any;
 
 const sidebarNavItems: NavItem[] = [
     {
@@ -20,7 +22,7 @@ const sidebarNavItems: NavItem[] = [
     },
 ];
 
-const currentPath = window.location.pathname;
+const currentPath = path();
 </script>
 
 <template>
