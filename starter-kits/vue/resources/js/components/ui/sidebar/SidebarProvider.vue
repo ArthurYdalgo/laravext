@@ -3,6 +3,7 @@ import { cn } from '@/lib/utils';
 import { useEventListener, useMediaQuery, useVModel } from '@vueuse/core';
 import { TooltipProvider } from 'radix-vue';
 import { computed, ref, type HTMLAttributes, type Ref } from 'vue';
+import Cookies from "js-cookie"
 import {
     SIDEBAR_COOKIE_MAX_AGE,
     SIDEBAR_COOKIE_NAME,
@@ -40,7 +41,7 @@ function setOpen(value: boolean) {
     open.value = value; // emits('update:open', value)
 
     // This sets the cookie to keep the sidebar state.
-    document.cookie = `${SIDEBAR_COOKIE_NAME}=${open.value}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`;
+    Cookies.set(SIDEBAR_COOKIE_NAME, String(value));
 }
 
 function setOpenMobile(value: boolean) {

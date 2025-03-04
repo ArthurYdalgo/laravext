@@ -9,7 +9,7 @@ interface AppShellProps {
 }
 
 export function AppShell({ children, variant = 'header' }: AppShellProps) {
-    const {sidebar} = sharedProps();;
+    const {sidebar} = sharedProps();
     const [isOpen, setIsOpen] = useState(() => (sidebar === 'true'));
 
     const handleSidebarChange = (open: boolean) => {
