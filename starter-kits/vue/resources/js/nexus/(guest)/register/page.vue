@@ -10,7 +10,7 @@ import { LoaderCircle } from 'lucide-vue-next';
 import { useForm } from '@/composables/useForm';
 import axios from 'axios';
 
-const {data, processing, setProcessing, errors, setErrors} = useForm({
+const {data, processing, setProcessing, errors, setErrors, clearErrors } = useForm({
     name: '',
     email: '',
     password: '',
@@ -18,7 +18,8 @@ const {data, processing, setProcessing, errors, setErrors} = useForm({
 });
 
 const submit = () => {
-    axios.post('/api/register', data).then(() => {
+    clearErrors();
+    axios.post('/api/register', data.value).then(() => {
         visit(route('dashboard'));
     }).catch((error) => {
         setErrors(error.response.data.errors);

@@ -28,6 +28,7 @@ export default function Register() {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
+        clearErrors();
 
         axios.post('/api/register', data).then(() => {
             visit(route('dashboard'));
