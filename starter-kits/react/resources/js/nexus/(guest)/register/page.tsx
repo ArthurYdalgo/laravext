@@ -19,7 +19,7 @@ interface RegisterForm {
 }
 
 export default function Register() {
-    const { data, setData, processing, errors, setErrors, reset } = useForm({
+    const { data, setData, processing, errors, setErrors, reset, clearErrors } = useForm({
         name: '',
         email: '',
         password: '',
