@@ -356,6 +356,19 @@ Additionally, you should also stop the process in between deployments, by runnin
 php artisan laravext:stop-ssr
 ```
 
+:::info
+
+You might see a `Render Time: XXXms` message in the console when running it locally. This is the time it took to render the page, and will only be console.logged if the environment is different from `production`.
+
+```
+Laravext SSR server started at port 13714
+Render Time: 451.752ms
+Render Time: 51.579ms
+Render Time: 126.259ms
+```
+
+:::
+
 
 ### Granular Control
 
