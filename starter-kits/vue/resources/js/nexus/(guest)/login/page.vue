@@ -10,18 +10,16 @@ import AuthBase from '@/layouts/AuthLayout.vue';
 import { Head, visit } from '@laravext/vue3';
 import axios from 'axios';
 import { LoaderCircle } from 'lucide-vue-next';
-import { reactive } from 'vue';
+import {inject} from 'vue';
+const nexusProps = inject('$nexusProps') as any;
 
-defineProps<{
-    status?: string;
-    canResetPassword: boolean;
-}>();
-
-const { data , processing, setProcessing, errors, setErrors, reset } = useForm({
+const { data , processing, setProcessing, errors, setErrors } = useForm({
     email: 'arthur@email.com',
     password: 'password',
     remember: false,
 });
+
+const {canResetPassword} = nexusProps();
 
 const submit = () => {
     setProcessing(true);
@@ -42,10 +40,6 @@ const submit = () => {
 
         <Head title="Log in" />
 
-        <div v-if="status" class="mb-4 text-center text-sm font-medium text-green-600">
-            {{ status }}
-        </div>
-
         <form @submit.prevent="submit" class="flex flex-col gap-6">
             <div class="grid gap-6">
                 <div class="grid gap-2">
@@ -58,7 +52,7 @@ const submit = () => {
                 <div class="grid gap-2">
                     <div class="flex items-center justify-between">
                         <Label for="password">Password</Label>
-                        <TextLink v-if="canResetPassword" :href="route('password.request')" class="text-sm"
+                        <TextLink v-if="canResetPassword" :href="route('forgot-password')" class="text-sm"
                             :tabindex="5"> Forgot password? </TextLink>
                     </div>
                     <Input id="password" type="password" required tabindex="2" autocomplete="current-password"
