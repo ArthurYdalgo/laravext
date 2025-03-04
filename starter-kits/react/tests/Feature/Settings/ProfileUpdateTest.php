@@ -27,14 +27,14 @@ class ProfileUpdateTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->patch('/settings/profile', [
+            ->patch('/api/settings/profile', [
                 'name' => 'Test User',
                 'email' => 'test@example.com',
+            ], headers: [
+                'Accept' => 'application/json',
             ]);
 
-        $response
-            ->assertSessionHasNoErrors()
-            ->assertRedirect('/settings/profile');
+        $response->assertSuccessful();
 
         $user->refresh();
 
@@ -49,14 +49,14 @@ class ProfileUpdateTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->patch('/settings/profile', [
+            ->patch('/api/settings/profile', [
                 'name' => 'Test User',
                 'email' => $user->email,
+            ], headers: [
+                'Accept' => 'application/json',
             ]);
 
-        $response
-            ->assertSessionHasNoErrors()
-            ->assertRedirect('/settings/profile');
+        $response->assertSuccessful();
 
         $this->assertNotNull($user->refresh()->email_verified_at);
     }
@@ -67,15 +67,14 @@ class ProfileUpdateTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->delete('/settings/profile', [
+            ->delete('/api/settings/profile', [
                 'password' => 'password',
+            ], headers: [
+                'Accept' => 'application/json',
             ]);
 
-        $response
-            ->assertSessionHasNoErrors()
-            ->assertRedirect('/');
+        $response->assertSuccessful();
 
-        $this->assertGuest();
         $this->assertNull($user->fresh());
     }
 
@@ -86,12 +85,13 @@ class ProfileUpdateTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->from('/settings/profile')
-            ->delete('/settings/profile', [
+            ->delete('/api/settings/profile', [
                 'password' => 'wrong-password',
+            ], headers: [
+                'Accept' => 'application/json',
             ]);
 
-        $response
-            ->assertSuccessful();
+        $response->assertStatus(422);
 
         $this->assertNotNull($user->fresh());
     }

@@ -27,7 +27,7 @@ class PasswordConfirmationTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response->assertSessionHasNoErrors();
+        $response->assertSuccessful();
     }
 
     public function test_password_is_not_confirmed_with_invalid_password()
@@ -36,8 +36,10 @@ class PasswordConfirmationTest extends TestCase
 
         $response = $this->actingAs($user)->post('/api/confirm-password', [
             'password' => 'wrong-password',
+        ], [
+            'Accept' => 'application/json',
         ]);
 
-        $response->assertSessionHasErrors();
+        $response->assertStatus(422);
     }
 }
