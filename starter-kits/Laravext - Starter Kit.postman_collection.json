@@ -22,7 +22,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Arthur\",\n    \"email\": \"arthur@email.com\",\n    \"password\": \"safe_password\",\n    \"password_confirmation\": \"safe_password\"\n}",
+							"raw": "{\n    \"name\": \"Arthur\",\n    \"email\": \"arthur3@email.com\",\n    \"password\": \"safe_password\",\n    \"password_confirmation\": \"safe_password\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -30,13 +30,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{app-url}}/api/auth/register",
+							"raw": "{{app-url}}/api/register",
 							"host": [
 								"{{app-url}}"
 							],
 							"path": [
 								"api",
-								"auth",
 								"register"
 							]
 						}
@@ -90,7 +89,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"arthur@email.com\",\n    \"password\": \"safe_password\"\n}",
+							"raw": "{\n    \"email\": \"arthur@email.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -98,13 +97,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{app-url}}/api/auth/forgot-password",
+							"raw": "{{app-url}}/api/forgot-password",
 							"host": [
 								"{{app-url}}"
 							],
 							"path": [
 								"api",
-								"auth",
 								"forgot-password"
 							]
 						}
@@ -124,7 +122,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"arthur@email.com\",\n    \"password\": \"safe_password\"\n}",
+							"raw": "{\n    \"token\": \"a_valid_token\",\n    \"email\": \"email@example.com\",\n    \"password\": \"new_password\",\n    \"password_confirmation\": \"new_password\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -132,14 +130,37 @@
 							}
 						},
 						"url": {
-							"raw": "{{app-url}}/api/auth/forgot-password",
+							"raw": "{{app-url}}/api/reset-password",
 							"host": [
 								"{{app-url}}"
 							],
 							"path": [
 								"api",
-								"auth",
-								"forgot-password"
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{app-url}}/api/logout",
+							"host": [
+								"{{app-url}}"
+							],
+							"path": [
+								"api",
+								"logout"
 							]
 						}
 					},
@@ -157,74 +178,14 @@
 							}
 						],
 						"url": {
-							"raw": "{{app-url}}/api/auth/email/verification-notification",
+							"raw": "{{app-url}}/api/email/verification-notification",
 							"host": [
 								"{{app-url}}"
 							],
 							"path": [
 								"api",
-								"auth",
 								"email",
 								"verification-notification"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "User",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{app-url}}/api/auth/user",
-							"host": [
-								"{{app-url}}"
-							],
-							"path": [
-								"api",
-								"auth",
-								"user"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Logout",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"email\": \"arthur@email.com\",\n    \"password\": \"safe_password\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{app-url}}/api/auth/logout",
-							"host": [
-								"{{app-url}}"
-							],
-							"path": [
-								"api",
-								"auth",
-								"logout"
 							]
 						}
 					},
@@ -261,44 +222,89 @@
 							}
 						},
 						"url": {
-							"raw": "{{app-url}}/api/auth/password",
+							"raw": "{{app-url}}/api/settings/password",
 							"host": [
 								"{{app-url}}"
 							],
 							"path": [
 								"api",
-								"auth",
+								"settings",
 								"password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "2|P3JjuX3T3Uhu0wAS0attubNiMUWIK0vM12fCbIFe91c2be40",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Luke Skywalker\",\n    \"email\": \"luke.skywalker@rebel-alliance.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app-url}}/api/settings/profile",
+							"host": [
+								"{{app-url}}"
+							],
+							"path": [
+								"api",
+								"settings",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Destroy Profile",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{app-url}}/api/settings/profile",
+							"host": [
+								"{{app-url}}"
+							],
+							"path": [
+								"api",
+								"settings",
+								"profile"
 							]
 						}
 					},
 					"response": []
 				}
 			]
-		},
-		{
-			"name": "CSRF Cookie",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{app-url}}/sanctum/csrf-cookie",
-					"host": [
-						"{{app-url}}"
-					],
-					"path": [
-						"sanctum",
-						"csrf-cookie"
-					]
-				}
-			},
-			"response": []
 		}
 	]
 }
