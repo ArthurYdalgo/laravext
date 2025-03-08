@@ -85,6 +85,13 @@ else
     echo "⚠️ Skipping npm install (npm not found)"
 fi
 
+# Create the bootstrap/cache directory if it doesn't exist, and make it writable
+if [ ! -d "bootstrap/cache" ]; then
+    echo "📁 Creating bootstrap/cache directory..."
+    mkdir -p bootstrap/cache
+    chmod -R 775 bootstrap/cache
+fi
+
 # Install PHP dependencies if Composer is available
 if command -v composer &>/dev/null; then
     echo "📦 Running composer install..."
