@@ -96,16 +96,15 @@ if [ -f ".env.example" ]; then
     echo "📄 Copying .env.example to .env..."
     cp .env.example .env
 
-    echo "🔧 Setting up .env file..."
+    echo "🔧 Setting up .env file for you..."
     APP_URL="${PROJECT_NAME}.test"
-    
-    if [[ "$OSTYPE" == "darwin"* ]]; then
-        # macOS
-        sed -i '' "s|^APP_URL=.*|APP_URL=http://$APP_URL|" .env
-    else
-        # Linux and Windows
-        sed -i "s|^APP_URL=.*|APP_URL=http://$APP_URL|" .env
-    fi
+
+    case "$OSTYPE" in
+        darwin*)  sed -i '' "s|^APP_URL=.*|APP_URL=http://$APP_URL|" .env ;; # macOS
+        linux*)   sed -i "s|^APP_URL=.*|APP_URL=http://$APP_URL|" .env ;;    # Linux
+        msys*|cygwin*) sed -i "s|^APP_URL=.*|APP_URL=http://$APP_URL|" .env ;; # Windows
+        *)        echo "⚠️ Unsupported OS: $OSTYPE... Remember to change the APP_URL in the .env folder"; exit 1 ;;
+    esac
 else
     echo "⚠️ .env.example file not found, skipping .env setup"
 fi
