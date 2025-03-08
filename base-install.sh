@@ -86,7 +86,7 @@ else
 fi
 
 # Create some required directories
-echo "📁 Creating bootstrap/cache directory..."
+echo "📁 Creating required directories..."
 mkdir -p bootstrap/cache
 chmod -R 777 bootstrap/cache
 mkdir -p storage/framework/views
