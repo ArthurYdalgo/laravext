@@ -75,46 +75,46 @@ fi
 
 # ---- RUN COMMANDS IF TOOLS ARE AVAILABLE ----
 
-# # Install Node dependencies if npm is available
-# if command -v npm &>/dev/null; then
-#     echo "📦 Running npm install..."
-#     npm install
-#     echo "🔨 Running npm build..."
-#     npm run build
-# else
-#     echo "⚠️ Skipping npm install (npm not found)"
-# fi
+# Install Node dependencies if npm is available
+if command -v npm &>/dev/null; then
+    echo "📦 Running npm install..."
+    npm install
+    echo "🔨 Running npm build..."
+    npm run build
+else
+    echo "⚠️ Skipping npm install (npm not found)"
+fi
 
 # Create the bootstrap/cache directory if it doesn't exist, and make it writable
 echo "📁 Creating bootstrap/cache directory..."
 mkdir -p bootstrap/cache
 chmod -R 775 bootstrap/cache
 
-# # Install PHP dependencies if Composer is available
-# if command -v composer &>/dev/null; then
-#     echo "📦 Running composer install..."
-#     composer install
-# else
-#     echo "⚠️ Skipping composer install (Composer not found)"
-# fi
+# Install PHP dependencies if Composer is available
+if command -v composer &>/dev/null; then
+    echo "📦 Running composer install..."
+    composer install
+else
+    echo "⚠️ Skipping composer install (Composer not found)"
+fi
 
-# # Copy .env file and generate Laravel key if PHP is available
-# if command -v php &>/dev/null; then
-#     if [ -f ".env.example" ]; then
-#         echo "📄 Copying .env.example to .env..."
-#         cp .env.example .env
-#     else
-#         echo "⚠️ .env.example file not found, skipping .env setup"
-#     fi
+# Copy .env file and generate Laravel key if PHP is available
+if command -v php &>/dev/null; then
+    if [ -f ".env.example" ]; then
+        echo "📄 Copying .env.example to .env..."
+        cp .env.example .env
+    else
+        echo "⚠️ .env.example file not found, skipping .env setup"
+    fi
 
-#     echo "🔑 Running php artisan key:generate..."
-#     php artisan key:generate
+    echo "🔑 Running php artisan key:generate..."
+    php artisan key:generate
 
-#     echo "🗄️ Running php artisan migrate..."
-#     php artisan migrate
-# else
-#     echo "⚠️ Skipping Laravel setup (PHP not found)"
-# fi
+    echo "🗄️ Running php artisan migrate..."
+    php artisan migrate
+else
+    echo "⚠️ Skipping Laravel setup (PHP not found)"
+fi
 
-echo "✅ Installation complete!!"
+echo "✅ Installation complete!"
 echo "To run the project, just run 'cd $PROJECT_NAME' and execute 'composer run dev'."
