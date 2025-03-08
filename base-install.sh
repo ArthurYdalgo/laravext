@@ -116,5 +116,5 @@ chmod -R 775 bootstrap/cache
 #     echo "⚠️ Skipping Laravel setup (PHP not found)"
 # fi
 
-echo "✅ Installation complete!"
+echo "✅ Installation complete!!"
 echo "To run the project, just run 'cd $PROJECT_NAME' and execute 'composer run dev'."
