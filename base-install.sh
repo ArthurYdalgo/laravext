@@ -74,17 +74,6 @@ if [ ${#MISSING_TOOLS[@]} -gt 0 ]; then
 fi
 
 # ---- RUN COMMANDS IF TOOLS ARE AVAILABLE ----
-
-# Install Node dependencies if npm is available
-if command -v npm &>/dev/null; then
-    echo "📦 Running npm install..."
-    npm install
-    echo "🔨 Running npm build..."
-    npm run build
-else
-    echo "⚠️ Skipping npm install (npm not found)"
-fi
-
 # Create some required directories
 echo "📁 Creating required directories..."
 mkdir -p bootstrap/cache
@@ -103,14 +92,19 @@ else
 fi
 
 # Copy .env file and generate Laravel key if PHP is available
-if command -v php &>/dev/null; then
-    if [ -f ".env.example" ]; then
-        echo "📄 Copying .env.example to .env..."
-        cp .env.example .env
-    else
-        echo "⚠️ .env.example file not found, skipping .env setup"
-    fi
+if [ -f ".env.example" ]; then
+    echo "📄 Copying .env.example to .env..."
+    cp .env.example .env
 
+    echo "🔧 Setting up .env file..."
+
+    # Updates the APP_URL in the .env file to use the STARTER_KIT_DIR's name as the APP_URL
+    sed -i "s|APP_URL=http://localhost|APP_URL=http://$PROJECT_NAME.test|" .env
+else
+    echo "⚠️ .env.example file not found, skipping .env setup"
+fi
+
+if command -v php &>/dev/null; then
     echo "🔑 Running php artisan key:generate..."
     php artisan key:generate
 
@@ -121,6 +115,16 @@ if command -v php &>/dev/null; then
     php artisan optimize
 else
     echo "⚠️ Skipping Laravel setup (PHP not found)"
+fi
+
+# Install Node dependencies if npm is available
+if command -v npm &>/dev/null; then
+    echo "📦 Running npm install..."
+    npm install
+    echo "🔨 Running npm build..."
+    npm run build
+else
+    echo "⚠️ Skipping npm install (npm not found)"
 fi
 
 echo "✅ Installation complete!"
