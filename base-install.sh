@@ -97,9 +97,15 @@ if [ -f ".env.example" ]; then
     cp .env.example .env
 
     echo "🔧 Setting up .env file..."
-
-    # Updates the APP_URL in the .env file to use the STARTER_KIT_DIR's name as the APP_URL
-    sed -i "s|APP_URL=http://localhost|APP_URL=http://$PROJECT_NAME.test|" .env
+    APP_URL="${PROJECT_NAME}.test"
+    
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        # macOS
+        sed -i '' "s|^APP_URL=.*|APP_URL=http://$APP_URL|" .env
+    else
+        # Linux and Windows
+        sed -i "s|^APP_URL=.*|APP_URL=http://$APP_URL|" .env
+    fi
 else
     echo "⚠️ .env.example file not found, skipping .env setup"
 fi
