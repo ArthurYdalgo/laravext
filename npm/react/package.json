@@ -1,6 +1,6 @@
 {
     "name": "@laravext/react",
-    "version": "1.1.5",
+    "version": "1.1.6",
     "description": "Laravext for React",
     "homepage": "https://laravext.dev/",
     "repository": {
@@ -46,7 +46,7 @@
         "react-dom": "^19.0.0"
     },
     "devDependencies": {
-        "esbuild": "^0.23.1",
+        "esbuild": "^0.25.2",
         "esbuild-node-externals": "^1.14.0"
     }
 }

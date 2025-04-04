@@ -1,6 +1,6 @@
 {
     "name": "@laravext/vue3",
-    "version": "1.1.5",
+    "version": "1.1.6",
     "description": "Laravext for Vue3",
     "homepage": "https://laravext.dev/",
     "repository": {
@@ -46,7 +46,7 @@
         "vue": "^3.4.23"
     },
     "devDependencies": {
-        "esbuild": "^0.23.1",
+        "esbuild": ">=0.25.0",
         "esbuild-node-externals": "^1.14.0"
     }
 }
