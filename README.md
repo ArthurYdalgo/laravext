@@ -20,6 +20,8 @@ Here are some useful links:
 - [Documentation](https://laravext.dev)
 - [Packagist](https://packagist.org/packages/arthurydalgo/laravext)
 - [Packagist Repo](https://github.com/ArthurYdalgo/laravext-packagist)
+- [React Starter Kit Repo](https://github.com/ArthurYdalgo/laravext-react-starter-kit)
+- [Vue Starter Kit Repo](https://github.com/ArthurYdalgo/laravext-vue-starter-kit)
 - [NPM @laravext/vue3](https://www.npmjs.com/package/@laravext/vue3)
 - [NPM @laravext/react](https://www.npmjs.com/package/@laravext/react)
 - [Youtube](https://www.youtube.com/@laravext)
