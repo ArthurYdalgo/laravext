@@ -164,25 +164,27 @@ export function Head({ title }) {
     return null;
 }
 
-export function Link({ href, preserveScroll = false, redirectToUrlIntended = true, children, ...props }) {
-    return (
-      <a
-        href={href}
-        onClick={(event) => {
-          if (shouldLinkClickEventBeIntercepted(event)) {
-            event.preventDefault();
-            visit(href, {
-                preserveScroll,
-                redirectToUrlIntended
-            });
-          }
-        }}
-        {... props}
-      >
-        {children}
-      </a>
-    );
-  }
+export const Link = React.forwardRef(function Link(
+  { href, preserveScroll = false, redirectToUrlIntended = true, children, onClick, ...props },
+  ref
+) {
+  const handleClick = (event) => {
+    if (shouldLinkClickEventBeIntercepted(event)) {
+      event.preventDefault();
+      visit(href, { preserveScroll, redirectToUrlIntended });
+    }
+
+    if (onClick) {
+      onClick(event);
+    }
+  };
+
+  return (
+    <a ref={ref} href={href} onClick={handleClick} {...props}>
+      {children}
+    </a>
+  );
+});
 
 export function createLaravextApp({ nexusResolver, strandsResolver, conventions = [
     'error',
