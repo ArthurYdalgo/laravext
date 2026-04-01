@@ -192,9 +192,22 @@ The NavBar component will be rendered and receive the props sent to it in the di
 
 If you intend to use a Inertia.js style of SSR, you might get a ```[DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.``` warning in your console because of JSDom, which is used to render the React/Vue components. You can read more details in this [JSDom issue #3613](https://github.com/jsdom/jsdom/issues/3613)
 
+### Minified React error #525
+
+You might get a [Minified React error #525](https://react.dev/errors/525) when running a different react version from React 19 if you installed Laravext in an existing project that already had React 18 (or older) installed. If you don't want to upgrade to React 19, you can fix this by adding the following to your `package.json`:
+
+```json
+"overrides": {
+    "@laravext/react": {
+        "react": "$react",
+        "react-dom": "$react-dom"
+    }
+}
+```
+
 ### Using `database` as `SESSION_DRIVER`, and `sqlite` as `DB_CONNECTION`, and APP_URL different than `http://localhost:8000`
 
-For some (still) unknown reason, if you use `database` as your `SESSION_DRIVER`, and `sqlite` as your `DB_CONNECTION`, and your `APP_URL` is different than `http://localhost:8000`, any time a PATCH/PUT request is made, the next request will get a 401 response. This is being investigated.
+For some (still) unknown reason, if you use `database` as your `SESSION_DRIVER`, and `sqlite` as your `DB_CONNECTION`, and your `APP_URL` is different than `http://localhost:8000`, any time a PATCH/PUT request is made, the next request will get a 401 response.
 
 ## Legal Disclaimer
 
