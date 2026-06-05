@@ -152,8 +152,13 @@
             <p class="keyboard-hint">Press 'L' to Hide/Show UI</p>
             
             <div class="slider-container">
-                <label for="radius-slider">Radius Extent: <span id="radius-val">0.75</span></label>
+                <label for="radius-slider">Pipe Radius: <span id="radius-val">0.75</span></label>
                 <input type="range" id="radius-slider" min="0.1" max="2.0" step="0.05" value="0.75">
+            </div>
+
+            <div class="slider-container" style="border-top: none; margin-top: 5px; padding-top: 5px;">
+                <label for="notch-slider">End V-Notch Depth: <span id="notch-val">0.50</span></label>
+                <input type="range" id="notch-slider" min="-1.5" max="1.5" step="0.05" value="0.5">
             </div>
 
             <div class="controls-section">
@@ -168,7 +173,7 @@
             <div class="controls-section">
                 <label><input type="checkbox" id="toggle-axes"> Show Grid & Axes</label>
                 <label><input type="checkbox" id="toggle-wireframe"> Show Shape Lines</label>
-                <label><input type="checkbox" id="toggle-end-lines" checked> Show End Vertical Lines</label>
+                <label><input type="checkbox" id="toggle-end-lines" checked> Show Fold Hinge Lines</label>
             </div>
         </div>
 
@@ -204,13 +209,14 @@
         const PIPE_COLOR = 0xd00100;       
         const WIREFRAME_COLOR = 0xffffff;  
         const DEFAULT_RADIUS = 0.75;  
+        const DEFAULT_NOTCH_DEPTH = 0.5; // Starts with a nice V-cut
         
         // Spin Parameters
-        const MAX_SPIN_SPEED = 0.5;             // The maximum rotational speed
-        const USE_SPIN_LIMIT = true;             // Set to false to spin forever
-        const MAX_SPIN_REVOLUTIONS = 1;          // Number of full 360 spins before stopping
-        const USE_ACCELERATION = true;           // Smooth start/stop easing
-        const SPIN_ACCELERATION_RATE = 0.05;   // How quickly it accelerates/decelerates
+        const MAX_SPIN_SPEED = 0.5;             
+        const USE_SPIN_LIMIT = true;             
+        const MAX_SPIN_REVOLUTIONS = 1;          
+        const USE_ACCELERATION = true;           
+        const SPIN_ACCELERATION_RATE = 0.05;   
         // ============================================================================
 
         // 1. Setup Scene
@@ -280,7 +286,7 @@
         }
 
         // 4. Core Pipeline Builder Function
-        function buildPipeline(radius) {
+        function buildPipeline(radius, notchDepth) {
             if (currentMesh) pipelineGroup.remove(currentMesh);
             if (currentWireframe) pipelineGroup.remove(currentWireframe);
             if (currentEndLines) pipelineGroup.remove(currentEndLines);
@@ -288,7 +294,7 @@
             const cornersMap = {};
             const p12 = pointsData['P12'];
             
-            // Note: Indices mapped as [0: Bottom, 1: Right, 2: Top, 3: Left]
+            // Indices mapped as [0: Bottom, 1: Right, 2: Top, 3: Left]
             cornersMap['P12'] = [
                 p12.clone().add(new THREE.Vector3(0, -radius, 0)), 
                 p12.clone().add(new THREE.Vector3(radius, 0, 0)),  
@@ -296,6 +302,7 @@
                 p12.clone().add(new THREE.Vector3(-radius, 0, 0))  
             ];
 
+            // Extrude Forward
             for(let i = p12_idx; i < path.length - 1; i++) {
                 const startId = path[i], jointId = path[i+1], nextId = path[i+2];
                 cornersMap[jointId] = computeCorners(
@@ -303,12 +310,32 @@
                 );
             }
 
+            // Extrude Backward
             for(let i = p12_idx; i > 0; i--) {
                 const startId = path[i], jointId = path[i-1], nextId = path[i-2];
                 cornersMap[jointId] = computeCorners(
                     cornersMap[startId], pointsData[startId], pointsData[jointId], nextId ? pointsData[nextId] : null
                 );
             }
+
+            // --- EXTRACTED PRISM / V-NOTCH LOGIC ---
+            // By sliding the Left(3) and Right(1) vertices along the exact trajectory
+            // of the incoming pipe, we cut a V-shape without breaking the parallel lines.
+            function applyVNotch(nodeId, inwardDir, depth) {
+                const corners = cornersMap[nodeId];
+                // Move Right and Left inwards/outwards perfectly along the pipe's axis
+                corners[1].add(inwardDir.clone().multiplyScalar(depth));
+                corners[3].add(inwardDir.clone().multiplyScalar(depth));
+            }
+
+            // P26 is path[0]. The pipe goes FROM P26 TO P23. Inward is towards P23.
+            const p26_inward = pointsData['P23'].clone().sub(pointsData['P26']).normalize();
+            applyVNotch('P26', p26_inward, notchDepth);
+
+            // P27 is path[6]. The pipe goes FROM P21 TO P27. Inward is towards P21.
+            const p27_inward = pointsData['P21'].clone().sub(pointsData['P27']).normalize();
+            applyVNotch('P27', p27_inward, notchDepth);
+            // -------------------------------------
 
             const dataContent = document.getElementById('data-content');
             dataContent.innerHTML = ''; 
@@ -322,7 +349,7 @@
                 dataContent.innerHTML += html;
             });
 
-            // 4a. Assemble the Main Pipe Geometry
+            // Assemble Geometry
             const geometry = new THREE.BufferGeometry();
             const positions = [];
 
@@ -333,6 +360,12 @@
                 );
             }
 
+            // Helper for specifically triangulating the folded end caps so they don't break
+            function addTri(v0, v1, v2) {
+                positions.push(v0.x, v0.y, v0.z, v1.x, v1.y, v1.z, v2.x, v2.y, v2.z);
+            }
+
+            // Pipe Body side-walls
             for(let i=0; i < path.length - 1; i++) {
                 const A = cornersMap[path[i]];
                 const B = cornersMap[path[i+1]];
@@ -342,10 +375,17 @@
                 addQuad(A[3], A[0], B[0], B[3]);
             }
 
-            const startC = cornersMap[path[0]];
-            const endC = cornersMap[path[path.length-1]];
-            addQuad(startC[3], startC[2], startC[1], startC[0]);
-            addQuad(endC[0], endC[1], endC[2], endC[3]);
+            const startC = cornersMap[path[0]]; // P26
+            const endC = cornersMap[path[path.length-1]]; // P27
+            
+            // End caps (Triangulated along the Top(2)-Bottom(0) Hinge to guarantee a clean fold)
+            // Face 1 (P26)
+            addTri(startC[0], startC[3], startC[2]);
+            addTri(startC[0], startC[2], startC[1]);
+            
+            // Face 2 (P27)
+            addTri(endC[0], endC[1], endC[2]);
+            addTri(endC[0], endC[2], endC[3]);
 
             geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
             geometry.computeVertexNormals();
@@ -358,7 +398,6 @@
             currentMesh = new THREE.Mesh(geometry, material);
             pipelineGroup.add(currentMesh);
 
-            // 4b. Assemble the Wireframe Edges
             const edges = new THREE.EdgesGeometry(geometry);
             currentWireframe = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ 
                 color: WIREFRAME_COLOR, 
@@ -369,41 +408,43 @@
             currentWireframe.visible = document.getElementById('toggle-wireframe').checked;
             pipelineGroup.add(currentWireframe);
 
-            // 4c. Assemble the Top-To-Bottom End Face Lines (P26 and P27)
+            // --- ASSEMBLE THE VERTICAL HINGE LINES ---
             const endLinesGeom = new THREE.BufferGeometry();
             const endLinesPositions = [];
             
-            // Connect Top (Index 2) to Bottom (Index 0) on P26 face
+            // Connect Top (2) to Bottom (0) on P26 face
             const p26C = cornersMap['P26'];
             endLinesPositions.push(
-                p26C[3].x, p26C[3].y, p26C[3].z,
-                p26C[1].x, p26C[1].y, p26C[1].z
+                p26C[2].x, p26C[2].y, p26C[2].z,
+                p26C[0].x, p26C[0].y, p26C[0].z
             );
 
-            // Connect Top (Index 2) to Bottom (Index 0) on P27 face
+            // Connect Top (2) to Bottom (0) on P27 face
             const p27C = cornersMap['P27'];
             endLinesPositions.push(
-                p27C[3].x, p27C[3].y, p27C[3].z,
-                p27C[1].x, p27C[1].y, p27C[1].z
+                p27C[2].x, p27C[2].y, p27C[2].z,
+                p27C[0].x, p27C[0].y, p27C[0].z
             );
 
             endLinesGeom.setAttribute('position', new THREE.Float32BufferAttribute(endLinesPositions, 3));
             currentEndLines = new THREE.LineSegments(endLinesGeom, new THREE.LineBasicMaterial({
-                color: WIREFRAME_COLOR, // Using bright wireframe color to make it clear
+                color: WIREFRAME_COLOR,
                 linewidth: 2,
-                depthTest: false // Ensures it draws slightly on top of the endcap
+                depthTest: false // Ensures it draws cleanly on top of the endcap
             }));
             
             currentEndLines.visible = document.getElementById('toggle-end-lines').checked;
             pipelineGroup.add(currentEndLines);
         }
 
-        // 5. Initialize Pipeline
-        buildPipeline(DEFAULT_RADIUS);
+        // 5. State Initialization
+        let currentRadius = DEFAULT_RADIUS;
+        let currentNotchDepth = DEFAULT_NOTCH_DEPTH;
+        
+        buildPipeline(currentRadius, currentNotchDepth);
 
         // 6. UI Interaction Listeners
         
-        // Hide UI with 'L' Key
         window.addEventListener('keydown', (e) => {
             if (e.key.toLowerCase() === 'l') {
                 document.body.classList.toggle('hide-ui');
@@ -412,18 +453,25 @@
 
         window.addEventListener('keydown', (e) => {
             if (e.key.toLowerCase() === 's') {
-                // simulate a check of the auto spin
                 document.getElementById('toggle-spin').click();
             }
         });
 
-        // Radius Slider
+        // Sliders
         const radiusSlider = document.getElementById('radius-slider');
         const radiusVal = document.getElementById('radius-val');
         radiusSlider.addEventListener('input', (e) => {
-            const r = parseFloat(e.target.value);
-            radiusVal.textContent = r.toFixed(2);
-            buildPipeline(r); 
+            currentRadius = parseFloat(e.target.value);
+            radiusVal.textContent = currentRadius.toFixed(2);
+            buildPipeline(currentRadius, currentNotchDepth); 
+        });
+
+        const notchSlider = document.getElementById('notch-slider');
+        const notchVal = document.getElementById('notch-val');
+        notchSlider.addEventListener('input', (e) => {
+            currentNotchDepth = parseFloat(e.target.value);
+            notchVal.textContent = currentNotchDepth.toFixed(2);
+            buildPipeline(currentRadius, currentNotchDepth); 
         });
 
         // Spin State Trackers
@@ -435,7 +483,7 @@
         document.getElementById('toggle-spin').addEventListener('change', (e) => {
             isSpinning = e.target.checked;
             if (isSpinning && totalSpunAngle >= MAX_SPIN_REVOLUTIONS * Math.PI * 2) {
-                totalSpunAngle = 0; // Reset angle counter if we restart spinning
+                totalSpunAngle = 0; 
             }
         });
         
@@ -444,7 +492,7 @@
             radio.addEventListener('change', (e) => {
                 spinAxis = e.target.value;
                 totalSpunAngle = 0; 
-                pipelineGroup.rotation.set(0, 0, 0); // Re-align perfectly before changing axis
+                pipelineGroup.rotation.set(0, 0, 0); 
             });
         });
 
@@ -459,11 +507,11 @@
         // Visual Aids Checkboxes
         const gridHelper = new THREE.GridHelper(20, 20, 0x444444, 0x222222);
         gridHelper.position.y = 0;
-        gridHelper.visible = false; // Disabled by default
+        gridHelper.visible = false; 
         scene.add(gridHelper);
 
         const axesHelper = new THREE.AxesHelper(5);
-        axesHelper.visible = false; // Disabled by default
+        axesHelper.visible = false; 
         scene.add(axesHelper);
 
         document.getElementById('toggle-axes').addEventListener('change', (e) => {
@@ -484,7 +532,6 @@
         function setTrueOrthographic(plane) {
             controls.target.set(0, 4, 0); 
             
-            // Remove active highlight from all view buttons
             document.getElementById('btn-xy').classList.remove('active-view');
             document.getElementById('btn-xz').classList.remove('active-view');
             document.getElementById('btn-yz').classList.remove('active-view');
@@ -506,7 +553,6 @@
             controls.update();      
         }
 
-        // Set Default View on Load
         setTrueOrthographic('YZ');
 
         document.getElementById('btn-xy').addEventListener('click', () => setTrueOrthographic('XY'));
@@ -526,23 +572,19 @@
             requestAnimationFrame(animate);
             controls.update();
 
-            // --- Physical Spinning Engine with Precision Anti-Drift Limits ---
+            // --- Physical Spinning Engine ---
             if (isSpinning) {
                 if (USE_SPIN_LIMIT) {
                     const targetAngle = MAX_SPIN_REVOLUTIONS * Math.PI * 2;
                     let distanceLeft = targetAngle - totalSpunAngle;
                     
                     if (distanceLeft <= 0) {
-                        // Limit Reached: Stop spinning entirely
                         isSpinning = false;
                         document.getElementById('toggle-spin').checked = false;
                         currentSpinVelocity = 0;
-                        
-                        // DRIFT FIX: Force the math back to a mathematically perfect 0 to clear floating point dust
                         pipelineGroup.rotation.set(0, 0, 0);
                         totalSpunAngle = 0;
                     } else {
-                        // Accelerate / Decelerate
                         if (USE_ACCELERATION) {
                             let stoppingDistance = (currentSpinVelocity * currentSpinVelocity) / (2 * SPIN_ACCELERATION_RATE);
                             if (distanceLeft <= stoppingDistance) {
@@ -554,13 +596,11 @@
                             currentSpinVelocity = MAX_SPIN_SPEED;
                         }
                         
-                        // Prevent the velocity from overshooting the finish line exactly on the last frame
                         if (currentSpinVelocity > distanceLeft) {
                             currentSpinVelocity = distanceLeft;
                         }
                     }
                 } else {
-                    // Spin forever logic
                     if (USE_ACCELERATION) {
                         currentSpinVelocity = Math.min(MAX_SPIN_SPEED, currentSpinVelocity + SPIN_ACCELERATION_RATE);
                     } else {
@@ -568,7 +608,6 @@
                     }
                 }
             } else {
-                // Decelerate to stop if turned off manually
                 if (USE_ACCELERATION && currentSpinVelocity > 0) {
                     currentSpinVelocity = Math.max(0, currentSpinVelocity - SPIN_ACCELERATION_RATE);
                 } else {
@@ -576,7 +615,6 @@
                 }
             }
 
-            // Apply calculated rotation
             if (currentSpinVelocity > 0) {
                 totalSpunAngle += currentSpinVelocity;
                 if (spinAxis === 'x') pipelineGroup.rotation.x += currentSpinVelocity;
