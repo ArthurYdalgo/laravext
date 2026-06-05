@@ -762,10 +762,12 @@
                 );
                 geometry.computeVertexNormals();
 
-                const material = new THREE.MeshStandardMaterial({
-                    color: PIPE_COLOR,
-                    flatShading: true,
+                const material = new THREE.MeshStandardMaterial({ 
+                    color: PIPE_COLOR, 
+                    flatShading: true, 
                     side: THREE.DoubleSide,
+                    roughness: 0.1,   // Lower number = shinier/glossier
+                    metalness: 0.1    // Higher number = more metallic reflection
                 });
                 const mesh = new THREE.Mesh(geometry, material);
                 currentHexGroup.add(mesh);
