@@ -181,11 +181,11 @@
             <div class="slider-group" style="border-color: #ffcc00; background-color: rgba(255, 204, 0, 0.05);">
                 <div class="slider-group-title" style="color: #ffcc00;">Global Shape Settings</div>
                 <div class="slider-container">
-                    <label for="radius-slider" style="color: #ffcc00;">Pipe Radius: <span id="radius-val">0.75</span></label>
+                    <label for="radius-slider" style="color: #ffcc00;">Pipe Radius: <span id="radius-slider-val">0.75</span></label>
                     <input type="range" id="radius-slider" min="0.1" max="2.0" step="0.05" value="0.75">
                 </div>
                 <div class="slider-container">
-                    <label for="center-slider" style="color: #ffcc00;">Center Offset (Pit + / Spike -): <span id="center-val">-1.00</span></label>
+                    <label for="center-slider" style="color: #ffcc00;">Center Offset (Pit + / Spike -): <span id="center-slider-val">-1.00</span></label>
                     <input type="range" id="center-slider" min="-3.0" max="3.0" step="0.05" value="-1.0">
                 </div>
             </div>
@@ -276,7 +276,7 @@
         // CONFIGURATION SETTINGS
         // ============================================================================
         const PIPE_COLOR = 0xd00100;       
-        const WIREFRAME_COLOR = 0xffffff;  
+        const WIREFRAME_COLOR = 0xafafaf;  
         
         // Initial Parameter States
         const DEFAULT_RADIUS = 0.75;  
@@ -540,10 +540,10 @@
             pipelineGroup.add(currentEndLines);
         }
 
-        // 5. Initialize Pipeline Once
+        // Initialize Pipeline
         buildPipeline();
 
-        // 6. UI Interaction Listeners (Cleaned up and bound to state)
+        // 6. UI Interaction Listeners
         
         window.addEventListener('keydown', (e) => {
             if (e.key.toLowerCase() === 'l') document.body.classList.toggle('hide-ui');
@@ -558,7 +558,6 @@
                 const val = parseFloat(e.target.value);
                 valDisplay.textContent = val.toFixed(2);
                 
-                // Update the single source of truth state object
                 if (subKey) state[stateKey][subKey] = val;
                 else state[stateKey] = val;
                 
