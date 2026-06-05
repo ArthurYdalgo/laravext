@@ -168,6 +168,7 @@
             <div class="controls-section">
                 <label><input type="checkbox" id="toggle-axes"> Show Grid & Axes</label>
                 <label><input type="checkbox" id="toggle-wireframe"> Show Shape Lines</label>
+                <label><input type="checkbox" id="toggle-end-lines" checked> Show End Vertical Lines</label>
             </div>
         </div>
 
@@ -255,6 +256,7 @@
 
         let currentMesh = null;
         let currentWireframe = null;
+        let currentEndLines = null;
 
         // 3. Mathematical Miter Intersection Function
         function computeCorners(startCorners, pStart, pJoint, pNext) {
@@ -281,9 +283,12 @@
         function buildPipeline(radius) {
             if (currentMesh) pipelineGroup.remove(currentMesh);
             if (currentWireframe) pipelineGroup.remove(currentWireframe);
+            if (currentEndLines) pipelineGroup.remove(currentEndLines);
 
             const cornersMap = {};
             const p12 = pointsData['P12'];
+            
+            // Note: Indices mapped as [0: Bottom, 1: Right, 2: Top, 3: Left]
             cornersMap['P12'] = [
                 p12.clone().add(new THREE.Vector3(0, -radius, 0)), 
                 p12.clone().add(new THREE.Vector3(radius, 0, 0)),  
@@ -317,6 +322,7 @@
                 dataContent.innerHTML += html;
             });
 
+            // 4a. Assemble the Main Pipe Geometry
             const geometry = new THREE.BufferGeometry();
             const positions = [];
 
@@ -352,6 +358,7 @@
             currentMesh = new THREE.Mesh(geometry, material);
             pipelineGroup.add(currentMesh);
 
+            // 4b. Assemble the Wireframe Edges
             const edges = new THREE.EdgesGeometry(geometry);
             currentWireframe = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ 
                 color: WIREFRAME_COLOR, 
@@ -361,6 +368,34 @@
             
             currentWireframe.visible = document.getElementById('toggle-wireframe').checked;
             pipelineGroup.add(currentWireframe);
+
+            // 4c. Assemble the Top-To-Bottom End Face Lines (P26 and P27)
+            const endLinesGeom = new THREE.BufferGeometry();
+            const endLinesPositions = [];
+            
+            // Connect Top (Index 2) to Bottom (Index 0) on P26 face
+            const p26C = cornersMap['P26'];
+            endLinesPositions.push(
+                p26C[3].x, p26C[3].y, p26C[3].z,
+                p26C[1].x, p26C[1].y, p26C[1].z
+            );
+
+            // Connect Top (Index 2) to Bottom (Index 0) on P27 face
+            const p27C = cornersMap['P27'];
+            endLinesPositions.push(
+                p27C[3].x, p27C[3].y, p27C[3].z,
+                p27C[1].x, p27C[1].y, p27C[1].z
+            );
+
+            endLinesGeom.setAttribute('position', new THREE.Float32BufferAttribute(endLinesPositions, 3));
+            currentEndLines = new THREE.LineSegments(endLinesGeom, new THREE.LineBasicMaterial({
+                color: WIREFRAME_COLOR, // Using bright wireframe color to make it clear
+                linewidth: 2,
+                depthTest: false // Ensures it draws slightly on top of the endcap
+            }));
+            
+            currentEndLines.visible = document.getElementById('toggle-end-lines').checked;
+            pipelineGroup.add(currentEndLines);
         }
 
         // 5. Initialize Pipeline
@@ -439,6 +474,10 @@
 
         document.getElementById('toggle-wireframe').addEventListener('change', (e) => {
             if (currentWireframe) currentWireframe.visible = e.target.checked;
+        });
+
+        document.getElementById('toggle-end-lines').addEventListener('change', (e) => {
+            if (currentEndLines) currentEndLines.visible = e.target.checked;
         });
 
         // 7. True Orthographic Camera Snapping
