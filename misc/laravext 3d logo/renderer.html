@@ -30,23 +30,35 @@
             z-index: 10;
             max-height: 90vh;
             overflow-y: auto;
+            width: 320px;
         }
         h1 { margin: 0 0 10px 0; font-size: 1.2rem; color: #d00100; }
         p { margin: 0 0 10px 0; font-size: 0.9rem; line-height: 1.5; color: #cccccc;}
         .keyboard-hint { color: #ffeb3b; font-size: 0.8rem; font-weight: bold; }
 
         /* Slider Controls */
-        .slider-container {
+        .slider-group {
+            background-color: rgba(255,255,255,0.05);
+            padding: 10px;
+            border-radius: 5px;
             margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px solid #444;
+        }
+        .slider-group-title {
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: #aaddff;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #444;
+            padding-bottom: 5px;
+        }
+        .slider-container {
+            margin-top: 8px;
         }
         .slider-container label {
-            font-size: 0.85rem;
-            font-weight: bold;
+            font-size: 0.8rem;
             color: #ff9999;
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 3px;
         }
         input[type="range"] {
             width: 100%;
@@ -153,24 +165,37 @@
             <p><strong>Right Click + Drag:</strong> Pan</p>
             <p class="keyboard-hint">Press 'L' to Hide/Show UI</p>
             
-            <div class="slider-container" style="border: none;">
-                <label for="radius-slider">Pipe Radius: <span id="radius-val">0.75</span></label>
+            <div class="slider-container" style="margin-bottom: 15px;">
+                <label for="radius-slider" style="font-size: 0.9rem; font-weight: bold;">Pipe Radius: <span id="radius-val">0.75</span></label>
                 <input type="range" id="radius-slider" min="0.1" max="2.0" step="0.05" value="0.75">
             </div>
 
-            <div class="slider-container">
-                <label for="v-notch-slider">Vertical (Top/Bottom) Notch (+) / Blade (-): <span id="v-notch-val">-0.50</span></label>
-                <input type="range" id="v-notch-slider" min="-1.5" max="1.5" step="0.05" value="-0.5">
-            </div>
-            
-            <div class="slider-container" style="margin-top: 5px; padding-top: 5px;">
-                <label for="h-notch-slider">Horizontal (Left/Right) Notch (+) / Blade (-): <span id="h-notch-val">-0.50</span></label>
-                <input type="range" id="h-notch-slider" min="-1.5" max="1.5" step="0.05" value="-0.5">
+            <div class="slider-group">
+                <div class="slider-group-title">End-Face Extrusions (In + / Out -)</div>
+                
+                <div class="slider-container">
+                    <label for="top-slider">Top Vertex: <span id="top-val">-0.50</span></label>
+                    <input type="range" id="top-slider" min="-2.0" max="2.0" step="0.05" value="-0.5">
+                </div>
+                <div class="slider-container">
+                    <label for="bottom-slider">Bottom Vertex: <span id="bottom-val">-0.50</span></label>
+                    <input type="range" id="bottom-slider" min="-2.0" max="2.0" step="0.05" value="-0.5">
+                </div>
+                <div class="slider-container">
+                    <label for="left-slider">Left Vertex: <span id="left-val">-0.50</span></label>
+                    <input type="range" id="left-slider" min="-2.0" max="2.0" step="0.05" value="-0.5">
+                </div>
+                <div class="slider-container">
+                    <label for="right-slider">Right Vertex: <span id="right-val">-0.50</span></label>
+                    <input type="range" id="right-slider" min="-2.0" max="2.0" step="0.05" value="-0.5">
+                </div>
             </div>
 
-            <div class="slider-container" style="margin-top: 5px; padding-top: 5px; background-color: rgba(255,255,255,0.05); padding: 10px; border-radius: 5px;">
-                <label for="center-slider" style="color: #ffcc00;">Center Point Offset (Pit + / Spike -): <span id="center-val">-1.00</span></label>
-                <input type="range" id="center-slider" min="-3.0" max="3.0" step="0.05" value="-1.0">
+            <div class="slider-group">
+                <div class="slider-container">
+                    <label for="center-slider" style="color: #ffcc00; font-weight: bold;">Center Intersection (Pit + / Spike -): <span id="center-val">-1.00</span></label>
+                    <input type="range" id="center-slider" min="-3.0" max="3.0" step="0.05" value="-1.0">
+                </div>
             </div>
 
             <div class="controls-section">
@@ -221,9 +246,13 @@
         const PIPE_COLOR = 0xd00100;       
         const WIREFRAME_COLOR = 0xffffff;  
         const DEFAULT_RADIUS = 0.75;  
-        const DEFAULT_V_NOTCH = -0.5; 
-        const DEFAULT_H_NOTCH = -0.5;
-        const DEFAULT_CENTER_OFFSET = -1.0; // Negative pushes the center out into a spike
+        
+        // Default offsets for the 4 outer vertices (Negative = outwards)
+        const DEFAULT_TOP = -0.5; 
+        const DEFAULT_BOTTOM = -0.5;
+        const DEFAULT_LEFT = -0.5;
+        const DEFAULT_RIGHT = -0.5;
+        const DEFAULT_CENTER_OFFSET = -1.0; 
         
         // Spin Parameters
         const MAX_SPIN_SPEED = 0.5;             
@@ -300,7 +329,7 @@
         }
 
         // 4. Core Pipeline Builder Function
-        function buildPipeline(radius, vDepth, hDepth, centerOffset) {
+        function buildPipeline(radius, topD, bottomD, leftD, rightD, centerOffset) {
             if (currentMesh) pipelineGroup.remove(currentMesh);
             if (currentWireframe) pipelineGroup.remove(currentWireframe);
             if (currentEndLines) pipelineGroup.remove(currentEndLines);
@@ -332,22 +361,20 @@
                 );
             }
 
-            // --- DOUBLE V-NOTCH / BLADE LOGIC ---
-            function applyDoubleNotch(nodeId, inwardDir, verticalDepth, horizontalDepth) {
+            // --- INDIVIDUAL VERTEX OFFSET LOGIC ---
+            function applyVertexOffsets(nodeId, inwardDir, tD, bD, lD, rD) {
                 const corners = cornersMap[nodeId];
-                corners[0].add(inwardDir.clone().multiplyScalar(verticalDepth));
-                corners[2].add(inwardDir.clone().multiplyScalar(verticalDepth));
-                corners[1].add(inwardDir.clone().multiplyScalar(horizontalDepth));
-                corners[3].add(inwardDir.clone().multiplyScalar(horizontalDepth));
+                corners[0].add(inwardDir.clone().multiplyScalar(bD)); // Bottom
+                corners[1].add(inwardDir.clone().multiplyScalar(rD)); // Right
+                corners[2].add(inwardDir.clone().multiplyScalar(tD)); // Top
+                corners[3].add(inwardDir.clone().multiplyScalar(lD)); // Left
             }
 
-            // P26 Inward
             const p26_inward = pointsData['P23'].clone().sub(pointsData['P26']).normalize();
-            applyDoubleNotch('P26', p26_inward, vDepth, hDepth);
+            applyVertexOffsets('P26', p26_inward, topD, bottomD, leftD, rightD);
 
-            // P27 Inward
             const p27_inward = pointsData['P21'].clone().sub(pointsData['P27']).normalize();
-            applyDoubleNotch('P27', p27_inward, vDepth, hDepth);
+            applyVertexOffsets('P27', p27_inward, topD, bottomD, leftD, rightD);
             // -------------------------------------
 
             const dataContent = document.getElementById('data-content');
@@ -395,11 +422,9 @@
             const c26 = new THREE.Vector3().add(startC[0]).add(startC[1]).add(startC[2]).add(startC[3]).multiplyScalar(0.25);
             const c27 = new THREE.Vector3().add(endC[0]).add(endC[1]).add(endC[2]).add(endC[3]).multiplyScalar(0.25);
 
-            // --- CENTER OFFSET LOGIC ---
-            // Move the calculated center point inwards or outwards along the pipe axis
+            // Center Offset Logic
             c26.add(p26_inward.clone().multiplyScalar(centerOffset));
             c27.add(p27_inward.clone().multiplyScalar(centerOffset));
-            // ---------------------------
 
             // Face 1 (P26) Triangulation
             addTri(startC[0], startC[3], c26);
@@ -435,7 +460,6 @@
             pipelineGroup.add(currentWireframe);
 
             // --- ASSEMBLE THE HINGE CROSS LINES ---
-            // Updated to trace down into the newly offset Center Point instead of cutting through space
             const endLinesGeom = new THREE.BufferGeometry();
             const endLinesPositions = [];
             
@@ -469,12 +493,14 @@
         }
 
         // 5. State Initialization
-        let currentRadius = DEFAULT_RADIUS;
-        let currentVNotch = DEFAULT_V_NOTCH;
-        let currentHNotch = DEFAULT_H_NOTCH;
-        let currentCenterOffset = DEFAULT_CENTER_OFFSET;
+        let cRad = DEFAULT_RADIUS;
+        let cTop = DEFAULT_TOP;
+        let cBot = DEFAULT_BOTTOM;
+        let cLeft = DEFAULT_LEFT;
+        let cRight = DEFAULT_RIGHT;
+        let cCenter = DEFAULT_CENTER_OFFSET;
         
-        buildPipeline(currentRadius, currentVNotch, currentHNotch, currentCenterOffset);
+        buildPipeline(cRad, cTop, cBot, cLeft, cRight, cCenter);
 
         // 6. UI Interaction Listeners
         
@@ -494,33 +520,49 @@
         const radiusSlider = document.getElementById('radius-slider');
         const radiusVal = document.getElementById('radius-val');
         radiusSlider.addEventListener('input', (e) => {
-            currentRadius = parseFloat(e.target.value);
-            radiusVal.textContent = currentRadius.toFixed(2);
-            buildPipeline(currentRadius, currentVNotch, currentHNotch, currentCenterOffset); 
+            cRad = parseFloat(e.target.value);
+            radiusVal.textContent = cRad.toFixed(2);
+            buildPipeline(cRad, cTop, cBot, cLeft, cRight, cCenter); 
         });
 
-        const vNotchSlider = document.getElementById('v-notch-slider');
-        const vNotchVal = document.getElementById('v-notch-val');
-        vNotchSlider.addEventListener('input', (e) => {
-            currentVNotch = parseFloat(e.target.value);
-            vNotchVal.textContent = currentVNotch.toFixed(2);
-            buildPipeline(currentRadius, currentVNotch, currentHNotch, currentCenterOffset); 
+        const topSlider = document.getElementById('top-slider');
+        const topVal = document.getElementById('top-val');
+        topSlider.addEventListener('input', (e) => {
+            cTop = parseFloat(e.target.value);
+            topVal.textContent = cTop.toFixed(2);
+            buildPipeline(cRad, cTop, cBot, cLeft, cRight, cCenter); 
         });
 
-        const hNotchSlider = document.getElementById('h-notch-slider');
-        const hNotchVal = document.getElementById('h-notch-val');
-        hNotchSlider.addEventListener('input', (e) => {
-            currentHNotch = parseFloat(e.target.value);
-            hNotchVal.textContent = currentHNotch.toFixed(2);
-            buildPipeline(currentRadius, currentVNotch, currentHNotch, currentCenterOffset); 
+        const botSlider = document.getElementById('bottom-slider');
+        const botVal = document.getElementById('bottom-val');
+        botSlider.addEventListener('input', (e) => {
+            cBot = parseFloat(e.target.value);
+            botVal.textContent = cBot.toFixed(2);
+            buildPipeline(cRad, cTop, cBot, cLeft, cRight, cCenter); 
+        });
+
+        const leftSlider = document.getElementById('left-slider');
+        const leftVal = document.getElementById('left-val');
+        leftSlider.addEventListener('input', (e) => {
+            cLeft = parseFloat(e.target.value);
+            leftVal.textContent = cLeft.toFixed(2);
+            buildPipeline(cRad, cTop, cBot, cLeft, cRight, cCenter); 
+        });
+
+        const rightSlider = document.getElementById('right-slider');
+        const rightVal = document.getElementById('right-val');
+        rightSlider.addEventListener('input', (e) => {
+            cRight = parseFloat(e.target.value);
+            rightVal.textContent = cRight.toFixed(2);
+            buildPipeline(cRad, cTop, cBot, cLeft, cRight, cCenter); 
         });
 
         const centerSlider = document.getElementById('center-slider');
         const centerVal = document.getElementById('center-val');
         centerSlider.addEventListener('input', (e) => {
-            currentCenterOffset = parseFloat(e.target.value);
-            centerVal.textContent = currentCenterOffset.toFixed(2);
-            buildPipeline(currentRadius, currentVNotch, currentHNotch, currentCenterOffset); 
+            cCenter = parseFloat(e.target.value);
+            centerVal.textContent = cCenter.toFixed(2);
+            buildPipeline(cRad, cTop, cBot, cLeft, cRight, cCenter); 
         });
 
         // Spin State Trackers
