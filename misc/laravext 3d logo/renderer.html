@@ -345,7 +345,7 @@
         let currentWireframe = null;
         let currentEndLines = null;
 
-        // State Variables
+        // --- SINGLE SOURCE OF TRUTH FOR STATE ---
         let state = {
             radius: DEFAULT_RADIUS,
             center: DEFAULT_CENTER_OFFSET,
@@ -416,11 +416,11 @@
                 corners[3].add(inwardDir.clone().multiplyScalar(lD)); // Left
             }
 
-            // Apply P26 Extrusions
+            // Apply P26 Extrusions based directly on state
             const p26_inward = pointsData['P23'].clone().sub(pointsData['P26']).normalize();
             applyVertexOffsets('P26', p26_inward, state.p26.top, state.p26.bot, state.p26.left, state.p26.right);
 
-            // Apply P27 Extrusions
+            // Apply P27 Extrusions based directly on state
             const p27_inward = pointsData['P21'].clone().sub(pointsData['P27']).normalize();
             applyVertexOffsets('P27', p27_inward, state.p27.top, state.p27.bot, state.p27.left, state.p27.right);
             // -------------------------------------
@@ -540,40 +540,43 @@
             pipelineGroup.add(currentEndLines);
         }
 
-        // Initialize Pipeline
+        // 5. Initialize Pipeline Once
         buildPipeline();
 
-        // 6. UI Interaction Listeners (Hooking up all the sliders)
+        // 6. UI Interaction Listeners (Cleaned up and bound to state)
         
         window.addEventListener('keydown', (e) => {
             if (e.key.toLowerCase() === 'l') document.body.classList.toggle('hide-ui');
             if (e.key.toLowerCase() === 's') document.getElementById('toggle-spin').click();
         });
 
-        // Helper to bind sliders
+        // Universal binding function to keep things clean
         function bindSlider(id, stateKey, subKey = null) {
             const slider = document.getElementById(id);
             const valDisplay = document.getElementById(`${id}-val`);
             slider.addEventListener('input', (e) => {
                 const val = parseFloat(e.target.value);
                 valDisplay.textContent = val.toFixed(2);
+                
+                // Update the single source of truth state object
                 if (subKey) state[stateKey][subKey] = val;
                 else state[stateKey] = val;
+                
                 buildPipeline(); 
             });
         }
 
-        // Bind Global Sliders
+        // Connect the Global Sliders
         bindSlider('radius-slider', 'radius');
         bindSlider('center-slider', 'center');
 
-        // Bind P26 Sliders
+        // Connect the P26 Sliders
         bindSlider('p26-top', 'p26', 'top');
         bindSlider('p26-bot', 'p26', 'bot');
         bindSlider('p26-left', 'p26', 'left');
         bindSlider('p26-right', 'p26', 'right');
 
-        // Bind P27 Sliders
+        // Connect the P27 Sliders
         bindSlider('p27-top', 'p27', 'top');
         bindSlider('p27-bot', 'p27', 'bot');
         bindSlider('p27-left', 'p27', 'left');
