@@ -31,6 +31,7 @@
         }
         h1 { margin: 0 0 10px 0; font-size: 1.2rem; color: #d00100; }
         p { margin: 0 0 10px 0; font-size: 0.9rem; line-height: 1.5; color: #cccccc;}
+        .keyboard-hint { color: #ffeb3b; font-size: 0.8rem; font-weight: bold; }
 
         /* Slider Controls */
         .slider-container {
@@ -50,8 +51,8 @@
             cursor: pointer;
         }
 
-        /* Toggle Controls */
-        .toggles-container {
+        /* Toggle & Spin Controls */
+        .controls-section {
             margin-top: 15px;
             padding-top: 15px;
             border-top: 1px solid #444;
@@ -59,7 +60,7 @@
             flex-direction: column;
             gap: 10px;
         }
-        .toggles-container label {
+        .controls-section label {
             font-size: 0.9rem;
             color: #cccccc;
             cursor: pointer;
@@ -67,6 +68,13 @@
             align-items: center;
             gap: 8px;
         }
+        .axis-selectors {
+            display: flex;
+            gap: 15px;
+            padding-left: 25px;
+            margin-top: -5px;
+        }
+        .axis-selectors label { font-size: 0.8rem; color: #aaddff; }
 
         /* Views Panel */
         #controls-panel {
@@ -126,35 +134,51 @@
             margin-bottom: 4px;
             color: #ff9999;
         }
+
+        /* Master UI Toggle Class */
+        .hide-ui .ui-element {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
 
     <div id="canvas-container">
-        <div id="overlay">
+        <div id="overlay" class="ui-element">
             <h1>Dynamic Coplanar Extrusion</h1>
-            <p><strong>Left Click + Drag:</strong> Spin</p>
+            <p><strong>Left Click + Drag:</strong> Free Orbit</p>
             <p><strong>Right Click + Drag:</strong> Pan</p>
+            <p class="keyboard-hint">Press 'L' to Hide/Show UI</p>
             
             <div class="slider-container">
-                <label for="radius-slider">Diamond Center-to-Vertex Distance: <span id="radius-val">0.50</span></label>
-                <input type="range" id="radius-slider" min="0.1" max="2.0" step="0.05" value="0.5">
+                <label for="radius-slider">Radius Extent: <span id="radius-val">0.75</span></label>
+                <input type="range" id="radius-slider" min="0.1" max="2.0" step="0.05" value="0.75">
             </div>
 
-            <div class="toggles-container">
+            <div class="controls-section">
+                <label><input type="checkbox" id="toggle-spin"> <strong>Auto-Spin Shape</strong></label>
+                <div class="axis-selectors">
+                    <label><input type="radio" name="spin-axis" value="x"> X</label>
+                    <label><input type="radio" name="spin-axis" value="y" checked> Y</label>
+                    <label><input type="radio" name="spin-axis" value="z"> Z</label>
+                </div>
+            </div>
+
+            <div class="controls-section">
                 <label><input type="checkbox" id="toggle-axes" checked> Show Grid & Axes</label>
                 <label><input type="checkbox" id="toggle-wireframe" checked> Show Shape Lines</label>
             </div>
         </div>
 
-        <div id="controls-panel">
+        <div id="controls-panel" class="ui-element">
             <button id="btn-xy">Front View (XY)</button>
             <button id="btn-xz">Top View (XZ)</button>
             <button id="btn-yz">Side View (YZ)</button>
+            <button id="btn-reset-rot" style="background-color: #333; margin-left: 10px;">Reset Spin</button>
         </div>
     </div>
 
-    <div id="data-panel">
+    <div id="data-panel" class="ui-element">
         <div id="data-panel-header">Calculated Joint Points</div>
         <div id="data-content"></div>
     </div>
@@ -177,7 +201,7 @@
         // ============================================================================
         const PIPE_COLOR = 0xd00100;       
         const WIREFRAME_COLOR = 0xffffff;  
-        const DEFAULT_RADIUS = 0.5;        
+        const DEFAULT_RADIUS = 0.75;  // Default set to 0.75 as requested
         // ============================================================================
 
         // 1. Setup Scene
@@ -221,6 +245,11 @@
         const path = ['P26', 'P23', 'P15', 'P12', 'P13', 'P21', 'P27'];
         const p12_idx = 3; 
 
+        // We wrap the shape in a Group so we can spin it globally 
+        // without messing with its relative point coordinates
+        const pipelineGroup = new THREE.Group();
+        scene.add(pipelineGroup);
+
         let currentMesh = null;
         let currentWireframe = null;
 
@@ -247,8 +276,8 @@
 
         // 4. Core Pipeline Builder Function
         function buildPipeline(radius) {
-            if (currentMesh) scene.remove(currentMesh);
-            if (currentWireframe) scene.remove(currentWireframe);
+            if (currentMesh) pipelineGroup.remove(currentMesh);
+            if (currentWireframe) pipelineGroup.remove(currentWireframe);
 
             const cornersMap = {};
             const p12 = pointsData['P12'];
@@ -318,7 +347,7 @@
                 side: THREE.DoubleSide 
             });
             currentMesh = new THREE.Mesh(geometry, material);
-            scene.add(currentMesh);
+            pipelineGroup.add(currentMesh);
 
             const edges = new THREE.EdgesGeometry(geometry);
             currentWireframe = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ 
@@ -327,25 +356,51 @@
                 transparent: true 
             }));
             
-            // Apply current toggle state to the newly built wireframe
             currentWireframe.visible = document.getElementById('toggle-wireframe').checked;
-            scene.add(currentWireframe);
+            pipelineGroup.add(currentWireframe);
         }
 
         // 5. Initialize Pipeline
         buildPipeline(DEFAULT_RADIUS);
 
         // 6. UI Interaction Listeners
+        
+        // Hide UI with 'L' Key
+        window.addEventListener('keydown', (e) => {
+            if (e.key.toLowerCase() === 'l') {
+                document.body.classList.toggle('hide-ui');
+            }
+        });
+
+        // Radius Slider
         const radiusSlider = document.getElementById('radius-slider');
         const radiusVal = document.getElementById('radius-val');
-        
         radiusSlider.addEventListener('input', (e) => {
             const r = parseFloat(e.target.value);
             radiusVal.textContent = r.toFixed(2);
             buildPipeline(r); 
         });
 
-        // Setup Grid & Axes Helpers
+        // Auto-Spin State
+        let isSpinning = false;
+        let spinAxis = 'y';
+
+        document.getElementById('toggle-spin').addEventListener('change', (e) => {
+            isSpinning = e.target.checked;
+        });
+        
+        const axisRadios = document.querySelectorAll('input[name="spin-axis"]');
+        axisRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                spinAxis = e.target.value;
+            });
+        });
+
+        document.getElementById('btn-reset-rot').addEventListener('click', () => {
+            pipelineGroup.rotation.set(0, 0, 0); // Snaps the shape back to initial coordinate orientation
+        });
+
+        // Visual Aids Checkboxes
         const gridHelper = new THREE.GridHelper(20, 20, 0x444444, 0x222222);
         gridHelper.position.y = 0;
         scene.add(gridHelper);
@@ -353,7 +408,6 @@
         const axesHelper = new THREE.AxesHelper(5);
         scene.add(axesHelper);
 
-        // Checkbox Toggle Listeners
         document.getElementById('toggle-axes').addEventListener('change', (e) => {
             const isVisible = e.target.checked;
             gridHelper.visible = isVisible;
@@ -361,12 +415,10 @@
         });
 
         document.getElementById('toggle-wireframe').addEventListener('change', (e) => {
-            if (currentWireframe) {
-                currentWireframe.visible = e.target.checked;
-            }
+            if (currentWireframe) currentWireframe.visible = e.target.checked;
         });
 
-        // 7. True Orthographic Snapping
+        // 7. True Orthographic Camera Snapping
         function setTrueOrthographic(plane) {
             controls.target.set(0, 4, 0); 
             if (plane === 'XY') {
@@ -387,7 +439,7 @@
         document.getElementById('btn-xz').addEventListener('click', () => setTrueOrthographic('XZ'));
         document.getElementById('btn-yz').addEventListener('click', () => setTrueOrthographic('YZ'));
 
-        // 8. Resizing and Animation
+        // 8. Resizing and Animation Loop
         window.addEventListener('resize', () => {
             const aspect = container.clientWidth / window.innerHeight;
             camera.left = -frustumSize * aspect / 2;
@@ -399,6 +451,15 @@
         function animate() {
             requestAnimationFrame(animate);
             controls.update();
+
+            // Handle the physical spinning of the shape group
+            if (isSpinning) {
+                const spinSpeed = 0.03;
+                if (spinAxis === 'x') pipelineGroup.rotation.x += spinSpeed;
+                if (spinAxis === 'y') pipelineGroup.rotation.y += spinSpeed;
+                if (spinAxis === 'z') pipelineGroup.rotation.z += spinSpeed;
+            }
+
             renderer.render(scene, camera);
         }
         animate();
