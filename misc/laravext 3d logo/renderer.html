@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Miter-Extruded Pipeline - True Ortho</title>
+    <title>Dynamic Miter-Extruded Pipeline</title>
     <style>
         body { 
             margin: 0; 
@@ -18,22 +18,39 @@
         }
         canvas { display: block; }
         
-        /* Information Overlay */
+        /* Information & Controls Overlay */
         #overlay {
             position: absolute;
             top: 20px;
             left: 20px;
             color: #ffffff;
             background: rgba(0, 0, 0, 0.6);
-            padding: 15px;
+            padding: 20px;
             border-radius: 8px;
-            pointer-events: none;
             z-index: 10;
         }
         h1 { margin: 0 0 10px 0; font-size: 1.2rem; color: #4da6ff; }
-        p { margin: 0 0 5px 0; font-size: 0.9rem; line-height: 1.5; color: #cccccc;}
+        p { margin: 0 0 10px 0; font-size: 0.9rem; line-height: 1.5; color: #cccccc;}
 
-        /* Controls Panel */
+        /* Slider Controls */
+        .slider-container {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #444;
+        }
+        .slider-container label {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #aaddff;
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="range"] {
+            width: 100%;
+            cursor: pointer;
+        }
+
+        /* Views Panel */
         #controls-panel {
             position: absolute;
             bottom: 30px;
@@ -97,12 +114,14 @@
 
     <div id="canvas-container">
         <div id="overlay">
-            <h1>Coplanar Extrusion Viewer</h1>
-            <p><strong>Base Shape:</strong> Exact P1, P5, P10, P11</p>
-            <p><strong>Joints:</strong> Angled Angle-Bisector Planes</p>
-            <br>
+            <h1>Dynamic Coplanar Extrusion</h1>
             <p><strong>Left Click + Drag:</strong> Spin</p>
             <p><strong>Right Click + Drag:</strong> Pan</p>
+            
+            <div class="slider-container">
+                <label for="radius-slider">Diamond Center-to-Vertex Distance: <span id="radius-val">0.50</span></label>
+                <input type="range" id="radius-slider" min="0.1" max="2.0" step="0.05" value="0.5">
+            </div>
         </div>
 
         <div id="controls-panel">
@@ -157,7 +176,7 @@
         dirLight.position.set(10, 20, 15);
         scene.add(dirLight);
 
-        // 2. Data Definitions
+        // 2. Updated Data Definitions
         const pointsData = {
             'P12': new THREE.Vector3(0, 0.5, 0),
             'P13': new THREE.Vector3(0, 2.5, 4),
@@ -171,16 +190,9 @@
         const path = ['P26', 'P23', 'P15', 'P12', 'P13', 'P21', 'P27'];
         const p12_idx = 3; 
 
-        // The specific points you provided for the base shape at P12
-        const baseCorners = [
-            new THREE.Vector3(0, 0, 0),       // P1  
-            new THREE.Vector3(0.5, 0.5, 0),   // P10 
-            new THREE.Vector3(0, 1, 0),       // P5  
-            new THREE.Vector3(-0.5, 0.5, 0)   // P11 
-        ];
-
-        const cornersMap = {};
-        cornersMap['P12'] = baseCorners;
+        // Track meshes so we can remove/rebuild them on slider change
+        let currentMesh = null;
+        let currentWireframe = null;
 
         // 3. Mathematical Miter Intersection Function
         function computeCorners(startCorners, pStart, pJoint, pNext) {
@@ -203,98 +215,129 @@
             return jointCorners;
         }
 
-        // 4. Extrude Forward & Backward
-        for(let i = p12_idx; i < path.length - 1; i++) {
-            const startId = path[i], jointId = path[i+1], nextId = path[i+2];
-            cornersMap[jointId] = computeCorners(
-                cornersMap[startId], pointsData[startId], pointsData[jointId], nextId ? pointsData[nextId] : null
-            );
-        }
+        // 4. Core Pipeline Builder Function
+        function buildPipeline(radius) {
+            // Clean up old geometry from the scene
+            if (currentMesh) scene.remove(currentMesh);
+            if (currentWireframe) scene.remove(currentWireframe);
 
-        for(let i = p12_idx; i > 0; i--) {
-            const startId = path[i], jointId = path[i-1], nextId = path[i-2];
-            cornersMap[jointId] = computeCorners(
-                cornersMap[startId], pointsData[startId], pointsData[jointId], nextId ? pointsData[nextId] : null
-            );
-        }
+            const cornersMap = {};
+            
+            // Generate the dynamic base diamond at P12
+            // P12 acts as our XY plane cross-section anchor
+            const p12 = pointsData['P12'];
+            cornersMap['P12'] = [
+                p12.clone().add(new THREE.Vector3(0, -radius, 0)), // Bottom
+                p12.clone().add(new THREE.Vector3(radius, 0, 0)),  // Right
+                p12.clone().add(new THREE.Vector3(0, radius, 0)),  // Top
+                p12.clone().add(new THREE.Vector3(-radius, 0, 0))  // Left
+            ];
 
-        // 5. Output Data
-        const dataContent = document.getElementById('data-content');
-        path.forEach(node => {
-            const corners = cornersMap[node];
-            let html = `<div class="data-joint"><h3>Joint ${node}</h3>`;
-            corners.forEach((c, idx) => {
-                html += `<div class="data-point">C${idx+1}: (${c.x.toFixed(3)}, ${c.y.toFixed(3)}, ${c.z.toFixed(3)})</div>`;
+            // Extrude Forward
+            for(let i = p12_idx; i < path.length - 1; i++) {
+                const startId = path[i], jointId = path[i+1], nextId = path[i+2];
+                cornersMap[jointId] = computeCorners(
+                    cornersMap[startId], pointsData[startId], pointsData[jointId], nextId ? pointsData[nextId] : null
+                );
+            }
+
+            // Extrude Backward
+            for(let i = p12_idx; i > 0; i--) {
+                const startId = path[i], jointId = path[i-1], nextId = path[i-2];
+                cornersMap[jointId] = computeCorners(
+                    cornersMap[startId], pointsData[startId], pointsData[jointId], nextId ? pointsData[nextId] : null
+                );
+            }
+
+            // Update HTML Output Panel
+            const dataContent = document.getElementById('data-content');
+            dataContent.innerHTML = ''; // clear old values
+            path.forEach(node => {
+                const corners = cornersMap[node];
+                let html = `<div class="data-joint"><h3>Joint ${node}</h3>`;
+                corners.forEach((c, idx) => {
+                    html += `<div class="data-point">C${idx+1}: (${c.x.toFixed(3)}, ${c.y.toFixed(3)}, ${c.z.toFixed(3)})</div>`;
+                });
+                html += `</div>`;
+                dataContent.innerHTML += html;
             });
-            html += `</div>`;
-            dataContent.innerHTML += html;
+
+            // Construct 3D Mesh
+            const geometry = new THREE.BufferGeometry();
+            const positions = [];
+
+            function addQuad(v0, v1, v2, v3) {
+                positions.push(
+                    v0.x, v0.y, v0.z,  v1.x, v1.y, v1.z,  v2.x, v2.y, v2.z, 
+                    v0.x, v0.y, v0.z,  v2.x, v2.y, v2.z,  v3.x, v3.y, v3.z  
+                );
+            }
+
+            for(let i=0; i < path.length - 1; i++) {
+                const A = cornersMap[path[i]];
+                const B = cornersMap[path[i+1]];
+                addQuad(A[0], A[1], B[1], B[0]);
+                addQuad(A[1], A[2], B[2], B[1]);
+                addQuad(A[2], A[3], B[3], B[2]);
+                addQuad(A[3], A[0], B[0], B[3]);
+            }
+
+            const startC = cornersMap[path[0]];
+            const endC = cornersMap[path[path.length-1]];
+            addQuad(startC[3], startC[2], startC[1], startC[0]);
+            addQuad(endC[0], endC[1], endC[2], endC[3]);
+
+            geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+            geometry.computeVertexNormals();
+
+            const material = new THREE.MeshStandardMaterial({ color: 0x4da6ff, flatShading: true, side: THREE.DoubleSide });
+            currentMesh = new THREE.Mesh(geometry, material);
+            scene.add(currentMesh);
+
+            const edges = new THREE.EdgesGeometry(geometry);
+            currentWireframe = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0xffffff, opacity: 0.3, transparent: true }));
+            scene.add(currentWireframe);
+        }
+
+        // 5. Initialize Pipeline
+        buildPipeline(0.5); // 0.5 matches your exact original specifications
+
+        // 6. UI Interaction Listener
+        const radiusSlider = document.getElementById('radius-slider');
+        const radiusVal = document.getElementById('radius-val');
+        
+        radiusSlider.addEventListener('input', (e) => {
+            const r = parseFloat(e.target.value);
+            radiusVal.textContent = r.toFixed(2);
+            buildPipeline(r); // Rebuild dynamically as you drag
         });
 
-        // 6. Construct Mesh
-        const geometry = new THREE.BufferGeometry();
-        const positions = [];
-
-        function addQuad(v0, v1, v2, v3) {
-            positions.push(
-                v0.x, v0.y, v0.z,  v1.x, v1.y, v1.z,  v2.x, v2.y, v2.z, 
-                v0.x, v0.y, v0.z,  v2.x, v2.y, v2.z,  v3.x, v3.y, v3.z  
-            );
-        }
-
-        for(let i=0; i < path.length - 1; i++) {
-            const A = cornersMap[path[i]];
-            const B = cornersMap[path[i+1]];
-            addQuad(A[0], A[1], B[1], B[0]);
-            addQuad(A[1], A[2], B[2], B[1]);
-            addQuad(A[2], A[3], B[3], B[2]);
-            addQuad(A[3], A[0], B[0], B[3]);
-        }
-
-        const startC = cornersMap[path[0]];
-        const endC = cornersMap[path[path.length-1]];
-        addQuad(startC[3], startC[2], startC[1], startC[0]);
-        addQuad(endC[0], endC[1], endC[2], endC[3]);
-
-        geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-        geometry.computeVertexNormals();
-
-        const material = new THREE.MeshStandardMaterial({ color: 0x4da6ff, flatShading: true, side: THREE.DoubleSide });
-        const mesh = new THREE.Mesh(geometry, material);
-        scene.add(mesh);
-
-        const edges = new THREE.EdgesGeometry(geometry);
-        const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0xffffff, opacity: 0.3, transparent: true }));
-        scene.add(line);
-
-        // 7. Grid
+        // 7. Grid & True Orthographic Snapping
         const gridHelper = new THREE.GridHelper(20, 20, 0x444444, 0x222222);
         gridHelper.position.y = 0;
         scene.add(gridHelper);
 
-        // 8. TRUE ORTHOGRAPHIC SNAP LOGIC
-        // We set the exact coordinate axis, orient the "Up" vector, and force lookAt perfectly center
         function setTrueOrthographic(plane) {
-            controls.target.set(0, 4, 0); // Focus the center of the model
-
+            controls.target.set(0, 4, 0); 
             if (plane === 'XY') {
                 camera.position.set(0, 4, 25);
-                camera.up.set(0, 1, 0);       // Y is Up
+                camera.up.set(0, 1, 0);       
             } else if (plane === 'XZ') {
                 camera.position.set(0, 25, 0);
-                camera.up.set(0, 0, -1);      // -Z is Up for a top-down view (so XY grid looks right)
+                camera.up.set(0, 0, -1);      
             } else if (plane === 'YZ') {
                 camera.position.set(25, 4, 0);
-                camera.up.set(0, 1, 0);       // Y is Up
+                camera.up.set(0, 1, 0);       
             }
-            
-            camera.lookAt(0, 4, 0); // Force the camera to look straight at the target
-            controls.update();      // Sync OrbitControls to this perfect alignment
+            camera.lookAt(0, 4, 0); 
+            controls.update();      
         }
 
         document.getElementById('btn-xy').addEventListener('click', () => setTrueOrthographic('XY'));
         document.getElementById('btn-xz').addEventListener('click', () => setTrueOrthographic('XZ'));
         document.getElementById('btn-yz').addEventListener('click', () => setTrueOrthographic('YZ'));
 
+        // 8. Resizing and Animation
         window.addEventListener('resize', () => {
             const aspect = container.clientWidth / window.innerHeight;
             camera.left = -frustumSize * aspect / 2;
