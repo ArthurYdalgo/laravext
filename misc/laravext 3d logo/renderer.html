@@ -209,7 +209,7 @@
         const PIPE_COLOR = 0xd00100;       
         const WIREFRAME_COLOR = 0xffffff;  
         const DEFAULT_RADIUS = 0.75;  
-        const DEFAULT_NOTCH_DEPTH = 0.5; // Starts with a nice V-cut
+        const DEFAULT_NOTCH_DEPTH = 0.5; 
         
         // Spin Parameters
         const MAX_SPIN_SPEED = 0.5;             
@@ -318,14 +318,12 @@
                 );
             }
 
-            // --- EXTRACTED PRISM / V-NOTCH LOGIC ---
-            // By sliding the Left(3) and Right(1) vertices along the exact trajectory
-            // of the incoming pipe, we cut a V-shape without breaking the parallel lines.
+            // --- EXTRACTED PRISM / V-NOTCH LOGIC (FLIPPED AXIS) ---
+            // Move Top (2) and Bottom (0) vertices inwards/outwards along the incoming pipe's axis
             function applyVNotch(nodeId, inwardDir, depth) {
                 const corners = cornersMap[nodeId];
-                // Move Right and Left inwards/outwards perfectly along the pipe's axis
-                corners[1].add(inwardDir.clone().multiplyScalar(depth));
-                corners[3].add(inwardDir.clone().multiplyScalar(depth));
+                corners[0].add(inwardDir.clone().multiplyScalar(depth));
+                corners[2].add(inwardDir.clone().multiplyScalar(depth));
             }
 
             // P26 is path[0]. The pipe goes FROM P26 TO P23. Inward is towards P23.
@@ -378,14 +376,14 @@
             const startC = cornersMap[path[0]]; // P26
             const endC = cornersMap[path[path.length-1]]; // P27
             
-            // End caps (Triangulated along the Top(2)-Bottom(0) Hinge to guarantee a clean fold)
+            // End caps (Triangulated along the Left(3)-Right(1) Hinge to guarantee a clean fold)
             // Face 1 (P26)
-            addTri(startC[0], startC[3], startC[2]);
-            addTri(startC[0], startC[2], startC[1]);
+            addTri(startC[3], startC[2], startC[1]);
+            addTri(startC[3], startC[1], startC[0]);
             
             // Face 2 (P27)
-            addTri(endC[0], endC[1], endC[2]);
-            addTri(endC[0], endC[2], endC[3]);
+            addTri(endC[1], endC[2], endC[3]);
+            addTri(endC[1], endC[3], endC[0]);
 
             geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
             geometry.computeVertexNormals();
@@ -408,29 +406,29 @@
             currentWireframe.visible = document.getElementById('toggle-wireframe').checked;
             pipelineGroup.add(currentWireframe);
 
-            // --- ASSEMBLE THE VERTICAL HINGE LINES ---
+            // --- ASSEMBLE THE HINGE LINES (FLIPPED TO LEFT-RIGHT) ---
             const endLinesGeom = new THREE.BufferGeometry();
             const endLinesPositions = [];
             
-            // Connect Top (2) to Bottom (0) on P26 face
+            // Connect Left (3) to Right (1) on P26 face
             const p26C = cornersMap['P26'];
             endLinesPositions.push(
-                p26C[2].x, p26C[2].y, p26C[2].z,
-                p26C[0].x, p26C[0].y, p26C[0].z
+                p26C[3].x, p26C[3].y, p26C[3].z,
+                p26C[1].x, p26C[1].y, p26C[1].z
             );
 
-            // Connect Top (2) to Bottom (0) on P27 face
+            // Connect Left (3) to Right (1) on P27 face
             const p27C = cornersMap['P27'];
             endLinesPositions.push(
-                p27C[2].x, p27C[2].y, p27C[2].z,
-                p27C[0].x, p27C[0].y, p27C[0].z
+                p27C[3].x, p27C[3].y, p27C[3].z,
+                p27C[1].x, p27C[1].y, p27C[1].z
             );
 
             endLinesGeom.setAttribute('position', new THREE.Float32BufferAttribute(endLinesPositions, 3));
             currentEndLines = new THREE.LineSegments(endLinesGeom, new THREE.LineBasicMaterial({
                 color: WIREFRAME_COLOR,
                 linewidth: 2,
-                depthTest: false // Ensures it draws cleanly on top of the endcap
+                depthTest: false 
             }));
             
             currentEndLines.visible = document.getElementById('toggle-end-lines').checked;
