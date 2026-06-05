@@ -185,48 +185,48 @@
                     <input type="range" id="radius-slider" min="0.1" max="2.0" step="0.05" value="0.75">
                 </div>
                 <div class="slider-container">
-                    <label for="center-slider" style="color: #ffcc00;">Center Offset (Pit + / Spike -): <span id="center-slider-val">-1.00</span></label>
-                    <input type="range" id="center-slider" min="-3.0" max="3.0" step="0.05" value="-1.0">
+                    <label for="center-slider" style="color: #ffcc00;">Center Offset (Pit + / Spike -): <span id="center-slider-val">-0.55</span></label>
+                    <input type="range" id="center-slider" min="-3.0" max="3.0" step="0.05" value="-0.55">
                 </div>
             </div>
 
             <div class="slider-group">
                 <div class="slider-group-title">Front Face (P26) Extrusions</div>
                 <div class="slider-container">
-                    <label for="p26-top">Top Vertex (In + / Out -): <span id="p26-top-val">-0.50</span></label>
-                    <input type="range" id="p26-top" min="-2.0" max="2.0" step="0.05" value="-0.5">
+                    <label for="p26-top">Top Vertex (In + / Out -): <span id="p26-top-val">1.15</span></label>
+                    <input type="range" id="p26-top" min="-2.0" max="2.0" step="0.05" value="1.15">
                 </div>
                 <div class="slider-container">
-                    <label for="p26-bot">Bottom Vertex: <span id="p26-bot-val">-0.50</span></label>
-                    <input type="range" id="p26-bot" min="-2.0" max="2.0" step="0.05" value="-0.5">
+                    <label for="p26-bot">Bottom Vertex: <span id="p26-bot-val">1.15</span></label>
+                    <input type="range" id="p26-bot" min="-2.0" max="2.0" step="0.05" value="1.15">
                 </div>
                 <div class="slider-container">
-                    <label for="p26-left">Left Vertex: <span id="p26-left-val">-0.50</span></label>
-                    <input type="range" id="p26-left" min="-2.0" max="2.0" step="0.05" value="-0.5">
+                    <label for="p26-left">Left Vertex: <span id="p26-left-val">0.40</span></label>
+                    <input type="range" id="p26-left" min="-2.0" max="2.0" step="0.05" value="0.40">
                 </div>
                 <div class="slider-container">
-                    <label for="p26-right">Right Vertex: <span id="p26-right-val">-0.50</span></label>
-                    <input type="range" id="p26-right" min="-2.0" max="2.0" step="0.05" value="-0.5">
+                    <label for="p26-right">Right Vertex: <span id="p26-right-val">-0.35</span></label>
+                    <input type="range" id="p26-right" min="-2.0" max="2.0" step="0.05" value="-0.35">
                 </div>
             </div>
 
             <div class="slider-group">
                 <div class="slider-group-title">Back Face (P27) Extrusions</div>
                 <div class="slider-container">
-                    <label for="p27-top">Top Vertex (In + / Out -): <span id="p27-top-val">-0.50</span></label>
-                    <input type="range" id="p27-top" min="-2.0" max="2.0" step="0.05" value="-0.5">
+                    <label for="p27-top">Top Vertex (In + / Out -): <span id="p27-top-val">1.05</span></label>
+                    <input type="range" id="p27-top" min="-2.0" max="2.0" step="0.05" value="1.05">
                 </div>
                 <div class="slider-container">
-                    <label for="p27-bot">Bottom Vertex: <span id="p27-bot-val">-0.50</span></label>
-                    <input type="range" id="p27-bot" min="-2.0" max="2.0" step="0.05" value="-0.5">
+                    <label for="p27-bot">Bottom Vertex: <span id="p27-bot-val">1.15</span></label>
+                    <input type="range" id="p27-bot" min="-2.0" max="2.0" step="0.05" value="1.15">
                 </div>
                 <div class="slider-container">
-                    <label for="p27-left">Left Vertex: <span id="p27-left-val">-0.50</span></label>
-                    <input type="range" id="p27-left" min="-2.0" max="2.0" step="0.05" value="-0.5">
+                    <label for="p27-left">Left Vertex: <span id="p27-left-val">-0.40</span></label>
+                    <input type="range" id="p27-left" min="-2.0" max="2.0" step="0.05" value="-0.40">
                 </div>
                 <div class="slider-container">
-                    <label for="p27-right">Right Vertex: <span id="p27-right-val">-0.50</span></label>
-                    <input type="range" id="p27-right" min="-2.0" max="2.0" step="0.05" value="-0.5">
+                    <label for="p27-right">Right Vertex: <span id="p27-right-val">0.35</span></label>
+                    <input type="range" id="p27-right" min="-2.0" max="2.0" step="0.05" value="0.35">
                 </div>
             </div>
 
@@ -241,8 +241,8 @@
 
             <div class="controls-section">
                 <label><input type="checkbox" id="toggle-axes"> Show Grid & Axes</label>
-                <label><input type="checkbox" id="toggle-wireframe"> Show Shape Lines</label>
-                <label><input type="checkbox" id="toggle-end-lines" checked> Show Fold Cross Lines</label>
+                <label><input type="checkbox" id="toggle-wireframe" checked> Show Shape Lines</label>
+                <label><input type="checkbox" id="toggle-end-lines"> Show Fold Cross Lines</label>
             </div>
         </div>
 
@@ -276,21 +276,21 @@
         // CONFIGURATION SETTINGS
         // ============================================================================
         const PIPE_COLOR = 0xd00100;       
-        const WIREFRAME_COLOR = 0xafafaf;  
+        const WIREFRAME_COLOR = 0xffffff;  
         
         // Initial Parameter States
         const DEFAULT_RADIUS = 0.75;  
-        const DEFAULT_CENTER_OFFSET = -1.0; 
+        const DEFAULT_CENTER_OFFSET = -0.55; 
         
-        const DEFAULT_P26_TOP = -0.5; 
-        const DEFAULT_P26_BOT = -0.5;
-        const DEFAULT_P26_LEFT = -0.5;
-        const DEFAULT_P26_RIGHT = -0.5;
+        const DEFAULT_P26_TOP = 1.15; 
+        const DEFAULT_P26_BOT = 1.15;
+        const DEFAULT_P26_LEFT = 0.40;
+        const DEFAULT_P26_RIGHT = -0.35;
 
-        const DEFAULT_P27_TOP = -0.5; 
-        const DEFAULT_P27_BOT = -0.5;
-        const DEFAULT_P27_LEFT = -0.5;
-        const DEFAULT_P27_RIGHT = -0.5;
+        const DEFAULT_P27_TOP = 1.05; 
+        const DEFAULT_P27_BOT = 1.15;
+        const DEFAULT_P27_LEFT = -0.40;
+        const DEFAULT_P27_RIGHT = 0.35;
         
         // Spin Parameters
         const MAX_SPIN_SPEED = 0.5;             
@@ -543,7 +543,7 @@
         // Initialize Pipeline
         buildPipeline();
 
-        // 6. UI Interaction Listeners
+        // 6. UI Interaction Listeners (Cleaned up and bound to state)
         
         window.addEventListener('keydown', (e) => {
             if (e.key.toLowerCase() === 'l') document.body.classList.toggle('hide-ui');
@@ -558,6 +558,7 @@
                 const val = parseFloat(e.target.value);
                 valDisplay.textContent = val.toFixed(2);
                 
+                // Update the single source of truth state object
                 if (subKey) state[stateKey][subKey] = val;
                 else state[stateKey] = val;
                 
