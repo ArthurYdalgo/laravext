@@ -35,12 +35,12 @@
 
         /* Slider Controls */
         .slider-container {
-            margin-top: 15px;
-            padding-top: 15px;
+            margin-top: 10px;
+            padding-top: 10px;
             border-top: 1px solid #444;
         }
         .slider-container label {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: bold;
             color: #ff9999;
             display: block;
@@ -151,14 +151,19 @@
             <p><strong>Right Click + Drag:</strong> Pan</p>
             <p class="keyboard-hint">Press 'L' to Hide/Show UI</p>
             
-            <div class="slider-container">
+            <div class="slider-container" style="border: none;">
                 <label for="radius-slider">Pipe Radius: <span id="radius-val">0.75</span></label>
                 <input type="range" id="radius-slider" min="0.1" max="2.0" step="0.05" value="0.75">
             </div>
 
-            <div class="slider-container" style="border-top: none; margin-top: 5px; padding-top: 5px;">
-                <label for="notch-slider">End V-Notch Depth: <span id="notch-val">0.50</span></label>
-                <input type="range" id="notch-slider" min="-1.5" max="1.5" step="0.05" value="0.5">
+            <div class="slider-container">
+                <label for="v-notch-slider">Vertical (Top/Bottom) Notch (+) / Blade (-): <span id="v-notch-val">-0.50</span></label>
+                <input type="range" id="v-notch-slider" min="-1.5" max="1.5" step="0.05" value="-0.5">
+            </div>
+            
+            <div class="slider-container" style="margin-top: 5px; padding-top: 5px;">
+                <label for="h-notch-slider">Horizontal (Left/Right) Notch (+) / Blade (-): <span id="h-notch-val">-0.50</span></label>
+                <input type="range" id="h-notch-slider" min="-1.5" max="1.5" step="0.05" value="-0.5">
             </div>
 
             <div class="controls-section">
@@ -173,7 +178,7 @@
             <div class="controls-section">
                 <label><input type="checkbox" id="toggle-axes"> Show Grid & Axes</label>
                 <label><input type="checkbox" id="toggle-wireframe"> Show Shape Lines</label>
-                <label><input type="checkbox" id="toggle-end-lines" checked> Show Fold Hinge Lines</label>
+                <label><input type="checkbox" id="toggle-end-lines" checked> Show Fold Cross Lines</label>
             </div>
         </div>
 
@@ -209,7 +214,10 @@
         const PIPE_COLOR = 0xd00100;       
         const WIREFRAME_COLOR = 0xffffff;  
         const DEFAULT_RADIUS = 0.75;  
-        const DEFAULT_NOTCH_DEPTH = 0.5; 
+        
+        // Negative values push the vertices outwards to create the blade shape
+        const DEFAULT_V_NOTCH = -0.5; 
+        const DEFAULT_H_NOTCH = -0.5;
         
         // Spin Parameters
         const MAX_SPIN_SPEED = 0.5;             
@@ -286,7 +294,7 @@
         }
 
         // 4. Core Pipeline Builder Function
-        function buildPipeline(radius, notchDepth) {
+        function buildPipeline(radius, vDepth, hDepth) {
             if (currentMesh) pipelineGroup.remove(currentMesh);
             if (currentWireframe) pipelineGroup.remove(currentWireframe);
             if (currentEndLines) pipelineGroup.remove(currentEndLines);
@@ -318,21 +326,24 @@
                 );
             }
 
-            // --- EXTRACTED PRISM / V-NOTCH LOGIC (FLIPPED AXIS) ---
-            // Move Top (2) and Bottom (0) vertices inwards/outwards along the incoming pipe's axis
-            function applyVNotch(nodeId, inwardDir, depth) {
+            // --- DOUBLE V-NOTCH / BLADE LOGIC ---
+            function applyDoubleNotch(nodeId, inwardDir, verticalDepth, horizontalDepth) {
                 const corners = cornersMap[nodeId];
-                corners[0].add(inwardDir.clone().multiplyScalar(depth));
-                corners[2].add(inwardDir.clone().multiplyScalar(depth));
+                // Move Top (2) & Bottom (0)
+                corners[0].add(inwardDir.clone().multiplyScalar(verticalDepth));
+                corners[2].add(inwardDir.clone().multiplyScalar(verticalDepth));
+                // Move Right (1) & Left (3)
+                corners[1].add(inwardDir.clone().multiplyScalar(horizontalDepth));
+                corners[3].add(inwardDir.clone().multiplyScalar(horizontalDepth));
             }
 
             // P26 is path[0]. The pipe goes FROM P26 TO P23. Inward is towards P23.
             const p26_inward = pointsData['P23'].clone().sub(pointsData['P26']).normalize();
-            applyVNotch('P26', p26_inward, notchDepth);
+            applyDoubleNotch('P26', p26_inward, vDepth, hDepth);
 
             // P27 is path[6]. The pipe goes FROM P21 TO P27. Inward is towards P21.
             const p27_inward = pointsData['P21'].clone().sub(pointsData['P27']).normalize();
-            applyVNotch('P27', p27_inward, notchDepth);
+            applyDoubleNotch('P27', p27_inward, vDepth, hDepth);
             // -------------------------------------
 
             const dataContent = document.getElementById('data-content');
@@ -358,7 +369,7 @@
                 );
             }
 
-            // Helper for specifically triangulating the folded end caps so they don't break
+            // Helper to triangulate the 4 facets of the double notch securely to a center point
             function addTri(v0, v1, v2) {
                 positions.push(v0.x, v0.y, v0.z, v1.x, v1.y, v1.z, v2.x, v2.y, v2.z);
             }
@@ -373,17 +384,24 @@
                 addQuad(A[3], A[0], B[0], B[3]);
             }
 
+            // End caps (Calculate Center Vertex and Triangulate to 4 faces)
             const startC = cornersMap[path[0]]; // P26
             const endC = cornersMap[path[path.length-1]]; // P27
             
-            // End caps (Triangulated along the Left(3)-Right(1) Hinge to guarantee a clean fold)
-            // Face 1 (P26)
-            addTri(startC[3], startC[2], startC[1]);
-            addTri(startC[3], startC[1], startC[0]);
+            const c26 = new THREE.Vector3().add(startC[0]).add(startC[1]).add(startC[2]).add(startC[3]).multiplyScalar(0.25);
+            const c27 = new THREE.Vector3().add(endC[0]).add(endC[1]).add(endC[2]).add(endC[3]).multiplyScalar(0.25);
+
+            // Face 1 (P26) facing backwards. Standard CCW is 3->2->1->0
+            addTri(startC[0], startC[3], c26);
+            addTri(startC[3], startC[2], c26);
+            addTri(startC[2], startC[1], c26);
+            addTri(startC[1], startC[0], c26);
             
-            // Face 2 (P27)
-            addTri(endC[1], endC[2], endC[3]);
-            addTri(endC[1], endC[3], endC[0]);
+            // Face 2 (P27) facing forwards. Standard CCW is 1->2->3->0
+            addTri(endC[0], endC[1], c27);
+            addTri(endC[1], endC[2], c27);
+            addTri(endC[2], endC[3], c27);
+            addTri(endC[3], endC[0], c27);
 
             geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
             geometry.computeVertexNormals();
@@ -406,22 +424,22 @@
             currentWireframe.visible = document.getElementById('toggle-wireframe').checked;
             pipelineGroup.add(currentWireframe);
 
-            // --- ASSEMBLE THE HINGE LINES (FLIPPED TO LEFT-RIGHT) ---
+            // --- ASSEMBLE THE HINGE CROSS LINES ---
             const endLinesGeom = new THREE.BufferGeometry();
             const endLinesPositions = [];
             
-            // Connect Left (3) to Right (1) on P26 face
+            // P26 Face Cross X
             const p26C = cornersMap['P26'];
             endLinesPositions.push(
-                p26C[3].x, p26C[3].y, p26C[3].z,
-                p26C[1].x, p26C[1].y, p26C[1].z
+                p26C[2].x, p26C[2].y, p26C[2].z, p26C[0].x, p26C[0].y, p26C[0].z, // Top to Bottom
+                p26C[3].x, p26C[3].y, p26C[3].z, p26C[1].x, p26C[1].y, p26C[1].z  // Left to Right
             );
 
-            // Connect Left (3) to Right (1) on P27 face
+            // P27 Face Cross X
             const p27C = cornersMap['P27'];
             endLinesPositions.push(
-                p27C[3].x, p27C[3].y, p27C[3].z,
-                p27C[1].x, p27C[1].y, p27C[1].z
+                p27C[2].x, p27C[2].y, p27C[2].z, p27C[0].x, p27C[0].y, p27C[0].z,
+                p27C[3].x, p27C[3].y, p27C[3].z, p27C[1].x, p27C[1].y, p27C[1].z
             );
 
             endLinesGeom.setAttribute('position', new THREE.Float32BufferAttribute(endLinesPositions, 3));
@@ -437,9 +455,10 @@
 
         // 5. State Initialization
         let currentRadius = DEFAULT_RADIUS;
-        let currentNotchDepth = DEFAULT_NOTCH_DEPTH;
+        let currentVNotch = DEFAULT_V_NOTCH;
+        let currentHNotch = DEFAULT_H_NOTCH;
         
-        buildPipeline(currentRadius, currentNotchDepth);
+        buildPipeline(currentRadius, currentVNotch, currentHNotch);
 
         // 6. UI Interaction Listeners
         
@@ -461,15 +480,23 @@
         radiusSlider.addEventListener('input', (e) => {
             currentRadius = parseFloat(e.target.value);
             radiusVal.textContent = currentRadius.toFixed(2);
-            buildPipeline(currentRadius, currentNotchDepth); 
+            buildPipeline(currentRadius, currentVNotch, currentHNotch); 
         });
 
-        const notchSlider = document.getElementById('notch-slider');
-        const notchVal = document.getElementById('notch-val');
-        notchSlider.addEventListener('input', (e) => {
-            currentNotchDepth = parseFloat(e.target.value);
-            notchVal.textContent = currentNotchDepth.toFixed(2);
-            buildPipeline(currentRadius, currentNotchDepth); 
+        const vNotchSlider = document.getElementById('v-notch-slider');
+        const vNotchVal = document.getElementById('v-notch-val');
+        vNotchSlider.addEventListener('input', (e) => {
+            currentVNotch = parseFloat(e.target.value);
+            vNotchVal.textContent = currentVNotch.toFixed(2);
+            buildPipeline(currentRadius, currentVNotch, currentHNotch); 
+        });
+
+        const hNotchSlider = document.getElementById('h-notch-slider');
+        const hNotchVal = document.getElementById('h-notch-val');
+        hNotchSlider.addEventListener('input', (e) => {
+            currentHNotch = parseFloat(e.target.value);
+            hNotchVal.textContent = currentHNotch.toFixed(2);
+            buildPipeline(currentRadius, currentVNotch, currentHNotch); 
         });
 
         // Spin State Trackers
