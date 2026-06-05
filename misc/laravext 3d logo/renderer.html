@@ -28,6 +28,8 @@
             padding: 20px;
             border-radius: 8px;
             z-index: 10;
+            max-height: 90vh;
+            overflow-y: auto;
         }
         h1 { margin: 0 0 10px 0; font-size: 1.2rem; color: #d00100; }
         p { margin: 0 0 10px 0; font-size: 0.9rem; line-height: 1.5; color: #cccccc;}
@@ -166,6 +168,11 @@
                 <input type="range" id="h-notch-slider" min="-1.5" max="1.5" step="0.05" value="-0.5">
             </div>
 
+            <div class="slider-container" style="margin-top: 5px; padding-top: 5px; background-color: rgba(255,255,255,0.05); padding: 10px; border-radius: 5px;">
+                <label for="center-slider" style="color: #ffcc00;">Center Point Offset (Pit + / Spike -): <span id="center-val">-1.00</span></label>
+                <input type="range" id="center-slider" min="-3.0" max="3.0" step="0.05" value="-1.0">
+            </div>
+
             <div class="controls-section">
                 <label><input type="checkbox" id="toggle-spin"> <strong>Auto-Spin Shape</strong></label>
                 <div class="axis-selectors">
@@ -214,10 +221,9 @@
         const PIPE_COLOR = 0xd00100;       
         const WIREFRAME_COLOR = 0xffffff;  
         const DEFAULT_RADIUS = 0.75;  
-        
-        // Negative values push the vertices outwards to create the blade shape
         const DEFAULT_V_NOTCH = -0.5; 
         const DEFAULT_H_NOTCH = -0.5;
+        const DEFAULT_CENTER_OFFSET = -1.0; // Negative pushes the center out into a spike
         
         // Spin Parameters
         const MAX_SPIN_SPEED = 0.5;             
@@ -294,7 +300,7 @@
         }
 
         // 4. Core Pipeline Builder Function
-        function buildPipeline(radius, vDepth, hDepth) {
+        function buildPipeline(radius, vDepth, hDepth, centerOffset) {
             if (currentMesh) pipelineGroup.remove(currentMesh);
             if (currentWireframe) pipelineGroup.remove(currentWireframe);
             if (currentEndLines) pipelineGroup.remove(currentEndLines);
@@ -329,19 +335,17 @@
             // --- DOUBLE V-NOTCH / BLADE LOGIC ---
             function applyDoubleNotch(nodeId, inwardDir, verticalDepth, horizontalDepth) {
                 const corners = cornersMap[nodeId];
-                // Move Top (2) & Bottom (0)
                 corners[0].add(inwardDir.clone().multiplyScalar(verticalDepth));
                 corners[2].add(inwardDir.clone().multiplyScalar(verticalDepth));
-                // Move Right (1) & Left (3)
                 corners[1].add(inwardDir.clone().multiplyScalar(horizontalDepth));
                 corners[3].add(inwardDir.clone().multiplyScalar(horizontalDepth));
             }
 
-            // P26 is path[0]. The pipe goes FROM P26 TO P23. Inward is towards P23.
+            // P26 Inward
             const p26_inward = pointsData['P23'].clone().sub(pointsData['P26']).normalize();
             applyDoubleNotch('P26', p26_inward, vDepth, hDepth);
 
-            // P27 is path[6]. The pipe goes FROM P21 TO P27. Inward is towards P21.
+            // P27 Inward
             const p27_inward = pointsData['P21'].clone().sub(pointsData['P27']).normalize();
             applyDoubleNotch('P27', p27_inward, vDepth, hDepth);
             // -------------------------------------
@@ -369,7 +373,6 @@
                 );
             }
 
-            // Helper to triangulate the 4 facets of the double notch securely to a center point
             function addTri(v0, v1, v2) {
                 positions.push(v0.x, v0.y, v0.z, v1.x, v1.y, v1.z, v2.x, v2.y, v2.z);
             }
@@ -384,20 +387,27 @@
                 addQuad(A[3], A[0], B[0], B[3]);
             }
 
-            // End caps (Calculate Center Vertex and Triangulate to 4 faces)
+            // End caps
             const startC = cornersMap[path[0]]; // P26
             const endC = cornersMap[path[path.length-1]]; // P27
             
+            // Calculate Base Centers
             const c26 = new THREE.Vector3().add(startC[0]).add(startC[1]).add(startC[2]).add(startC[3]).multiplyScalar(0.25);
             const c27 = new THREE.Vector3().add(endC[0]).add(endC[1]).add(endC[2]).add(endC[3]).multiplyScalar(0.25);
 
-            // Face 1 (P26) facing backwards. Standard CCW is 3->2->1->0
+            // --- CENTER OFFSET LOGIC ---
+            // Move the calculated center point inwards or outwards along the pipe axis
+            c26.add(p26_inward.clone().multiplyScalar(centerOffset));
+            c27.add(p27_inward.clone().multiplyScalar(centerOffset));
+            // ---------------------------
+
+            // Face 1 (P26) Triangulation
             addTri(startC[0], startC[3], c26);
             addTri(startC[3], startC[2], c26);
             addTri(startC[2], startC[1], c26);
             addTri(startC[1], startC[0], c26);
             
-            // Face 2 (P27) facing forwards. Standard CCW is 1->2->3->0
+            // Face 2 (P27) Triangulation
             addTri(endC[0], endC[1], c27);
             addTri(endC[1], endC[2], c27);
             addTri(endC[2], endC[3], c27);
@@ -425,21 +435,26 @@
             pipelineGroup.add(currentWireframe);
 
             // --- ASSEMBLE THE HINGE CROSS LINES ---
+            // Updated to trace down into the newly offset Center Point instead of cutting through space
             const endLinesGeom = new THREE.BufferGeometry();
             const endLinesPositions = [];
             
-            // P26 Face Cross X
+            // P26 Face True 3D Cross 
             const p26C = cornersMap['P26'];
             endLinesPositions.push(
-                p26C[2].x, p26C[2].y, p26C[2].z, p26C[0].x, p26C[0].y, p26C[0].z, // Top to Bottom
-                p26C[3].x, p26C[3].y, p26C[3].z, p26C[1].x, p26C[1].y, p26C[1].z  // Left to Right
+                p26C[2].x, p26C[2].y, p26C[2].z, c26.x, c26.y, c26.z,     // Top to Center
+                c26.x, c26.y, c26.z, p26C[0].x, p26C[0].y, p26C[0].z,     // Center to Bottom
+                p26C[3].x, p26C[3].y, p26C[3].z, c26.x, c26.y, c26.z,     // Left to Center
+                c26.x, c26.y, c26.z, p26C[1].x, p26C[1].y, p26C[1].z      // Center to Right
             );
 
-            // P27 Face Cross X
+            // P27 Face True 3D Cross
             const p27C = cornersMap['P27'];
             endLinesPositions.push(
-                p27C[2].x, p27C[2].y, p27C[2].z, p27C[0].x, p27C[0].y, p27C[0].z,
-                p27C[3].x, p27C[3].y, p27C[3].z, p27C[1].x, p27C[1].y, p27C[1].z
+                p27C[2].x, p27C[2].y, p27C[2].z, c27.x, c27.y, c27.z,
+                c27.x, c27.y, c27.z, p27C[0].x, p27C[0].y, p27C[0].z,
+                p27C[3].x, p27C[3].y, p27C[3].z, c27.x, c27.y, c27.z,
+                c27.x, c27.y, c27.z, p27C[1].x, p27C[1].y, p27C[1].z
             );
 
             endLinesGeom.setAttribute('position', new THREE.Float32BufferAttribute(endLinesPositions, 3));
@@ -457,8 +472,9 @@
         let currentRadius = DEFAULT_RADIUS;
         let currentVNotch = DEFAULT_V_NOTCH;
         let currentHNotch = DEFAULT_H_NOTCH;
+        let currentCenterOffset = DEFAULT_CENTER_OFFSET;
         
-        buildPipeline(currentRadius, currentVNotch, currentHNotch);
+        buildPipeline(currentRadius, currentVNotch, currentHNotch, currentCenterOffset);
 
         // 6. UI Interaction Listeners
         
@@ -480,7 +496,7 @@
         radiusSlider.addEventListener('input', (e) => {
             currentRadius = parseFloat(e.target.value);
             radiusVal.textContent = currentRadius.toFixed(2);
-            buildPipeline(currentRadius, currentVNotch, currentHNotch); 
+            buildPipeline(currentRadius, currentVNotch, currentHNotch, currentCenterOffset); 
         });
 
         const vNotchSlider = document.getElementById('v-notch-slider');
@@ -488,7 +504,7 @@
         vNotchSlider.addEventListener('input', (e) => {
             currentVNotch = parseFloat(e.target.value);
             vNotchVal.textContent = currentVNotch.toFixed(2);
-            buildPipeline(currentRadius, currentVNotch, currentHNotch); 
+            buildPipeline(currentRadius, currentVNotch, currentHNotch, currentCenterOffset); 
         });
 
         const hNotchSlider = document.getElementById('h-notch-slider');
@@ -496,7 +512,15 @@
         hNotchSlider.addEventListener('input', (e) => {
             currentHNotch = parseFloat(e.target.value);
             hNotchVal.textContent = currentHNotch.toFixed(2);
-            buildPipeline(currentRadius, currentVNotch, currentHNotch); 
+            buildPipeline(currentRadius, currentVNotch, currentHNotch, currentCenterOffset); 
+        });
+
+        const centerSlider = document.getElementById('center-slider');
+        const centerVal = document.getElementById('center-val');
+        centerSlider.addEventListener('input', (e) => {
+            currentCenterOffset = parseFloat(e.target.value);
+            centerVal.textContent = currentCenterOffset.toFixed(2);
+            buildPipeline(currentRadius, currentVNotch, currentHNotch, currentCenterOffset); 
         });
 
         // Spin State Trackers
