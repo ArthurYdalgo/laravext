@@ -193,12 +193,17 @@
             <div class="slider-group" style="border-color: #66ff66; background-color: rgba(102, 255, 102, 0.05);">
                 <div class="slider-group-title" style="color: #66ff66;">Hexagon Settings</div>
                 <div class="slider-container">
-                    <label for="hex-radius-slider" style="color: #66ff66;">Hexagon Radius: <span id="hex-radius-slider-val">6.60</span></label>
-                    <input type="range" id="hex-radius-slider" min="1.0" max="10.0" step="0.1" value="6.6">
+                    <label for="hex-radius-slider" style="color: #66ff66;">Hexagon Radius: <span id="hex-radius-slider-val">8.20</span></label>
+                    <input type="range" id="hex-radius-slider" min="1.0" max="10.0" step="0.1" value="8.2">
                 </div>
                 <div class="slider-container">
-                    <label for="hex-pipe-radius-slider" style="color: #66ff66;">Hexagon Pipe Radius: <span id="hex-pipe-radius-slider-val">0.75</span></label>
-                    <input type="range" id="hex-pipe-radius-slider" min="0.05" max="1.5" step="0.05" value="0.75">
+                    <label for="hex-pipe-radius-slider" style="color: #66ff66;">Hexagon Pipe Radius: <span id="hex-pipe-radius-slider-val">1.0</span></label>
+                    <input type="range" id="hex-pipe-radius-slider" min="0.05" max="1.5" step="0.05" value="1.0">
+                </div>
+                <div class="slider-container" style="margin-top: 15px;">
+                    <label style="color: #ffffff; cursor: pointer; display: flex; align-items: center; justify-content: flex-start; gap: 8px;">
+                        <input type="checkbox" id="toggle-hex-lock" checked> Lock Hexagon Spin
+                    </label>
                 </div>
             </div>
 
@@ -213,8 +218,8 @@
                     <input type="range" id="p26-bot" min="-2.0" max="2.0" step="0.05" value="1.15">
                 </div>
                 <div class="slider-container">
-                    <label for="p26-left">Left Vertex: <span id="p26-left-val">0.40</span></label>
-                    <input type="range" id="p26-left" min="-2.0" max="2.0" step="0.05" value="0.40">
+                    <label for="p26-left">Left Vertex: <span id="p26-left-val">0.50</span></label>
+                    <input type="range" id="p26-left" min="-2.0" max="2.0" step="0.05" value="0.50">
                 </div>
                 <div class="slider-container">
                     <label for="p26-right">Right Vertex: <span id="p26-right-val">-0.45</span></label>
@@ -233,8 +238,8 @@
                     <input type="range" id="p27-bot" min="-2.0" max="2.0" step="0.05" value="1.15">
                 </div>
                 <div class="slider-container">
-                    <label for="p27-left">Left Vertex: <span id="p27-left-val">-0.40</span></label>
-                    <input type="range" id="p27-left" min="-2.0" max="2.0" step="0.05" value="-0.40">
+                    <label for="p27-left">Left Vertex: <span id="p27-left-val">-0.50</span></label>
+                    <input type="range" id="p27-left" min="-2.0" max="2.0" step="0.05" value="-0.50">
                 </div>
                 <div class="slider-container">
                     <label for="p27-right">Right Vertex: <span id="p27-right-val">0.45</span></label>
@@ -302,8 +307,8 @@
         const DEFAULT_RADIUS = 0.75;  
         const DEFAULT_CENTER_OFFSET = -0.55; 
         
-        const DEFAULT_HEX_RADIUS = 6.6;
-        const DEFAULT_HEX_PIPE_RADIUS = 0.75;
+        const DEFAULT_HEX_RADIUS = 8.2;
+        const DEFAULT_HEX_PIPE_RADIUS = 1.0;
 
         const DEFAULT_P26_TOP = 1.15; 
         const DEFAULT_P26_BOT = 1.15;
@@ -361,16 +366,19 @@
         const path = ['P26', 'P23', 'P15', 'P12', 'P13', 'P21', 'P27'];
         const p12_idx = 3; 
 
-        // Global group that spins
+        // Global group that spins (Main Pipe)
         const pipelineGroup = new THREE.Group();
         scene.add(pipelineGroup);
+
+        // Separate group for Hexagon (so we can lock its rotation independently)
+        const hexSpinGroup = new THREE.Group();
+        scene.add(hexSpinGroup);
 
         // Trackers for clearing geometry on redraw
         let currentMesh = null;
         let currentWireframe = null;
         let currentEndLines = null;
         
-        // Trackers for Hexagon
         let currentHexGroup = null;
         let currentHexWireframe = null;
 
@@ -414,7 +422,7 @@
 
         // 4. Hexagon Builder Function
         function buildHexagon() {
-            if (currentHexGroup) pipelineGroup.remove(currentHexGroup);
+            if (currentHexGroup) hexSpinGroup.remove(currentHexGroup);
 
             currentHexGroup = new THREE.Group();
             currentHexGroup.position.copy(HEX_CENTER);
@@ -472,7 +480,8 @@
             currentHexWireframe.visible = document.getElementById('toggle-wireframe').checked;
             currentHexGroup.add(currentHexWireframe);
 
-            pipelineGroup.add(currentHexGroup);
+            // Add back to the specialized hexagon rotation group
+            hexSpinGroup.add(currentHexGroup);
         }
 
         // 5. Core Pipeline Builder Function
@@ -691,11 +700,13 @@
                 spinAxis = e.target.value;
                 totalSpunAngle = 0; 
                 pipelineGroup.rotation.set(0, 0, 0); 
+                hexSpinGroup.rotation.set(0, 0, 0); 
             });
         });
 
         document.getElementById('btn-reset-rot').addEventListener('click', () => {
             pipelineGroup.rotation.set(0, 0, 0); 
+            hexSpinGroup.rotation.set(0, 0, 0); 
             totalSpunAngle = 0;
             currentSpinVelocity = 0;
             document.getElementById('toggle-spin').checked = false;
@@ -782,6 +793,7 @@
                         document.getElementById('toggle-spin').checked = false;
                         currentSpinVelocity = 0;
                         pipelineGroup.rotation.set(0, 0, 0);
+                        hexSpinGroup.rotation.set(0, 0, 0);
                         totalSpunAngle = 0;
                     } else {
                         if (USE_ACCELERATION) {
@@ -819,6 +831,14 @@
                 if (spinAxis === 'x') pipelineGroup.rotation.x += currentSpinVelocity;
                 if (spinAxis === 'y') pipelineGroup.rotation.y += currentSpinVelocity;
                 if (spinAxis === 'z') pipelineGroup.rotation.z += currentSpinVelocity;
+            }
+
+            // Sync the Hexagon Spin Group if it is NOT locked
+            const isHexLocked = document.getElementById('toggle-hex-lock').checked;
+            if (isHexLocked) {
+                hexSpinGroup.rotation.set(0, 0, 0);
+            } else {
+                hexSpinGroup.rotation.copy(pipelineGroup.rotation);
             }
 
             renderer.render(scene, camera);
