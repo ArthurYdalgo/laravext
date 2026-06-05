@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Miter-Extruded Pipeline</title>
+    <title>Miter-Extruded Pipeline - True Ortho</title>
     <style>
         body { 
             margin: 0; 
@@ -160,24 +160,23 @@
         // 2. Data Definitions
         const pointsData = {
             'P12': new THREE.Vector3(0, 0.5, 0),
-            'P13': new THREE.Vector3(0, 3.5, 4),
-            'P15': new THREE.Vector3(0, 3.5, -4),
-            'P21': new THREE.Vector3(-3.5, 5.5, 4),
-            'P23': new THREE.Vector3(3.5, 5.5, -4),
-            'P26': new THREE.Vector3(3.5, 8.5, 4),
-            'P27': new THREE.Vector3(-3.5, 8.5, -4)
+            'P13': new THREE.Vector3(0, 2.5, 4),
+            'P15': new THREE.Vector3(0, 2.5, -4),
+            'P21': new THREE.Vector3(-3.5, 4.5, 4),
+            'P23': new THREE.Vector3(3.5, 4.5, -4),
+            'P26': new THREE.Vector3(3.5, 7.5, 4),
+            'P27': new THREE.Vector3(-3.5, 7.5, -4)
         };
 
-        // The exact, continuous path order based on your line connections
         const path = ['P26', 'P23', 'P15', 'P12', 'P13', 'P21', 'P27'];
-        const p12_idx = 3; // The anchor point where we inject the base diamond
+        const p12_idx = 3; 
 
-        // The specific points you provided for the base shape at P12!
+        // The specific points you provided for the base shape at P12
         const baseCorners = [
-            new THREE.Vector3(0, 0, 0),       // P1  (Bottom)
-            new THREE.Vector3(0.5, 0.5, 0),   // P10 (Right)
-            new THREE.Vector3(0, 1, 0),       // P5  (Top)
-            new THREE.Vector3(-0.5, 0.5, 0)   // P11 (Left)
+            new THREE.Vector3(0, 0, 0),       // P1  
+            new THREE.Vector3(0.5, 0.5, 0),   // P10 
+            new THREE.Vector3(0, 1, 0),       // P5  
+            new THREE.Vector3(-0.5, 0.5, 0)   // P11 
         ];
 
         const cornersMap = {};
@@ -186,20 +185,17 @@
         // 3. Mathematical Miter Intersection Function
         function computeCorners(startCorners, pStart, pJoint, pNext) {
             const v_in = pJoint.clone().sub(pStart).normalize();
-            let n; // Normal of the miter plane
+            let n; 
             if (pNext) {
-                // Angle bisector normal for perfectly balanced joint planes
                 const v_out = pNext.clone().sub(pJoint).normalize();
                 n = v_in.clone().add(v_out).normalize();
             } else {
-                // Flat cap for the very end of the pipe
                 n = v_in.clone(); 
             }
             
             const jointCorners = [];
             for(let i=0; i<4; i++) {
                 const c = startCorners[i];
-                // Math to intersect the pipe edges with the angled miter plane
                 const t = pJoint.clone().sub(c).dot(n) / v_in.dot(n);
                 const intersect = c.clone().add(v_in.clone().multiplyScalar(t));
                 jointCorners.push(intersect);
@@ -207,29 +203,22 @@
             return jointCorners;
         }
 
-        // 4. Extrude Forward (P12 -> P13 -> P21 -> P27)
+        // 4. Extrude Forward & Backward
         for(let i = p12_idx; i < path.length - 1; i++) {
             const startId = path[i], jointId = path[i+1], nextId = path[i+2];
             cornersMap[jointId] = computeCorners(
-                cornersMap[startId], 
-                pointsData[startId], 
-                pointsData[jointId], 
-                nextId ? pointsData[nextId] : null
+                cornersMap[startId], pointsData[startId], pointsData[jointId], nextId ? pointsData[nextId] : null
             );
         }
 
-        // 5. Extrude Backward (P12 -> P15 -> P23 -> P26)
         for(let i = p12_idx; i > 0; i--) {
             const startId = path[i], jointId = path[i-1], nextId = path[i-2];
             cornersMap[jointId] = computeCorners(
-                cornersMap[startId], 
-                pointsData[startId], 
-                pointsData[jointId], 
-                nextId ? pointsData[nextId] : null
+                cornersMap[startId], pointsData[startId], pointsData[jointId], nextId ? pointsData[nextId] : null
             );
         }
 
-        // 6. Output the calculated data to the HTML Panel
+        // 5. Output Data
         const dataContent = document.getElementById('data-content');
         path.forEach(node => {
             const corners = cornersMap[node];
@@ -241,29 +230,26 @@
             dataContent.innerHTML += html;
         });
 
-        // 7. Construct the Single Continuous 3D Mesh
+        // 6. Construct Mesh
         const geometry = new THREE.BufferGeometry();
         const positions = [];
 
         function addQuad(v0, v1, v2, v3) {
             positions.push(
-                v0.x, v0.y, v0.z,  v1.x, v1.y, v1.z,  v2.x, v2.y, v2.z, // Triangle 1
-                v0.x, v0.y, v0.z,  v2.x, v2.y, v2.z,  v3.x, v3.y, v3.z  // Triangle 2
+                v0.x, v0.y, v0.z,  v1.x, v1.y, v1.z,  v2.x, v2.y, v2.z, 
+                v0.x, v0.y, v0.z,  v2.x, v2.y, v2.z,  v3.x, v3.y, v3.z  
             );
         }
 
         for(let i=0; i < path.length - 1; i++) {
             const A = cornersMap[path[i]];
             const B = cornersMap[path[i+1]];
-            
-            // Connect the 4 corners of node A to node B
             addQuad(A[0], A[1], B[1], B[0]);
             addQuad(A[1], A[2], B[2], B[1]);
             addQuad(A[2], A[3], B[3], B[2]);
             addQuad(A[3], A[0], B[0], B[3]);
         }
 
-        // End caps
         const startC = cornersMap[path[0]];
         const endC = cornersMap[path[path.length-1]];
         addQuad(startC[3], startC[2], startC[1], startC[0]);
@@ -272,26 +258,42 @@
         geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
         geometry.computeVertexNormals();
 
-        // Material with DoubleSide just in case viewing angles pass inside
-        const material = new THREE.MeshStandardMaterial({ 
-            color: 0x4da6ff, flatShading: true, side: THREE.DoubleSide
-        });
+        const material = new THREE.MeshStandardMaterial({ color: 0x4da6ff, flatShading: true, side: THREE.DoubleSide });
         const mesh = new THREE.Mesh(geometry, material);
         scene.add(mesh);
 
-        // Add distinct structural wireframes to show the computed coplanar polygons
         const edges = new THREE.EdgesGeometry(geometry);
         const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0xffffff, opacity: 0.3, transparent: true }));
         scene.add(line);
 
-        // 8. Grid and Buttons
+        // 7. Grid
         const gridHelper = new THREE.GridHelper(20, 20, 0x444444, 0x222222);
         gridHelper.position.y = 0;
         scene.add(gridHelper);
 
-        document.getElementById('btn-xy').addEventListener('click', () => { camera.position.set(0, 4, 25); controls.update(); });
-        document.getElementById('btn-xz').addEventListener('click', () => { camera.position.set(0, 25, 0.001); controls.update(); });
-        document.getElementById('btn-yz').addEventListener('click', () => { camera.position.set(25, 4, 0); controls.update(); });
+        // 8. TRUE ORTHOGRAPHIC SNAP LOGIC
+        // We set the exact coordinate axis, orient the "Up" vector, and force lookAt perfectly center
+        function setTrueOrthographic(plane) {
+            controls.target.set(0, 4, 0); // Focus the center of the model
+
+            if (plane === 'XY') {
+                camera.position.set(0, 4, 25);
+                camera.up.set(0, 1, 0);       // Y is Up
+            } else if (plane === 'XZ') {
+                camera.position.set(0, 25, 0);
+                camera.up.set(0, 0, -1);      // -Z is Up for a top-down view (so XY grid looks right)
+            } else if (plane === 'YZ') {
+                camera.position.set(25, 4, 0);
+                camera.up.set(0, 1, 0);       // Y is Up
+            }
+            
+            camera.lookAt(0, 4, 0); // Force the camera to look straight at the target
+            controls.update();      // Sync OrbitControls to this perfect alignment
+        }
+
+        document.getElementById('btn-xy').addEventListener('click', () => setTrueOrthographic('XY'));
+        document.getElementById('btn-xz').addEventListener('click', () => setTrueOrthographic('XZ'));
+        document.getElementById('btn-yz').addEventListener('click', () => setTrueOrthographic('YZ'));
 
         window.addEventListener('resize', () => {
             const aspect = container.clientWidth / window.innerHeight;
