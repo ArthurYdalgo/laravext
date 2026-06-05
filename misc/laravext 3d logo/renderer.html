@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Miter-Extruded Pipeline</title>
+    <title>Dynamic Miter-Extruded Pipeline & Hexagon</title>
     <style>
         body { 
             margin: 0; 
@@ -179,7 +179,7 @@
             <p class="keyboard-hint">Press 'L' to Hide/Show UI</p>
             
             <div class="slider-group" style="border-color: #ffcc00; background-color: rgba(255, 204, 0, 0.05);">
-                <div class="slider-group-title" style="color: #ffcc00;">Global Shape Settings</div>
+                <div class="slider-group-title" style="color: #ffcc00;">Main Pipe Settings</div>
                 <div class="slider-container">
                     <label for="radius-slider" style="color: #ffcc00;">Pipe Radius: <span id="radius-slider-val">0.75</span></label>
                     <input type="range" id="radius-slider" min="0.1" max="2.0" step="0.05" value="0.75">
@@ -187,6 +187,18 @@
                 <div class="slider-container">
                     <label for="center-slider" style="color: #ffcc00;">Center Offset (Pit + / Spike -): <span id="center-slider-val">-0.55</span></label>
                     <input type="range" id="center-slider" min="-3.0" max="3.0" step="0.05" value="-0.55">
+                </div>
+            </div>
+
+            <div class="slider-group" style="border-color: #66ff66; background-color: rgba(102, 255, 102, 0.05);">
+                <div class="slider-group-title" style="color: #66ff66;">Hexagon Settings</div>
+                <div class="slider-container">
+                    <label for="hex-radius-slider" style="color: #66ff66;">Hexagon Radius: <span id="hex-radius-slider-val">6.50</span></label>
+                    <input type="range" id="hex-radius-slider" min="1.0" max="10.0" step="0.1" value="6.5">
+                </div>
+                <div class="slider-container">
+                    <label for="hex-pipe-radius-slider" style="color: #66ff66;">Hexagon Pipe Radius: <span id="hex-pipe-radius-slider-val">0.75</span></label>
+                    <input type="range" id="hex-pipe-radius-slider" min="0.05" max="1.5" step="0.05" value="0.75">
                 </div>
             </div>
 
@@ -278,10 +290,21 @@
         const PIPE_COLOR = 0xd00100;       
         const WIREFRAME_COLOR = 0xffffff;  
         
+        // ----------------------------------------------------------------------------
+        // HEXAGON CUSTOMIZATIONS (CODE-ONLY)
+        // Adjust the center point and default rotation (in Radians) of the Hexagon here.
+        // ----------------------------------------------------------------------------
+        const HEX_CENTER = new THREE.Vector3(0, 5, 0); 
+        const HEX_ROTATION = new THREE.Euler(Math.PI / 2, Math.PI / 2, 0); // Flat like a belt
+        // ----------------------------------------------------------------------------
+
         // Initial Parameter States
         const DEFAULT_RADIUS = 0.75;  
         const DEFAULT_CENTER_OFFSET = -0.55; 
         
+        const DEFAULT_HEX_RADIUS = 6.5;
+        const DEFAULT_HEX_PIPE_RADIUS = 0.75;
+
         const DEFAULT_P26_TOP = 1.15; 
         const DEFAULT_P26_BOT = 1.15;
         const DEFAULT_P26_LEFT = 0.40;
@@ -295,9 +318,9 @@
         // Spin Parameters
         const MAX_SPIN_SPEED = 0.5;             
         const USE_SPIN_LIMIT = true;             
-        const MAX_SPIN_REVOLUTIONS = 2;          
+        const MAX_SPIN_REVOLUTIONS = 1;          
         const USE_ACCELERATION = true;           
-        const SPIN_ACCELERATION_RATE = 0.015 ;   
+        const SPIN_ACCELERATION_RATE = 0.05;   
         // ============================================================================
 
         // 1. Setup Scene
@@ -338,22 +361,30 @@
         const path = ['P26', 'P23', 'P15', 'P12', 'P13', 'P21', 'P27'];
         const p12_idx = 3; 
 
+        // Global group that spins
         const pipelineGroup = new THREE.Group();
         scene.add(pipelineGroup);
 
+        // Trackers for clearing geometry on redraw
         let currentMesh = null;
         let currentWireframe = null;
         let currentEndLines = null;
+        
+        // Trackers for Hexagon
+        let currentHexGroup = null;
+        let currentHexWireframe = null;
 
         // --- SINGLE SOURCE OF TRUTH FOR STATE ---
         let state = {
             radius: DEFAULT_RADIUS,
             center: DEFAULT_CENTER_OFFSET,
+            hexRadius: DEFAULT_HEX_RADIUS,
+            hexPipeRadius: DEFAULT_HEX_PIPE_RADIUS,
             p26: { top: DEFAULT_P26_TOP, bot: DEFAULT_P26_BOT, left: DEFAULT_P26_LEFT, right: DEFAULT_P26_RIGHT },
             p27: { top: DEFAULT_P27_TOP, bot: DEFAULT_P27_BOT, left: DEFAULT_P27_LEFT, right: DEFAULT_P27_RIGHT }
         };
 
-        // 3. Mathematical Miter Intersection Function
+        // 3. Main Pipe Function
         function computeCorners(startCorners, pStart, pJoint, pNext) {
             const v_in = pJoint.clone().sub(pStart).normalize();
             let n; 
@@ -374,11 +405,84 @@
             return jointCorners;
         }
 
-        // 4. Core Pipeline Builder Function
+        function addQuad(positionsArray, v0, v1, v2, v3) {
+            positionsArray.push(
+                v0.x, v0.y, v0.z,  v1.x, v1.y, v1.z,  v2.x, v2.y, v2.z, 
+                v0.x, v0.y, v0.z,  v2.x, v2.y, v2.z,  v3.x, v3.y, v3.z  
+            );
+        }
+
+        // 4. Hexagon Builder Function
+        function buildHexagon() {
+            if (currentHexGroup) pipelineGroup.remove(currentHexGroup);
+
+            currentHexGroup = new THREE.Group();
+            currentHexGroup.position.copy(HEX_CENTER);
+            currentHexGroup.rotation.copy(HEX_ROTATION);
+
+            const hexCorners = [];
+            // Stretch factor for a 120-degree corner (miter plane is at 30 degrees to normal)
+            const stretch = 1.0 / Math.sin(Math.PI / 3); 
+
+            for (let i = 0; i < 6; i++) {
+                const angle = i * Math.PI / 3;
+                const P = new THREE.Vector3(state.hexRadius * Math.cos(angle), state.hexRadius * Math.sin(angle), 0);
+                const N = new THREE.Vector3(Math.cos(angle), Math.sin(angle), 0);
+                const Z = new THREE.Vector3(0, 0, 1);
+
+                // Creates the 4 vertices of the diamond cross-section at this point
+                hexCorners.push([
+                    P.clone().addScaledVector(Z, -state.hexPipeRadius),            // Bottom (0)
+                    P.clone().addScaledVector(N, state.hexPipeRadius * stretch),   // Outer (1)
+                    P.clone().addScaledVector(Z, state.hexPipeRadius),             // Top (2)
+                    P.clone().addScaledVector(N, -state.hexPipeRadius * stretch)   // Inner (3)
+                ]);
+            }
+
+            const geometry = new THREE.BufferGeometry();
+            const positions = [];
+
+            // Connect the 6 segments in a closed loop
+            for (let i = 0; i < 6; i++) {
+                const A = hexCorners[i];
+                const B = hexCorners[(i + 1) % 6];
+                addQuad(positions, A[0], A[1], B[1], B[0]);
+                addQuad(positions, A[1], A[2], B[2], B[1]);
+                addQuad(positions, A[2], A[3], B[3], B[2]);
+                addQuad(positions, A[3], A[0], B[0], B[3]);
+            }
+
+            geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+            geometry.computeVertexNormals();
+
+            const material = new THREE.MeshStandardMaterial({ 
+                color: PIPE_COLOR, 
+                flatShading: true, 
+                side: THREE.DoubleSide 
+            });
+            const mesh = new THREE.Mesh(geometry, material);
+            currentHexGroup.add(mesh);
+
+            const edges = new THREE.EdgesGeometry(geometry);
+            currentHexWireframe = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ 
+                color: WIREFRAME_COLOR, 
+                opacity: 0.3, 
+                transparent: true 
+            }));
+            currentHexWireframe.visible = document.getElementById('toggle-wireframe').checked;
+            currentHexGroup.add(currentHexWireframe);
+
+            pipelineGroup.add(currentHexGroup);
+        }
+
+        // 5. Core Pipeline Builder Function
         function buildPipeline() {
             if (currentMesh) pipelineGroup.remove(currentMesh);
             if (currentWireframe) pipelineGroup.remove(currentWireframe);
             if (currentEndLines) pipelineGroup.remove(currentEndLines);
+
+            // Trigger Hexagon update alongside main pipe
+            buildHexagon();
 
             const cornersMap = {};
             const p12 = pointsData['P12'];
@@ -407,7 +511,6 @@
                 );
             }
 
-            // --- INDIVIDUAL VERTEX OFFSET LOGIC ---
             function applyVertexOffsets(nodeId, inwardDir, tD, bD, lD, rD) {
                 const corners = cornersMap[nodeId];
                 corners[0].add(inwardDir.clone().multiplyScalar(bD)); // Bottom
@@ -416,14 +519,11 @@
                 corners[3].add(inwardDir.clone().multiplyScalar(lD)); // Left
             }
 
-            // Apply P26 Extrusions based directly on state
             const p26_inward = pointsData['P23'].clone().sub(pointsData['P26']).normalize();
             applyVertexOffsets('P26', p26_inward, state.p26.top, state.p26.bot, state.p26.left, state.p26.right);
 
-            // Apply P27 Extrusions based directly on state
             const p27_inward = pointsData['P21'].clone().sub(pointsData['P27']).normalize();
             applyVertexOffsets('P27', p27_inward, state.p27.top, state.p27.bot, state.p27.left, state.p27.right);
-            // -------------------------------------
 
             const dataContent = document.getElementById('data-content');
             dataContent.innerHTML = ''; 
@@ -437,16 +537,8 @@
                 dataContent.innerHTML += html;
             });
 
-            // Assemble Geometry
             const geometry = new THREE.BufferGeometry();
             const positions = [];
-
-            function addQuad(v0, v1, v2, v3) {
-                positions.push(
-                    v0.x, v0.y, v0.z,  v1.x, v1.y, v1.z,  v2.x, v2.y, v2.z, 
-                    v0.x, v0.y, v0.z,  v2.x, v2.y, v2.z,  v3.x, v3.y, v3.z  
-                );
-            }
 
             function addTri(v0, v1, v2) {
                 positions.push(v0.x, v0.y, v0.z, v1.x, v1.y, v1.z, v2.x, v2.y, v2.z);
@@ -456,21 +548,19 @@
             for(let i=0; i < path.length - 1; i++) {
                 const A = cornersMap[path[i]];
                 const B = cornersMap[path[i+1]];
-                addQuad(A[0], A[1], B[1], B[0]);
-                addQuad(A[1], A[2], B[2], B[1]);
-                addQuad(A[2], A[3], B[3], B[2]);
-                addQuad(A[3], A[0], B[0], B[3]);
+                addQuad(positions, A[0], A[1], B[1], B[0]);
+                addQuad(positions, A[1], A[2], B[2], B[1]);
+                addQuad(positions, A[2], A[3], B[3], B[2]);
+                addQuad(positions, A[3], A[0], B[0], B[3]);
             }
 
             // End caps
-            const startC = cornersMap[path[0]]; // P26
-            const endC = cornersMap[path[path.length-1]]; // P27
+            const startC = cornersMap[path[0]]; 
+            const endC = cornersMap[path[path.length-1]]; 
             
-            // Calculate Base Centers
             const c26 = new THREE.Vector3().add(startC[0]).add(startC[1]).add(startC[2]).add(startC[3]).multiplyScalar(0.25);
             const c27 = new THREE.Vector3().add(endC[0]).add(endC[1]).add(endC[2]).add(endC[3]).multiplyScalar(0.25);
 
-            // Center Offset Logic
             c26.add(p26_inward.clone().multiplyScalar(state.center));
             c27.add(p27_inward.clone().multiplyScalar(state.center));
 
@@ -511,16 +601,14 @@
             const endLinesGeom = new THREE.BufferGeometry();
             const endLinesPositions = [];
             
-            // P26 Face True 3D Cross 
             const p26C = cornersMap['P26'];
             endLinesPositions.push(
-                p26C[2].x, p26C[2].y, p26C[2].z, c26.x, c26.y, c26.z,     // Top to Center
-                c26.x, c26.y, c26.z, p26C[0].x, p26C[0].y, p26C[0].z,     // Center to Bottom
-                p26C[3].x, p26C[3].y, p26C[3].z, c26.x, c26.y, c26.z,     // Left to Center
-                c26.x, c26.y, c26.z, p26C[1].x, p26C[1].y, p26C[1].z      // Center to Right
+                p26C[2].x, p26C[2].y, p26C[2].z, c26.x, c26.y, c26.z,    
+                c26.x, c26.y, c26.z, p26C[0].x, p26C[0].y, p26C[0].z,    
+                p26C[3].x, p26C[3].y, p26C[3].z, c26.x, c26.y, c26.z,    
+                c26.x, c26.y, c26.z, p26C[1].x, p26C[1].y, p26C[1].z      
             );
 
-            // P27 Face True 3D Cross
             const p27C = cornersMap['P27'];
             endLinesPositions.push(
                 p27C[2].x, p27C[2].y, p27C[2].z, c27.x, c27.y, c27.z,
@@ -543,14 +631,13 @@
         // Initialize Pipeline
         buildPipeline();
 
-        // 6. UI Interaction Listeners (Cleaned up and bound to state)
+        // 6. UI Interaction Listeners 
         
         window.addEventListener('keydown', (e) => {
             if (e.key.toLowerCase() === 'l') document.body.classList.toggle('hide-ui');
             if (e.key.toLowerCase() === 's') document.getElementById('toggle-spin').click();
         });
 
-        // Universal binding function to keep things clean
         function bindSlider(id, stateKey, subKey = null) {
             const slider = document.getElementById(id);
             const valDisplay = document.getElementById(`${id}-val`);
@@ -558,7 +645,6 @@
                 const val = parseFloat(e.target.value);
                 valDisplay.textContent = val.toFixed(2);
                 
-                // Update the single source of truth state object
                 if (subKey) state[stateKey][subKey] = val;
                 else state[stateKey] = val;
                 
@@ -566,22 +652,25 @@
             });
         }
 
-        // Connect the Global Sliders
+        // Bind Global Sliders
         bindSlider('radius-slider', 'radius');
         bindSlider('center-slider', 'center');
+        
+        // Bind Hexagon Sliders
+        bindSlider('hex-radius-slider', 'hexRadius');
+        bindSlider('hex-pipe-radius-slider', 'hexPipeRadius');
 
-        // Connect the P26 Sliders
+        // Bind P26 Sliders
         bindSlider('p26-top', 'p26', 'top');
         bindSlider('p26-bot', 'p26', 'bot');
         bindSlider('p26-left', 'p26', 'left');
         bindSlider('p26-right', 'p26', 'right');
 
-        // Connect the P27 Sliders
+        // Bind P27 Sliders
         bindSlider('p27-top', 'p27', 'top');
         bindSlider('p27-bot', 'p27', 'bot');
         bindSlider('p27-left', 'p27', 'left');
         bindSlider('p27-right', 'p27', 'right');
-
 
         // Spin State Trackers
         let isSpinning = false;
@@ -631,6 +720,7 @@
 
         document.getElementById('toggle-wireframe').addEventListener('change', (e) => {
             if (currentWireframe) currentWireframe.visible = e.target.checked;
+            if (currentHexWireframe) currentHexWireframe.visible = e.target.checked;
         });
 
         document.getElementById('toggle-end-lines').addEventListener('change', (e) => {
