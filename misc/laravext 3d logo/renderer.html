@@ -29,7 +29,7 @@
             border-radius: 8px;
             z-index: 10;
         }
-        h1 { margin: 0 0 10px 0; font-size: 1.2rem; color: #4da6ff; }
+        h1 { margin: 0 0 10px 0; font-size: 1.2rem; color: #d00100; }
         p { margin: 0 0 10px 0; font-size: 0.9rem; line-height: 1.5; color: #cccccc;}
 
         /* Slider Controls */
@@ -41,13 +41,31 @@
         .slider-container label {
             font-size: 0.9rem;
             font-weight: bold;
-            color: #aaddff;
+            color: #ff9999;
             display: block;
             margin-bottom: 5px;
         }
         input[type="range"] {
             width: 100%;
             cursor: pointer;
+        }
+
+        /* Toggle Controls */
+        .toggles-container {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #444;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .toggles-container label {
+            font-size: 0.9rem;
+            color: #cccccc;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         /* Views Panel */
@@ -68,19 +86,19 @@
             font-size: 1rem;
             font-weight: bold;
             color: #ffffff;
-            background-color: #4da6ff;
-            border: none;
+            background-color: #555555;
+            border: 1px solid #777;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: all 0.2s;
         }
-        button:hover { background-color: #1a8cff; }
+        button:hover { background-color: #d00100; border-color: #ff3333; }
 
         /* Data Readout Panel */
         #data-panel {
             width: 350px;
             background: #2a2a2a;
-            color: #aaddff;
+            color: #ffcccc;
             border-left: 2px solid #444;
             display: flex;
             flex-direction: column;
@@ -106,7 +124,7 @@
             font-family: monospace;
             font-size: 0.85rem;
             margin-bottom: 4px;
-            color: #88ccff;
+            color: #ff9999;
         }
     </style>
 </head>
@@ -119,8 +137,13 @@
             <p><strong>Right Click + Drag:</strong> Pan</p>
             
             <div class="slider-container">
-                <label for="radius-slider">Diamond Center-to-Vertex Distance: <span id="radius-val">0.75</span></label>
-                <input type="range" id="radius-slider" min="0.1" max="2.0" step="0.05" value="0.75">
+                <label for="radius-slider">Diamond Center-to-Vertex Distance: <span id="radius-val">0.50</span></label>
+                <input type="range" id="radius-slider" min="0.1" max="2.0" step="0.05" value="0.5">
+            </div>
+
+            <div class="toggles-container">
+                <label><input type="checkbox" id="toggle-axes" checked> Show Grid & Axes</label>
+                <label><input type="checkbox" id="toggle-wireframe" checked> Show Shape Lines</label>
             </div>
         </div>
 
@@ -149,6 +172,14 @@
         import * as THREE from 'three';
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
+        // ============================================================================
+        // CONFIGURATION SETTINGS
+        // ============================================================================
+        const PIPE_COLOR = 0xd00100;       
+        const WIREFRAME_COLOR = 0xffffff;  
+        const DEFAULT_RADIUS = 0.5;        
+        // ============================================================================
+
         // 1. Setup Scene
         const container = document.getElementById('canvas-container');
         const scene = new THREE.Scene();
@@ -176,7 +207,7 @@
         dirLight.position.set(10, 20, 15);
         scene.add(dirLight);
 
-        // 2. Updated Data Definitions
+        // 2. Data Definitions
         const pointsData = {
             'P12': new THREE.Vector3(0, 0.5, 0),
             'P13': new THREE.Vector3(0, 2.5, 4),
@@ -190,7 +221,6 @@
         const path = ['P26', 'P23', 'P15', 'P12', 'P13', 'P21', 'P27'];
         const p12_idx = 3; 
 
-        // Track meshes so we can remove/rebuild them on slider change
         let currentMesh = null;
         let currentWireframe = null;
 
@@ -217,23 +247,18 @@
 
         // 4. Core Pipeline Builder Function
         function buildPipeline(radius) {
-            // Clean up old geometry from the scene
             if (currentMesh) scene.remove(currentMesh);
             if (currentWireframe) scene.remove(currentWireframe);
 
             const cornersMap = {};
-            
-            // Generate the dynamic base diamond at P12
-            // P12 acts as our XY plane cross-section anchor
             const p12 = pointsData['P12'];
             cornersMap['P12'] = [
-                p12.clone().add(new THREE.Vector3(0, -radius, 0)), // Bottom
-                p12.clone().add(new THREE.Vector3(radius, 0, 0)),  // Right
-                p12.clone().add(new THREE.Vector3(0, radius, 0)),  // Top
-                p12.clone().add(new THREE.Vector3(-radius, 0, 0))  // Left
+                p12.clone().add(new THREE.Vector3(0, -radius, 0)), 
+                p12.clone().add(new THREE.Vector3(radius, 0, 0)),  
+                p12.clone().add(new THREE.Vector3(0, radius, 0)),  
+                p12.clone().add(new THREE.Vector3(-radius, 0, 0))  
             ];
 
-            // Extrude Forward
             for(let i = p12_idx; i < path.length - 1; i++) {
                 const startId = path[i], jointId = path[i+1], nextId = path[i+2];
                 cornersMap[jointId] = computeCorners(
@@ -241,7 +266,6 @@
                 );
             }
 
-            // Extrude Backward
             for(let i = p12_idx; i > 0; i--) {
                 const startId = path[i], jointId = path[i-1], nextId = path[i-2];
                 cornersMap[jointId] = computeCorners(
@@ -249,9 +273,8 @@
                 );
             }
 
-            // Update HTML Output Panel
             const dataContent = document.getElementById('data-content');
-            dataContent.innerHTML = ''; // clear old values
+            dataContent.innerHTML = ''; 
             path.forEach(node => {
                 const corners = cornersMap[node];
                 let html = `<div class="data-joint"><h3>Joint ${node}</h3>`;
@@ -262,7 +285,6 @@
                 dataContent.innerHTML += html;
             });
 
-            // Construct 3D Mesh
             const geometry = new THREE.BufferGeometry();
             const positions = [];
 
@@ -290,33 +312,61 @@
             geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
             geometry.computeVertexNormals();
 
-            const material = new THREE.MeshStandardMaterial({ color: 0x4da6ff, flatShading: true, side: THREE.DoubleSide });
+            const material = new THREE.MeshStandardMaterial({ 
+                color: PIPE_COLOR, 
+                flatShading: true, 
+                side: THREE.DoubleSide 
+            });
             currentMesh = new THREE.Mesh(geometry, material);
             scene.add(currentMesh);
 
             const edges = new THREE.EdgesGeometry(geometry);
-            currentWireframe = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0xffffff, opacity: 0.3, transparent: true }));
+            currentWireframe = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ 
+                color: WIREFRAME_COLOR, 
+                opacity: 0.3, 
+                transparent: true 
+            }));
+            
+            // Apply current toggle state to the newly built wireframe
+            currentWireframe.visible = document.getElementById('toggle-wireframe').checked;
             scene.add(currentWireframe);
         }
 
         // 5. Initialize Pipeline
-        buildPipeline(0.75); // 0.75 matches your exact original specifications
+        buildPipeline(DEFAULT_RADIUS);
 
-        // 6. UI Interaction Listener
+        // 6. UI Interaction Listeners
         const radiusSlider = document.getElementById('radius-slider');
         const radiusVal = document.getElementById('radius-val');
         
         radiusSlider.addEventListener('input', (e) => {
             const r = parseFloat(e.target.value);
             radiusVal.textContent = r.toFixed(2);
-            buildPipeline(r); // Rebuild dynamically as you drag
+            buildPipeline(r); 
         });
 
-        // 7. Grid & True Orthographic Snapping
+        // Setup Grid & Axes Helpers
         const gridHelper = new THREE.GridHelper(20, 20, 0x444444, 0x222222);
         gridHelper.position.y = 0;
         scene.add(gridHelper);
 
+        const axesHelper = new THREE.AxesHelper(5);
+        scene.add(axesHelper);
+
+        // Checkbox Toggle Listeners
+        document.getElementById('toggle-axes').addEventListener('change', (e) => {
+            const isVisible = e.target.checked;
+            gridHelper.visible = isVisible;
+            axesHelper.visible = isVisible;
+        });
+
+        document.getElementById('toggle-wireframe').addEventListener('change', (e) => {
+            if (currentWireframe) {
+                currentWireframe.visible = e.target.checked;
+            }
+        });
+
+        // 7. True Orthographic Snapping
         function setTrueOrthographic(plane) {
             controls.target.set(0, 4, 0); 
             if (plane === 'XY') {
