@@ -193,12 +193,12 @@
             <div class="slider-group" style="border-color: #66ff66; background-color: rgba(102, 255, 102, 0.05);">
                 <div class="slider-group-title" style="color: #66ff66;">Hexagon Settings</div>
                 <div class="slider-container">
-                    <label for="hex-radius-slider" style="color: #66ff66;">Hexagon Radius: <span id="hex-radius-slider-val">8</span></label>
-                    <input type="range" id="hex-radius-slider" min="1.0" max="10.0" step="0.1" value="8">
+                    <label for="hex-radius-slider" style="color: #66ff66;">Hexagon Radius: <span id="hex-radius-slider-val">7.6</span></label>
+                    <input type="range" id="hex-radius-slider" min="1.0" max="10.0" step="0.1" value="7.6">
                 </div>
                 <div class="slider-container">
-                    <label for="hex-pipe-radius-slider" style="color: #66ff66;">Hexagon Pipe Radius: <span id="hex-pipe-radius-slider-val">1.0</span></label>
-                    <input type="range" id="hex-pipe-radius-slider" min="0.05" max="1.5" step="0.05" value="1.0">
+                    <label for="hex-pipe-radius-slider" style="color: #66ff66;">Hexagon Pipe Radius: <span id="hex-pipe-radius-slider-val">0.7</span></label>
+                    <input type="range" id="hex-pipe-radius-slider" min="0.05" max="1.5" step="0.05" value="0.7">
                 </div>
                 <div class="slider-container" style="margin-top: 15px;">
                     <label style="color: #ffffff; cursor: pointer; display: flex; align-items: center; justify-content: flex-start; gap: 8px;">
@@ -307,8 +307,8 @@
         const DEFAULT_RADIUS = 0.85;  
         const DEFAULT_CENTER_OFFSET = -0.55; 
         
-        const DEFAULT_HEX_RADIUS = 8;
-        const DEFAULT_HEX_PIPE_RADIUS = 1.0;
+        const DEFAULT_HEX_RADIUS = 7.6;
+        const DEFAULT_HEX_PIPE_RADIUS = 0.7;
 
         const DEFAULT_P26_TOP = 1.15; 
         const DEFAULT_P26_BOT = 1.15;
@@ -321,11 +321,11 @@
         const DEFAULT_P27_RIGHT = 0.45;
         
         // Spin Parameters
-        const MAX_SPIN_SPEED = 0.5;             
-        const USE_SPIN_LIMIT = true;             
+        const MAX_SPIN_SPEED = 0.05;             
+        const USE_SPIN_LIMIT = false;             
         const MAX_SPIN_REVOLUTIONS = 1;          
         const USE_ACCELERATION = true;           
-        const SPIN_ACCELERATION_RATE = 0.05;   
+        const SPIN_ACCELERATION_RATE = 0.005;   
         // ============================================================================
 
         // 1. Setup Scene
