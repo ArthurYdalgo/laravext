@@ -30,8 +30,15 @@
             z-index: 10;
             max-height: 90vh;
             overflow-y: auto;
-            width: 320px;
+            width: 340px;
         }
+        
+        /* Custom Scrollbar for Overlay */
+        #overlay::-webkit-scrollbar { width: 8px; }
+        #overlay::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 4px; }
+        #overlay::-webkit-scrollbar-thumb { background: #555; border-radius: 4px; }
+        #overlay::-webkit-scrollbar-thumb:hover { background: #777; }
+
         h1 { margin: 0 0 10px 0; font-size: 1.2rem; color: #d00100; }
         p { margin: 0 0 10px 0; font-size: 0.9rem; line-height: 1.5; color: #cccccc;}
         .keyboard-hint { color: #ffeb3b; font-size: 0.8rem; font-weight: bold; }
@@ -39,9 +46,10 @@
         /* Slider Controls */
         .slider-group {
             background-color: rgba(255,255,255,0.05);
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 10px;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
         }
         .slider-group-title {
             font-size: 0.95rem;
@@ -57,8 +65,13 @@
         .slider-container label {
             font-size: 0.8rem;
             color: #ff9999;
-            display: block;
+            display: flex;
+            justify-content: space-between;
             margin-bottom: 3px;
+        }
+        .slider-container label span {
+            color: #ffffff;
+            font-family: monospace;
         }
         input[type="range"] {
             width: 100%;
@@ -165,36 +178,55 @@
             <p><strong>Right Click + Drag:</strong> Pan</p>
             <p class="keyboard-hint">Press 'L' to Hide/Show UI</p>
             
-            <div class="slider-container" style="margin-bottom: 15px;">
-                <label for="radius-slider" style="font-size: 0.9rem; font-weight: bold;">Pipe Radius: <span id="radius-val">0.75</span></label>
-                <input type="range" id="radius-slider" min="0.1" max="2.0" step="0.05" value="0.75">
-            </div>
-
-            <div class="slider-group">
-                <div class="slider-group-title">End-Face Extrusions (In + / Out -)</div>
-                
+            <div class="slider-group" style="border-color: #ffcc00; background-color: rgba(255, 204, 0, 0.05);">
+                <div class="slider-group-title" style="color: #ffcc00;">Global Shape Settings</div>
                 <div class="slider-container">
-                    <label for="top-slider">Top Vertex: <span id="top-val">-0.50</span></label>
-                    <input type="range" id="top-slider" min="-2.0" max="2.0" step="0.05" value="-0.5">
+                    <label for="radius-slider" style="color: #ffcc00;">Pipe Radius: <span id="radius-val">0.75</span></label>
+                    <input type="range" id="radius-slider" min="0.1" max="2.0" step="0.05" value="0.75">
                 </div>
                 <div class="slider-container">
-                    <label for="bottom-slider">Bottom Vertex: <span id="bottom-val">-0.50</span></label>
-                    <input type="range" id="bottom-slider" min="-2.0" max="2.0" step="0.05" value="-0.5">
-                </div>
-                <div class="slider-container">
-                    <label for="left-slider">Left Vertex: <span id="left-val">-0.50</span></label>
-                    <input type="range" id="left-slider" min="-2.0" max="2.0" step="0.05" value="-0.5">
-                </div>
-                <div class="slider-container">
-                    <label for="right-slider">Right Vertex: <span id="right-val">-0.50</span></label>
-                    <input type="range" id="right-slider" min="-2.0" max="2.0" step="0.05" value="-0.5">
-                </div>
-            </div>
-
-            <div class="slider-group">
-                <div class="slider-container">
-                    <label for="center-slider" style="color: #ffcc00; font-weight: bold;">Center Intersection (Pit + / Spike -): <span id="center-val">-1.00</span></label>
+                    <label for="center-slider" style="color: #ffcc00;">Center Offset (Pit + / Spike -): <span id="center-val">-1.00</span></label>
                     <input type="range" id="center-slider" min="-3.0" max="3.0" step="0.05" value="-1.0">
+                </div>
+            </div>
+
+            <div class="slider-group">
+                <div class="slider-group-title">Front Face (P26) Extrusions</div>
+                <div class="slider-container">
+                    <label for="p26-top">Top Vertex (In + / Out -): <span id="p26-top-val">-0.50</span></label>
+                    <input type="range" id="p26-top" min="-2.0" max="2.0" step="0.05" value="-0.5">
+                </div>
+                <div class="slider-container">
+                    <label for="p26-bot">Bottom Vertex: <span id="p26-bot-val">-0.50</span></label>
+                    <input type="range" id="p26-bot" min="-2.0" max="2.0" step="0.05" value="-0.5">
+                </div>
+                <div class="slider-container">
+                    <label for="p26-left">Left Vertex: <span id="p26-left-val">-0.50</span></label>
+                    <input type="range" id="p26-left" min="-2.0" max="2.0" step="0.05" value="-0.5">
+                </div>
+                <div class="slider-container">
+                    <label for="p26-right">Right Vertex: <span id="p26-right-val">-0.50</span></label>
+                    <input type="range" id="p26-right" min="-2.0" max="2.0" step="0.05" value="-0.5">
+                </div>
+            </div>
+
+            <div class="slider-group">
+                <div class="slider-group-title">Back Face (P27) Extrusions</div>
+                <div class="slider-container">
+                    <label for="p27-top">Top Vertex (In + / Out -): <span id="p27-top-val">-0.50</span></label>
+                    <input type="range" id="p27-top" min="-2.0" max="2.0" step="0.05" value="-0.5">
+                </div>
+                <div class="slider-container">
+                    <label for="p27-bot">Bottom Vertex: <span id="p27-bot-val">-0.50</span></label>
+                    <input type="range" id="p27-bot" min="-2.0" max="2.0" step="0.05" value="-0.5">
+                </div>
+                <div class="slider-container">
+                    <label for="p27-left">Left Vertex: <span id="p27-left-val">-0.50</span></label>
+                    <input type="range" id="p27-left" min="-2.0" max="2.0" step="0.05" value="-0.5">
+                </div>
+                <div class="slider-container">
+                    <label for="p27-right">Right Vertex: <span id="p27-right-val">-0.50</span></label>
+                    <input type="range" id="p27-right" min="-2.0" max="2.0" step="0.05" value="-0.5">
                 </div>
             </div>
 
@@ -245,14 +277,20 @@
         // ============================================================================
         const PIPE_COLOR = 0xd00100;       
         const WIREFRAME_COLOR = 0xffffff;  
-        const DEFAULT_RADIUS = 0.75;  
         
-        // Default offsets for the 4 outer vertices (Negative = outwards)
-        const DEFAULT_TOP = -0.5; 
-        const DEFAULT_BOTTOM = -0.5;
-        const DEFAULT_LEFT = -0.5;
-        const DEFAULT_RIGHT = -0.5;
+        // Initial Parameter States
+        const DEFAULT_RADIUS = 0.75;  
         const DEFAULT_CENTER_OFFSET = -1.0; 
+        
+        const DEFAULT_P26_TOP = -0.5; 
+        const DEFAULT_P26_BOT = -0.5;
+        const DEFAULT_P26_LEFT = -0.5;
+        const DEFAULT_P26_RIGHT = -0.5;
+
+        const DEFAULT_P27_TOP = -0.5; 
+        const DEFAULT_P27_BOT = -0.5;
+        const DEFAULT_P27_LEFT = -0.5;
+        const DEFAULT_P27_RIGHT = -0.5;
         
         // Spin Parameters
         const MAX_SPIN_SPEED = 0.5;             
@@ -307,6 +345,14 @@
         let currentWireframe = null;
         let currentEndLines = null;
 
+        // State Variables
+        let state = {
+            radius: DEFAULT_RADIUS,
+            center: DEFAULT_CENTER_OFFSET,
+            p26: { top: DEFAULT_P26_TOP, bot: DEFAULT_P26_BOT, left: DEFAULT_P26_LEFT, right: DEFAULT_P26_RIGHT },
+            p27: { top: DEFAULT_P27_TOP, bot: DEFAULT_P27_BOT, left: DEFAULT_P27_LEFT, right: DEFAULT_P27_RIGHT }
+        };
+
         // 3. Mathematical Miter Intersection Function
         function computeCorners(startCorners, pStart, pJoint, pNext) {
             const v_in = pJoint.clone().sub(pStart).normalize();
@@ -329,7 +375,7 @@
         }
 
         // 4. Core Pipeline Builder Function
-        function buildPipeline(radius, topD, bottomD, leftD, rightD, centerOffset) {
+        function buildPipeline() {
             if (currentMesh) pipelineGroup.remove(currentMesh);
             if (currentWireframe) pipelineGroup.remove(currentWireframe);
             if (currentEndLines) pipelineGroup.remove(currentEndLines);
@@ -339,10 +385,10 @@
             
             // Indices mapped as [0: Bottom, 1: Right, 2: Top, 3: Left]
             cornersMap['P12'] = [
-                p12.clone().add(new THREE.Vector3(0, -radius, 0)), 
-                p12.clone().add(new THREE.Vector3(radius, 0, 0)),  
-                p12.clone().add(new THREE.Vector3(0, radius, 0)),  
-                p12.clone().add(new THREE.Vector3(-radius, 0, 0))  
+                p12.clone().add(new THREE.Vector3(0, -state.radius, 0)), 
+                p12.clone().add(new THREE.Vector3(state.radius, 0, 0)),  
+                p12.clone().add(new THREE.Vector3(0, state.radius, 0)),  
+                p12.clone().add(new THREE.Vector3(-state.radius, 0, 0))  
             ];
 
             // Extrude Forward
@@ -370,11 +416,13 @@
                 corners[3].add(inwardDir.clone().multiplyScalar(lD)); // Left
             }
 
+            // Apply P26 Extrusions
             const p26_inward = pointsData['P23'].clone().sub(pointsData['P26']).normalize();
-            applyVertexOffsets('P26', p26_inward, topD, bottomD, leftD, rightD);
+            applyVertexOffsets('P26', p26_inward, state.p26.top, state.p26.bot, state.p26.left, state.p26.right);
 
+            // Apply P27 Extrusions
             const p27_inward = pointsData['P21'].clone().sub(pointsData['P27']).normalize();
-            applyVertexOffsets('P27', p27_inward, topD, bottomD, leftD, rightD);
+            applyVertexOffsets('P27', p27_inward, state.p27.top, state.p27.bot, state.p27.left, state.p27.right);
             // -------------------------------------
 
             const dataContent = document.getElementById('data-content');
@@ -423,8 +471,8 @@
             const c27 = new THREE.Vector3().add(endC[0]).add(endC[1]).add(endC[2]).add(endC[3]).multiplyScalar(0.25);
 
             // Center Offset Logic
-            c26.add(p26_inward.clone().multiplyScalar(centerOffset));
-            c27.add(p27_inward.clone().multiplyScalar(centerOffset));
+            c26.add(p26_inward.clone().multiplyScalar(state.center));
+            c27.add(p27_inward.clone().multiplyScalar(state.center));
 
             // Face 1 (P26) Triangulation
             addTri(startC[0], startC[3], c26);
@@ -492,78 +540,45 @@
             pipelineGroup.add(currentEndLines);
         }
 
-        // 5. State Initialization
-        let cRad = DEFAULT_RADIUS;
-        let cTop = DEFAULT_TOP;
-        let cBot = DEFAULT_BOTTOM;
-        let cLeft = DEFAULT_LEFT;
-        let cRight = DEFAULT_RIGHT;
-        let cCenter = DEFAULT_CENTER_OFFSET;
-        
-        buildPipeline(cRad, cTop, cBot, cLeft, cRight, cCenter);
+        // Initialize Pipeline
+        buildPipeline();
 
-        // 6. UI Interaction Listeners
+        // 6. UI Interaction Listeners (Hooking up all the sliders)
         
         window.addEventListener('keydown', (e) => {
-            if (e.key.toLowerCase() === 'l') {
-                document.body.classList.toggle('hide-ui');
-            }
+            if (e.key.toLowerCase() === 'l') document.body.classList.toggle('hide-ui');
+            if (e.key.toLowerCase() === 's') document.getElementById('toggle-spin').click();
         });
 
-        window.addEventListener('keydown', (e) => {
-            if (e.key.toLowerCase() === 's') {
-                document.getElementById('toggle-spin').click();
-            }
-        });
+        // Helper to bind sliders
+        function bindSlider(id, stateKey, subKey = null) {
+            const slider = document.getElementById(id);
+            const valDisplay = document.getElementById(`${id}-val`);
+            slider.addEventListener('input', (e) => {
+                const val = parseFloat(e.target.value);
+                valDisplay.textContent = val.toFixed(2);
+                if (subKey) state[stateKey][subKey] = val;
+                else state[stateKey] = val;
+                buildPipeline(); 
+            });
+        }
 
-        // Sliders
-        const radiusSlider = document.getElementById('radius-slider');
-        const radiusVal = document.getElementById('radius-val');
-        radiusSlider.addEventListener('input', (e) => {
-            cRad = parseFloat(e.target.value);
-            radiusVal.textContent = cRad.toFixed(2);
-            buildPipeline(cRad, cTop, cBot, cLeft, cRight, cCenter); 
-        });
+        // Bind Global Sliders
+        bindSlider('radius-slider', 'radius');
+        bindSlider('center-slider', 'center');
 
-        const topSlider = document.getElementById('top-slider');
-        const topVal = document.getElementById('top-val');
-        topSlider.addEventListener('input', (e) => {
-            cTop = parseFloat(e.target.value);
-            topVal.textContent = cTop.toFixed(2);
-            buildPipeline(cRad, cTop, cBot, cLeft, cRight, cCenter); 
-        });
+        // Bind P26 Sliders
+        bindSlider('p26-top', 'p26', 'top');
+        bindSlider('p26-bot', 'p26', 'bot');
+        bindSlider('p26-left', 'p26', 'left');
+        bindSlider('p26-right', 'p26', 'right');
 
-        const botSlider = document.getElementById('bottom-slider');
-        const botVal = document.getElementById('bottom-val');
-        botSlider.addEventListener('input', (e) => {
-            cBot = parseFloat(e.target.value);
-            botVal.textContent = cBot.toFixed(2);
-            buildPipeline(cRad, cTop, cBot, cLeft, cRight, cCenter); 
-        });
+        // Bind P27 Sliders
+        bindSlider('p27-top', 'p27', 'top');
+        bindSlider('p27-bot', 'p27', 'bot');
+        bindSlider('p27-left', 'p27', 'left');
+        bindSlider('p27-right', 'p27', 'right');
 
-        const leftSlider = document.getElementById('left-slider');
-        const leftVal = document.getElementById('left-val');
-        leftSlider.addEventListener('input', (e) => {
-            cLeft = parseFloat(e.target.value);
-            leftVal.textContent = cLeft.toFixed(2);
-            buildPipeline(cRad, cTop, cBot, cLeft, cRight, cCenter); 
-        });
-
-        const rightSlider = document.getElementById('right-slider');
-        const rightVal = document.getElementById('right-val');
-        rightSlider.addEventListener('input', (e) => {
-            cRight = parseFloat(e.target.value);
-            rightVal.textContent = cRight.toFixed(2);
-            buildPipeline(cRad, cTop, cBot, cLeft, cRight, cCenter); 
-        });
-
-        const centerSlider = document.getElementById('center-slider');
-        const centerVal = document.getElementById('center-val');
-        centerSlider.addEventListener('input', (e) => {
-            cCenter = parseFloat(e.target.value);
-            centerVal.textContent = cCenter.toFixed(2);
-            buildPipeline(cRad, cTop, cBot, cLeft, cRight, cCenter); 
-        });
 
         // Spin State Trackers
         let isSpinning = false;
