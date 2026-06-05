@@ -205,11 +205,11 @@
         const DEFAULT_RADIUS = 0.75;  
         
         // Spin Parameters
-        const MAX_SPIN_SPEED = 0.5;             // The maximum rotational speed
+        const MAX_SPIN_SPEED = 0.02;             // The maximum rotational speed
         const USE_SPIN_LIMIT = true;             // Set to false to spin forever
         const MAX_SPIN_REVOLUTIONS = 1;          // Number of full 360 spins before stopping
         const USE_ACCELERATION = true;           // Smooth start/stop easing
-        const SPIN_ACCELERATION_RATE = 0.003;   // How quickly it accelerates/decelerates
+        const SPIN_ACCELERATION_RATE = 0.0003;   // How quickly it accelerates/decelerates
         // ============================================================================
 
         // 1. Setup Scene
@@ -401,7 +401,8 @@
         axisRadios.forEach(radio => {
             radio.addEventListener('change', (e) => {
                 spinAxis = e.target.value;
-                totalSpunAngle = 0; // Reset spin limit counter when changing axis
+                totalSpunAngle = 0; 
+                pipelineGroup.rotation.set(0, 0, 0); // Re-align perfectly before changing axis
             });
         });
 
@@ -479,17 +480,23 @@
             requestAnimationFrame(animate);
             controls.update();
 
-            // --- Physical Spinning Engine with Acceleration & Limits ---
+            // --- Physical Spinning Engine with Precision Anti-Drift Limits ---
             if (isSpinning) {
                 if (USE_SPIN_LIMIT) {
                     const targetAngle = MAX_SPIN_REVOLUTIONS * Math.PI * 2;
                     let distanceLeft = targetAngle - totalSpunAngle;
                     
                     if (distanceLeft <= 0) {
+                        // Limit Reached: Stop spinning entirely
                         isSpinning = false;
                         document.getElementById('toggle-spin').checked = false;
-                        if (!USE_ACCELERATION) currentSpinVelocity = 0;
+                        currentSpinVelocity = 0;
+                        
+                        // DRIFT FIX: Force the math back to a mathematically perfect 0 to clear floating point dust
+                        pipelineGroup.rotation.set(0, 0, 0);
+                        totalSpunAngle = 0;
                     } else {
+                        // Accelerate / Decelerate
                         if (USE_ACCELERATION) {
                             let stoppingDistance = (currentSpinVelocity * currentSpinVelocity) / (2 * SPIN_ACCELERATION_RATE);
                             if (distanceLeft <= stoppingDistance) {
@@ -500,8 +507,14 @@
                         } else {
                             currentSpinVelocity = MAX_SPIN_SPEED;
                         }
+                        
+                        // Prevent the velocity from overshooting the finish line exactly on the last frame
+                        if (currentSpinVelocity > distanceLeft) {
+                            currentSpinVelocity = distanceLeft;
+                        }
                     }
                 } else {
+                    // Spin forever logic
                     if (USE_ACCELERATION) {
                         currentSpinVelocity = Math.min(MAX_SPIN_SPEED, currentSpinVelocity + SPIN_ACCELERATION_RATE);
                     } else {
@@ -509,7 +522,7 @@
                     }
                 }
             } else {
-                // Decelerate to stop if turned off manually or limit reached
+                // Decelerate to stop if turned off manually
                 if (USE_ACCELERATION && currentSpinVelocity > 0) {
                     currentSpinVelocity = Math.max(0, currentSpinVelocity - SPIN_ACCELERATION_RATE);
                 } else {
@@ -523,8 +536,6 @@
                 if (spinAxis === 'x') pipelineGroup.rotation.x += currentSpinVelocity;
                 if (spinAxis === 'y') pipelineGroup.rotation.y += currentSpinVelocity;
                 if (spinAxis === 'z') pipelineGroup.rotation.z += currentSpinVelocity;
-            } else if (!isSpinning && totalSpunAngle > 0 && !USE_SPIN_LIMIT) {
-                totalSpunAngle = 0; // Reset continuous spin counter once fully stopped
             }
 
             renderer.render(scene, camera);
