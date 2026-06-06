@@ -204,6 +204,25 @@
     </head>
     <body>
         <div id="canvas-container">
+            <div
+                id="recording-indicator"
+                style="
+                    display: none;
+                    position: absolute;
+                    top: 20px;
+                    right: 20px;
+                    color: #ff3333;
+                    font-weight: bold;
+                    background: rgba(0, 0, 0, 0.7);
+                    padding: 10px 15px;
+                    border-radius: 5px;
+                    z-index: 100;
+                    border: 1px solid #ff3333;
+                    font-family: monospace;
+                ">
+                🔴 REC
+            </div>
+
             <div id="overlay" class="ui-element">
                 <h1>Dynamic Coplanar Extrusion</h1>
                 <p><strong>Left Click + Drag:</strong> Free Orbit</p>
@@ -540,6 +559,67 @@
             import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
             // ============================================================================
+            // NATIVE CANVAS RECORDING (WebM)
+            // ============================================================================
+            let mediaRecorder;
+            let recordedChunks = [];
+            let isRecording = false;
+
+            function toggleRecording() {
+                const canvas = document.querySelector("canvas");
+                const indicator = document.getElementById(
+                    "recording-indicator",
+                );
+
+                if (!isRecording) {
+                    // Start recording at 60 FPS
+                    const stream = canvas.captureStream(60);
+
+                    // Try to force high-quality VP9 codec, fallback to default webm if unsupported
+                    let options = { mimeType: "video/mp4; codecs=vp9" };
+                    if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+                        options = { mimeType: "video/mp4" };
+                    }
+
+                    mediaRecorder = new MediaRecorder(stream, options);
+
+                    // Collect video data as it becomes available
+                    mediaRecorder.ondataavailable = function (event) {
+                        if (event.data.size > 0) {
+                            recordedChunks.push(event.data);
+                        }
+                    };
+
+                    // When recording stops, compile and download the video
+                    mediaRecorder.onstop = function () {
+                        const blob = new Blob(recordedChunks, {
+                            type: "video/mp4",
+                        });
+                        recordedChunks = []; // Reset chunks for next recording
+
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement("a");
+                        document.body.appendChild(a);
+                        a.style.display = "none";
+                        a.href = url;
+                        a.download = "threejs-render-hq.mp4"; // File name
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                        document.body.removeChild(a);
+                    };
+
+                    mediaRecorder.start();
+                    isRecording = true;
+                    indicator.style.display = "block";
+                } else {
+                    // Stop recording
+                    mediaRecorder.stop();
+                    isRecording = false;
+                    indicator.style.display = "none";
+                }
+            }
+
+            // ============================================================================
             // CONFIGURATION SETTINGS
             // ============================================================================
             const PIPE_COLOR = 0xd00100;
@@ -762,12 +842,12 @@
                 );
                 geometry.computeVertexNormals();
 
-                const material = new THREE.MeshStandardMaterial({ 
-                    color: PIPE_COLOR, 
-                    flatShading: true, 
+                const material = new THREE.MeshStandardMaterial({
+                    color: PIPE_COLOR,
+                    flatShading: true,
                     side: THREE.DoubleSide,
-                    roughness: 0.1,   // Lower number = shinier/glossier
-                    metalness: 0.1    // Higher number = more metallic reflection
+                    roughness: 0.1, // Lower number = shinier/glossier
+                    metalness: 0.1, // Higher number = more metallic reflection
                 });
                 const mesh = new THREE.Mesh(geometry, material);
                 currentHexGroup.add(mesh);
@@ -1052,10 +1132,16 @@
             // 6. UI Interaction Listeners
 
             window.addEventListener("keydown", (e) => {
-                if (e.key.toLowerCase() === "l")
+                if (e.key.toLowerCase() === "l") {
                     document.body.classList.toggle("hide-ui");
-                if (e.key.toLowerCase() === "s")
+                }
+                if (e.key.toLowerCase() === "s") {
                     document.getElementById("toggle-spin").click();
+                }
+                // Add this new condition for recording
+                if (e.key.toLowerCase() === "r") {
+                    toggleRecording();
+                }
             });
 
             // Bind Lighting Sliders
