@@ -651,15 +651,19 @@
             const DEFAULT_P27_RIGHT = 0.45;
 
             // Spin Parameters
-            const MAX_SPIN_SPEED = 0.05;
+            const MAX_SPIN_SPEED = 0.5/2;
             const USE_SPIN_LIMIT = true;
             const MAX_SPIN_REVOLUTIONS = 1;
             const USE_ACCELERATION = true;
-            const SPIN_ACCELERATION_RATE = 0.005;
+            const SPIN_ACCELERATION_RATE = 0.05/2;
 
-            // --- NEW WIND-UP SETTINGS ---
+            // --- WIND-UP (ANTICIPATION) SETTINGS ---
             const USE_WINDUP = true;             // Toggle the counter-rotation on/off
             const WINDUP_ANGLE = Math.PI / 8;    // Edit this to change amount of counter-rotation (e.g., PI/8 = 22.5 degrees)
+            
+            // --- OVERSHOOT (FOLLOW-THROUGH) SETTINGS ---
+            const USE_OVERSHOOT = false;          // Toggle the follow-through rotation at the end
+            const OVERSHOOT_ANGLE = Math.PI / 12; // Edit this to change amount of overshoot (e.g., PI/8 = 22.5 degrees)
             // ============================================================================
 
             // 1. Setup Scene
@@ -1199,7 +1203,7 @@
 
             // Spin State Trackers
             let isSpinning = false;
-            let spinPhase = 'idle'; // Added: 'idle', 'windup', or 'main'
+            let spinPhase = 'idle'; // Added: 'idle', 'windup', 'main', 'overshoot'
             let spinAxis = "y";
             let currentSpinVelocity = 0;
             let totalSpunAngle = 0;
@@ -1346,6 +1350,8 @@
                 // --- Physical Spinning Engine ---
                 if (isSpinning) {
                     if (USE_SPIN_LIMIT) {
+                        const targetAngle = MAX_SPIN_REVOLUTIONS * Math.PI * 2;
+
                         if (USE_WINDUP && spinPhase === 'windup') {
                             // Phase 1: Wind-up (Rotate backward)
                             let distanceLeft = Math.abs(-WINDUP_ANGLE - totalSpunAngle);
@@ -1372,20 +1378,24 @@
                                     currentSpinVelocity = -distanceLeft;
                                 }
                             }
-                        } else {
+                        } else if (spinPhase === 'main') {
                             // Phase 2: Main Spin
-                            spinPhase = 'main';
-                            const targetAngle = MAX_SPIN_REVOLUTIONS * Math.PI * 2;
-                            let distanceLeft = targetAngle - totalSpunAngle;
+                            const mainTargetAngle = targetAngle + (USE_OVERSHOOT ? OVERSHOOT_ANGLE : 0);
+                            let distanceLeft = mainTargetAngle - totalSpunAngle;
 
-                            if (distanceLeft <= 0) {
-                                isSpinning = false;
-                                document.getElementById("toggle-spin").checked = false;
-                                currentSpinVelocity = 0;
-                                pipelineGroup.rotation.set(0, 0, 0);
-                                hexSpinGroup.rotation.set(0, 0, 0);
-                                totalSpunAngle = 0;
-                                spinPhase = 'idle';
+                            if (distanceLeft <= 0.001 || totalSpunAngle >= mainTargetAngle) {
+                                if (USE_OVERSHOOT) {
+                                    spinPhase = 'overshoot';
+                                    currentSpinVelocity = 0;
+                                } else {
+                                    isSpinning = false;
+                                    document.getElementById("toggle-spin").checked = false;
+                                    currentSpinVelocity = 0;
+                                    pipelineGroup.rotation.set(0, 0, 0);
+                                    hexSpinGroup.rotation.set(0, 0, 0);
+                                    totalSpunAngle = 0;
+                                    spinPhase = 'idle';
+                                }
                             } else {
                                 if (USE_ACCELERATION) {
                                     let stoppingDistance = (currentSpinVelocity * currentSpinVelocity) / (2 * SPIN_ACCELERATION_RATE);
@@ -1400,6 +1410,38 @@
 
                                 if (currentSpinVelocity > distanceLeft) {
                                     currentSpinVelocity = distanceLeft;
+                                }
+                            }
+                        } else if (USE_OVERSHOOT && spinPhase === 'overshoot') {
+                            // Phase 3: Overshoot (Rotate backward to the true target)
+                            let distanceLeft = totalSpunAngle - targetAngle;
+
+                            if (distanceLeft <= 0.001 || totalSpunAngle <= targetAngle) {
+                                // Final Stop
+                                isSpinning = false;
+                                document.getElementById("toggle-spin").checked = false;
+                                currentSpinVelocity = 0;
+                                // Snap cleanly to the exact 0/360 rotation to prevent minor drift
+                                pipelineGroup.rotation.set(0, 0, 0);
+                                hexSpinGroup.rotation.set(0, 0, 0);
+                                totalSpunAngle = 0;
+                                spinPhase = 'idle';
+                            } else {
+                                if (USE_ACCELERATION) {
+                                    let stoppingDistance = (currentSpinVelocity * currentSpinVelocity) / (2 * SPIN_ACCELERATION_RATE);
+                                    if (distanceLeft <= stoppingDistance) {
+                                        currentSpinVelocity += SPIN_ACCELERATION_RATE; // Decelerate (velocity is negative)
+                                    } else {
+                                        currentSpinVelocity -= SPIN_ACCELERATION_RATE; // Accelerate backward
+                                        currentSpinVelocity = Math.max(-MAX_SPIN_SPEED, currentSpinVelocity);
+                                    }
+                                } else {
+                                    currentSpinVelocity = -MAX_SPIN_SPEED;
+                                }
+
+                                // Clamp to avoid overshooting backward past the final target
+                                if (Math.abs(currentSpinVelocity) > distanceLeft) {
+                                    currentSpinVelocity = -distanceLeft;
                                 }
                             }
                         }
