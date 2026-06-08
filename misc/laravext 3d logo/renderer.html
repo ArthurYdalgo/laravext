@@ -576,9 +576,9 @@
                     const stream = canvas.captureStream(60);
 
                     // Try to force high-quality VP9 codec, fallback to default webm if unsupported
-                    let options = { mimeType: "video/mp4; codecs=vp9" };
+                    let options = { mimeType: "video/webm; codecs=vp9" };
                     if (!MediaRecorder.isTypeSupported(options.mimeType)) {
-                        options = { mimeType: "video/mp4" };
+                        options = { mimeType: "video/webm" };
                     }
 
                     mediaRecorder = new MediaRecorder(stream, options);
@@ -593,7 +593,7 @@
                     // When recording stops, compile and download the video
                     mediaRecorder.onstop = function () {
                         const blob = new Blob(recordedChunks, {
-                            type: "video/mp4",
+                            type: "video/webm",
                         });
                         recordedChunks = []; // Reset chunks for next recording
 
@@ -602,7 +602,7 @@
                         document.body.appendChild(a);
                         a.style.display = "none";
                         a.href = url;
-                        a.download = "threejs-render-hq.mp4"; // File name
+                        a.download = "threejs-render-hq.webm"; // File name
                         a.click();
                         window.URL.revokeObjectURL(url);
                         document.body.removeChild(a);
@@ -656,6 +656,10 @@
             const MAX_SPIN_REVOLUTIONS = 1;
             const USE_ACCELERATION = true;
             const SPIN_ACCELERATION_RATE = 0.005;
+
+            // --- NEW WIND-UP SETTINGS ---
+            const USE_WINDUP = true;             // Toggle the counter-rotation on/off
+            const WINDUP_ANGLE = Math.PI / 8;    // Edit this to change amount of counter-rotation (e.g., PI/8 = 22.5 degrees)
             // ============================================================================
 
             // 1. Setup Scene
@@ -1195,6 +1199,7 @@
 
             // Spin State Trackers
             let isSpinning = false;
+            let spinPhase = 'idle'; // Added: 'idle', 'windup', or 'main'
             let spinAxis = "y";
             let currentSpinVelocity = 0;
             let totalSpunAngle = 0;
@@ -1203,11 +1208,11 @@
                 .getElementById("toggle-spin")
                 .addEventListener("change", (e) => {
                     isSpinning = e.target.checked;
-                    if (
-                        isSpinning &&
-                        totalSpunAngle >= MAX_SPIN_REVOLUTIONS * Math.PI * 2
-                    ) {
-                        totalSpunAngle = 0;
+                    if (isSpinning) {
+                        if (totalSpunAngle >= MAX_SPIN_REVOLUTIONS * Math.PI * 2 || totalSpunAngle === 0) {
+                            totalSpunAngle = 0;
+                            spinPhase = (USE_SPIN_LIMIT && USE_WINDUP) ? 'windup' : 'main';
+                        }
                     }
                 });
 
@@ -1220,6 +1225,9 @@
                     totalSpunAngle = 0;
                     pipelineGroup.rotation.set(0, 0, 0);
                     hexSpinGroup.rotation.set(0, 0, 0);
+                    if (isSpinning) {
+                        spinPhase = (USE_SPIN_LIMIT && USE_WINDUP) ? 'windup' : 'main';
+                    }
                 });
             });
 
@@ -1232,6 +1240,7 @@
                     currentSpinVelocity = 0;
                     document.getElementById("toggle-spin").checked = false;
                     isSpinning = false;
+                    spinPhase = 'idle';
                 });
 
             // Visual Aids Checkboxes
@@ -1337,45 +1346,66 @@
                 // --- Physical Spinning Engine ---
                 if (isSpinning) {
                     if (USE_SPIN_LIMIT) {
-                        const targetAngle = MAX_SPIN_REVOLUTIONS * Math.PI * 2;
-                        let distanceLeft = targetAngle - totalSpunAngle;
+                        if (USE_WINDUP && spinPhase === 'windup') {
+                            // Phase 1: Wind-up (Rotate backward)
+                            let distanceLeft = Math.abs(-WINDUP_ANGLE - totalSpunAngle);
 
-                        if (distanceLeft <= 0) {
-                            isSpinning = false;
-                            document.getElementById("toggle-spin").checked =
-                                false;
-                            currentSpinVelocity = 0;
-                            pipelineGroup.rotation.set(0, 0, 0);
-                            hexSpinGroup.rotation.set(0, 0, 0);
-                            totalSpunAngle = 0;
-                        } else {
-                            if (USE_ACCELERATION) {
-                                let stoppingDistance =
-                                    (currentSpinVelocity *
-                                        currentSpinVelocity) /
-                                    (2 * SPIN_ACCELERATION_RATE);
-                                if (distanceLeft <= stoppingDistance) {
-                                    currentSpinVelocity = Math.max(
-                                        0.0001,
-                                        currentSpinVelocity -
-                                            SPIN_ACCELERATION_RATE,
-                                    );
-                                } else {
-                                    currentSpinVelocity = Math.min(
-                                        MAX_SPIN_SPEED,
-                                        currentSpinVelocity +
-                                            SPIN_ACCELERATION_RATE,
-                                    );
-                                }
+                            if (distanceLeft <= 0.001 || totalSpunAngle <= -WINDUP_ANGLE) {
+                                // Reached max counter-rotation, trigger stop and transition
+                                spinPhase = 'main';
+                                currentSpinVelocity = 0; 
                             } else {
-                                currentSpinVelocity = MAX_SPIN_SPEED;
-                            }
+                                if (USE_ACCELERATION) {
+                                    let stoppingDistance = (currentSpinVelocity * currentSpinVelocity) / (2 * SPIN_ACCELERATION_RATE);
+                                    if (distanceLeft <= stoppingDistance) {
+                                        currentSpinVelocity += SPIN_ACCELERATION_RATE; // Decelerate (velocity is negative)
+                                    } else {
+                                        currentSpinVelocity -= SPIN_ACCELERATION_RATE; // Accelerate backward
+                                        currentSpinVelocity = Math.max(-MAX_SPIN_SPEED, currentSpinVelocity);
+                                    }
+                                } else {
+                                    currentSpinVelocity = -MAX_SPIN_SPEED;
+                                }
 
-                            if (currentSpinVelocity > distanceLeft) {
-                                currentSpinVelocity = distanceLeft;
+                                // Clamp to avoid overshooting backward
+                                if (Math.abs(currentSpinVelocity) > distanceLeft) {
+                                    currentSpinVelocity = -distanceLeft;
+                                }
+                            }
+                        } else {
+                            // Phase 2: Main Spin
+                            spinPhase = 'main';
+                            const targetAngle = MAX_SPIN_REVOLUTIONS * Math.PI * 2;
+                            let distanceLeft = targetAngle - totalSpunAngle;
+
+                            if (distanceLeft <= 0) {
+                                isSpinning = false;
+                                document.getElementById("toggle-spin").checked = false;
+                                currentSpinVelocity = 0;
+                                pipelineGroup.rotation.set(0, 0, 0);
+                                hexSpinGroup.rotation.set(0, 0, 0);
+                                totalSpunAngle = 0;
+                                spinPhase = 'idle';
+                            } else {
+                                if (USE_ACCELERATION) {
+                                    let stoppingDistance = (currentSpinVelocity * currentSpinVelocity) / (2 * SPIN_ACCELERATION_RATE);
+                                    if (distanceLeft <= stoppingDistance) {
+                                        currentSpinVelocity = Math.max(0.0001, currentSpinVelocity - SPIN_ACCELERATION_RATE);
+                                    } else {
+                                        currentSpinVelocity = Math.min(MAX_SPIN_SPEED, currentSpinVelocity + SPIN_ACCELERATION_RATE);
+                                    }
+                                } else {
+                                    currentSpinVelocity = MAX_SPIN_SPEED;
+                                }
+
+                                if (currentSpinVelocity > distanceLeft) {
+                                    currentSpinVelocity = distanceLeft;
+                                }
                             }
                         }
                     } else {
+                        // Phase: Unlimited Spinning
+                        spinPhase = 'main';
                         if (USE_ACCELERATION) {
                             currentSpinVelocity = Math.min(
                                 MAX_SPIN_SPEED,
@@ -1386,24 +1416,24 @@
                         }
                     }
                 } else {
-                    if (USE_ACCELERATION && currentSpinVelocity > 0) {
-                        currentSpinVelocity = Math.max(
-                            0,
-                            currentSpinVelocity - SPIN_ACCELERATION_RATE,
-                        );
+                    // Coast to stop when manually toggled off
+                    if (USE_ACCELERATION && Math.abs(currentSpinVelocity) > 0) {
+                        if (currentSpinVelocity > 0) {
+                            currentSpinVelocity = Math.max(0, currentSpinVelocity - SPIN_ACCELERATION_RATE);
+                        } else {
+                            currentSpinVelocity = Math.min(0, currentSpinVelocity + SPIN_ACCELERATION_RATE);
+                        }
                     } else {
                         currentSpinVelocity = 0;
                     }
                 }
 
-                if (currentSpinVelocity > 0) {
+                // Apply rotation (Supports both positive and negative velocity)
+                if (Math.abs(currentSpinVelocity) > 0) {
                     totalSpunAngle += currentSpinVelocity;
-                    if (spinAxis === "x")
-                        pipelineGroup.rotation.x += currentSpinVelocity;
-                    if (spinAxis === "y")
-                        pipelineGroup.rotation.y += currentSpinVelocity;
-                    if (spinAxis === "z")
-                        pipelineGroup.rotation.z += currentSpinVelocity;
+                    if (spinAxis === "x") pipelineGroup.rotation.x += currentSpinVelocity;
+                    if (spinAxis === "y") pipelineGroup.rotation.y += currentSpinVelocity;
+                    if (spinAxis === "z") pipelineGroup.rotation.z += currentSpinVelocity;
                 }
 
                 // Sync the Hexagon Spin Group if it is NOT locked
