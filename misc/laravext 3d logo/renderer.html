@@ -335,7 +335,7 @@
                     </div>
                     <div class="slider-container">
                         <label for="light-x" style="color: #ffaa00"
-                            >Light X: <span id="light-x-val">10.0</span></label
+                            >Light X: <span id="light-x-val">-3.5.0</span></label
                         >
                         <input
                             type="range"
@@ -343,11 +343,11 @@
                             min="-50"
                             max="50"
                             step="0.5"
-                            value="10" />
+                            value="-3.5" />
                     </div>
                     <div class="slider-container">
                         <label for="light-y" style="color: #ffaa00"
-                            >Light Y: <span id="light-y-val">20.0</span></label
+                            >Light Y: <span id="light-y-val">27.5.0</span></label
                         >
                         <input
                             type="range"
@@ -355,11 +355,11 @@
                             min="-50"
                             max="50"
                             step="0.5"
-                            value="20" />
+                            value="27.5" />
                     </div>
                     <div class="slider-container">
                         <label for="light-z" style="color: #ffaa00"
-                            >Light Z: <span id="light-z-val">15.0</span></label
+                            >Light Z: <span id="light-z-val">-16.0</span></label
                         >
                         <input
                             type="range"
@@ -367,7 +367,7 @@
                             min="-50"
                             max="50"
                             step="0.5"
-                            value="15" />
+                            value="-16" />
                     </div>
                 </div>
 
@@ -573,12 +573,21 @@
 
                 if (!isRecording) {
                     // Start recording at 60 FPS
-                    const stream = canvas.captureStream(60);
+                    const stream = canvas.captureStream(120);
 
-                    // Try to force high-quality VP9 codec, fallback to default webm if unsupported
-                    let options = { mimeType: "video/webm; codecs=vp9" };
+                    // Force high-quality VP9 codec and push the bitrate to the absolute maximum.
+                    // 250,000,000 bps = 250 Mbps. The browser will cap this at its internal maximum,
+                    // resulting in the highest possible quality WebM file.
+                    let options = { 
+                        mimeType: "video/webm; codecs=vp9",
+                        videoBitsPerSecond: 250000000 
+                    };
+                    
                     if (!MediaRecorder.isTypeSupported(options.mimeType)) {
-                        options = { mimeType: "video/webm" };
+                        options = { 
+                            mimeType: "video/webm",
+                            videoBitsPerSecond: 250000000
+                        };
                     }
 
                     mediaRecorder = new MediaRecorder(stream, options);
@@ -691,7 +700,7 @@
             // Lighting
             scene.add(new THREE.AmbientLight(0xffffff, 0.6));
             const dirLight = new THREE.DirectionalLight(0xffffff, 0.9);
-            dirLight.position.set(10, 20, 15);
+            dirLight.position.set(-3.5, 27.5, -16);
             scene.add(dirLight);
 
             // 2. Data Definitions
@@ -855,7 +864,7 @@
                     flatShading: true,
                     side: THREE.DoubleSide,
                     roughness: 0.1, // Lower number = shinier/glossier
-                    metalness: 0.1, // Higher number = more metallic reflection
+                    metalness: 0.3, // Higher number = more metallic reflection
                 });
                 const mesh = new THREE.Mesh(geometry, material);
                 currentHexGroup.add(mesh);
