@@ -564,7 +564,7 @@
             // CONFIGURATION SETTINGS
             // ============================================================================
             // --- RECORDING SETTINGS ---
-            const RECORD_TRANSPARENT = true; // Set to true to record with a transparent background (Alpha channel)
+            const RECORD_TRANSPARENT = false; // Set to true to record with a transparent background (Alpha channel)
 
             const PIPE_COLOR = 0xd00100;
             const WIREFRAME_COLOR = 0xffffff;
@@ -595,18 +595,18 @@
             const DEFAULT_P27_RIGHT = 0.45;
 
             // Spin Parameters
-            const MAX_SPIN_SPEED = 0.05;
+            const MAX_SPIN_SPEED = 0.5/2;
             const USE_SPIN_LIMIT = true;
             const MAX_SPIN_REVOLUTIONS = 1;
             const USE_ACCELERATION = true;
-            const SPIN_ACCELERATION_RATE = 0.005;
+            const SPIN_ACCELERATION_RATE = 0.05/2;
 
             // --- WIND-UP (ANTICIPATION) SETTINGS ---
             const USE_WINDUP = true;             // Toggle the counter-rotation on/off
             const WINDUP_ANGLE = Math.PI / 8;    // Edit this to change amount of counter-rotation (e.g., PI/8 = 22.5 degrees)
             
             // --- OVERSHOOT (FOLLOW-THROUGH) SETTINGS ---
-            const USE_OVERSHOOT = true;          // Toggle the follow-through rotation at the end
+            const USE_OVERSHOOT = false;          // Toggle the follow-through rotation at the end
             const OVERSHOOT_ANGLE = Math.PI / 8; // Edit this to change amount of overshoot (e.g., PI/8 = 22.5 degrees)
             // ============================================================================
 
