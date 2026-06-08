@@ -566,8 +566,8 @@
             // CONFIGURATION SETTINGS
             // ============================================================================
             // --- RECORDING SETTINGS ---
-            const RECORD_TRANSPARENT = false; // Set to true to record with a transparent background (Alpha channel)
-            const EXPORT_FORMAT = "webm";
+            const RECORD_TRANSPARENT = true; // Set to true to record with a transparent background (Alpha channel)
+            const EXPORT_FORMAT = "mp4";
 
             const PIPE_COLOR = 0xd00100;
             const WIREFRAME_COLOR = 0xffffff;
@@ -701,6 +701,7 @@
             const renderer = new THREE.WebGLRenderer({
                 antialias: true,
                 alpha: RECORD_TRANSPARENT,
+                preserveDrawingBuffer: true
             });
 
             if (RECORD_TRANSPARENT) {
@@ -1184,9 +1185,23 @@
                 if (e.key.toLowerCase() === "s") {
                     document.getElementById("toggle-spin").click();
                 }
-                // Add this new condition for recording
+
                 if (e.key.toLowerCase() === "r") {
                     toggleRecording();
+                }
+
+                if (e.key.toLowerCase() === "p") {
+                    const canvas = document.querySelector("canvas");
+                    // Export as PNG (which inherently supports the alpha transparency channel)
+                    const dataURL = canvas.toDataURL("image/png");
+                    
+                    const a = document.createElement("a");
+                    a.style.display = "none";
+                    a.href = dataURL;
+                    a.download = "threejs-screenshot.png";
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
                 }
             });
 
