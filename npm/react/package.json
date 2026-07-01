@@ -1,52 +1,52 @@
 {
-    "name": "@laravext/react",
-    "version": "1.1.9",
-    "description": "Laravext for React",
-    "homepage": "https://laravext.dev/",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/arthurydalgo/laravext",
-        "directory": "npm/react"
+  "name": "@laravext/react",
+  "version": "1.1.10",
+  "description": "Laravext for React",
+  "homepage": "https://laravext.dev/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arthurydalgo/laravext",
+    "directory": "npm/react"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.esm.js",
+  "types": "./laravext.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.js"
     },
-    "type": "module",
-    "main": "./dist/index.js",
-    "module": "./dist/index.esm.js",
-    "types": "./laravext.d.ts",
-    "exports": {
-        ".": {
-            "import": "./dist/index.esm.js",
-            "require": "./dist/index.js"
-        },
-        "./server": {
-            "import": "./dist/server.esm.js",
-            "require": "./dist/server.js"
-        },
-        "./tools": {
-            "import": "./dist/tools.esm.js",
-            "require": "./dist/tools.js"
-        },
-        "./progress": {
-            "import": "./dist/progress.esm.js",
-            "require": "./dist/progress.js"
-        }
+    "./server": {
+      "import": "./dist/server.esm.js",
+      "require": "./dist/server.js"
     },
-    "private": false,
-    "scripts": {
-        "clean": "rm -rf dist",
-        "build": "npm run clean && ./build.js",
-        "test": "echo \"Error: no test specified\" && exit 1"
+    "./tools": {
+      "import": "./dist/tools.esm.js",
+      "require": "./dist/tools.js"
     },
-    "author": "Arthur Ydalgo",
-    "license": "ISC",
-    "dependencies": {
-        "axios": "^1.8.2",
-        "jsdom": "^24.1.0",
-        "nprogress": "^0.2.0",
-        "react": "^19.0.0",
-        "react-dom": "^19.0.0"
-    },
-    "devDependencies": {
-        "esbuild": "^0.25.2",
-        "esbuild-node-externals": "^1.14.0"
+    "./progress": {
+      "import": "./dist/progress.esm.js",
+      "require": "./dist/progress.js"
     }
+  },
+  "private": false,
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "npm run clean && ./build.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Arthur Ydalgo",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.8.2",
+    "jsdom": "^24.1.0",
+    "nprogress": "^0.2.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.2",
+    "esbuild-node-externals": "^1.14.0"
+  }
 }
