@@ -38,9 +38,15 @@ By default this is set to `env('LARAVEXT_ROUTER_URL_INTENDED_IS_ENABLED', true)`
 
 ## Route Registration Method (route_registration_method)
 
-By default, the route registration method is set to `null`. This is used to change how the routes are declared when calling `Route::laravext(...)` or `Route::nexus(...)` (both of these macros can also accept a `route_registration_method` in the `...$parameters` so you have more granular control). You can change it to any method you want, as long as it's a valid method in the router. 
+By default, the route registration method is set to `null`. This is used to change how the routes are declared when calling `Route::laravext(...)` or `Route::nexus(...)`. You can change it to any method you want, as long as it's a valid method in the router. 
 
-Why would you need to change this? Let's say you're using a package that offers something like `Route::multilingual(...)` macro from [chinleung/laravel-multilingual-routes](https://github.com/chinleung/laravel-multilingual-routes) and you want it to be used on all the automatically generated routes of every single `Route::laravext(...)` or `Route::nexus(...)` declaration, you can set this to `multilingual`, and it will be used on all the routes. If you don't set this, the default method is `match(['get', 'head'])`.
+:::tip 
+
+Both of these macros mentioned above accept a `route_registration_method` in the `...$parameters` so you have more granular control. Check the [Routing](/docs/tools/routing) section for more details on how to use this.
+
+:::
+
+Why would you need to change this? Let's say you're using a package that offers something like `Route::multilingual(...)` macro from [chinleung/laravel-multilingual-routes](https://github.com/chinleung/laravel-multilingual-routes) and you want it to be used on all the automatically generated routes of every single `Route::laravext(...)` or `Route::nexus(...)` declaration, you can set this to `multilingual`, and it will be used on all the routes. If you don't set this, the default method is `match(['get', 'head'], ...)`.
 
 ## Strand id length (strand_id_length) 
 
