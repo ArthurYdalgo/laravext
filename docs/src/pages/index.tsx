@@ -81,8 +81,8 @@ const FEATURES = [
         to: "/docs/quickstart",
     },
     {
-        header: "File-based Routing System",
-        body: "Laravext creates a file-based routing system just like you do with Next.js, and also uses (most of) the same file conventions.",
+        header: "File-based Routing System + Native Localization",
+        body: "Laravext creates a file-based routing system just like you do with Next.js, and also uses (most of) the same file conventions, and also supports native route localization.",
         to: "/docs/concepts/router",
     },
     {
@@ -95,7 +95,7 @@ const FEATURES = [
 function Feature(props: { feature: (typeof FEATURES)[number] }) {
     return (
         <div className="card-demo">
-            <div className="card">
+            <div className="card" style={{ height: "100%" }}>
                 <div className="card__header">
                     <h3>{props.feature.header}</h3>
                 </div>
