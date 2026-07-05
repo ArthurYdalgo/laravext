@@ -81,7 +81,7 @@ const FEATURES = [
         to: "/docs/quickstart",
     },
     {
-        header: "File-based Routing System + Native Localization",
+        header: "File-based Routing System + Native Route Localization",
         body: "Laravext creates a file-based routing system just like you do with Next.js, as it uses (most of) the same file conventions, and also supports native route localization.",
         to: "/docs/concepts/router",
     },
