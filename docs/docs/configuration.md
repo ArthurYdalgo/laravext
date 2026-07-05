@@ -64,6 +64,50 @@ This is used in the cache key for the routing tree. If the version changes, the 
 
 By default Laravext behaves an SPA, when possible, so for each link there is no page reload, unless the route is set to use a different view file than the one that was previously loaded, or if the version changed (see the `version` config above). If you want to force a page visit on each link click, you can set this to `true`.
 
+## Localization (localization)
+
+This is an array containing some configurations in case you want to use the localization features of Laravext. This configuration has some comments to briefly explain everything. If you want to see some examples, check the [Tools/Localization](/docs/tools/localization) section of this documentation.
+
+```php
+    'localization' => [
+        /**
+         * Whether or not the localized routing feature is enabled.
+         */
+        'enabled' => false,
+
+        /**
+         * The available locales for the application. By default, it will attempt to use the 
+         * APP_LOCALES environment variable, falling back to English.
+         */
+        'locales' => env('APP_LOCALES') ? explode(',', env('APP_LOCALES')) : config('app.locales', ['en']),
+
+        /**
+         * The base or default locale of the application. This is used to determine the primary 
+         * routes and fallback behaviors.
+         */
+        'default_locale' => env('APP_LOCALE', 'en'),
+
+        /**
+         * Whether or not a language prefix should be added to the URI for localized routes 
+         * (e.g., generating /pt/usuarios instead of just /usuarios).
+         */
+        'add_prefix_to_uri' => true,
+
+        /**
+         * The name of the translation file group located in your lang directory that will 
+         * be used to translate the URI segments.
+         */
+        'translation_file' => 'routes',
+
+        /**
+         * The single class responsible for all localized routing behavior. 
+         * Extend \Laravext\Localization\RouteLocalizer to completely customize how localized route names
+         * are generated.
+         */
+        'route_localizer' => \Laravext\Localization\RouteLocalizer::class,
+    ],
+```
+
 ## SSR (ssr) 
 
 This is an array containing some configurations in case you want to use a javascript runtime to server side render your javascript. This configuration has some comments to briefly explain everything, but for more details, check the [Server Side Rendering/Javascript Runtime](/docs/server-side-rendering#javascript-runtime) section of this documentation.
