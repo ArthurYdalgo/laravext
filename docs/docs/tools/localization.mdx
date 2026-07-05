@@ -1,0 +1,107 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Localization
+
+Laravext supports (ever since version [v1.3.1](https://github.com/ArthurYdalgo/laravext-packagist/releases/tag/v1.3.1)), native route localization.
+Simply change the `'laravext.localization.enabled'` and the `'laravext.localization.enabled'` [localization configuration](/docs/configuration#localization) as you see fit, create
+`/lang/[language-key-added-in-config]/routes.php` with the translations, like so:
+
+<Tabs>
+  <TabItem value="Laravext Config" label="Laravext config">
+
+`config/laravext.php`:
+
+```php
+    'localization' => [
+        /**
+         * Whether or not the localized routing feature is enabled.
+         */
+        'enabled' => false,
+
+        /**
+         * The available locales for the application. By default, it will attempt to use the
+         * APP_LOCALES environment variable, falling back to English.
+         * 
+         * This example adds the 'pt' and 'es' locales to the available locales, but
+         * in the original configuration, you'll notice it's set only as ['en'].
+         */
+        'locales' => env('APP_LOCALES') ? explode(',', env('APP_LOCALES')) : config('app.locales', ['en', 'pt', 'es']),
+
+        // Other configs
+    ],
+```
+
+  </TabItem>
+  <TabItem value="Localization Routes" label="Localization Routes">
+
+<Tabs>
+  <TabItem value="Portuguese" label="Portuguese">
+
+`/lang/pt/routes.php`:
+
+```php
+<?php
+
+return [
+    'dashboard' => 'painel',
+    'forgot-password' => 'esqueci-a-senha',
+
+    'login' => 'entrar',
+
+    'reset-password/{token}' => 'redefinir-senha/{token}',
+    'register' => 'registrar',
+
+    'settings/appearance' => 'configuracoes/aparencia',
+    'settings/language' => 'configuracoes/idioma',
+    'settings/profile' => 'configuracoes/perfil',
+    'settings/password' => 'configuracoes/senha',
+    'settings' => 'configuracoes',
+
+    'users' => 'usuarios',
+    'users/{user}' => 'usuarios/{user}',
+    'users/{user}/edit' => 'usuarios/{user}/editar',
+
+    'verify-email' => 'verificar-email',
+];
+```
+
+  </TabItem>
+
+
+  <TabItem value="Spanish" label="Spanish">
+
+`/lang/es/routes.php`:
+
+```php
+<?php
+
+return [
+    'dashboard' => 'tablero',
+    'forgot-password' => 'olvide-mi-contrasena',
+
+    'login' => 'iniciar-sesion',
+
+    'reset-password/{token}' => 'restablecer-contrasena/{token}',
+    'register' => 'registrar',
+
+    'settings/appearance' => 'configuracion/apariencia',
+    'settings/language' => 'configuracion/idioma',
+    'settings/profile' => 'configuracion/perfil',
+    'settings/password' => 'configuracion/contrasena',
+    'settings' => 'configuracion',
+
+    'users' => 'usuarios',
+    'users/{user}' => 'usuarios/{user}',
+    'users/{user}/edit' => 'usuarios/{user}/editar',
+
+    'verify-email' => 'verificar-correo',
+];
+```
+
+  </TabItem>
+
+</Tabs>
+
+  </TabItem>
+</Tabs>

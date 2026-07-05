@@ -44,14 +44,15 @@
         "description": "Learn about the important Laravext tools!"
       },
       "items": [
-        "tools/blade-directives",
-        "tools/routing",
-        "tools/nexus-response",
-        "tools/shared-props",
-        "tools/head-component",
-        "tools/link-component",
-        "tools/visit",
-        "tools/chrome-extension"
+          "tools/blade-directives",
+          "tools/chrome-extension",
+          "tools/head-component",
+          "tools/link-component",
+          "tools/localization",
+          "tools/nexus-response",
+          "tools/routing",
+          "tools/shared-props",
+          "tools/visit"
       ]
     },
     {

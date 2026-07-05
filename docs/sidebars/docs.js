@@ -54,13 +54,14 @@ module.exports = {
             },
             items: [
                 "tools/blade-directives",
-                "tools/routing",
-                "tools/nexus-response",
-                "tools/shared-props",
+                "tools/chrome-extension",
                 "tools/head-component",
                 "tools/link-component",
+                "tools/localization",
+                "tools/nexus-response",
+                "tools/routing",
+                "tools/shared-props",
                 "tools/visit",
-                "tools/chrome-extension",
             ],
         },
         {
