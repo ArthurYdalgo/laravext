@@ -36,6 +36,8 @@ By default this is set to `env('LARAVEXT_ROUTER_ROUTE_NAMING_IS_ENABLED', true)`
 
 By default this is set to `env('LARAVEXT_ROUTER_URL_INTENDED_IS_ENABLED', true)`. This is used to set wether or not the `url.intended` value from the session will be pulled from the session and included in the laravext prop. This can be used by the [visit function](/docs/tools/visit) in the client to redirect the user to the intended url after a successful login. You can change this to `true` or `false` if you want to enable or disable the url intended. Additionally, the `visit` function will also accept a `options.redirectToUrlIntended` to define wether or not the user should be redirected to the intended url after a successful login (by default, this is set to `true`).
 
+Internally, this value is resolved by the `withUrlIntended()` method on the [Response Factory](#response-factory-response_factory). If you need more control over how the intended URL is resolved (e.g. a different session key, or peeking instead of pulling it from the session), you can override this method in your own Response Factory. See the [Response Factory (response_factory)](#response-factory-response_factory) section below for more details.
+
 ## Route Registration Method (route_registration_method)
 
 By default, the route registration method is set to `null`. This is used to change how the routes are declared when calling `Route::laravext(...)` or `Route::nexus(...)`. You can change it to any method you want, as long as it's a valid method in the router. 
@@ -63,6 +65,44 @@ This is used in the cache key for the routing tree. If the version changes, the 
 ## Force Page Visit (force_page_visit) 
 
 By default Laravext behaves an SPA, when possible, so for each link there is no page reload, unless the route is set to use a different view file than the one that was previously loaded, or if the version changed (see the `version` config above). If you want to force a page visit on each link click, you can set this to `true`.
+
+## Response Factory (response_factory)
+
+By default this is set to `\Laravext\ResponseFactory::class`. This is the class responsible for building the Nexus page response — collecting props, shared props, route/query parameters, resolving the intended URL, and rendering the final response (including SSR handling).
+
+Just like the [`route_localizer`](#localization-localization) config, this class is resolved out of the container, so you can swap it out for your own implementation by extending `\Laravext\ResponseFactory` and pointing this config at your subclass:
+
+```php
+'response_factory' => \App\Support\CustomResponseFactory::class,
+```
+
+This is useful if you want to customize how the response is built without having to reimplement (or manually copy) all of `ResponseFactory`'s behavior. For example, a common use case is overriding the `withUrlIntended()` method to change how the intended URL is resolved:
+
+```php
+namespace App\Support;
+
+use Illuminate\Support\Facades\Session;
+use Laravext\ResponseFactory;
+
+class CustomResponseFactory extends ResponseFactory
+{
+    public function withUrlIntended()
+    {
+        // Peek instead of pull, so the value isn't removed from the session
+        return config('laravext.router_url_intended_is_enabled')
+            ? Session::get('url.intended')
+            : null;
+    }
+}
+```
+
+Any public method on `ResponseFactory` can be overridden this way (e.g. `page_data()`, `render()`, `share()`, etc.), so you have full control over the response lifecycle if the default behavior doesn't fit your needs.
+
+:::tip
+
+Whatever class you configure here is what both the `Laravext` facade and the `nexus()` helper resolve to, so you don't need to change anything else in your application — just extend `ResponseFactory`, override what you need, and point `response_factory` at your class.
+
+:::
 
 ## Localization (localization)
 
