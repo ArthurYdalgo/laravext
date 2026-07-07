@@ -28,11 +28,11 @@ if (typeof window !== 'undefined') {
 
 export function visit(
     url,
-    options = {
-        preserveScroll: false,
-        redirectToUrlIntended: true,
-    }
+    options = {}
 ) {
+    const preserveScroll = options?.preserveScroll ?? false;
+    const redirectToUrlIntended = options?.redirectToUrlIntended ?? window.__laravext?.app?.defaultRedirectToUrlIntended ?? true;
+
     if (!history?.pushState) {
         window.location.href = url;
         return;
@@ -42,7 +42,7 @@ export function visit(
 
     const laravext = window.__laravext;
 
-    if (options?.redirectToUrlIntended) {
+    if (redirectToUrlIntended) {
         url = laravext.page_data.url_intended ?? url;
     }
 
@@ -79,7 +79,7 @@ export function visit(
                     let currentState = {
                         ...history.state,
                         laravext_page_data: window.__laravext.page_data,
-                        scroll_state: options?.preserveScroll
+                        scroll_state: preserveScroll
                             ? currentScroll
                             : { x: 0, y: 0 },
                     };
@@ -138,8 +138,7 @@ export const Link = defineComponent({
             default: false
         },
         redirectToUrlIntended: {
-            type: Boolean,
-            default: true
+            default: undefined
         },
         onClick: {
             type: Function,
@@ -169,11 +168,20 @@ export const Link = defineComponent({
     }
 });
 
-export function createLaravextApp({ nexusResolver, strandsResolver, conventions = [
-    'error',
-    'layout',
-    'middleware',
-], progress = {}, beforeSetup = null, setup = null, setupNexus = null, setupStrand = null, reverseSetupOrder = false, disablePushedStateData = () => false, ignorePopStateEvent = (event) => event.state === null}) {
+export function createLaravextApp({ 
+    nexusResolver, 
+    strandsResolver, 
+    conventions = ['error', 'layout', 'middleware'], 
+    progress = {}, 
+    beforeSetup = null, 
+    setup = null, 
+    setupNexus = null, 
+    setupStrand = null, 
+    reverseSetupOrder = false, 
+    disablePushedStateData = () => false, 
+    ignorePopStateEvent = (event) => event.state === null,
+    defaultRedirectToUrlIntended = true
+}) {
     window.__laravext.app = {
         nexusResolver,
         strandsResolver,
@@ -184,7 +192,8 @@ export function createLaravextApp({ nexusResolver, strandsResolver, conventions 
         setupStrand,
         reverseSetupOrder,
         disablePushedStateData,
-        ignorePopStateEvent
+        ignorePopStateEvent,
+        defaultRedirectToUrlIntended
     }
 
     if (progress) {
@@ -198,12 +207,23 @@ export function createLaravextApp({ nexusResolver, strandsResolver, conventions 
     clientRender();
 }
 
-export async function createLaravextSsrApp({ nexusResolver, strandsResolver, conventions = [
-    'error',
-    'layout',
-    'middleware',
-], laravext, document, render = null, beforeSetup = null, setup = null, setupNexus = null, setupStrand = null, reverseSetupOrder = false }) {
-    laravext.app = {}
+export async function createLaravextSsrApp({ 
+    nexusResolver, 
+    strandsResolver, 
+    conventions = ['error', 'layout', 'middleware'], 
+    laravext, 
+    document, 
+    render = null, 
+    beforeSetup = null, 
+    setup = null, 
+    setupNexus = null, 
+    setupStrand = null, 
+    reverseSetupOrder = false,
+    defaultRedirectToUrlIntended = true
+}) {
+    laravext.app = {
+        defaultRedirectToUrlIntended
+    }
 
     if (beforeSetup) {
         beforeSetup({ laravext });
